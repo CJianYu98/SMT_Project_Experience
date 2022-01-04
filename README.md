@@ -1,9 +1,2 @@
 # SMT_Project_Experience
 Repository for SMT Project Experience
-
-test test
-jgijgijrig
-
-woooofjkjdjjdjdjdjdjdjdjdjdjdjjdjddjjdjdjdjdjdjdj
-hdhdhdhdhdhdhdhdhdhddhdhdhdhdhdhdhdhhdhdhddhdhdhhehehehehehehehe
-heheheheheheeheheheheheheheheheheheheheheheheheheh
