@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import json
 import boto3
+from ..exception import AwsBucketCreationError
 
 # Load environment variables
 load_dotenv()
