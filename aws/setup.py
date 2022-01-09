@@ -9,6 +9,9 @@ load_dotenv()
 # Constants
 BUCKET_NAME = 'smt483tls-proj-bucket'
 
+
+############################ AWS S3 SETUP ############################
+
 # Establish s3 client
 client = boto3.client('s3')
 
@@ -53,3 +56,6 @@ try:
     #     raise AwsBucketCreationError(BUCKET_NAME)
 except Exception as e:
     print(e)
+
+
+############################ AWS DYNAMODB SETUP ############################
