@@ -1,23 +1,34 @@
 import praw
 import pandas as pd
-import json 
 import datetime
 import math
+from dotenv import load_dotenv
+import os
+from ....utils import file_utils
+
+# Load environment variables
+load_dotenv()
 
 # Access reddit API PRAW
 try:
-    reddit = praw.Reddit(client_id='PUMTWg7cm-mhKQ',
-                        client_secret='f_SDu_F3C5Z4epNT-RKMMfY9KqlEOQ',
-                        user_agent='smt203',
-                        username='smt203css',
-                        password='ilovesmt203!haha')
+    reddit = praw.Reddit(
+        client_id = os.getenv('client_id'),
+        client_secret = os.getenv('client_secret'),
+        user_agent = os.getenv('user_agent'),
+        username = os.getenv('username'),
+        password = os.getenv('password')
+    )
 except:
     print('Failed to connect to Reddit API')
 
-# Create storage dictionaries
+
+# Initialise scraping cut-off date
+scraping_cut_off_period = int(os.getenv('scraping_cut_off_period'))
+cut_off_datetime = datetime.datetime.now() - datetime.timedelta(days = scraping_cut_off_period)
+
+# Create storage dictionaries & initialise post counter
 submissions_dict = {}
 comments_dict = {}
-cut_off_datetime = datetime.datetime.now() - datetime.timedelta(days = 14)
 counter = 0
 
 # Iterate through list of newest submissions in selected Subreddit 
@@ -34,8 +45,8 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
     submissions_dict[submission['id']] = submission
     print(f'Post {counter} saved.')
 
+    # Load comments for each subreddit
     sub.comments.replace_more(limit = None)
-
     for comment in sub.comments.list():
         counter2 += 1
         comment = vars(comment)
@@ -44,27 +55,9 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
 
     # Save data every 50 posts
     if counter % 50 == 0:
-        try:
-            with open('submissions.json', 'w', encoding='utf-8') as f:
-                json.dump(submissions_dict, f, ensure_ascii=False, indent=4, default=str)
-        except:
-            print('Error saving submissions.json.')
+        file_utils.save_json('submissions.json', submissions_dict)
+        file_utils.save_json('comments.json', comments_dict)
 
-        try:
-            with open('comments.json', 'w', encoding='utf-8') as f:
-                json.dump(comments_dict, f, ensure_ascii=False, indent=4, default=str)
-        except:
-            print('Error saving comments.json.')
-
-# Final save
-try:
-    with open('submissions.json', 'w', encoding='utf-8') as f:
-        json.dump(submissions_dict, f, ensure_ascii=False, indent=4, default=str)
-except:
-    print('Error saving submissions.json.')
-
-try:
-    with open('comments.json', 'w', encoding='utf-8') as f:
-        json.dump(comments_dict, f, ensure_ascii=False, indent=4, default=str)
-except:
-    print('Error saving comments.json.')
+# Final save (for now this saves to the SMT_Project_Experience folder if run)
+file_utils.save_json('submissions.json', submissions_dict)
+file_utils.save_json('comments.json', comments_dict)
