@@ -34,7 +34,6 @@ counter = 0
 # Iterate through list of newest submissions in selected Subreddit 
 for sub in reddit.subreddit("Singapore").new(limit=math.inf):
     counter += 1
-    counter2 = 0
     
     # Stop loading new posts older than 2 weeks
     submission_created_datetime = datetime.datetime.fromtimestamp(sub.created_utc) #changes unixtimestamp to a readable format
@@ -48,7 +47,6 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
     # Load comments for each subreddit
     sub.comments.replace_more(limit = None)
     for comment in sub.comments.list():
-        counter2 += 1
         comment = vars(comment)
         comments_dict[comment['id']] = comment
     print(f'---> {len(sub.comments.list())} comments saved.')
