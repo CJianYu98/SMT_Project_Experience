@@ -13,11 +13,11 @@ load_dotenv()
 # Access reddit API PRAW
 try:
     reddit = praw.Reddit(
-        CLIENT_ID = os.getenv('CLIENT_ID'),
-        CLIENT_SECRET = os.getenv('CLIENT_SECRET'),
-        USER_AGENT = os.getenv('USER_AGENT'),
-        USERNAME = os.getenv('USERNAME'),
-        PASSWORD = os.getenv('PASSWORD')
+        client_id = os.getenv('CLIENT_ID'),
+        client_secret = os.getenv('CLIENT_SECRET'),
+        user_agent = os.getenv('USER_AGENT'),
+        username = os.getenv('USERNAME'),
+        password = os.getenv('PASSWORD')
     )
 except:
     print('Failed to connect to Reddit API')
@@ -59,5 +59,5 @@ for sub in reddit.subreddit('Singapore').new(limit=math.inf):
         file_utils.save_json(f'comments/{start_datetime.date()}.json', comments_dict)
 
 # Final save (Saves output in current directory containing python script, to edit later)
-file_utils.save_json(f'./submissions/{start_datetime.date()}.json', submissions_dict)
-file_utils.save_json(f'./comments/{start_datetime.date()}.json', comments_dict)
+file_utils.save_json(f'./data/submissions/{start_datetime.date()}.json', submissions_dict)
+file_utils.save_json(f'./data/comments/{start_datetime.date()}.json', comments_dict)
