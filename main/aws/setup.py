@@ -3,58 +3,45 @@ from dotenv import load_dotenv
 import json
 import boto3
 from ..exception import AwsBucketCreationError
+from ..utils import aws_utils
 
 # Load environment variables
 load_dotenv()
 
 # Constants
-BUCKET_NAME = 'smt483tls-proj-bucket'
-
+SOCIAL_MEDIA_PLATFORMS = [
+    "reddit",
+    "instagram",
+    "facebook",
+    "youtube",
+    "twitter"
+]
 
 ############################ AWS S3 SETUP ############################
 
 # Establish s3 client
 client = boto3.client('s3')
 
-# Create bucket for project
+# Create buckets for project
 try:
-    response = client.create_bucket(
-        Bucket = BUCKET_NAME,
-        CreateBucketConfiguration = {
-            'LocationConstraint': os.getenv('AWS_REGION')
-        }
-    )
+    for platform in SOCIAL_MEDIA_PLATFORMS:
+        bucket_name = f"smt483tls-{platform}-bucket"
+        bucket_response = aws_utils.create_s3_bucket(client=client, bucket_name=bucket_name)
 
-    # if response['HTTPStatusCode'] > 299:
-    #     raise AwsBucketCreationError(BUCKET_NAME)
-except Exception as e:
-    print(e)
+        # if bucket_response['HTTPStatusCode'] > 299:
+        #     raise AwsBucketCreationError(BUCKET_NAME)
 
-# Create s3 bucket policy
-policy = {
-    "Version": "2012-10-17",
-    "Id": "Smt483-proj-bucket-policy",
-    "Statement": [
-        {
-            "Sid": "Smt483-proj-bucket-policy1",
-            "Action": "s3:*",
-            "Effect": "Allow",
-            "Resource": f"arn:aws:s3:::{BUCKET_NAME}/*",
-            "Principal": {
-                "AWS": [
-                    f"arn:aws:iam::{os.getenv('AWS_ACCOUNT_ID')}:root"
-                ]
-            }
-        }
-    ]
-}
-bucket_policy = json.dumps(policy)
+        # Create s3 bucket policy 
+        policy = aws_utils.create_s3_policy_object(bucket_name=bucket_name)
+        bucket_policy = json.dumps(policy)
+        policy_response = aws_utils.create_bucket_policy(
+            client=client, 
+            bucket_name=bucket_name, 
+            policy=bucket_policy
+        )
 
-try:
-    response = client.put_bucket_policy(Bucket = BUCKET_NAME, Policy = bucket_policy)
-
-    # if response['HttpStatusCode'] > 299:
-    #     raise AwsBucketCreationError(BUCKET_NAME)
+        # if policy_response['HTTPStatusCode'] > 299:
+        #     raise AwsBucketCreationError(BUCKET_NAME)
 except Exception as e:
     print(e)
 
