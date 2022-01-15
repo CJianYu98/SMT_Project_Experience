@@ -3,9 +3,10 @@ from dotenv import load_dotenv
 from ....utils import file_utils
 import datetime
 import os
-
+import json
 import praw
 import math
+import pprint
 
 # Load environment variables
 load_dotenv()
@@ -28,36 +29,38 @@ cutoff_days = int(os.getenv('CUTOFF_DAYS'))
 start_datetime = datetime.datetime.now()
 stop_datetime = start_datetime - datetime.timedelta(days = cutoff_days)
 
-# Create storage dictionaries & initialise post counter
-submissions_dict = {}
-comments_dict = {}
+# Create new json file with current date as filename
+new_filename = str(start_datetime.date())
+new_filepath = f'./main/src/scraper/reddit/data/{new_filename}.json'
+file_utils.create_json(new_filepath)
+
+# Initialise post counter for tracking
 counter = 0
 
-# Iterate through list of newest submissions in selected Subreddit 
-for sub in reddit.subreddit('Singapore').new(limit=math.inf):
-    counter += 1
+# Read newly created json file
+with open(new_filepath, 'a') as file:
 
-    # Stop loading new posts older than 2 weeks
-    submission_created_datetime = datetime.datetime.fromtimestamp(sub.created_utc) #changes unixtimestamp to a readable format
-    if stop_datetime > submission_created_datetime:
-        break
+    # Iterate through list of newest submissions in selected Subreddit 
+    for sub in reddit.subreddit('Singapore').new(limit=math.inf):
+        counter += 1
 
-    submission = vars(sub)
-    submissions_dict[submission['id']] = submission
-    print(f'Post {counter} saved.')
+        # Stop loading new posts older than 2 weeks
+        submission_created_datetime = datetime.datetime.fromtimestamp(sub.created_utc) # changes unixtimestamp to a readable format
+        if  submission_created_datetime < stop_datetime: 
+            # Stops scraping if  submission_created_datetime < stop_datetime
+            # Note that earlier dates are considered smaller than later dates, i.e. 2022-01-14 < 2022-01-15
+            break
 
-    # Load comments for each subreddit
-    sub.comments.replace_more(limit = None)
-    for comment in sub.comments.list():
-        comment = vars(comment)
-        comments_dict[comment['id']] = comment
-    print(f'---> {len(sub.comments.list())} comments saved.')
+        submission = vars(sub) # Returns the __dict__ attribute of a given submission
+        submission['comments'] = {} # Initialise comments dictionary
+        
+        # Load comments for each submission
+        sub.comments.replace_more(limit = None)
+        for comment in sub.comments.list(): # Loop through the list of comments for the submission
+            comment = vars(comment) # Returns the __dict__ attribute of a given submission
+            submission['comments'][comment['id']] = comment # Saves the comment to comments dictionary
 
-    # Save data every 50 posts
-    if counter % 50 == 0:
-        file_utils.save_json(f'submissions/{start_datetime.date()}.json', submissions_dict)
-        file_utils.save_json(f'comments/{start_datetime.date()}.json', comments_dict)
+        print(f'Post {counter} saved [{len(sub.comments.list())} comments].')
 
-# Final save (Saves output in current directory containing python script, to edit later)
-file_utils.save_json(f'./data/submissions/{start_datetime.date()}.json', submissions_dict)
-file_utils.save_json(f'./data/comments/{start_datetime.date()}.json', comments_dict)
+        # Append individual submission to json file
+        json.dump(submission, file, ensure_ascii=False, indent=4, default=str)
