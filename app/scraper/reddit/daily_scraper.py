@@ -1,6 +1,6 @@
 # Import packages
 from dotenv import load_dotenv
-from ....utils import file_utils
+from ...utils import file_utils
 import datetime
 import os
 
