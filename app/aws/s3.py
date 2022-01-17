@@ -19,9 +19,7 @@ def s3_setup():
     try:
         for platform in SOCIAL_MEDIA_PLATFORMS:
             bucket_name = f"smt483tls-{platform}-bucket"
-            bucket_response = aws_utils.create_s3_bucket(
-                client=client, bucket_name=bucket_name
-            )
+            bucket_response = aws_utils.create_s3_bucket(client=client, bucket_name=bucket_name)
 
             # if bucket_response['HTTPStatusCode'] > 299:
             #     raise AwsBucketCreationError(BUCKET_NAME)

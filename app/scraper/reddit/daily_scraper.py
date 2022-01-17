@@ -28,41 +28,33 @@ cutoff_days = int(os.getenv("CUTOFF_DAYS"))
 start_datetime = datetime.datetime.now()
 stop_datetime = start_datetime - datetime.timedelta(days=cutoff_days)
 
-# Create storage dictionaries & initialise post counter for tracking
+# Create storage dictionaries
 submissions_dict = {}
-counter = 0
 
 # Iterate through list of newest submissions in selected Subreddit
 for sub in reddit.subreddit("Singapore").new(limit=math.inf):
-    counter += 1
 
     # Stop loading new posts older than 2 weeks
-    submission_created_datetime = datetime.datetime.fromtimestamp(
-        sub.created_utc
-    )  # changes unixtimestamp to a readable format
+    # Note that earlier dates are considered smaller than later dates, i.e. 2022-01-14 < 2022-01-15
+    submission_created_datetime = datetime.datetime.fromtimestamp(sub.created_utc)
     if stop_datetime > submission_created_datetime:
-        # Stops scraping if  submission_created_datetime < stop_datetime
-        # Note that earlier dates are considered smaller than later dates, i.e. 2022-01-14 < 2022-01-15
         break
 
-    submission = vars(sub)  # Returns the __dict__ attribute of a given submission
-    submission["comments"] = {}  # Initialise comments dictionary
+    # Initialise comments dictionary
+    submission = vars(sub)
+    submission["comments"] = {}
 
     # Load comments for each submission
     sub.comments.replace_more(limit=None)
-    for (
-        comment
-    ) in sub.comments.list():  # Loop through the list of comments for the submission
-        comment = vars(comment)  # Returns the __dict__ attribute of a given submission
-        submission["comments"][
-            comment["id"]
-        ] = comment  # Saves the comment to comments dictionary
 
+    # Loop through the list of comments for the submission
+    for comment in sub.comments.list():
+        comment = vars(comment)
+        submission["comments"][comment["id"]] = comment
+
+    # Store current submission record
     submissions_dict[submission["id"]] = submission
-    print(f"Post {counter} saved [{len(sub.comments.list())} comments].")
 
 # Save file
-file_utils.save_json(
-    f"./main/src/scraper/reddit/data/{start_datetime.date()}.json", submissions_dict
-)
+file_utils.save_json(f"./app/scraper/reddit/data/{start_datetime.date()}.json", submissions_dict)
 print("Daily scraping completed.")

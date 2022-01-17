@@ -42,9 +42,7 @@ def create_s3_policy_object(bucket_name: str) -> dict:
                 "Action": "s3:*",
                 "Effect": "Allow",
                 "Resource": f"arn:aws:s3:::{bucket_name}/*",
-                "Principal": {
-                    "AWS": [f"arn:aws:iam::{os.getenv('AWS_ACCOUNT_ID')}:root"]
-                },
+                "Principal": {"AWS": [f"arn:aws:iam::{os.getenv('AWS_ACCOUNT_ID')}:root"]},
             }
         ],
     }
