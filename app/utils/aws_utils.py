@@ -1,9 +1,11 @@
 import os
-from dotenv import load_dotenv
+
 import boto3
+from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
+
 
 def create_s3_bucket(client: boto3.client, bucket_name: str) -> dict:
     """
@@ -14,14 +16,12 @@ def create_s3_bucket(client: boto3.client, bucket_name: str) -> dict:
         bucket_name (str): Bucket name for the S3 bucket
 
     Returns:
-        dict: Response object 
     """
     return client.create_bucket(
-        Bucket = bucket_name,
-        CreateBucketConfiguration = {
-            'LocationConstraint': os.getenv('AWS_REGION')
-        }
+        Bucket=bucket_name,
+        CreateBucketConfiguration={"LocationConstraint": os.getenv("AWS_REGION")},
     )
+
 
 def create_s3_policy_object(bucket_name: str) -> dict:
     """
@@ -43,13 +43,12 @@ def create_s3_policy_object(bucket_name: str) -> dict:
                 "Effect": "Allow",
                 "Resource": f"arn:aws:s3:::{bucket_name}/*",
                 "Principal": {
-                    "AWS": [
-                        f"arn:aws:iam::{os.getenv('AWS_ACCOUNT_ID')}:root"
-                    ]
-                }
+                    "AWS": [f"arn:aws:iam::{os.getenv('AWS_ACCOUNT_ID')}:root"]
+                },
             }
-        ]
+        ],
     }
+
 
 def create_bucket_policy(client: boto3.client, bucket_name: str, policy: str) -> dict:
     """
@@ -63,4 +62,4 @@ def create_bucket_policy(client: boto3.client, bucket_name: str, policy: str) ->
     Returns:
         dict: Response object
     """
-    return client.put_bucket_policy(Bucket = bucket_name, Policy = policy)
+    return client.put_bucket_policy(Bucket=bucket_name, Policy=policy)
