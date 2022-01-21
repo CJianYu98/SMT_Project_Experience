@@ -14,14 +14,14 @@ load_dotenv()
 # Access reddit API PRAW
 try:
     reddit = praw.Reddit(
-        client_id = os.getenv('CLIENT_ID'),
-        client_secret = os.getenv('CLIENT_SECRET'),
-        user_agent = os.getenv('USER_AGENT'),
-        username = os.getenv('USERNAME'),
-        password = os.getenv('PASSWORD')
+        client_id = os.getenv("CLIENT_ID"),
+        client_secret = os.getenv("CLIENT_SECRET"),
+        user_agent = os.getenv("USER_AGENT"),
+        username = os.getenv("USERNAME"),
+        password = os.getenv("PASSWORD")
     )
 except:
-    print('Failed to connect to Reddit API')
+    print("Failed to connect to Reddit API")
 
 # Initialise scraping cut-off date
 # Integer 1514736000 represents epoch timestamp for 2018-01-01 00:00:00 (+8 GMT)
@@ -30,9 +30,10 @@ stop_datetime = datetime.datetime.fromtimestamp(1514736000)
 # Create storage dictionaries & initialise post counter for tracking
 submissions_dict = {}
 counter = 0
+current_month = datetime.datetime.now()
 
 # Iterate through list of newest submissions in selected Subreddit 
-for sub in reddit.subreddit('Singapore').new(limit=math.inf):
+for sub in reddit.subreddit("Singapore").new(limit=math.inf):
     counter += 1
 
     # Stop loading new posts older than 2 weeks
@@ -56,11 +57,12 @@ for sub in reddit.subreddit('Singapore').new(limit=math.inf):
 
     # Store current submission record
     submissions_dict[submission["id"]] = submission
-    print(f'Post {counter} saved [{len(sub.comments.list())} comments]')
+    print(f"Post {counter} saved [{len(sub.comments.list())} comments]")
 
     # Save file every 50 posts
     if counter % 50 == 0:
-        file_utils.save_json('./main/src/scraper/reddit/data/historical.json', submissions_dict)
+        file_utils.save_json("./app/scraper/reddit/historical.json", submissions_dict)
 
 # Final save
-file_utils.save_json('./main/src/scraper/reddit/data/historical.json', submissions_dict)
+file_utils.save_json("./app/scraper/reddit/historical.json", submissions_dict)
+print("Historical scraping completed.")

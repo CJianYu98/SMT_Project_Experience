@@ -28,11 +28,13 @@ cutoff_days = int(os.getenv("CUTOFF_DAYS"))
 start_datetime = datetime.datetime.now()
 stop_datetime = start_datetime - datetime.timedelta(days=cutoff_days)
 
-# Create storage dictionaries
+# Create storage dictionaries & initialise post counter for tracking
 submissions_dict = {}
+counter = 0
 
 # Iterate through list of newest submissions in selected Subreddit
 for sub in reddit.subreddit("Singapore").new(limit=math.inf):
+    counter += 1
 
     # Stop loading new posts older than 2 weeks
     # Note that earlier dates are considered smaller than later dates
@@ -55,7 +57,8 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
 
     # Store current submission record
     submissions_dict[submission["id"]] = submission
+    print(f"Post {counter} saved [{len(sub.comments.list())} comments]")
 
 # Save file
-file_utils.save_json(f"./app/scraper/reddit/data/{start_datetime.date()}.json", submissions_dict)
+file_utils.save_json(f"./app/scraper/reddit/{start_datetime.date()}.json", submissions_dict)
 print("Daily scraping completed.")
