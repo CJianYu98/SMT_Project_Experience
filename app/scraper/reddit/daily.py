@@ -35,17 +35,18 @@ submissions_dict = {}
 for sub in reddit.subreddit("Singapore").new(limit=math.inf):
 
     # Stop loading new posts older than 2 weeks
-    # Note that earlier dates are considered smaller than later dates, i.e. 2022-01-14 < 2022-01-15
+    # Note that earlier dates are considered smaller than later dates
+    # i.e. 2022-01-14 < 2022-01-15
     submission_created_datetime = datetime.datetime.fromtimestamp(sub.created_utc)
     if stop_datetime > submission_created_datetime:
         break
 
-    # Initialise comments dictionary
+    # Save the serialized version of a given submission in dict format
     submission = vars(sub)
-    submission["comments"] = {}
 
-    # Load comments for each submission
-    sub.comments.replace_more(limit=None)
+    # Getting comments
+    submission["comments"] = {} # Initialise comments dictionary within submission
+    sub.comments.replace_more(limit=None) # Load comments for each submission
 
     # Loop through the list of comments for the submission
     for comment in sub.comments.list():
