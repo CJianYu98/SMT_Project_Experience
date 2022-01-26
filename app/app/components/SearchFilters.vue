@@ -86,6 +86,25 @@
             outlined
             dense
           >
+            <template v-slot:prepend-item>
+              <v-list-item
+                ripple
+                @mousedown.prevent
+                @click="toggle"
+              >
+                <v-list-item-action>
+                  <v-icon :color="platformsSelected.length > 0 ? 'indigo darken-4' : ''">
+                    {{ platformIcon }}
+                  </v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    Select All
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider class="mt-2"></v-divider>
+            </template>
             <template #selection="{ item }">
               <v-chip 
                 color="blue"
@@ -110,6 +129,25 @@
             outlined
             dense
           >
+            <template v-slot:prepend-item>
+              <v-list-item
+                ripple
+                @mousedown.prevent
+                @click="toggle"
+              >
+                <v-list-item-action>
+                  <v-icon :color="sentimentsSelected.length > 0 ? 'indigo darken-4' : ''">
+                    {{ sentimentIcon }}
+                  </v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    Select All
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider class="mt-2"></v-divider>
+            </template>
             <template #selection="{ item }">
               <v-chip 
                 color="blue"
@@ -141,6 +179,43 @@
       platformsFilter: ['Facebook', 'Instagram', 'Reddit', 'Twitter', 'YouTube'],
       platformsSelected: ['Facebook', 'Instagram', 'Reddit', 'Twitter', 'YouTube'],
     }),
+
+    computed: {
+      allPlatformsSelected () {
+        return this.platformsSelected.length === this.platformsFilter.length
+      },
+      somePlatformsSelected () {
+        return this.platformsSelected.length > 0 && !this.allPlatformsSelected
+      },
+      platformIcon () {
+        if (this.allPlatformsSelected) return 'mdi-close-box'
+        if (this.somePlatformsSelected) return 'mdi-minus-box'
+        return 'mdi-checkbox-blank-outline'
+      },
+      allSentimentsSelected () {
+        return this.sentimentsSelected.length === this.sentimentsFilter.length
+      },
+      someSentimentsSelected () {
+        return this.sentimentsSelected.length > 0 && !this.allSentimentsSelected
+      },
+      sentimentIcon () {
+        if (this.allSentimentsSelected) return 'mdi-close-box'
+        if (this.someSentimentsSelected) return 'mdi-minus-box'
+        return 'mdi-checkbox-blank-outline'
+      },
+    },
+
+    methods: {
+      toggle () {
+        this.$nextTick(() => {
+          if (this.allPlatformsSelected) {
+            this.platformsSelected = []
+          } else {
+            this.platformsSelected = this.platformsFilter.slice()
+          }
+        })
+      }
+    },
 
     watch: {
       model (val) {
