@@ -57,18 +57,26 @@ export default {
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    // treeShake: true,
     theme: {
-      dark: false,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
+          primary: colors.deepPurple.accent3,
+          accent: colors.deepPurple.darken3,
+          secondary: colors.deepPurple.darken1,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
-        },
+          facebook: '#1877F2',
+          instagram: '#C32AA3',
+          reddit: '#FF4500',
+          twitter: '#1DA1F2',
+          youtube: '#FF0000',
+          positive: '#78D549',
+          neutral: '#EFB727',
+          negative: '#EB8159',
+          increase: '#65BC39',
+          decrease: '#EA5F2B',
       },
     },
   },
