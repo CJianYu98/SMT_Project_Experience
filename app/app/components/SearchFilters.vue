@@ -65,13 +65,67 @@
           class="d-flex"
           cols="2"
         >
+        <!-- <v-menu
+          ref="menu1"
+          v-model="menu1"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          max-width="290px"
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="date"
+              label="Date"
+              hint="MM/DD/YYYY format"
+              persistent-hint
+              prepend-icon="mdi-calendar"
+              v-bind="attrs"
+              @blur="date = parseDate(dateFormatted)"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="date"
+            no-title
+            @input="menu1 = false"
+          ></v-date-picker>
+        </v-menu> -->
           <v-select
             v-model="dateSelected"
             :items="dateFilter"
             label="Select a date period"
             outlined
             dense
-          ></v-select>
+          >
+            <!-- <template v-slot:selection="{ item }">
+              <v-text-field
+                v-if="item === 'Custom'"
+                value="{ dates }"
+                label="Solo"
+                solo
+                readonly
+              ></v-text-field>
+            </template> -->
+            <!-- <template v-slot:selection="{ item }">
+              <v-chip v-if="item === 'Custom'">
+                <span>{{ item }}</span>
+              </v-chip>
+              <span
+                v-if="index === 1"
+                class="grey--text text-caption"
+              >
+                (+{{ value.length - 1 }} others)
+              </span>
+            </template> -->
+          </v-select>
+            <!-- <v-date-picker
+              v-model="dates"
+              range
+              no-title
+              v-if="dateSelected == 'Custom'"
+            ></v-date-picker> -->
         </v-col>
         <v-spacer></v-spacer>
         <v-col
@@ -93,8 +147,8 @@
                 @click="toggle"
               >
                 <v-list-item-action>
-                  <v-icon :color="platformsSelected.length > 0 ? 'indigo darken-4' : ''">
-                    {{ platformIcon }}
+                  <v-icon :color="sentimentsSelected.length > 0 ? 'indigo darken-4' : ''">
+                    {{ sentimentIcon }}
                   </v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
@@ -136,8 +190,8 @@
                 @click="toggle"
               >
                 <v-list-item-action>
-                  <v-icon :color="sentimentsSelected.length > 0 ? 'indigo darken-4' : ''">
-                    {{ sentimentIcon }}
+                  <v-icon :color="platformsSelected.length > 0 ? 'indigo darken-4' : ''">
+                    {{ platformIcon }}
                   </v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
@@ -172,6 +226,9 @@
       model: null,
       search: null,
       tab: null,
+      menu1: false,
+      dates: ['2019-09-10', '2019-09-20'],
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       dateSelected: "All",
       dateFilter: ['All', 'Yesterday', 'Past 7 Days', 'Past 14 Days', 'Past 30 Days', 'Past 6 Months', 'Past Year', 'Custom'],
       sentimentsFilter: ['Negative', 'Neutral', 'Positive'],

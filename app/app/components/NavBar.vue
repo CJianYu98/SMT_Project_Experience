@@ -40,7 +40,8 @@
           v-for="item in menuItems"
           :key="item.title"
           :to="item.path"
-          active-class="navSelected">
+          active-class="navSelected"
+          color="primary">
           {{ item.title }}
         </v-btn>
       </v-toolbar-items>
@@ -50,6 +51,7 @@
 
 <script>
 // import HelloWorld from "./components/HelloWorld";
+import "@fontsource/poppins/500.css"
 
 export default {
   name: "App",
@@ -66,10 +68,14 @@ export default {
 };
 </script>
 <style>
-.navSelected {
+/* .navSelected {
   color: #4734C2;
   text-decoration: underline;
   text-decoration-color: #4734C2;
   background-color: white;
+} */
+
+body {
+  font-family: "Poppins", sans-serif;
 }
 </style>
