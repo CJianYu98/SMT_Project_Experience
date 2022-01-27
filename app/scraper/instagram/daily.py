@@ -1,37 +1,54 @@
-# from bs4 import BeautifulSoup
-from instascrape import Comment, Post, Profile, scrape_posts
-from selenium.webdriver import Chrome
+# Import packages
+import datetime
+import json
+import math
+import os
 
-webdriver = Chrome("/Users/joshuawong/Documents/GitHub/SMT_Project_Experience/app/scraper/instagram/chromedriver")
+import instaloader
+from dotenv import load_dotenv
 
-SESSION_ID = "51262035845%3Ao9lFbVdjhAmJts%3A26" #"51262035845%3AwbHOYA6dOplLo2%3A1"
+# Load environment variables
+load_dotenv()
 
-# listeningsquad
-# SMT483tls!
+# Initialise scraping cut-off date
+cutoff_days = int(os.getenv("CUTOFF_DAYS"))
+start_datetime = datetime.datetime.now()
+stop_datetime = start_datetime - datetime.timedelta(days=cutoff_days)
 
-headers = {
-    "user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Mobile Safari/537.36 Edg/87.0.664.57",
-    "cookie": f"sessionid={SESSION_ID};"
-}
+# Create an instance of Instaloader class
+loader = instaloader.Instaloader(compress_json=False, download_comments=True, quiet=True)
 
-profile = Profile("a_tuanzebe38")
-profile.scrape(headers=headers)
+# Enter your Instagram handle and password
+ACCOUNT = os.getenv("INSTAGRAM_ACCOUNT")
+PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
-posts = profile.get_posts(webdriver=webdriver, login_first=True, login_pause=30)
-scraped_posts, unscraped_posts = scrape_posts(posts, headers=headers, pause=10, silent=False)
+# Upon successful authentication, you should see a message saying Authentication OK.
+# Otherwise, check your login details
+try:
+    loader.login(ACCOUNT, PASSWORD)
+    print("Authentication OK")
+except:
+    print("Error during authentication")
 
-scraped_posts.to_json("./app/scraper/twitter/test.json")
-print("Profile scraped")
+# Get profiles to scrape
+profiles = json.load(open('./app/scraper/accounts_to_scrape/instagram.json'))
 
+# Iterate through profiles
+for p in profiles.values():
+    # Get profile object
+    profile = instaloader.Profile.from_username(loader.context, p)
 
+    # Get all posts from the profile in a generator
+    posts = profile.get_posts()
 
-# profile = Profile("a_tuanzebe38")
-# profile.scrape()
-# recent_posts = profile.get_recent_posts()
-
-# import pandas as pd
-
-# posts_data = [post.to_dict() for post in recent_posts]
-# posts_df = pd.DataFrame(posts_data)
-# posts_df.to_json("./app/scraper/instagram/test.json")
-
+    for post in posts:
+        # Download post if it is within 2 weeks
+        if post.date_local <= stop_datetime:
+            break
+        try:
+            os.chdir('./app/scraper/instagram/data')
+        except:
+            pass
+        loader.download_post(post, target=f"@{p}")
+    print(f'Posts for @{p} scraped.')
+print('Daily scraper completed.')
