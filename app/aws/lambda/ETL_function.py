@@ -59,7 +59,7 @@ def create_functions():
                 FunctionName=f"{platform}_scheduled_crawler",
                 Runtime=RUNTIME,
                 Role=role["Role"]["Arn"],
-                Handler="daily.lambda_handler",
+                Handler=f"{platform}.lambda_handler",
                 Code=dict(ZipFile=crawler_code),
                 Timeout=300,  # Maximum allowable timeout
             )
