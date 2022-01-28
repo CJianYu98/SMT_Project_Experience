@@ -1,46 +1,83 @@
+# Import packages
 import shutil
+from logging.handlers import SocketHandler
 
 import boto3
 
-iam_client = boto3.client("iam")
-lambda_client = boto3.client("lambda")
-s3 = boto3.client("s3")
-s3_resource = boto3.resource('s3')
-bucket_notification = s3_resource.BucketNotification('smt483tls-twitter-bucket')
+from ..constant import SOCIAL_MEDIA_PLATFORMS
 
-shutil.make_archive("./app/aws/lambda/test", "zip", root_dir="./app/aws/lambda", base_dir="test.py")
 
-with open("./app/aws/lambda/test.zip", "rb") as f:
-    zipped_code = f.read()
+def create_clients():
+    iam_client = boto3.client("iam")
+    lambda_client = boto3.client("lambda")
+    s3_resource = boto3.resource("s3")
+    role = iam_client.get_role(RoleName="LambdaTestingRole1")
+    return iam_client, lambda_client, s3_resource, role
 
-role = iam_client.get_role(RoleName="LambdaTestingRole1")
+iam_client, lambda_client, s3_resource, role = create_clients()
 
-response = lambda_client.create_function(
-    FunctionName="schedulerLambda1",
-    Runtime="python3.9",
-    Role=role["Role"]["Arn"],
-    Handler="test.lambda_handler",
-    Code=dict(ZipFile=zipped_code),
-    Timeout=300,  # Maximum allowable timeout
-)
+# Zip scraping scripts for all platforms
+for platform in SOCIAL_MEDIA_PLATFORMS:
+    try: 
+        shutil.make_archive(
+            base_name=f"./app/aws/lambda/{platform}", 
+            format="zip", 
+            root_dir=f"./app/scraper/{platform}", 
+            base_dir="testLambda.py" ##### CHANGE THIS TO "daily"
+        )
+    except Exception as e:
+        print(e)
+    break
 
-response1 = lambda_client.add_permission(
-    StatementId="S3InvokeHelloWorldLambda",
-    FunctionName="helloWorldLambda",
-    Action="lambda:InvokeFunction",
-    Principal="s3.amazonaws.com",
-    SourceArn="arn:aws:s3:::smt483tls-twitter-bucket",
-    SourceAccount='951045442503'
-)
+# Create lambda functions for all platforms
+for platform in SOCIAL_MEDIA_PLATFORMS:
+    try:
+        with open(f"./app/aws/lambda/{platform}.zip", "rb") as f:
+            scraper_code = f.read()
 
-response2 = bucket_notification.put(
-    Bucket="smt483tls-twitter-bucket",
-    NotificationConfiguration={
-        "LambdaFunctionConfigurations": [
-            {
-                "LambdaFunctionArn": "arn:aws:lambda:ap-southeast-1:951045442503:function:helloWorldLambda",
-                "Events": ["s3:ObjectCreated:*"],
+        response = lambda_client.create_function(
+            FunctionName=f"{platform}_scheduler",
+            Runtime="python3.9",
+            Role=role["Role"]["Arn"],
+            Handler="testLambda.lambda_handler",
+            Code=dict(ZipFile=scraper_code),
+            Timeout=300,  # Maximum allowable timeout
+        )
+    except Exception as e:
+        print(e)
+    break
+
+# Reinitialize clients
+iam_client, lambda_client, s3_resource, role = create_clients()
+
+# Add permission (trigger) and initiate bucket notification for all platforms
+for platform in SOCIAL_MEDIA_PLATFORMS:
+    try:
+        function_name = f"{platform}_scheduler"
+        response1 = lambda_client.add_permission(
+            StatementId=f"S3_invoke_{function_name}",
+            FunctionName=function_name,
+            Action="lambda:InvokeFunction",
+            Principal="s3.amazonaws.com",
+            SourceArn=f"arn:aws:s3:::smt483tls-{platform}-bucket",
+            SourceAccount='951045442503'
+        )
+
+        bucket_notification = s3_resource.BucketNotification(f"smt483tls-{platform}-bucket")
+
+        response2 = bucket_notification.put(
+            Bucket=f"smt483tls-{platform}-bucket",
+            NotificationConfiguration={
+                "LambdaFunctionConfigurations": [
+                    {
+                        "LambdaFunctionArn": f"arn:aws:lambda:ap-southeast-1:951045442503:function:{function_name}",
+                        "Events": ["s3:ObjectCreated:*"],
+                    }
+                ]
             }
-        ]
-    }
-)
+        )
+    except Exception as e:
+        print(e)
+    break
+    
+
