@@ -33,6 +33,12 @@ def create_lambda_iam_role() -> dict:
             RoleName="LambdaTestingRole1",
             PolicyArn="arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
         )
+
+        response2 = iam.attach_role_policy(
+            RoleName="LambdaTestingRole1",
+            PolicyArn="arn:aws:iam::aws:policy/service-role/AmazonS3FullAccess",
+        )
+        
     except Exception as e:
         pass
 
