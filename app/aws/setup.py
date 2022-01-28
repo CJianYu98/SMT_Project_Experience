@@ -1,3 +1,3 @@
-from .s3 import s3_setup, test
+from .s3 import s3_setup
 
 s3_setup()
