@@ -6,7 +6,10 @@ from dotenv import load_dotenv
 iam = boto3.client("iam")
 
 
-def create_lambda_iam_role() -> dict:
+def create_lambda_iam_role():
+    """
+    To create IAM role for AWS Lambda function
+    """
     policy = {
         "Version": "2012-10-17",
         "Statement": [
@@ -21,20 +24,25 @@ def create_lambda_iam_role() -> dict:
                 "Principal": {"Service": "events.amazonaws.com"},
                 "Action": "sts:AssumeRole",
             },
+            {
+                "Effect": "Allow",
+                "Principal": {"Service": "s3.amazonaws.com"},
+                "Action": "sts:AssumeRole",
+            }
         ],
     }
 
     try:
-        response = iam.create_role(
+        iam.create_role(
             RoleName="LambdaTestingRole1", AssumeRolePolicyDocument=json.dumps(policy)
         )
 
-        response1 = iam.attach_role_policy(
+        iam.attach_role_policy(
             RoleName="LambdaTestingRole1",
             PolicyArn="arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
         )
 
-        response2 = iam.attach_role_policy(
+        iam.attach_role_policy(
             RoleName="LambdaTestingRole1",
             PolicyArn="arn:aws:iam::aws:policy/service-role/AmazonS3FullAccess",
         )
@@ -42,4 +50,4 @@ def create_lambda_iam_role() -> dict:
     except Exception as e:
         pass
 
-    return {"code": 200}
+    print("IAM role created successfully.")
