@@ -1,7 +1,8 @@
 import json
 
 import boto3
-from dotenv import load_dotenv
+
+from ..constant import LAMBDA_IAM_ROLE_NAME
 
 iam = boto3.client("iam")
 
@@ -34,20 +35,20 @@ def create_lambda_iam_role():
 
     try:
         iam.create_role(
-            RoleName="LambdaTestingRole1", AssumeRolePolicyDocument=json.dumps(policy)
+            RoleName=LAMBDA_IAM_ROLE_NAME, AssumeRolePolicyDocument=json.dumps(policy)
         )
 
         iam.attach_role_policy(
-            RoleName="LambdaTestingRole1",
+            RoleName=LAMBDA_IAM_ROLE_NAME,
             PolicyArn="arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
         )
 
         iam.attach_role_policy(
-            RoleName="LambdaTestingRole1",
+            RoleName=LAMBDA_IAM_ROLE_NAME,
             PolicyArn="arn:aws:iam::aws:policy/service-role/AmazonS3FullAccess",
         )
         
     except Exception as e:
         pass
 
-    print("IAM role created successfully.")
+    print(f"IAM role {LAMBDA_IAM_ROLE_NAME} created successfully.")
