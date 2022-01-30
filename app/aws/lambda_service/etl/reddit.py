@@ -1,18 +1,60 @@
 import json
-import pprint
 from decimal import Decimal
-from logging import exception
 
 import boto3
 
-from ...constant import REDDIT, REDDIT_COMMENT
+REDDIT = [
+    'author_fullname', 
+    'title', 
+    'link_flair_text', 
+    'downs', 
+    'ups', 
+    'upvote_ratio', 
+    'score', 
+    'is_original_content', 
+    'created', 
+    'top_awarded_type', 
+    'id', 
+    'permalink', 
+    'num_comments', 
+    'media_embed', 
+    'thumbnail', 
+    'view_count', 
+    'over_18', 
+    'preview', 
+    'author', 
+    'all_awardings', 
+    'discussion_type', 
+    'created_utc', 
+    'body_html',
+    'comments'
+]
+
+REDDIT_COMMENT = [
+    'comment_type',
+    'total_awards_received',
+    'likes',
+    'author',
+    'created_utc',
+    '_submission',
+    'score',
+    'body',
+    'downs',
+    'top_awarded_type',
+    'permalink',
+    'ups',
+    'score_hidden',
+    'depth',
+    'parent_id',
+    'id'
+]
 
 # Define dynamodb resource
 dynamodb = boto3.resource('dynamodb')
 
 def put_dynamodb_row(data: dict, table_name: str) -> None:
     """
-    Writes single row data into dynamodb
+    Writes single row data into dynamodb.
 
     Args:
         data (dict): The input dictionary generated after extracting row data from json
@@ -25,12 +67,17 @@ def put_dynamodb_row(data: dict, table_name: str) -> None:
     with table.batch_writer() as batch:
         batch.put_item(Item=data)
 
-# f = open('./app/aws/lambda/etl/2022-01-28.json')
-# data = json.load(f)
-
-
 def lambda_handler(event, context):
+    """
+    Takes in aws event when new raw json file is added to reddit S3 bucket. 
+    Goes through every post in the json file and processes it into DynamoDB.
+    Variables for each post is first extracted into post_dict.
+    Comments for each post are handled seperately and added into comment_dict.
 
+    Args:
+        event ([type]): AWS Lambda event arg
+        context ([type]): AWS Lambda context arg
+    """
     filename = event['Records'][0]['s3']['object']['key']
     s3_resource = boto3.resource("s3", region_name="ap-southeast-1")
     s3_object = s3_resource.Object("smt483tls-reddit-bucket", filename)
@@ -39,26 +86,22 @@ def lambda_handler(event, context):
 
     # Iterate through each post in raw json and begin extracting
     for post_id in data:
-        post_dict = {}
+        post_dict = {
+            variable: data[post_id].get(variable)
+            for variable in REDDIT
+            if variable != 'comments'
+        }
 
-        #Iterate through every variable in a post
-        for variable in REDDIT:
-            # If variable is not 'comments', add it to post_dict
-            if variable != 'comments':
-                post_dict[variable] = data[post_id].get(variable)
-            # If variable is 'comments'
-            else:
-                comments = data[post_id][variable]
-                if comments:
-                    # Loop through every comment id and put to dynamodb
-                    for cid in comments:
-                        comment_dict = {
-                            comment_variable: comments[cid].get(comment_variable)
-                            for comment_variable in REDDIT_COMMENT
-                        }
-                        # Change dictionary key name to be consistent with dynamodb table
-                        comment_dict['post_id'] = comment_dict.pop('_submission')
-                        put_dynamodb_row(comment_dict, 'reddit-comment-table')
+        comments = data[post_id]['comments']
+        if comments:
+            for cid in comments:
+                comment_dict = {
+                    comment_variable: comments[cid].get(comment_variable)
+                    for comment_variable in REDDIT_COMMENT
+                }
+                # Change dictionary key name to be consistent with dynamodb table
+                comment_dict['post_id'] = comment_dict.pop('_submission')
+                put_dynamodb_row(comment_dict, 'reddit-comment-table')
 
         # Put post to dynamodb
         put_dynamodb_row(post_dict, 'reddit-post-table')
