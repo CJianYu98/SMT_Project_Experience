@@ -1,217 +1,65 @@
 import json
 import pprint
+from decimal import Decimal
+from logging import exception
 
-f = open('./2022-01-28.json')
-data = json.load(f)
+import boto3
 
-# Iterate through data and begin extracting
-for id in data:
-    dict = {}
-    try:
-        dict['author_fullname'] = data[id]['author_fullname']
-    except:
-        dict['author_fullname'] = None
+from ...constant import REDDIT, REDDIT_COMMENT
 
-    try:
-        dict['title'] = data[id]['title']
-    except:
-        dict['title'] = None
-    
-    try:
-        dict['link_flair_text'] = data[id]['link_flair_text']
-    except:
-        dict['link_flair_text'] = None
+# Define dynamodb resource
+dynamodb = boto3.resource('dynamodb')
 
-    try:
-        dict['downs'] = data[id]['downs']
-    except:
-        dict['downs'] = None
+def put_dynamodb_row(data: dict, table_name: str) -> None:
+    """
+    Writes single row data into dynamodb
 
-    try:
-        dict['ups'] = data[id]['ups']
-    except:
-        dict['ups'] = None
+    Args:
+        data (dict): The input dictionary generated after extracting row data from json
+        table_name (str): Name of the dynamodb table
+    """
 
-    try:
-        dict['upvote_ratio'] = data[id]['upvote_ratio']
-    except:
-        dict['upvote_ratio'] = None
+    # Parse floats (not compatible with dynamodb) into decimal
+    data = json.loads(json.dumps(data), parse_float=Decimal)
+    table = dynamodb.Table(table_name)
+    with table.batch_writer() as batch:
+        batch.put_item(Item=data)
 
-    try:
-        dict['score'] = data[id]['score']
-    except:
-        dict['score'] = None
+# f = open('./app/aws/lambda/etl/2022-01-28.json')
+# data = json.load(f)
 
-    try:
-        dict['is_original_content'] = data[id]['is_original_content']
-    except:
-        dict['is_original_content'] = None
 
-    try:
-        dict['created'] = data[id]['created']
-    except:
-        dict['created'] = None
+def lambda_handler(event, context):
 
-    try:
-        dict['top_awarded_type'] = data[id]['top_awarded_type']
-    except:
-        dict['top_awarded_type'] = None
+    filename = event['Records'][0]['s3']['object']['key']
+    s3_resource = boto3.resource("s3", region_name="ap-southeast-1")
+    s3_object = s3_resource.Object("smt483tls-reddit-bucket", filename)
+    x = s3_object.get()['Body'].read().decode('utf-8')
+    data = json.loads(x)
 
-    try:
-        dict['id'] = data[id]['id']
-    except:
-        dict['id'] = None
+    # Iterate through each post in raw json and begin extracting
+    for post_id in data:
+        post_dict = {}
 
-    try:
-        dict['permalink'] = data[id]['permalink']
-    except:
-        dict['permalink'] = None
+        #Iterate through every variable in a post
+        for variable in REDDIT:
+            # If variable is not 'comments', add it to post_dict
+            if variable != 'comments':
+                post_dict[variable] = data[post_id].get(variable)
+            # If variable is 'comments'
+            else:
+                comments = data[post_id][variable]
+                if comments:
+                    # Loop through every comment id and put to dynamodb
+                    for cid in comments:
+                        comment_dict = {
+                            comment_variable: comments[cid].get(comment_variable)
+                            for comment_variable in REDDIT_COMMENT
+                        }
+                        # Change dictionary key name to be consistent with dynamodb table
+                        comment_dict['post_id'] = comment_dict.pop('_submission')
+                        put_dynamodb_row(comment_dict, 'reddit-comment-table')
 
-    try:
-        dict['num_comments'] = data[id]['num_comments']
-    except:
-        dict['num_comments'] = None
-
-    try:
-        dict['media_embed'] = data[id]['media_embed']
-    except:
-        dict['media_embed'] = None
-
-    try:
-        dict['thumbnail'] = data[id]['thumbnail']
-    except:
-        dict['thumbnail'] = None
-
-    try:
-        dict['view_count'] = data[id]['view_count']
-    except:
-        dict['view_count'] = None
-
-    try:
-        dict['over_18'] = data[id]['over_18']
-    except:
-        dict['over_18'] = None
-
-    try:
-        dict['preview'] = data[id]['preview']
-    except:
-        dict['preview'] = None
-
-    try:
-        dict['author'] = data[id]['author']
-    except:
-        dict['author'] = None
-
-    try:
-        dict['all_awardings'] = data[id]['all_awardings']
-    except:
-        dict['all_awardings'] = None
-
-    try:
-        dict['discussion_type'] = data[id]['discussion_type']
-    except:
-        dict['discussion_type'] = None
-
-    try:
-        dict['created_utc'] = data[id]['created_utc']
-    except:
-        dict['created_utc'] = None
-
-    try:
-        dict['body_html'] = data[id]['body_html']
-    except:
-        dict['body_html'] = None
-
-    # Extracting Comments
-    comments = data[id]['comments']
-    if comments:
-        dict['comments'] = []
-
-        for cid in comments:
-            comment_dict = {}
-
-            try:
-                comment_dict['comment_type'] = comments[cid]['comment_type']
-            except:
-                comment_dict['comment_type'] = None
-
-            try:
-                comment_dict['total_awards_received'] = comments[cid]['total_awards_received']
-            except:
-                comment_dict['total_awards_received'] = None
-
-            try:
-                comment_dict['likes'] = comments[cid]['likes']
-            except:
-                comment_dict['likes'] = None
-
-            try:
-                comment_dict['author'] = comments[cid]['author']
-            except:
-                comment_dict['author'] = None
-
-            try:
-                comment_dict['created_utc'] = comments[cid]['created_utc']
-            except:
-                comment_dict['created_utc'] = None
-
-            try:
-                comment_dict['_submission'] = comments[cid]['_submission']
-            except:
-                comment_dict['_submission'] = None
-
-            try:
-                comment_dict['score'] = comments[cid]['score']
-            except:
-                comment_dict['score'] = None
-
-            try:
-                comment_dict['body'] = comments[cid]['body']
-            except:
-                comment_dict['body'] = None
-
-            try:
-                comment_dict['downs'] = comments[cid]['downs']
-            except:
-                comment_dict['downs'] = None
-
-            try:
-                comment_dict['top_awarded_type'] = comments[cid]['top_awarded_type']
-            except:
-                comment_dict['top_awarded_type'] = None
-
-            try:
-                comment_dict['permalink'] = comments[cid]['permalink']
-            except:
-                comment_dict['permalink'] = None
-
-            try:
-                comment_dict['ups'] = comments[cid]['ups']
-            except:
-                comment_dict['ups'] = None
-
-            try:
-                comment_dict['score_hidden'] = comments[cid]['score_hidden']
-            except:
-                comment_dict['score_hidden'] = None
-
-            try:
-                comment_dict['depth'] = comments[cid]['depth']
-            except:
-                comment_dict['depth'] = None
-
-            try:
-                comment_dict['parent_id'] = comments[cid]['parent_id']
-            except:
-                comment_dict['parent_id'] = None
-
-            try:
-                comment_dict['id'] = comments[cid]['id']
-            except:
-                comment_dict['id'] = None
-
-            dict['comments'].append(comment_dict)
-    pprint.pprint(dict)
-
-    # Add code to add data to table here
-    break
+        # Put post to dynamodb
+        put_dynamodb_row(post_dict, 'reddit-post-table')
+        print(f'post {post_id} done')
