@@ -33,7 +33,8 @@ def zip_etl_scripts():
         except Exception as e:
             print(e)
 
-        print(f"Daily scraper script for {platform} is zipped successfully.")
+        print(f">>> Daily scraper script for {platform} is zipped successfully.")
+        break
 
 
 def create_functions():
@@ -50,13 +51,12 @@ def create_functions():
 
     for platform in SOCIAL_MEDIA_PLATFORMS:
         try:
-
             # Read zipped script into binary format
             with open(f"./app/aws/lambda/{platform}.zip", "rb") as f:
                 crawler_code = f.read()
 
             lambda_client.create_function(
-                FunctionName=f"{platform}_scheduled_crawler",
+                FunctionName=f"{platform}_etl",
                 Runtime=RUNTIME,
                 Role=role["Role"]["Arn"],
                 Handler=f"{platform}.lambda_handler",
@@ -66,20 +66,22 @@ def create_functions():
         except Exception as e:
             print(e)
 
-        print(f"AWS Lambda function was successfully created for {platform}.")
+        print(f">>> AWS Lambda function was successfully created for {platform}.")
+        break
 
 
 def create_s3_trigger():
     """
     Creates the S3 trigger for each ETL AWS Lambda function. It first creates an AWS Lambda permission then creates a notification its respective S3 bucket to complete the trigger creation.
     """
+
     lambda_client = boto3.client("lambda")
     s3_resource = boto3.resource("s3")
-
+    
     for platform in SOCIAL_MEDIA_PLATFORMS:
         try:
             # Adds S3 trigger permission
-            function_name = f"{platform}_scheduled_crawler"
+            function_name = f"{platform}_etl"
             lambda_client.add_permission(
                 StatementId=f"S3_invoke_{function_name}",
                 FunctionName=function_name,
@@ -105,4 +107,7 @@ def create_s3_trigger():
         except Exception as e:
             print(e)
 
-        print(f"S3 trigger was successfully created for {platform}.")
+        print(f">>> S3 trigger was successfully created for {platform}.")
+        break
+
+create_etl_lambda_functions()
