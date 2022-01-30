@@ -1,4 +1,4 @@
-# app
+# vue
 
 ## Build Setup
 
