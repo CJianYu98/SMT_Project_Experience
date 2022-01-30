@@ -4,7 +4,6 @@ import os
 import boto3
 from dotenv import load_dotenv
 
-from ..exception import AwsBucketCreationError
 from .constant import SOCIAL_MEDIA_PLATFORMS
 
 # Load environment variables
@@ -22,20 +21,14 @@ def s3_setup():
     try:
         for platform in SOCIAL_MEDIA_PLATFORMS:
             bucket_name = f"smt483tls-{platform}-bucket"
-            bucket_response = client.create_bucket(
+            client.create_bucket(
                 Bucket=bucket_name,
                 CreateBucketConfiguration={"LocationConstraint": os.getenv("AWS_REGION")},
             )
 
-            # if bucket_response['HTTPStatusCode'] > 299:
-            #     raise AwsBucketCreationError(BUCKET_NAME)
-
             policy = create_s3_policy_object(bucket_name=bucket_name)
             bucket_policy = json.dumps(policy)
-            policy_response = client.put_bucket_policy(Bucket=bucket_name, Policy=bucket_policy)
-
-            # if policy_response['HTTPStatusCode'] > 299:
-            #     raise AwsBucketCreationError(BUCKET_NAME)
+            client.put_bucket_policy(Bucket=bucket_name, Policy=bucket_policy)
     except Exception as e:
         print(e)
 

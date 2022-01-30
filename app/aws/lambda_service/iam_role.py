@@ -54,6 +54,7 @@ def create_iam_role_permission_policy() -> str:
         print(f">>> IAM role policy {permission_policy_name} created successfully.")
     except botocore.exceptions.ClientError as e:
         if e.response["Error"]["Code"] == "EntityAlreadyExists":
+            print(e.response)
             print("Policy already exists/created, no further actions required.")
         else:
             print(e)
@@ -97,7 +98,3 @@ def create_lambda_iam_role(permission_policy_name: str):
         print(f">>> IAM role {LAMBDA_IAM_ROLE_NAME} created successfully.")
     except Exception as e:
         print(e)
-
-
-permission_policy_name = create_iam_role_permission_policy()
-create_lambda_iam_role(permission_policy_name)
