@@ -1,6 +1,8 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
+  <v-app>
+    <NavBar/>
+    <SearchFilters/>
+    <!-- <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
@@ -58,34 +60,41 @@
     </v-navigation-drawer>
     <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
 <script>
+import NavBar from '@/components/NavBar'
+import SearchFilters from '@/components/SearchFilters'
+
 export default {
   name: 'DefaultLayout',
   data() {
     return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/',
+      components: {
+            NavBar,
+            SearchFilters,
         },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
-        },
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js',
+      // clipped: false,
+      // drawer: false,
+      // fixed: false,
+      // items: [
+      //   {
+      //     icon: 'mdi-apps',
+      //     title: 'Welcome',
+      //     to: '/',
+      //   },
+      //   {
+      //     icon: 'mdi-chart-bubble',
+      //     title: 'Inspire',
+      //     to: '/inspire',
+      //   },
+      // ],
+      // miniVariant: false,
+      // right: true,
+      // rightDrawer: false,
+      // title: 'Vuetify.js',
     }
   },
 }
