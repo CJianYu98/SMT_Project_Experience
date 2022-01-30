@@ -1,5 +1,6 @@
 import os
 import shutil
+import time
 
 import boto3
 from dotenv import load_dotenv
@@ -13,6 +14,7 @@ load_dotenv()
 def create_etl_lambda_functions():
     zip_etl_scripts()
     create_functions()
+    time.sleep(2)
     create_s3_trigger()
 
 
@@ -29,11 +31,9 @@ def zip_etl_scripts():
                 root_dir="./app/aws/lambda/etl",
                 base_dir=f"{platform}.py",
             )
-
+            print(f">>> Daily ETL script for {platform} is zipped successfully.")
         except Exception as e:
             print(e)
-
-        print(f">>> Daily scraper script for {platform} is zipped successfully.")
         break
 
 
@@ -52,7 +52,7 @@ def create_functions():
     for platform in SOCIAL_MEDIA_PLATFORMS:
         try:
             # Read zipped script into binary format
-            with open(f"./app/aws/lambda/{platform}.zip", "rb") as f:
+            with open(f"./app/aws/lambda/etl/{platform}.zip", "rb") as f:
                 crawler_code = f.read()
 
             lambda_client.create_function(
@@ -63,10 +63,11 @@ def create_functions():
                 Code=dict(ZipFile=crawler_code),
                 Timeout=300,  # Maximum allowable timeout
             )
+
+            print(f">>> AWS Lambda function was successfully created for {platform}.")
         except Exception as e:
             print(e)
 
-        print(f">>> AWS Lambda function was successfully created for {platform}.")
         break
 
 
@@ -74,10 +75,9 @@ def create_s3_trigger():
     """
     Creates the S3 trigger for each ETL AWS Lambda function. It first creates an AWS Lambda permission then creates a notification its respective S3 bucket to complete the trigger creation.
     """
-
     lambda_client = boto3.client("lambda")
     s3_resource = boto3.resource("s3")
-    
+
     for platform in SOCIAL_MEDIA_PLATFORMS:
         try:
             # Adds S3 trigger permission
@@ -104,10 +104,10 @@ def create_s3_trigger():
                     ]
                 },
             )
+            print(f">>> S3 trigger was successfully created for {platform}.")
         except Exception as e:
             print(e)
-
-        print(f">>> S3 trigger was successfully created for {platform}.")
         break
+
 
 create_etl_lambda_functions()
