@@ -98,3 +98,6 @@ def create_lambda_iam_role(permission_policy_name: str):
         print(f">>> IAM role {LAMBDA_IAM_ROLE_NAME} created successfully.")
     except Exception as e:
         print(e)
+
+permission_policy_name = create_iam_role_permission_policy()
+create_lambda_iam_role(permission_policy_name)
