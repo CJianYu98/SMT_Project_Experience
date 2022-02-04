@@ -1,5 +1,6 @@
 <template>
-  <v-app>
+  <!-- <v-app> -->
+  <div class="mt-2 mb-n3">
     <v-container fluid class="px-8 mt-n1">
       <v-row no-gutters align="stretch">
         <v-col
@@ -65,25 +66,36 @@
           class="d-flex"
           cols="2"
         >
+        <div>
+          <div class="d-block">
+            <v-select
+              d-block
+              v-model="dateSelected"
+              :items="dateFilter"
+              item-text="date"
+              label="Select a date period"
+              outlined
+              dense
+            >
+              <template slot="selection" slot-scope="data">
+                <span v-if="data.item.date === 'Custom'" >{{ data.item.period }}</span>
+                <span v-else >{{ data.item.date }}</span>
+              </template>
+            </v-select>
+          </div>
 
-          <v-select
-            v-model="dateSelected"
-            :items="dateFilter"
-            item-text="date"
-            label="Select a date period"
-            outlined
-            dense
-          >
-            <template slot="selection" slot-scope="data">
-              <span v-if="data.item.date === 'Custom'" >{{ data.item.period }}</span>
-              <span v-else >{{ data.item.date }}</span>
-            </template>
-
-          </v-select>
-          <!-- <v-date-picker v-model="dateRange" no-title range scrollable v-if="dateSelected == 'Custom'">
-            <v-spacer></v-spacer>
-          </v-date-picker> -->
-
+          <div class="d-block">
+            <v-date-picker 
+              d-block 
+              v-model="dateRange" 
+              no-title 
+              range 
+              scrollable 
+              v-if="dateSelected == 'Custom'">
+              <v-spacer></v-spacer>
+            </v-date-picker>
+          </div>
+        </div>
         </v-col>
         <!-- <v-spacer></v-spacer>
         <v-col> -->
@@ -242,7 +254,8 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-app>
+  <!-- </v-app> -->
+  </div>
 </template>
 
 <script>
@@ -261,9 +274,12 @@
       dateSelected: "All",
       dateFilter: [{date: 'All'}, {date: 'Yesterday'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom', period: ['2019-09-10', '2019-09-20'].join()}],
       // this.dateRange.join()
+      // this.customDateRangeSelected
       sentimentsFilter: ['Negative', 'Neutral', 'Positive'],
+      // sentimentsChange: false,
       sentimentsSelected: ['Negative', 'Neutral', 'Positive'],
       platformsFilter: ['Facebook', 'Instagram', 'Reddit', 'Twitter', 'YouTube'],
+      // platformsChange: false,
       platformsSelected: ['Facebook', 'Instagram', 'Reddit', 'Twitter', 'YouTube'],
     }),
 
@@ -272,7 +288,7 @@
         return this.platformsSelected.length === this.platformsFilter.length
       },
       somePlatformsSelected () {
-        return this.platformsSelected.length > 0 && !this.allPlatformsSelected
+        return this.platformsSelected.length >= 0 && !this.allPlatformsSelected
       },
       platformIcon () {
         if (this.allPlatformsSelected) return 'mdi-close-box'
@@ -283,14 +299,21 @@
         return this.sentimentsSelected.length === this.sentimentsFilter.length
       },
       someSentimentsSelected () {
-        return this.sentimentsSelected.length > 0 && !this.allSentimentsSelected
+        return this.sentimentsSelected.length >= 0 && !this.allSentimentsSelected
       },
       sentimentIcon () {
         if (this.allSentimentsSelected) return 'mdi-close-box'
         if (this.someSentimentsSelected) return 'mdi-minus-box'
         return 'mdi-checkbox-blank-outline'
       },
+      customDateRangeSelected () {
+        return this.dateRange.join()
+      },
     },
+
+    // created() {
+    //   this.customDateRangeSelected;
+    // },
 
     watch: {
       model (val) {
@@ -319,10 +342,22 @@
     methods: {
       toggle () {
         this.$nextTick(() => {
+          // if all platforms are selected, we see the close icon
+          // make the selected platforms an empty list, see the minus icon
+          // if we close icon is selected, then minus all icon is shown
+          // this.nextTick -> when data is changed and dom has to be updated
+
           if (this.allPlatformsSelected) {
             this.platformsSelected = []
-          } else {
+          } 
+          else if (this.somePlatformsSelected) {
             this.platformsSelected = this.platformsFilter.slice()
+          }
+
+          if (this.allSentimentsSelected) {
+            this.sentimentsSelected = []
+          } else if (this.someSentimentsSelected) {
+            this.sentimentsSelected = this.sentimentsFilter.slice()
           }
         })
       }

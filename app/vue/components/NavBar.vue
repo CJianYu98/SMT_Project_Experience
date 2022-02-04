@@ -1,4 +1,5 @@
 <template>
+  <div>
   <!-- <v-app> -->
     <!-- hide when screens are larger than md -->
     <!-- <v-navigation-drawer v-model="sidebar" app d-sm-none>
@@ -18,7 +19,7 @@
       </v-list>
     </v-navigation-drawer> -->
 
-    <v-toolbar app class="px-4" flat>
+    <v-toolbar class="px-4" flat>
       <!-- hide icon on screens larger than md, show on screens <= md -->
       <span class="d-md-none"> 
         <v-app-bar-nav-icon @click="sidebar = !sidebar">
@@ -47,6 +48,7 @@
       </v-toolbar-items>
     </v-toolbar>
   <!-- </v-app> -->
+  </div>
 </template>
 
 <script>
@@ -60,9 +62,9 @@ export default {
       appTitle: 'SocialListeners',
       sidebar: false,
       menuItems: [
-          { title: 'Dashboard', path: '/Dashboard'},
-          { title: 'Social Media Feed', path: '/SocialMediaFeed'},
-     ]
+          { title: 'Dashboard', path: '/dashboard'},
+          { title: 'Social Media Feed', path: '/social-media-feed'},
+    ]
     }
   },
 };
