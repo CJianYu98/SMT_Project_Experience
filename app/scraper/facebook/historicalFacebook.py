@@ -284,8 +284,8 @@ def save_json(filename, new_dict):
         print(f"Error saving {filename}.")
 
 #export file in json
-save_json("dailyFacebook1.json",gdict)
-save_json("dailyFacebook2.json",pdict)
+save_json("historicalFacebook1.json",gdict)
+save_json("historicalFacebook2.json",pdict)
 
 end = time.time()
 
