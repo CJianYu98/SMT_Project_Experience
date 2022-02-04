@@ -270,8 +270,8 @@ for c in channels:
     vdict[channelName] = parsedV
 
 #export file in json
-save_json("dailyYoutube1.json",cdict)
-save_json("dailyYoutube2.json",vdict)
+save_json("historicalYoutube1.json",cdict)
+save_json("historicalYoutube2.json",vdict)
 
 end = time.time()
 
