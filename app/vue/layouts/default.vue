@@ -2,6 +2,11 @@
   <v-app>
     <NavBar/>
     <SearchFilters/>
+
+    <v-main :style="{background: $vuetify.theme.themes[theme].background}">
+      <Nuxt/>
+    </v-main>
+
     <!-- <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -97,5 +102,10 @@ export default {
       // title: 'Vuetify.js',
     }
   },
+  computed:{
+    theme(){
+      return (this.$vuetify.theme.dark) ? 'dark' : 'light'
+    }
+  }
 }
 </script>
