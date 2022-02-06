@@ -36,7 +36,7 @@ current_month = datetime.datetime.now()
 for sub in reddit.subreddit("Singapore").new(limit=math.inf):
     counter += 1
 
-    # Stop loading new posts older than 2 weeks
+    # Stop loading new posts older than stop_datetime
     # Note that earlier dates are considered smaller than later dates
     # i.e. 2022-01-14 < 2022-01-15
     submission_created_datetime = datetime.datetime.fromtimestamp(sub.created_utc) 
