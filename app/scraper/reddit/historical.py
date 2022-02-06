@@ -2,9 +2,11 @@
 import datetime
 import math
 import os
+import time
 
 import praw
 from dotenv import load_dotenv
+import telegram_send
 
 from ...utils import file_utils
 
@@ -25,8 +27,12 @@ except:
 
 # Initialise scraping cut-off date
 # Integer 1514736000 represents epoch timestamp for 2018-01-01 00:00:00 (+8 GMT)
-stop_datetime = datetime.datetime.fromtimestamp(1514736000) 
+start_datetime = datetime.datetime(2022, 2, 6)
+# stop_datetime = datetime.datetime.fromtimestamp(1630454400)  # 1630454400 is 2021-09-01
+stop_datetime = datetime.datetime(2021, 9, 1)
+delta = datetime.timedelta(days=1)
 
+# while stop_datetime < start_datetime:
 # Create storage dictionaries & initialise post counter for tracking
 submissions_dict = {}
 counter = 0
@@ -39,9 +45,19 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
     # Stop loading new posts older than stop_datetime
     # Note that earlier dates are considered smaller than later dates
     # i.e. 2022-01-14 < 2022-01-15
-    submission_created_datetime = datetime.datetime.fromtimestamp(sub.created_utc) 
+    submission_created_datetime = datetime.datetime.fromtimestamp(sub.created_utc)
+    print(submission_created_datetime)
     if stop_datetime > submission_created_datetime:
         break
+    elif submission_created_datetime > datetime.datetime(2021, 1, 12):
+        continue
+
+    if submission_created_datetime < start_datetime:
+        file_utils.save_json(f"./app/scraper/reddit/data/{start_datetime.strftime('%Y-%m-%d')}.json", submissions_dict)
+        telegram_send.send(messages=[f"Reddit historical scraping for {start_datetime.strftime('%Y-%m-%d')} completed."])
+        start_datetime -= delta
+        submissions_dict = {}
+        counter = 0
 
     # Save the serialized version of a given submission in dict format
     submission = vars(sub)
@@ -57,12 +73,13 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
 
     # Store current submission record
     submissions_dict[submission["id"]] = submission
-    print(f"Post {counter} saved [{len(sub.comments.list())} comments]")
+    print(f"Post {counter} saved [{len(sub.comments.list())} comments], {submission_created_datetime}")
 
     # Save file every 50 posts
-    if counter % 50 == 0:
-        file_utils.save_json("./app/scraper/reddit/historical.json", submissions_dict)
+    # if counter % 50 == 0:
+    #     file_utils.save_json(f"./app/scraper/reddit/data/{start_datetime.strftime('%Y-%m-%d')}.json", submissions_dict)
 
 # Final save
-file_utils.save_json("./app/scraper/reddit/historical.json", submissions_dict)
-print("Historical scraping completed.")
+# file_utils.save_json(f"./app/scraper/reddit/data/{start_datetime.strftime('%Y-%m-%d')}.json", submissions_dict)
+
+
