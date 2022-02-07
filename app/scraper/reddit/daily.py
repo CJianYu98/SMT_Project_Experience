@@ -2,14 +2,22 @@
 import datetime
 import math
 import os
+import json
 
 import praw
 from dotenv import load_dotenv
-
-from ...utils import file_utils
+import telegram_send
 
 # Load environment variables
-load_dotenv()
+load_dotenv('/home/ubuntu/SMT_Project_Experience/.env')
+
+
+def save_json(filename, new_dict):
+    try:
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(new_dict, f, ensure_ascii=False, indent=4, default=str)
+    except Exception as e:
+        telegram_send.send(messages=[f"Error saving {filename}."])
 
 # Access reddit API PRAW
 try:
@@ -32,9 +40,10 @@ stop_datetime = start_datetime - datetime.timedelta(days=cutoff_days)
 submissions_dict = {}
 counter = 0
 
+telegram_send.send(messages=[f"Reddit daily scraping started at {start_datetime}."])
+
 # Iterate through list of newest submissions in selected Subreddit
 for sub in reddit.subreddit("Singapore").new(limit=math.inf):
-    counter += 1
 
     # Stop loading new posts older than 2 weeks
     # Note that earlier dates are considered smaller than later dates
@@ -42,6 +51,8 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
     submission_created_datetime = datetime.datetime.fromtimestamp(sub.created_utc)
     if stop_datetime > submission_created_datetime:
         break
+
+    counter += 1
 
     # Save the serialized version of a given submission in dict format
     submission = vars(sub)
@@ -57,8 +68,7 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
 
     # Store current submission record
     submissions_dict[submission["id"]] = submission
-    print(f"Post {counter} saved [{len(sub.comments.list())} comments]")
 
 # Save file
-file_utils.save_json(f"./app/scraper/reddit/{start_datetime.date()}.json", submissions_dict)
-print("Daily scraping completed.")
+save_json(f"/home/ubuntu/SMT_Project_Experience/app/scraper/reddit/daily_data/{start_datetime.date()}.json", submissions_dict)
+telegram_send.send(messages=[f"Reddit daily scraping for {start_datetime.strftime('%Y-%m-%d')} completed. {counter} posts scraped."])
