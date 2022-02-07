@@ -9,6 +9,7 @@ import praw
 import telegram_send
 from dotenv import load_dotenv
 
+
 # Utility functions for scraper
 def save_json(filename: str, new_dict: dict):
     """
@@ -22,7 +23,9 @@ def save_json(filename: str, new_dict: dict):
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(new_dict, f, ensure_ascii=False, indent=4, default=str)
     except Exception as e:
+
         telegram_send.send(messages=[f"Error saving {filename} to local folder."])
+
 
 def upload_files(file_name: str, bucket: str, object_name=None, args=None):
     """
@@ -50,7 +53,7 @@ load_dotenv("/home/ubuntu/SMT_Project_Experience/.env")
 S3_BUCKET_NAME = "smt483tls-reddit-daily-bucket"
 
 # Intialize S3 client
-s3_client = boto3.client('s3')
+s3_client = boto3.client("s3")
 
 # Access reddit API PRAW
 try:
