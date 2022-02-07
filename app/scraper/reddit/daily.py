@@ -1,15 +1,15 @@
 # Import packages
 import datetime
+import json
 import math
 import os
-import json
 
 import praw
-from dotenv import load_dotenv
 import telegram_send
+from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv('/home/ubuntu/SMT_Project_Experience/.env')
+load_dotenv("/home/ubuntu/SMT_Project_Experience/.env")
 
 
 def save_json(filename, new_dict):
@@ -18,6 +18,7 @@ def save_json(filename, new_dict):
             json.dump(new_dict, f, ensure_ascii=False, indent=4, default=str)
     except Exception as e:
         telegram_send.send(messages=[f"Error saving {filename}."])
+
 
 # Access reddit API PRAW
 try:
@@ -58,8 +59,8 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
     submission = vars(sub)
 
     # Getting comments
-    submission["comments"] = {} # Initialise comments dictionary within submission
-    sub.comments.replace_more(limit=None) # Load comments for each submission
+    submission["comments"] = {}  # Initialise comments dictionary within submission
+    sub.comments.replace_more(limit=None)  # Load comments for each submission
 
     # Loop through the list of comments for the submission
     for comment in sub.comments.list():
@@ -70,5 +71,12 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
     submissions_dict[submission["id"]] = submission
 
 # Save file
-save_json(f"/home/ubuntu/SMT_Project_Experience/app/scraper/reddit/daily_data/{start_datetime.date()}.json", submissions_dict)
-telegram_send.send(messages=[f"Reddit daily scraping for {start_datetime.strftime('%Y-%m-%d')} completed. {counter} posts scraped."])
+save_json(
+    f"/home/ubuntu/SMT_Project_Experience/app/scraper/reddit/daily_data/{start_datetime.date()}.json",
+    submissions_dict,
+)
+telegram_send.send(
+    messages=[
+        f"Reddit daily scraping for {start_datetime.strftime('%Y-%m-%d')} completed. {counter} posts scraped."
+    ]
+)

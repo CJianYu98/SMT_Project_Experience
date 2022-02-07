@@ -49,7 +49,7 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
     print(submission_created_datetime)
     if stop_datetime > submission_created_datetime:
         break
-    elif submission_created_datetime > datetime.datetime(2021, 1, 12):
+    elif submission_created_datetime > datetime.datetime(2022, 1, 12):
         continue
 
     if submission_created_datetime < start_datetime:
@@ -81,5 +81,3 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
 
 # Final save
 # file_utils.save_json(f"./app/scraper/reddit/data/{start_datetime.strftime('%Y-%m-%d')}.json", submissions_dict)
-
-
