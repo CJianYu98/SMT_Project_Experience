@@ -43,10 +43,47 @@ def create_iam_role_permission_policy() -> str:
                     ],
                     "Resource": "*",
                 },
+                {
+                    "Action": "ec2:*",
+                    "Effect": "Allow",
+                    "Resource": "*"
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": "elasticloadbalancing:*",
+                    "Resource": "*"
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": "cloudwatch:*",
+                    "Resource": "*"
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": "autoscaling:*",
+                    "Resource": "*"
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": "iam:CreateServiceLinkedRole",
+                    "Resource": "*",
+                    "Condition": {
+                        "StringEquals": {
+                            "iam:AWSServiceName": [
+                                "autoscaling.amazonaws.com",
+                                "ec2scheduled.amazonaws.com",
+                                "elasticloadbalancing.amazonaws.com",
+                                "spot.amazonaws.com",
+                                "spotfleet.amazonaws.com",
+                                "transitgateway.amazonaws.com"
+                            ]
+                        }
+                    }
+                }
             ],
         }
 
-        permission_policy_name = "AWSLambdaBasicExecutionRoleAndAmazonS3FullAccess"
+        permission_policy_name = "AwsSmt483IamPolicy"
         iam.create_policy(
             PolicyName=permission_policy_name, PolicyDocument=json.dumps(permission_policy)
         )
@@ -84,6 +121,11 @@ def create_lambda_iam_role(permission_policy_name: str):
                 "Principal": {"Service": "s3.amazonaws.com"},
                 "Action": "sts:AssumeRole",
             },
+            {
+                "Effect": "Allow",
+                "Principal": {"Service": "ec2.amazonaws.com"},
+                "Action": "sts:AssumeRole",
+            }
         ],
     }
 

@@ -20,7 +20,7 @@ def s3_setup():
 
     try:
         for platform in SOCIAL_MEDIA_PLATFORMS:
-            bucket_name = f"smt483tls-{platform}-bucket"
+            bucket_name = f"smt483tls-{platform}-daily-bucket"
             client.create_bucket(
                 Bucket=bucket_name,
                 CreateBucketConfiguration={"LocationConstraint": os.getenv("AWS_REGION")},
