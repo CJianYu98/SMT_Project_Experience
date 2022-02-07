@@ -4,21 +4,53 @@ import json
 import math
 import os
 
+import boto3
 import praw
 import telegram_send
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv("/home/ubuntu/SMT_Project_Experience/.env")
+# Utility functions for scraper
+def save_json(filename: str, new_dict: dict):
+    """
+    Convert data into a json format and save into local folder.
 
-
-def save_json(filename, new_dict):
+    Args:
+        filename (str): File name
+        new_dict (dict): Dictionary containing the scraped data
+    """
     try:
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(new_dict, f, ensure_ascii=False, indent=4, default=str)
     except Exception as e:
-        telegram_send.send(messages=[f"Error saving {filename}."])
+        telegram_send.send(messages=[f"Error saving {filename} to local folder."])
 
+def upload_files(file_name: str, bucket: str, object_name=None, args=None):
+    """
+    Upload json data file into AWS S3 bucket. Sends telegram notification afterwards.
+
+    Args:
+        file_name (str): File name
+        bucket (str): AWS S3 bucket name
+        object_name (str, optional): AWS S3 object name. Defaults to None.
+        args (str, optional): Extra arguments. Defaults to None.
+    """
+    if object_name is None:
+        object_name = file_name
+    try:
+        s3_client.upload_file(file_name, bucket, object_name, ExtraArgs=args)
+        telegram_send.send(messages=[f"{file_name} has been uploaded to {S3_BUCKET_NAME}."])
+    except Exception as e:
+        telegram_send.send(messages=[f"{file_name} failed to upload to {S3_BUCKET_NAME}.", f"{e}"])
+
+
+telegram_send.send(messages=[f"Reddit daily scraping started at {datetime.datetime.now()}."])
+
+# Load environment variables and create constant variables
+load_dotenv("/home/ubuntu/SMT_Project_Experience/.env")
+S3_BUCKET_NAME = "smt483tls-reddit-daily-bucket"
+
+# Intialize S3 client
+s3_client = boto3.client('s3')
 
 # Access reddit API PRAW
 try:
@@ -30,7 +62,7 @@ try:
         password=os.getenv("REDDIT_PASSWORD"),
     )
 except:
-    print("Failed to connect to Reddit API")
+    telegram_send.send(messages=["Failed to connect to Reddit API"])
 
 # Initialise scraping cut-off date
 cutoff_days = int(os.getenv("CUTOFF_DAYS"))
@@ -41,7 +73,8 @@ stop_datetime = start_datetime - datetime.timedelta(days=cutoff_days)
 submissions_dict = {}
 counter = 0
 
-telegram_send.send(messages=[f"Reddit daily scraping started at {start_datetime}."])
+# Create filename for the saved data
+filename = f"/home/ubuntu/SMT_Project_Experience/app/scraper/reddit/daily_data/{start_datetime.date()}.json"
 
 # Iterate through list of newest submissions in selected Subreddit
 for sub in reddit.subreddit("Singapore").new(limit=math.inf):
@@ -71,10 +104,16 @@ for sub in reddit.subreddit("Singapore").new(limit=math.inf):
     submissions_dict[submission["id"]] = submission
 
 # Save file
-save_json(
-    f"/home/ubuntu/SMT_Project_Experience/app/scraper/reddit/daily_data/{start_datetime.date()}.json",
-    submissions_dict,
-)
+save_json(filename, submissions_dict)
+
+# Upload to S3 and delete file from local folder afterwards
+upload_files(filename, S3_BUCKET_NAME, f"{start_datetime.date()}.json")
+if os.path.exists(filename):
+    os.remove(filename)
+    telegram_send.send(messages=[f"{filename} removed from local folder successfully."])
+else:
+    telegram_send.send(messages=[f"Failed to remove {filename} from local folder."])
+
 telegram_send.send(
     messages=[
         f"Reddit daily scraping for {start_datetime.strftime('%Y-%m-%d')} completed. {counter} posts scraped."
