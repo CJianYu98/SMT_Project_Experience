@@ -1,7 +1,7 @@
 <template>
   <!-- <v-app> -->
-  <div class="mt-2 mb-n3">
-    <v-container fluid class="px-8 mt-n1">
+  <div class="mt-2 mb-n3" id="searchFilter">
+    <v-container fluid class="px-8 mt-n2 pb-0">
       <v-row no-gutters align="stretch">
         <v-col
           cols="3"
@@ -75,6 +75,8 @@
               item-text="date"
               label="Select a date period"
               outlined
+              @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected)"
+
               dense
             >
               <template slot="selection" slot-scope="data">
@@ -178,8 +180,10 @@
             multiple
             outlined
             dense
+            @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected)"
           >
-            <template #prepend-item>
+          <!-- select all functionality -->
+            <!-- <template #prepend-item>
               <v-list-item
                 ripple
                 @mousedown.prevent
@@ -197,7 +201,7 @@
                 </v-list-item-content>
               </v-list-item>
               <v-divider class="mt-2"></v-divider>
-            </template>
+            </template> -->
             <template #selection="{ item }">
               <v-chip 
                 color="blue"
@@ -221,8 +225,10 @@
             multiple
             outlined
             dense
+            @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected)"
           >
-            <template #prepend-item>
+          <!-- select all functionality -->
+            <!-- <template #prepend-item>
               <v-list-item
                 ripple
                 @mousedown.prevent
@@ -240,7 +246,7 @@
                 </v-list-item-content>
               </v-list-item>
               <v-divider class="mt-2"></v-divider>
-            </template>
+            </template> -->
             <template #selection="{ item }">
               <v-chip 
                 color="blue"
@@ -340,26 +346,30 @@
     },
 
     methods: {
-      toggle () {
-        this.$nextTick(() => {
-          // if all platforms are selected, we see the close icon
-          // make the selected platforms an empty list, see the minus icon
-          // if we close icon is selected, then minus all icon is shown
-          // this.nextTick -> when data is changed and dom has to be updated
+      // select all functionality in filters, to separate according to sentiment and platforms
+    //   toggle () {
+    //     this.$nextTick(() => {
+    //       // if all platforms are selected, we see the close icon
+    //       // make the selected platforms an empty list, see the minus icon
+    //       // if we close icon is selected, then minus all icon is shown
+    //       // this.nextTick -> when data is changed and dom has to be updated
 
-          if (this.allPlatformsSelected) {
-            this.platformsSelected = []
-          } 
-          else if (this.somePlatformsSelected) {
-            this.platformsSelected = this.platformsFilter.slice()
-          }
+    //       if (this.allPlatformsSelected) {
+    //         this.platformsSelected = []
+    //       } 
+    //       else if (this.somePlatformsSelected) {
+    //         this.platformsSelected = this.platformsFilter.slice()
+    //       }
 
-          if (this.allSentimentsSelected) {
-            this.sentimentsSelected = []
-          } else if (this.someSentimentsSelected) {
-            this.sentimentsSelected = this.sentimentsFilter.slice()
-          }
-        })
+    //       if (this.allSentimentsSelected) {
+    //         this.sentimentsSelected = []
+    //       } else if (this.someSentimentsSelected) {
+    //         this.sentimentsSelected = this.sentimentsFilter.slice()
+    //       }
+    //     })
+    //   }
+      emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected) {
+        this.$emit('change', [dateSelected, platformsSelected, sentimentsSelected])
       }
     },
 
@@ -367,7 +377,9 @@
 </script>
 
 <style>
-
+#searchFilter {
+  background-color: #ffffff !important;
+}
 </style>
 
 
