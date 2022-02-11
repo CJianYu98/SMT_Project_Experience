@@ -3,29 +3,39 @@
     elevation="3"
     class="mx-8 mt-8"
   >
-    <v-card-title>Trending Topics</v-card-title>
-  
+    <v-card-title class="pb-4">
+      Trending Topics
+      <HelpTextTooltip :help-text="trendingTopicsHelpText"/>
+    </v-card-title>
+
+    <v-row
+      v-for="(topic, i) in topFiveTopics"
+      :key="i"
+    >
+      <v-col class="py-0">
+        <TrendingTopic :index="i" :topic-assigned="topic"/>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
 <script>
+import HelpTextTooltip from './HelpTextTooltip.vue'
+import TrendingTopic from './TrendingTopic.vue'
+
 export default {
-  top5topics: [
-    {
-    topic: 'GE2020', 
-    mentions: 294940, 
-    sentiment: {
-      negative: 0.2, neutral: 0.6, positive: 0.2
-      }
-    },
-    {
-    topic: 'GE2024', 
-    mentions: 29494, 
-    sentiment: {
-      negative: 0.2, neutral: 0.6, positive: 0.2
-      }
+  components: { 
+    HelpTextTooltip,
+    TrendingTopic,
+  },
+  props: {
+    topFiveTopics: {
+      type: Array,
     }
-  ]
+  },
+  data: () => ({
+    trendingTopicsHelpText: "Study the most popular topics talked about within the selected time period across the platform(s) selected.",
+  }),
 }
 </script>
 
