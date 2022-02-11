@@ -1,9 +1,12 @@
 <template>
   <div>
-    <SearchFilters @change="rerenderDashboard"/>
+    <SearchFilters @changeFilter="rerenderDashboard"/>
     <v-row>
       <v-col cols="4">
-        <TrendingTopics :top-five-topics="topFiveTopicsData"/>
+        <TrendingTopics :top-five-topics="topFiveTopicsData" @clickQuery="updateDashboardWithQuery"/>
+      </v-col>
+      <v-col cols="8">
+        <TrendAnalysis/>
       </v-col>
     </v-row>
   </div>
@@ -12,10 +15,12 @@
 <script>
 import TrendingTopics from '@/components/TrendingTopics.vue'
 import SearchFilters from '@/components/SearchFilters'
+import TrendAnalysis from '../components/TrendAnalysis.vue'
 export default {
   components: { 
     TrendingTopics,            
     SearchFilters,
+    TrendAnalysis,
   },
   data: () => ({
     allData: [
@@ -147,7 +152,15 @@ export default {
 
 
       console.log("=== END rerenderDashboard ===")
-}
+    },
+
+    updateDashboardWithQuery(query) {
+      console.log("=== START updateDashboardWithQuery() ===")
+      console.log(query)
+      // need to call multiple apis to call with query
+      // should be done from the main dashboard page
+      console.log("=== END updateDashboardWithQuery() ===")
+    }
   }
   
 }
