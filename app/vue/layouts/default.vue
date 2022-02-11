@@ -1,9 +1,7 @@
 <template>
   <v-app>
     <NavBar/>
-    <SearchFilters/>
-
-    <v-main :style="{background: $vuetify.theme.themes[theme].background}">
+    <v-main :style="{background: $vuetify.theme.themes[theme].background}" class="mt-0">
       <Nuxt/>
     </v-main>
 
@@ -71,7 +69,7 @@
 
 <script>
 import NavBar from '@/components/NavBar'
-import SearchFilters from '@/components/SearchFilters'
+
 
 export default {
   name: 'DefaultLayout',
@@ -79,7 +77,6 @@ export default {
     return {
       components: {
             NavBar,
-            SearchFilters,
         },
       // clipped: false,
       // drawer: false,
