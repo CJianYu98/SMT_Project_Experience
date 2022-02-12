@@ -13,8 +13,10 @@ from dotenv import load_dotenv
 from loguru import logger
 
 # Load environment variables
+load_dotenv()
+
+# Change to file directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
-load_dotenv("../../../.env")
 
 # Add logger configurations
 logger.add(

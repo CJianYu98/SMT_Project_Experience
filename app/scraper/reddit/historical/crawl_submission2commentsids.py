@@ -4,20 +4,22 @@ import os
 import time
 
 import requests
+import telegram_send
 from loguru import logger
 from tqdm import tqdm
 
+# Change to the actual file directory
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 def crawl_submission2commentsids():
-    OUTPUT_DIR = "./app/scraper/reddit/historical_2/yyyymm"
+    OUTPUT_DIR = "./yyyymm"
 
     # Loop through monthly submission jsonl files
-    for afile in tqdm(sorted(glob.glob("yyyymm/*.jsonl"))):
-        logger.debug(afile)
+    for afile in tqdm(sorted(glob.glob(f"{OUTPUT_DIR}/*.jsonl"))):
         filename = os.path.basename(afile)[:-6]
         OUTPUT_FILE = f"{OUTPUT_DIR}/{filename}_sid_cids.txt"
 
-        # Update saved sids
+        # Update saved sids (this chunk can be deleted)
         crawled_sids = set()
         if os.path.exists(OUTPUT_FILE):
             with open(OUTPUT_FILE) as fi:
@@ -27,8 +29,7 @@ def crawl_submission2commentsids():
 
         # Crawl comment ids for given submission id
         with open(afile) as fi, open(f"{OUTPUT_DIR}/{filename}_sid_cids.txt", "a") as fo:
-            for l_index, line in enumerate(fi):
-                logger.debug(l_index)
+            for line in fi:
                 jobj = json.loads(line)
                 sid = jobj["id"]
                 if sid in crawled_sids:
@@ -37,11 +38,16 @@ def crawl_submission2commentsids():
                     response = requests.get(
                         f"https://api.pushshift.io/reddit/submission/comment_ids/{sid}"
                     )
-                    jobj = json.loads(response.text)
-                    print(">>>", jobj)
-                except:
-                    logger.exception("Connection Error?")
-                    time.sleep(15)
+                    if response.status_code == 200:
+                        jobj = json.loads(response.text)
+                        logger.debug(f"Comment IDs for submission {sid} crawled successfully.")
+                    time.sleep(3)
+                except Exception as e:
+                    logger.exception(e)
                     continue
                 fo.write(f"{sid}\t{json.dumps(jobj)}\n")
-                time.sleep(1)
+
+        telegram_send.send(messages=[f"REDDIT HISTORICAL --> {afile}'s cids crawled successfully."])
+        logger.debug(f"REDDIT HISTORICAL --> {afile}'s cids crawled successfully.")
+
+    telegram_send.send(messages=["REDDIT HISTORICAL --> Submission2CommentIDs crawled completely."])
