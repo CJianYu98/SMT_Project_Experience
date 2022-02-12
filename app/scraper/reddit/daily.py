@@ -1,13 +1,13 @@
 # Import packages
-from datetime import datetime, timedelta
-import pytz
 import json
 import math
 import os
+from datetime import datetime, timedelta
 
 import boto3
 import botocore.exceptions
 import praw
+import pytz
 import telegram_send
 from dotenv import load_dotenv
 from loguru import logger
@@ -18,7 +18,7 @@ load_dotenv("../../../.env")
 
 # Add logger configurations
 logger.add(
-    '../../../logs/scraper/reddit/daily_scraper.log',
+    "../../../logs/scraper/reddit/daily_scraper.log",
     format="{time} {file} {level} {message}",
     level="DEBUG",
 )
@@ -78,7 +78,7 @@ try:
             comment = vars(comment)
             submission["comments"][comment["id"]] = comment
 
-        subs_dict[submission["id"]] = submission # Store current submission record
+        subs_dict[submission["id"]] = submission  # Store current submission record
 
     # Save data to json file
     with open(output_file, "w", encoding="utf-8") as f:
@@ -105,10 +105,10 @@ try:
 
 except botocore.exceptions.ClientError as aws_error:
     tele_end_msg += f"Error while connecting to AWS S3 client.\n{aws_error}\n"
-    logger.exception("Error while connecting to AWS S3 client.") 
+    logger.exception("Error while connecting to AWS S3 client.")
 except praw.exceptions.PRAWException as reddit_error:
     tele_end_msg += f"Error with Reddit API.\n{reddit_error}\n"
-    logger.exception("Error with Reddit API.") 
+    logger.exception("Error with Reddit API.")
 except Exception as e:
     tele_end_msg += f"Error occured.\n{e}\n"
     logger.exception("Error occured.")
