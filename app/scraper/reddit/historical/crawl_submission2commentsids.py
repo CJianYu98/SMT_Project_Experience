@@ -2,7 +2,9 @@ import glob
 import json
 import os
 import time
+from datetime import datetime
 
+import pytz
 import requests
 import telegram_send
 from loguru import logger
@@ -11,7 +13,17 @@ from tqdm import tqdm
 # Change to the actual file directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
+# Constants
+TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
+
+
 def crawl_submission2commentsids():
+    telegram_send.send(
+        messages=[
+            f"REDDIT HISTORICAL --> Comment IDs crawling started at {datetime.now(TIMEZONE)}."
+        ]
+    )
+
     OUTPUT_DIR = "./yyyymm"
 
     # Loop through monthly submission jsonl files

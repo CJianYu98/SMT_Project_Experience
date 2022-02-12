@@ -1,15 +1,15 @@
 # Import packages
-from datetime import datetime, timedelta
-import pytz
 import os
 import sys
+from datetime import datetime, timedelta
 
-import twint
-from dotenv import load_dotenv
 import boto3
 import botocore.exceptions
-from loguru import logger
+import pytz
 import telegram_send
+import twint
+from dotenv import load_dotenv
+from loguru import logger
 
 # Load environment variables
 load_dotenv()
@@ -34,15 +34,15 @@ stop_datetime = start_datetime - timedelta(days=cutoff_days)
 date = start_datetime.date()
 sg_datetime = datetime.now(TIMEZONE)
 
-tele_start_msg = f"TWITTER --> Daily data crawling started at {sg_datetime}"
-tele_end_msg = ""
+tele_start_msg = f"TWITTER DAILY --> Daily data crawling started at {sg_datetime}"
+tele_end_msg = "TWITTER DAILY --> \n"
 output_file = f"./daily_data/{start_datetime.date()}.json"
 s3_object_name = f"{date}.json"
 
 try:
     telegram_send.send(messages=[tele_start_msg])
     logger.info(f"Daily data crawling started at {sg_datetime}")
-    
+
     # Configure Twint
     c = twint.Config()
     c.Near = "Singapore"  # Set geographic location to near Singapore
@@ -77,7 +77,6 @@ try:
     except Exception as e:
         tele_end_msg += f"Error occured.\n{e}\n"
         logger.exception("Error occured.")
-
 
 
 except botocore.exceptions.ClientError as aws_error:

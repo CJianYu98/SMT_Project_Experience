@@ -35,8 +35,8 @@ stop_datetime = start_datetime - timedelta(days=cutoff_days)
 date = start_datetime.date()
 sg_datetime = datetime.now(TIMEZONE)
 
-tele_start_msg = f"REDDIT --> Daily data crawling started at {sg_datetime}"
-tele_end_msg = ""
+tele_start_msg = f"REDDIT DAILY --> Daily data crawling started at {sg_datetime}"
+tele_end_msg = "REDDIT DAILY --> \n"
 
 subs_dict = {}  # Storage dict
 counter = 0  # Post counter for tracking
