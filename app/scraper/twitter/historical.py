@@ -34,8 +34,6 @@ start_datetime = datetime.fromtimestamp(1612137599)
 stop_datetime = start_datetime - timedelta(days=30) # Change the num days depending on the month
 crawl_start_datetime = start_datetime
 crawl_stop_datetime = crawl_start_datetime - timedelta(days=cutoff_days)
-print(crawl_start_datetime)
-print(crawl_stop_datetime)
 sg_datetime = datetime.now(TIMEZONE)
 
 tele_start_msg = f"TWITTER HISTORICAL --> Historical data crawling started from {start_datetime.date()} to {stop_datetime.date()} at {sg_datetime}"
