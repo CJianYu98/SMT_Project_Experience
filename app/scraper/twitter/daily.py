@@ -43,12 +43,13 @@ try:
     logger.info(f"Daily data crawling started at {sg_datetime}")
 
     # Scrape 3 days' of data, 1 day at a time
-    for num_days in range(3):
-        start_datetime -= timedelta(days=num_days)
-        stop_datetime -= timedelta(days=num_days)
+    for i in range(14):
+        if i != 0:
+            start_datetime -= timedelta(days=1)
+            stop_datetime -= timedelta(days=1)
 
-        output_file = f"./daily_data/{start_datetime.date()}_{num_days+1}.json"
-        s3_object_name = f"{date}_{num_days+1}.json"
+        output_file = f"./daily_data/{start_datetime.date()}_{i+1}.json"
+        s3_object_name = f"{date}_{i+1}.json"
 
         # Configure Twint
         c = twint.Config()
@@ -69,15 +70,15 @@ try:
         # Upload file to S3 and delete file from local folder afterwards
         try:
             s3_client.upload_file(output_file, S3_BUCKET_NAME, s3_object_name)
-            tele_end_msg += f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.\n"
+            # tele_end_msg += f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.\n"
             logger.info(f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.")
 
             os.remove(output_file)
-            tele_end_msg += f"File: {output_file} removed from local folder successfully.\n"
+            # tele_end_msg += f"File: {output_file} removed from local folder successfully.\n"
             logger.info(f"File: {output_file} removed from local folder successfully.")
 
-            telegram_send.send(messages=[f"Twitter daily scraping for {date}: {start_datetime.date()} data completed."])
-            logger.info(f"Daily craping for {date}: {start_datetime.date()} data completed.")
+            telegram_send.send(messages=[f"TWITTER DAILY --> Daily scraping for {date}: ({i}) - {start_datetime.date()} data completed."])
+            logger.info(f"Daily scraping for {date}: {start_datetime.date()} data completed.")
         except botocore.exceptions.ClientError as s3_error:
             tele_end_msg += f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.\n{s3_error}"
             logger.exception(f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.")
@@ -87,8 +88,8 @@ try:
         finally:
             time.sleep(300)
             continue
-    tele_end_msg += f"Twitter daily scraping for {date} completed."
-    logger.info(f"Daily craping for {date} completed.")
+    tele_end_msg += f"Twitter daily scraping for {date} is fully completed."
+    logger.info(f"Daily craping for {date} is fully completed.")
     
 except botocore.exceptions.ClientError as aws_error:
     tele_end_msg += f"Error while connecting to AWS S3 client.\n{aws_error}\n"
