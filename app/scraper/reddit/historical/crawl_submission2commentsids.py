@@ -13,6 +13,13 @@ from tqdm import tqdm
 # Change to the actual file directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
+# Add logger configurations
+logger.add(
+    "../../../logs/scraper/reddit/daily_scraper.log",
+    format="{time} {file} {level} {message}",
+    level="DEBUG",
+)
+
 # Constants
 TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
 
@@ -24,7 +31,7 @@ def crawl_submission2commentsids():
         ]
     )
 
-    OUTPUT_DIR = "./yyyymm"
+    OUTPUT_DIR = "./data"
 
     # Loop through monthly submission jsonl files
     for afile in tqdm(sorted(glob.glob(f"{OUTPUT_DIR}/*.jsonl"))):
