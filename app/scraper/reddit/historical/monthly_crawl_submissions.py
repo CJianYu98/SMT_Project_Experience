@@ -51,21 +51,22 @@ def monthly_crawl_submissions():
                 "https://api.pushshift.io/reddit/search/submission/", params=params
             )
 
-            jobj = json.loads(response.text)
-            if jobj.get("data"):
-                for submission in jobj.get("data"):
-                    created_utc = submission["created_utc"]
-                    yyyymm = datetime.fromtimestamp(created_utc, timezone.utc).strftime("%Y%m")
-                    with open(f"{OUTPUT_DIR}/{yyyymm}.jsonl", "a") as fo:
-                        fo.write(json.dumps(submission) + "\n")
+            if response.status_code == 200:
+                jobj = json.loads(response.text)
+                if jobj.get("data"):
+                    for submission in jobj.get("data"):
+                        created_utc = submission["created_utc"]
+                        yyyymm = datetime.fromtimestamp(created_utc, timezone.utc).strftime("%Y%m")
+                        with open(f"{OUTPUT_DIR}/{yyyymm}.jsonl", "a") as fo:
+                            fo.write(json.dumps(submission) + "\n")
 
-                logger.debug(f"Data size: {len(jobj.get('data'))}")
-                last_created_utc = jobj["data"][-1]["created_utc"]
+                    logger.debug(f"Data size: {len(jobj.get('data'))}")
+                    last_created_utc = jobj["data"][-1]["created_utc"]
 
-                time.sleep(3)
-            else:
-                logger.debug("No data in submission object.")
-                break
+                    time.sleep(3)
+                else:
+                    logger.debug("No data in submission object.")
+                    break
 
         except Exception as e:
             logger.exception(e)
