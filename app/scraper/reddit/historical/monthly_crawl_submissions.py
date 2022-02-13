@@ -15,6 +15,13 @@ load_dotenv()
 # Change to file directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
+# Add logger configurations
+logger.add(
+    "../../../logs/scraper/reddit/historical_scraper.log",
+    format="{time} {file} {level} {message}",
+    level="DEBUG",
+)
+
 # Constants
 TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
 
