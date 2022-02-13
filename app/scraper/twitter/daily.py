@@ -42,14 +42,14 @@ try:
     telegram_send.send(messages=[tele_start_msg])
     logger.info(f"Daily data crawling started at {sg_datetime}")
 
-    # Scrape 3 days' of data, 1 day at a time
-    for i in range(14):
+    # Scrape 7 days' of data, 1 day at a time
+    for i in range(7):
         if i != 0:
             start_datetime -= timedelta(days=1)
             stop_datetime -= timedelta(days=1)
 
-        output_file = f"./daily_data/{start_datetime.date()}_{i+1}.json"
-        s3_object_name = f"{date}_{i+1}.json"
+        output_file = f"./daily_data/{date}_{i+1}.json"
+        s3_object_name = f"{date}/{start_datetime.date()}.json"
 
         # Configure Twint
         c = twint.Config()
