@@ -3,23 +3,32 @@
     elevation="3"
     class="mr-8 mt-8"
   >
+    
     <v-card-title class="pb-4">
       Trending Analysis
       <HelpTextTooltip :help-text="trendingTopicsHelpText"/>
     </v-card-title>
 
-    <TrendAnalysisMetricsCard :overall-stats="overallStats" :platform-data="platformData"/>
-
+    <v-row>
+      <v-col cols="4" >
+        <TrendAnalysisMetricsCard :overall-stats="overallStats" :platform-data="platformData"/>
+      </v-col>
+      <v-col cols="" class="py-0">
+        <TrendAnalysisTabs/>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
 <script>
 import HelpTextTooltip from './HelpTextTooltip.vue'
 import TrendAnalysisMetricsCard from './TrendAnalysisMetricsCard.vue'
+import TrendAnalysisTabs from './TrendAnalysisTabs.vue'
 export default {
   components: { 
     HelpTextTooltip,
     TrendAnalysisMetricsCard,
+    TrendAnalysisTabs
   },
   props: {
     overallStats: {

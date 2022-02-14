@@ -1,6 +1,6 @@
 <template>
   <v-row class="px-4">
-    <v-col cols="3" class="py-0"> 
+    <v-col cols="" class="py-0"> 
       <v-simple-table class="mb-2">
         <template v-slot:default>
           <thead class="deep-purple">
