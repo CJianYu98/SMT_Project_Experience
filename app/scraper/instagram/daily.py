@@ -28,8 +28,8 @@ logger.add(
 )
 
 # Constants and variables
-ACCOUNT = os.getenv("INSTAGRAM_ACCOUNT")
-PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
+ACCOUNT = os.getenv("INSTAGRAM_ACCOUNT_2")
+PASSWORD = os.getenv("INSTAGRAM_PASSWORD_2")
 S3_BUCKET_NAME = os.getenv("S3_INSTA_DAILY_BUCKET_NAME")
 TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
 
@@ -76,7 +76,7 @@ try:
                     break
                 
                 loader.download_post(post, target=f"@{p}")
-                time.sleep(3)
+                time.sleep(5)
             logger.info(f'Posts for @{p} scraped.')
 
             # Upload all files for a profile to AWS S3
@@ -96,7 +96,7 @@ try:
             logger.exception(f"Error: {e}\nContinuing on...")
             continue
         telegram_send.send(messages=[f"INSTA DAILY --> @{p} profile scraped successfully."])
-        time.sleep(30)
+        time.sleep(300)
 
     tele_end_msg += f'Daily scraper completed for {date}.'
 
