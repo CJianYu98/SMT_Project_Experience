@@ -33,7 +33,7 @@
           max-width="30"
         />
       </router-link>
-      <v-toolbar-title>
+      <v-toolbar-title class="accent--text">
         <router-link to="/" tag="span">
           {{ appTitle }}
         </router-link>
@@ -47,7 +47,7 @@
           :key="item.title"
           :to="item.path"
           active-class="navSelected"
-          color="primary">
+          class="accent--text">
           {{ item.title }}
         </v-btn>
       </v-toolbar-items>
@@ -76,13 +76,10 @@ export default {
 </script>
 <style>
 /* .navSelected {
-  color: #4734C2;
+  color: var(--v-primary-base);
   text-decoration: underline;
   text-decoration-color: #4734C2;
   background-color: white;
 } */
 
-body {
-  font-family: "Poppins", sans-serif;
-}
 </style>

@@ -8,7 +8,7 @@
           class="d-flex"
         >
           <v-autocomplete
-            v-model="model"
+            v-model="autocompleteModel"
             :items="items"
             :loading="isLoading"
             :search-input.sync="search"
@@ -34,13 +34,12 @@
               <v-chip
                 v-bind="attr"
                 :input-value="selected"
-                color="blue-grey"
-                class="white--text"
+                class="primary--text"
                 v-on="on"
               >
-                <v-icon left>
+                <!-- <v-icon left>
                   mdi-bitcoin
-                </v-icon>
+                </v-icon> -->
                 <span v-text="item.name"></span>
               </v-chip>
             </template>
@@ -76,12 +75,11 @@
               label="Select a date period"
               outlined
               @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected)"
-
               dense
             >
               <template slot="selection" slot-scope="data">
-                <span v-if="data.item.date === 'Custom'" >{{ data.item.period }}</span>
-                <span v-else >{{ data.item.date }}</span>
+                <span v-if="data.item.date === 'Custom'" class="accent--text">{{ data.item.period }}</span>
+                <span v-else class="accent--text">{{ data.item.date }}</span>
               </template>
             </v-select>
           </div>
@@ -204,7 +202,7 @@
             </template> -->
             <template #selection="{ item }">
               <v-chip 
-                color="blue"
+                color="accent"
                 outlined
                 class="my-1"
               >
@@ -249,7 +247,7 @@
             </template> -->
             <template #selection="{ item }">
               <v-chip 
-                color="blue"
+                color="accent"
                 outlined
                 class="my-1"
               >
@@ -269,7 +267,7 @@
     data: () => ({
       isLoading: false,
       items: [],
-      model: null,
+      autocompleteModel: null,
       search: null,
       tab: null,
       menu1: false,

@@ -1,5 +1,5 @@
 <template>
-  <v-list-item>
+  <v-list-item class="primary--text">
     <v-list-item-content class="pt-1">
       <v-row>
         <v-col class="pb-1">
@@ -10,12 +10,12 @@
           </v-list-item-title>
         </v-col>
         <v-col>
-          <v-list-item-subtitle v-text="`${topicAssigned.mentions.toLocaleString()} mentions`" class="text-right pr-3">></v-list-item-subtitle>
+          <v-list-item-subtitle v-text="`${topicAssigned.mentions.toLocaleString()} mentions`" class="text-right pr-3 primary--text">></v-list-item-subtitle>
         </v-col>
       </v-row>
 
       <v-list-item-subtitle
-        class="pl-3" 
+        class="pl-3 primary--text" 
       >
         <span 
           v-for="(mention, index) in topicAssigned.topThreeMentions"
@@ -26,7 +26,8 @@
         </span>
 
         <!-- 
-          need to pass the mention to model
+          1. pass the mention (inside trending topic component) to autocompleteModel (inside search filters component)
+          2. pass the query into rerenderDashboard method (inside dashboard page)
         -->
       </v-list-item-subtitle>
 

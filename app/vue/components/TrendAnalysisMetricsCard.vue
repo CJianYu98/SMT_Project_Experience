@@ -14,7 +14,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr class="primary--text">
               <td>
                 {{ overallStats.posts.toLocaleString() }}
               </td>
@@ -39,7 +39,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr class="primary--text">
               <td>
                 {{ overallStats.comments.toLocaleString() }}
               </td>
@@ -83,7 +83,7 @@
                   :alt="`${platform} icon`"
                 ></v-img>
               </td>
-              <td>
+              <td class="primary--text">
                 {{ (data.mentions * 100).toFixed(0) }}%
               </td>
               <td>
@@ -123,14 +123,6 @@ export default {
 </script>
 
 <style>
-/* th {
-  color: white;
-} */
-
-/* .v-application--is-ltr .v-data-table > .v-data-table__wrapper > table > tbody > tr > th, .v-application--is-ltr .v-data-table > .v-data-table__wrapper > table > thead > tr > th, .v-application--is-ltr .v-data-table > .v-data-table__wrapper > table > tfoot > tr > th {
-  color: white;
-} */
-
 
 </style>
 
