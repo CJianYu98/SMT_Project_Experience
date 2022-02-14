@@ -26,7 +26,12 @@
         </v-app-bar-nav-icon>
       </span>
       <router-link to="/">
-        <img src="/logo.jpg" class="mr-2 mt-2" height="50"/>
+        <v-img 
+          src="/tls_logo.png" 
+          class="mr-2" 
+          max-height="30"
+          max-width="30"
+        />
       </router-link>
       <v-toolbar-title>
         <router-link to="/" tag="span">
