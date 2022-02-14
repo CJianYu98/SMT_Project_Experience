@@ -16,7 +16,7 @@
           <tbody>
             <tr>
               <td>
-                {{ overallStats.posts }}
+                {{ overallStats.posts.toLocaleString() }}
               </td>
               <td>
                 <TrendAnalysisUpwardTrend v-if="overallStats.trend > 0" :percentage-increase="overallStats.trend"/>
@@ -41,13 +41,13 @@
           <tbody>
             <tr>
               <td>
-                {{ overallStats.comments }}
+                {{ overallStats.comments.toLocaleString() }}
               </td>
               <td>
-                {{ overallStats.likes }}
+                {{ overallStats.likes.toLocaleString() }}
               </td>              
               <td>
-                {{ overallStats.shares }}
+                {{ overallStats.shares.toLocaleString() }}
               </td>
             </tr> 
           </tbody>
