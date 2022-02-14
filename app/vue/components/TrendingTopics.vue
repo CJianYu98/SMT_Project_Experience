@@ -13,7 +13,7 @@
       :key="i"
     >
       <v-col class="py-0">
-        <TrendingTopic :index="i" :topic-assigned="topic"/>
+        <TrendingTopic :index="i" :topic-assigned="topic" v-on="$listeners"/>
       </v-col>
     </v-row>
   </v-card>
