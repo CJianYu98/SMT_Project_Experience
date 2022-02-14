@@ -1,22 +1,24 @@
 <template>
   <div>
     <SearchFilters @changeFilter="rerenderDashboard"/>
+    <!--  align="stretch" in v-row works with d-flex in v-col -->
     <v-row>
       <v-col cols="4">
         <TrendingTopics :top-five-topics="topFiveTopicsData" @clickQuery="updateDashboardWithQuery"/>
       </v-col>
       <v-col cols="8">
-        <TrendAnalysis/>
+        <TrendAnalysis :overall-stats="overallStatsData" :platform-data="platformMetricsData"/>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import TrendAnalysis from '../components/TrendAnalysis.vue'
 import TrendingTopics from '@/components/TrendingTopics.vue'
 import SearchFilters from '@/components/SearchFilters'
-import TrendAnalysis from '../components/TrendAnalysis.vue'
 export default {
+  name: 'DashBoard',
   components: { 
     TrendingTopics,            
     SearchFilters,
@@ -53,41 +55,75 @@ export default {
     ],
     topFiveTopicsData: [
       {
-        name: 'GE2020', 
+        name: 'Politics',
+        topThreeMentions: ['GE2020', 'GE2024', 'Reesah Khan'],
         mentions: 294940, 
         sentiment: {
           negative: 0.2, neutral: 0.6, positive: 0.2
         }
       },
       {
-        name: 'GE2024', 
+        name: 'Economics',
+        topThreeMentions: ['GST Increase', 'STI', 'Taxes'], 
         mentions: 29494, 
         sentiment: {
           negative: 0.2, neutral: 0.6, positive: 0.2
         }
       },
       {
-        name: 'GST Increase', 
+        name: 'Environment',
+        topThreeMentions: ['Tengah Forest', 'Plastic Bags', 'Carbon Tax'], 
         mentions: 29494, 
         sentiment: {
           negative: 0.2, neutral: 0.6, positive: 0.2
         }
       },
       {
-        name: 'SG Rediscover Vouchers', 
+        name: 'Travel',
+        topThreeMentions: ['SG Rediscover Vouchers', 'ART test', 'VTL'], 
         mentions: 29494, 
         sentiment: {
           negative: 0.2, neutral: 0.6, positive: 0.2
         }
       },
       {
-        name: 'Reesah Khan', 
+        name: 'Education',
+        topThreeMentions: ['PSLE results', 'O Level results', 'June holidays'], 
         mentions: 29494, 
         sentiment: {
           negative: 0.2, neutral: 0.6, positive: 0.2
         }
       }
     ],
+    overallStatsData: {
+      posts: 2940490,
+      trend: 0.4,
+      comments: 93893,
+      likes: 93398,
+      shares: 2732
+    },
+    platformMetricsData: {
+      Facebook: {
+        mentions: 0.24,
+        trend: -0.2
+      },
+      Instagram: {
+        mentions: 0.34,
+        trend: -0.4
+      },
+      Reddit: {
+        mentions: 0.14,
+        trend: 0.2
+      },
+      Twitter: {
+        mentions: 0.08,
+        trend: 0.2
+      },
+      Youtube: {
+        mentions: 0.20,
+        trend: -0.2
+      }
+    }
   }),
 
   computed: {
@@ -113,42 +149,78 @@ export default {
       // })
 
       this.topFiveTopicsData = [
-      {
-        name: 'ABC NEW TOPIC 1', 
-        mentions: 294940, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
+        {
+          name: 'Healthcare',
+          topThreeMentions: ['GE2020', 'GE2024', 'Reesah Khan'],
+          mentions: 294940, 
+          sentiment: {
+            negative: 0.2, neutral: 0.6, positive: 0.2
+          }
+        },
+        {
+          name: 'Economics',
+          topThreeMentions: ['GST Increase', 'STI', 'Taxes'], 
+          mentions: 29494, 
+          sentiment: {
+            negative: 0.2, neutral: 0.6, positive: 0.2
+          }
+        },
+        {
+          name: 'Environment',
+          topThreeMentions: ['Tengah Forest', 'Plastic Bags', 'Carbon Tax'], 
+          mentions: 29494, 
+          sentiment: {
+            negative: 0.2, neutral: 0.6, positive: 0.2
+          }
+        },
+        {
+          name: 'Travel',
+          topThreeMentions: ['SG Rediscover Vouchers', 'ART test', 'VTL'], 
+          mentions: 29494, 
+          sentiment: {
+            negative: 0.2, neutral: 0.6, positive: 0.2
+          }
+        },
+        {
+          name: 'Education',
+          topThreeMentions: ['PSLE results', 'O Level results', 'June holidays'], 
+          mentions: 29494, 
+          sentiment: {
+            negative: 0.2, neutral: 0.6, positive: 0.2
+          }
         }
-      },
-      {
-        name: 'ABC NEW TOPIC 2', 
-        mentions: 29494, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
-        }
-      },
-      {
-        name: 'GST Increase', 
-        mentions: 29494, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
-        }
-      },
-      {
-        name: 'SG Rediscover Vouchers', 
-        mentions: 29494, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
-        }
-      },
-      {
-        name: 'Reesah Khan', 
-        mentions: 29494, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
+      ]
+
+      this.overallStatsData = {
+        posts: 12,
+        trend: 0.4,
+        comments: 93893,
+        likes: 93398,
+        shares: 2732
+      }
+
+      this.platformMetricsData = {
+        facebook: {
+          mentions: 0.54,
+          trend: 0.98
+        },
+        instagram: {
+          mentions: 0.34,
+          trend: -0.4
+        },
+        reddit: {
+          mentions: 0.14,
+          trend: 0.2
+        },
+        twitter: {
+          mentions: 0.08,
+          trend: 0.2
+        },
+        youtube: {
+          mentions: 0.20,
+          trend: -0.2
         }
       }
-      ]
 
 
       console.log("=== END rerenderDashboard ===")
