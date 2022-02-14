@@ -80,7 +80,7 @@ export default {
           success: colors.green.accent3,
           background: colors.deepPurple.lighten5,
         },
-        options: { customProperties: true },
+        // options: { customProperties: true },
       },
     },
   },
