@@ -1,0 +1,14 @@
+topic,cna_search_link,num_pages
+health,https://www.channelnewsasia.com/topic/health?sort_by=field_release_date_value&sort_order=DESC&type%5Barticle%5D=article&page=,52
+
+fashion,https://www.channelnewsasia.com/topic/fashion?sort_by=field_release_date_value&sort_order=DESC&type%5Barticle%5D=article&page=,47
+
+environment,https://www.channelnewsasia.com/topic/environment?sort_by=field_release_date_value&sort_order=DESC&type%5Barticle%5D=article&page=,30
+
+food,https://www.channelnewsasia.com/topic/food?sort_by=field_release_date_value&sort_order=DESC&type%5Barticle%5D=article&page=,29
+
+education,https://www.channelnewsasia.com/topic/education?sort_by=field_release_date_value&sort_order=DESC&type%5Barticle%5D=article&page=,37
+
+technology,https://www.channelnewsasia.com/topic/technology?sort_by=field_release_date_value&sort_order=DESC&type%5Barticle%5D=article&page=,30
+
+art,https://www.channelnewsasia.com/topic/art?sort_by=field_release_date_value&sort_order=DESC&type%5Barticle%5D=article&page=,8
