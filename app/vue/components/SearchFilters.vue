@@ -369,7 +369,7 @@
     //     })
     //   }
       emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected) {
-        this.$emit('change', [dateSelected, platformsSelected, sentimentsSelected])
+        this.$emit('changeFilter', [dateSelected, platformsSelected, sentimentsSelected])
       }
     },
 
