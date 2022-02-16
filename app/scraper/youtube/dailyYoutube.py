@@ -7,6 +7,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -329,10 +330,11 @@ def save_json(filename, new_dict):
 ############################### SCRAPING  ###############################
 # specify the path to chromedriver.exe
 s = Service(os.getenv("CHROMEDRIVER_PATH"))
-
+options = Options()
+options.headless = True
 
 # open the webpage
-driver = webdriver.Chrome(service=s)
+driver = webdriver.Chrome(service=s, options=options)
 
 
 start = time.time()
