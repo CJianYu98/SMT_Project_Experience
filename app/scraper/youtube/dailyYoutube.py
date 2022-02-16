@@ -112,7 +112,7 @@ def checkDate(video):
 
         if "," in uploaded:
             splitDate = uploaded.split(", ")
-            newDate = f'{splitDate[0]} {splitDate[1]}'
+            newDate = f"{splitDate[0]} {splitDate[1]}"
             date = datetime.strptime(newDate, "%b %d %Y")
         else:
             newDate = uploaded
@@ -351,6 +351,8 @@ for c in channels:
             VID_LIKES,
             VID_DESCRIPTION,
             VID_COMMENTS,
+            VID_URL,
+            VID_THUMBNAIL,
         ]
     )
 
@@ -364,10 +366,10 @@ for c in channels:
     for video in channelVideos.index:
         url = channelVideos["URL"][video]
         fullVideo(url)
-    
-        videoDetails.loc[len(videoDetails)-1, VID_URL] = url
-        thumbnail = channelVideos['Thumbnail'][video]
-        videoDetails.loc[len(videoDetails)-1, VID_THUMBNAIL] = thumbnail
+
+        videoDetails.loc[len(videoDetails) - 1, VID_URL] = url
+        thumbnail = channelVideos["Thumbnail"][video]
+        videoDetails.loc[len(videoDetails) - 1, VID_THUMBNAIL] = thumbnail
 
     # add records to dict
     jvideos = videoDetails.to_json(orient="records")
