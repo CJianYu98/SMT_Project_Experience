@@ -1,17 +1,15 @@
 import json
 import time
+import os
 from datetime import datetime, timedelta
 
 import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-
-# read json file for channels to scrape
-f = open("../accounts_to_scrape/youtube.json")
-channels = json.load(f)
 
 # CHANNEL VARIABLES
 isChannelContinueTrue = True
@@ -315,10 +313,20 @@ def save_json(filename, new_dict):
 
 ############################### SCRAPING  ###############################
 # specify the path to chromedriver.exe
-s = Service("C:\Program Files (x86)\chromedriver.exe")
+s = Service("/usr/bin/chromedriver")
+chromeOptions = Options()
+chromeOptions.headless = True
 
 # open the webpage
-driver = webdriver.Chrome(service=s)
+driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=chromeOptions)
+
+# Change to file directory
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
+# read json file for channels to scrape
+f = open("../accounts_to_scrape/youtube.json")
+channels = json.load(f)
+
 
 start = time.time()
 print("Beginning scraper now...")
