@@ -1,16 +1,43 @@
 import glob
 import json
-import math
 import os
 import time
+from datetime import datetime
+import math
 
+import pytz
 import requests
+import telegram_send
 from loguru import logger
 from tqdm import tqdm
+from dotenv import load_dotenv
+
+
+# Load environment variables
+load_dotenv()
+
+# Change to the actual file directory
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
+# Add logger configurations
+logger.add(
+    "../../../logs/scraper/reddit/daily_scraper.log",
+    format="{time} {file} {level} {message}",
+    level="DEBUG",
+)
+
+# Constants
+TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
 
 
 def crawl_commentid2comment():
-    OUTPUT_DIR = "./app/scraper/reddit/historical_2/yyyymm"
+    telegram_send.send(
+        messages=[
+            f"REDDIT HISTORICAL (2021-2022) --> Comments crawling started at {datetime.now(TIMEZONE)}."
+        ]
+    )
+
+    OUTPUT_DIR = "./yyyymm"
     BATCH_SIZE = 200
 
     # Loop through all monthly comment id text files
@@ -29,15 +56,9 @@ def crawl_commentid2comment():
 
         # Crawl comment data for given comment id
         with open(afile) as fi, open(f"{OUTPUT_FILE}", "a") as fo:
-            for l_index, line in enumerate(fi):
-                logger.debug(l_index)
-                print(">>>", line)
+            for line in fi:
                 sid, wrapped_comments = [t.strip() for t in line.split("\t")]
-                comments = eval(wrapped_comments)["data"]
-                print(">>>", comments)
-                time.sleep(15)
-                if comments:
-                    #                 logger.debug('?')
+                if comments := eval(wrapped_comments)["data"]:
                     for start_index in range(math.ceil(len(comments) / BATCH_SIZE)):
                         comments_to_crawl = comments[
                             start_index
@@ -55,10 +76,16 @@ def crawl_commentid2comment():
                                 "https://api.pushshift.io/reddit/comment/search",
                                 params=params,
                             )
-                            jobj = json.loads(response.text)
-                        except:
-                            logger.exception("conn error?")
-                            time.sleep(15)
+                            if response.status_code == 200:
+                                jobj = json.loads(response.text)
+                                logger.debug(f"Comments for {params} crawled successfully.")
+                            time.sleep(5)
+                        except Exception as e:
+                            logger.exception(e)
                             continue
                         fo.write(f"{sid}\t{comments_to_crawl}\t{json.dumps(jobj)}\n")
-                        time.sleep(1)
+
+        telegram_send.send(messages=[f"REDDIT HISTORICAL (2021-2022) --> {afile}'s comments crawled successfully."])
+        logger.debug(f"REDDIT HISTORICAL (2021-2022) --> {afile}'s comments crawled successfully.")
+
+    telegram_send.send(messages=["REDDIT HISTORICAL (2021-2022) --> CommentID2Comments crawled completely."])
