@@ -5,6 +5,9 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 from dotenv import load_dotenv
+from loguru import logger
+import telegram_send
+import pytz
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -18,7 +21,14 @@ load_dotenv()
 # # Change to file directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-# read json file for channels to scrape
+# Add logger configurations
+logger.add(
+    "../../../logs/scraper/youtube/daily_scraper.log",
+    format="{time} {file} {level} {message}",
+    level="DEBUG",
+)
+
+# Read json file for channels to scrape
 f = open("../accounts_to_scrape/youtube.json")
 channels = json.load(f)
 
@@ -57,6 +67,8 @@ videoDetails = pd.DataFrame(
 # DATE VARIABLES
 today = datetime.now()
 STOPDATE = today - (timedelta(days=int(os.getenv("CUTOFF_DAYS"))))  # stop at 2 weeks ago
+TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
+sg_datetime = datetime.now(TIMEZONE)
 
 ############################### Methods ###############################
 
@@ -93,7 +105,7 @@ def checkDate(video):
     try:
         driver.switch_to.window(driver.window_handles[1])
         driver.get(video)
-        wait = WebDriverWait(driver, 10)
+        wait = WebDriverWait(driver, 30)
 
         infoContainer = wait.until(
             EC.visibility_of_element_located(
@@ -110,20 +122,29 @@ def checkDate(video):
         uploaded = uploadedTag.find_element(
             By.XPATH, ".//yt-formatted-string[@class='style-scope ytd-video-primary-info-renderer']"
         ).text
+        logger.debug(uploaded)
 
+        
+        # if "Premiered" in uploaded:
+        #     splitDate = uploaded.split(" ")
+        #     newDate = f"{splitDate[1]} {splitDate[2][:-1]} {splitDate[3]}"
+        #     date = datetime.strptime(newDate, "%b %d %Y")
         if "," in uploaded:
-            splitDate = uploaded.split(", ")
-            newDate = f"{splitDate[0]} {splitDate[1]}"
+            splitDate = uploaded.split(" ")
+            newDate = f"{splitDate[-3]} {splitDate[-2][:-1]} {splitDate[-1]}"
             date = datetime.strptime(newDate, "%b %d %Y")
         else:
             newDate = uploaded
             date = datetime.strptime(newDate, "%d %b %Y")
+        logger.debug(splitDate)
+        logger.debug(newDate)
 
         # Note that earlier dates are considered smaller than later dates
         # i.e. 2022-01-14 < 2022-01-15
         result = 0 if STOPDATE > date else 1
         driver.switch_to.window(driver.window_handles[0])
     except Exception as e:
+        logger.exception(e)
         driver.switch_to.window(driver.window_handles[0])
     finally:
         return result
@@ -218,7 +239,7 @@ def fullChannel(channelURL):
     driver.switch_to.window(driver.window_handles[0])
 
     # Wait for initialize, in seconds
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(driver, 30)
 
     # Step 1: Get the main container housing all the videos
     mainContainer = wait.until(
@@ -252,70 +273,73 @@ def fullChannel(channelURL):
 # scrape details for each video
 def fullVideo(video):
     # global commentCounter
-    driver.get(video)
-    driver.execute_script("window.open('');")
-    driver.switch_to.window(driver.window_handles[0])
+    try:
+        driver.get(video)
+        driver.execute_script("window.open('');")
+        driver.switch_to.window(driver.window_handles[0])
 
-    # Wait for initialize, in seconds
-    wait = WebDriverWait(driver, 10)
+        # Wait for initialize, in seconds
+        wait = WebDriverWait(driver, 30)
 
-    # Video Info
-    infoContainer = wait.until(
-        EC.visibility_of_element_located(
-            (
-                By.XPATH,
-                "//div[@id='container' and @class='style-scope ytd-video-primary-info-renderer']",
+        # Video Info
+        infoContainer = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.XPATH,
+                    "//div[@id='container' and @class='style-scope ytd-video-primary-info-renderer']",
+                )
             )
         )
-    )
-    getInfo(infoContainer)
+        getInfo(infoContainer)
 
-    # Video Description
-    descContainer = wait.until(
-        EC.visibility_of_element_located(
-            (By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']")
+        # Video Description
+        descContainer = wait.until(
+            EC.visibility_of_element_located(
+                (By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']")
+            )
         )
-    )
-    description = descContainer.find_element(
-        By.XPATH,
-        "//div[@id='description' and @class='style-scope ytd-video-secondary-info-renderer']",
-    )
-    getDescription(description)
-
-    # Video Comments
-    commentContainer = wait.until(
-        EC.visibility_of_element_located(
-            (By.XPATH, "//div[@id='contents' and @class='style-scope ytd-item-section-renderer']")
+        description = descContainer.find_element(
+            By.XPATH,
+            "//div[@id='description' and @class='style-scope ytd-video-secondary-info-renderer']",
         )
-    )
-    wait.until(
-        EC.presence_of_all_elements_located(
-            (By.XPATH, "//div[@id='contents' and @class='style-scope ytd-item-section-renderer']")
+        getDescription(description)
+
+        # Video Comments
+        commentContainer = wait.until(
+            EC.visibility_of_element_located(
+                (By.XPATH, "//div[@id='contents' and @class='style-scope ytd-item-section-renderer']")
+            )
         )
-    )
-    commentsInView = commentContainer.find_elements(
-        By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']"
-    )
-
-    scrollVideoPage()
-    # Get scroll height
-    last_height = driver.execute_script("return document.documentElement.scrollHeight")
-
-    while isVideoContinueTrue:
-        # Scroll down to bottom
-        driver.execute_script("window.scrollTo(0,document.documentElement.scrollHeight)")
-        time.sleep(2)
-        # Calculate new scroll height and compare with last scroll height
-        new_height = driver.execute_script("return document.documentElement.scrollHeight")
-        if new_height == last_height:
-            break
-        last_height = new_height
-
+        wait.until(
+            EC.presence_of_all_elements_located(
+                (By.XPATH, "//div[@id='contents' and @class='style-scope ytd-item-section-renderer']")
+            )
+        )
         commentsInView = commentContainer.find_elements(
             By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']"
         )
 
-    getComments(commentsInView)
+        scrollVideoPage()
+        # Get scroll height
+        last_height = driver.execute_script("return document.documentElement.scrollHeight")
+
+        while isVideoContinueTrue:
+            # Scroll down to bottom
+            driver.execute_script("window.scrollTo(0,document.documentElement.scrollHeight)")
+            time.sleep(2)
+            # Calculate new scroll height and compare with last scroll height
+            new_height = driver.execute_script("return document.documentElement.scrollHeight")
+            if new_height == last_height:
+                break
+            last_height = new_height
+
+            commentsInView = commentContainer.find_elements(
+                By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']"
+            )
+
+        getComments(commentsInView)
+    except Exception as e:
+        logger.exception(e)
 
 
 # save file in json
@@ -332,17 +356,21 @@ def save_json(filename, new_dict):
 s = Service(os.getenv("CHROMEDRIVER_PATH"))
 options = Options()
 options.headless = True
+options.add_argument("chrome_options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36')")
+options.add_argument('--window-size=1920,1080')
 
 # open the webpage
 driver = webdriver.Chrome(service=s, options=options)
 
 
 start = time.time()
-print("Beginning scraper now...")
+logger.info(f"Daily data crawling started at {sg_datetime}")
 
 vdict = {}
 
 for c in channels:
+    logger.info(f"Scraping video URLs for channel {c}")
+
     # reset dataframes
     channelVideos = pd.DataFrame(columns=[CHNL_TITLE, CHNL_URL, CHNL_THUMBNAIL])
     videoDetails = pd.DataFrame(
@@ -363,29 +391,36 @@ for c in channels:
 
     # scrape the videos in the channel
     fullChannel(channelURL)
+    logger.info(f"Videos URLs for channel {c} scraped successfully")
 
     # scrape details of each video
     for video in channelVideos.index:
         url = channelVideos["URL"][video]
+        logger.info(f"Scraping video data for channel {c}: video url - {url}")
         fullVideo(url)
 
         videoDetails.loc[len(videoDetails) - 1, VID_URL] = url
         thumbnail = channelVideos["Thumbnail"][video]
         videoDetails.loc[len(videoDetails) - 1, VID_THUMBNAIL] = thumbnail
 
+        logger.info(f"Video data for channel {c}: video url - {url} scraped successfully")
+
     # add records to dict
     jvideos = videoDetails.to_json(orient="records")
     parsedV = json.loads(jvideos)
     vdict[channelName] = parsedV
+
+    telegram_send.send(messages=[f"YOUTUBE DAILY --> Data scraping for channel {c} has successfully completed."])
+    logger.info(f"Data scraping for channel {c} has successfully completed.")
 
 # export file in json
 save_json("daily_youtube_data.json", vdict)
 
 end = time.time()
 
-print("Daily Youtube scraping completed.")
-print("\n\n===========================================")
-print("TOTAL TIME TAKEN: ", end - start)
-print("===========================================\n\n")
+telegram_send.send(messages=[f"YOUTUBE DAILY --> Daily crawling completed.\nTOTAL TIME TAKEN: {end} - {start}"])
+logger.info(f"Daily crawling completed.\nTOTAL TIME TAKEN: {end} - {start}")
 
 driver.quit()
+os.system("pkill --oldest chrome")
+os.system("pkill --oldest chrome")
