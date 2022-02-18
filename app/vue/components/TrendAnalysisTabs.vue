@@ -19,13 +19,13 @@
         centered
     >
         <v-tab
-            v-for="item in items"
-            :key="item"
+            v-for="media in medias"
+            :key="media"
         >
-            <v-img :src="`/${item}_icon.png`">
+            <v-img :src="`/${media}_icon.png`">
             </v-img>
             &nbsp;
-            {{ item }}
+            {{ media }}
         </v-tab>
     </v-tabs>
 
@@ -103,7 +103,7 @@
     data () {
       return {
         tabs: null,
-        items: ['facebook','instagram','reddit','twitter','youtube'],
+        medias: ['facebook','instagram','reddit','twitter','youtube'],
       }
     },
   }
