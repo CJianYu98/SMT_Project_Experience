@@ -28,7 +28,7 @@ export default {
   components: { 
     HelpTextTooltip,
     TrendAnalysisMetricsCard,
-    TrendAnalysisTabs
+    TrendAnalysisTabs,
   },
   props: {
     overallStats: {

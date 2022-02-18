@@ -40,7 +40,8 @@
             :width="width"
             src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
             ></v-img> -->
-            <line-chart></line-chart>
+            
+            <line-chart class="chartBox"></line-chart>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -111,3 +112,10 @@ import LineChart from '@/components/LineChart'
     },
   }
 </script>
+
+<style>
+  .chartBox {
+    width: 800px;
+    height: 300px;
+  }
+</style>
