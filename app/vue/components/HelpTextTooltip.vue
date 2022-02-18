@@ -3,7 +3,7 @@
     <v-tooltip top max-width="180px">
       <template v-slot:activator="{ on, attrs }">
         <v-icon
-          color="deep-purple"
+          class="accent--text"
           v-bind="attrs"
           v-on="on"
         >

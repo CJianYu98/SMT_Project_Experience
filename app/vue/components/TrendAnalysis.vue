@@ -3,8 +3,7 @@
     elevation="3"
     class="mr-8 mt-8"
   >
-    
-    <v-card-title class="pb-4">
+    <v-card-title class="pb-4 accent--text">
       Trending Analysis
       <HelpTextTooltip :help-text="trendingTopicsHelpText"/>
     </v-card-title>

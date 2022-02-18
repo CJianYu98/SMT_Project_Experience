@@ -14,9 +14,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr class="primary--text">
               <td>
-                {{ overallStats.posts }}
+                {{ overallStats.posts.toLocaleString() }}
               </td>
               <td>
                 <TrendAnalysisUpwardTrend v-if="overallStats.trend > 0" :percentage-increase="overallStats.trend"/>
@@ -39,15 +39,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr class="primary--text">
               <td>
-                {{ overallStats.comments }}
+                {{ overallStats.comments.toLocaleString() }}
               </td>
               <td>
-                {{ overallStats.likes }}
+                {{ overallStats.likes.toLocaleString() }}
               </td>              
               <td>
-                {{ overallStats.shares }}
+                {{ overallStats.shares.toLocaleString() }}
               </td>
             </tr> 
           </tbody>
@@ -83,7 +83,7 @@
                   :alt="`${platform} icon`"
                 ></v-img>
               </td>
-              <td>
+              <td class="primary--text">
                 {{ (data.mentions * 100).toFixed(0) }}%
               </td>
               <td>
@@ -123,14 +123,6 @@ export default {
 </script>
 
 <style>
-/* th {
-  color: white;
-} */
-
-/* .v-application--is-ltr .v-data-table > .v-data-table__wrapper > table > tbody > tr > th, .v-application--is-ltr .v-data-table > .v-data-table__wrapper > table > thead > tr > th, .v-application--is-ltr .v-data-table > .v-data-table__wrapper > table > tfoot > tr > th {
-  color: white;
-} */
-
 
 </style>
 
