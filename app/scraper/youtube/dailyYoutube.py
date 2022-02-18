@@ -273,7 +273,7 @@ def fullChannel(channelURL):
 
 # scrape details for each video
 def fullVideo(video):
-    # global commentCounter
+    global videoDetails
     try:
         driver.get(video)
         driver.execute_script("window.open('');")
@@ -344,8 +344,10 @@ def fullVideo(video):
                 By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']"
             )
         
-        if len(commentsInView):
+        if (len(commentsInView) > 0):
             getComments(commentsInView)
+        else:
+            videoDetails.loc[len(videoDetails) - 1, VID_COMMENTS] = []
     except Exception as e:
         telegram_send.send(messages=[f"YOUTUBE DAILY --> Error occurred: {e}"])
         logger.exception(f"Error: {e}")
