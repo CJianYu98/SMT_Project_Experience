@@ -23,6 +23,7 @@
 import HelpTextTooltip from './HelpTextTooltip.vue'
 import TrendAnalysisMetricsCard from './TrendAnalysisMetricsCard.vue'
 import TrendAnalysisTabs from './TrendAnalysisTabs.vue'
+
 export default {
   components: { 
     HelpTextTooltip,

@@ -35,11 +35,12 @@
           <v-card-title class="text-h5">
             Number of Posts
           </v-card-title>
-          <v-img
+          <!-- <v-img
             :aspect-ratio="2.8"
             :width="width"
             src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
-            ></v-img>
+            ></v-img> -->
+            <line-chart></line-chart>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -96,9 +97,11 @@
 </template>
 
 <script>
+import LineChart from '@/components/LineChart'
+
   export default {
     components: {
-        
+        LineChart
     },
     data () {
       return {
