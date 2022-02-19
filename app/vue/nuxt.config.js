@@ -79,6 +79,9 @@ export default {
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
           background: colors.deepPurple.lighten5,
+          'positive': '#78D549',
+          'neutral': '#EFB727',
+          'negative': '#EB8159',
         },
         // options: { customProperties: true },
       },
@@ -86,5 +89,7 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    standalone: true,
+  },
 }
