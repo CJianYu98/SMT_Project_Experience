@@ -10,11 +10,30 @@
         <TrendAnalysis :overall-stats="overallStatsData" :platform-data="platformMetricsData"/>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="5">
+        <KeywordWordCloud :keywords-word-cloud="keywords"/>
+      </v-col>
+      <v-col cols="7">
+        <KeywordAnalysis />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="5">
+        <NoteworthyComments />
+      </v-col>
+      <v-col cols="7">
+
+      </v-col>      
+    </v-row>
   </div>
 </template>
 
 <script>
 import TrendAnalysis from '../components/TrendAnalysis.vue'
+import KeywordWordCloud from '../components/KeywordCard.vue'
+import KeywordAnalysis from '../components/KeywordAnalysis.vue'
+import NoteworthyComments from '../components/NoteworthyComments.vue'
 import TrendingTopics from '@/components/TrendingTopics.vue'
 import SearchFilters from '@/components/SearchFilters'
 export default {
@@ -23,6 +42,9 @@ export default {
     TrendingTopics,            
     SearchFilters,
     TrendAnalysis,
+    KeywordWordCloud,
+    KeywordAnalysis,
+    NoteworthyComments,
   },
   data: () => ({
     allData: [
@@ -123,7 +145,15 @@ export default {
         mentions: 0.20,
         trend: -0.2
       }
-    }
+    },
+    keywords: [
+      {word: "Running", size: "10", sentiment: "positive"}, 
+      {word: "Surfing", size: "20", sentiment: "neutral"}, 
+      {word: "Climbing", size: "50", sentiment: "negative"}, 
+      {word: "Kiting", size: "30", sentiment: "positive"}, 
+      {word: "Sailing", size: "20", sentiment: "negative"}, 
+      {word: "Snowboarding", size: "60", sentiment: "neutral"} 
+    ]
   }),
 
   computed: {
