@@ -11,8 +11,8 @@
               label: 'Line Chart',
               data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1545, 9841],
               fill: false,
-              borderColor: '#2554FF',
-              backgroundColor: '#2554FF',
+              borderColor: '#392A9B',
+              backgroundColor: '#392A9B',
               borderWidth: 1
             }
           ]
