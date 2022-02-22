@@ -28,6 +28,8 @@ logger.add(
 # Constants and variables
 S3_BUCKET_NAME = os.getenv("S3_REDDIT_DAILY_BUCKET_NAME")
 TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
+DATA_FOLDER = "./daily_data"
+LOG_DIVIDER = "=" * 20
 
 cutoff_days = int(os.getenv("CUTOFF_DAYS"))
 start_datetime = datetime.now()
@@ -40,13 +42,15 @@ tele_end_msg = "REDDIT DAILY --> \n"
 
 subs_dict = {}  # Storage dict
 counter = 0  # Post counter for tracking
-output_file = f"./daily_data/{date}.json"
+output_file = f"./{DATA_FOLDER}/{date}.json"
 s3_object_name = f"{date}.json"
 
+# Create temp folder to store scraped data
+os.makedirs(f"./{DATA_FOLDER}", exist_ok=True)
 
 try:
     telegram_send.send(messages=[tele_start_msg])
-    logger.info(f"Daily data crawling started at {sg_datetime}")
+    logger.info(f"{LOG_DIVIDER}\nDaily data crawling started at {sg_datetime}")
 
     # Intialize S3 client
     s3_client = boto3.client("s3")
@@ -89,11 +93,9 @@ try:
     # Upload file to S3 and delete file from local folder afterwards
     try:
         s3_client.upload_file(output_file, S3_BUCKET_NAME, s3_object_name)
-        tele_end_msg += f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.\n"
         logger.info(f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.")
 
         os.remove(output_file)
-        tele_end_msg += f"File: {output_file} removed from local folder successfully.\n"
         logger.info(f"File: {output_file} removed from local folder successfully.")
 
         tele_end_msg += f"Reddit daily scraping for {date} completed. {counter} posts scraped."

@@ -12,6 +12,7 @@ from loguru import logger
 # Load environment variables
 load_dotenv()
 
+
 # Change to file directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
@@ -22,21 +23,22 @@ logger.add(
     level="DEBUG",
 )
 
-# Constants
-TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
-
-
 def monthly_crawl_submissions():
+    # Constants
+    TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
+    last_created_utc = 1577836800  # 2020-01-01 00:00:00
+    cutoff_date = 1609459200  #2021-01-01 00:00:00
+    run = True
+
     OUTPUT_DIR = "./data"
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     telegram_send.send(
-        messages=[f"REDDIT HISTORICAL --> Submissions crawling started at {datetime.now(TIMEZONE)}"]
+        messages=[f"REDDIT HISTORICAL --> Submissions crawling for 2020-2021 started at {datetime.now(TIMEZONE)}"]
     )
 
     # Start scraping from given date
-    last_created_utc = os.getenv("SCRAPE_FROM_DATE")
-    while True:
+    while run:
         logger.debug(f"last_created_utc: {last_created_utc}")
         params = {
             "subreddit": "singapore",
@@ -50,12 +52,15 @@ def monthly_crawl_submissions():
             response = requests.get(
                 "https://api.pushshift.io/reddit/search/submission/", params=params
             )
-
             if response.status_code == 200:
                 jobj = json.loads(response.text)
                 if jobj.get("data"):
                     for submission in jobj.get("data"):
                         created_utc = submission["created_utc"]
+                        if datetime.fromtimestamp(created_utc, timezone.utc) > datetime.fromtimestamp(cutoff_date, timezone.utc):
+                            run = False
+                            break
+
                         yyyymm = datetime.fromtimestamp(created_utc, timezone.utc).strftime("%Y%m")
                         with open(f"{OUTPUT_DIR}/{yyyymm}.jsonl", "a") as fo:
                             fo.write(json.dumps(submission) + "\n")
@@ -74,4 +79,4 @@ def monthly_crawl_submissions():
             time.sleep(15)
             continue
     logger.debug("Submissions crawling complete.")
-    telegram_send.send(messages=["REDDIT HISTORICAL --> Submissions crawling completed."])
+    telegram_send.send(messages=["REDDIT HISTORICAL --> Submissions crawling for 2020-2021 is completed."])

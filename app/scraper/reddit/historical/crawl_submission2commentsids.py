@@ -8,7 +8,11 @@ import pytz
 import requests
 import telegram_send
 from loguru import logger
+from dotenv import load_dotenv
 from tqdm import tqdm
+
+# Load environment variables
+load_dotenv()
 
 # Change to the actual file directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -27,7 +31,7 @@ TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
 def crawl_submission2commentsids():
     telegram_send.send(
         messages=[
-            f"REDDIT HISTORICAL --> Comment IDs crawling started at {datetime.now(TIMEZONE)}."
+            f"REDDIT HISTORICAL --> Comment IDs crawling for 2020-2021 started at {datetime.now(TIMEZONE)}."
         ]
     )
 
@@ -69,4 +73,4 @@ def crawl_submission2commentsids():
         telegram_send.send(messages=[f"REDDIT HISTORICAL --> {afile}'s cids crawled successfully."])
         logger.debug(f"REDDIT HISTORICAL --> {afile}'s cids crawled successfully.")
 
-    telegram_send.send(messages=["REDDIT HISTORICAL --> Submission2CommentIDs crawled completely."])
+    telegram_send.send(messages=["REDDIT HISTORICAL --> Submission2CommentIDs for 2020-2021 crawled completely."])

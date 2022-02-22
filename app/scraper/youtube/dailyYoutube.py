@@ -4,13 +4,13 @@ import time
 from datetime import datetime, timedelta
 
 import pandas as pd
+import pytz
+import telegram_send
 from dotenv import load_dotenv
 from loguru import logger
-import telegram_send
-import pytz
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -120,7 +120,6 @@ def checkDate(video):
         ).text
         logger.debug(uploaded)
 
-        
         # if "Premiered" in uploaded:
         #     splitDate = uploaded.split(" ")
         #     newDate = f"{splitDate[1]} {splitDate[2][:-1]} {splitDate[3]}"
@@ -137,7 +136,6 @@ def checkDate(video):
             newDate = uploaded
             date = datetime.strptime(newDate, "%d %b %Y")
         logger.debug(date)
-        
 
         # Note that earlier dates are considered smaller than later dates
         # i.e. 2022-01-14 < 2022-01-15
@@ -312,7 +310,10 @@ def fullVideo(video):
         try:
             commentContainer = wait.until(
                 EC.visibility_of_element_located(
-                    (By.XPATH, "//div[@id='contents' and @class='style-scope ytd-item-section-renderer']")
+                    (
+                        By.XPATH,
+                        "//div[@id='contents' and @class='style-scope ytd-item-section-renderer']",
+                    )
                 )
             )
             # wait.until(
@@ -343,8 +344,8 @@ def fullVideo(video):
             commentsInView = commentContainer.find_elements(
                 By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']"
             )
-        
-        if (len(commentsInView) > 0):
+
+        if len(commentsInView) > 0:
             getComments(commentsInView)
         else:
             videoDetails.loc[len(videoDetails) - 1, VID_COMMENTS] = []
@@ -373,8 +374,10 @@ for c in channels:
     s = Service(os.getenv("CHROMEDRIVER_PATH"))
     options = Options()
     options.headless = True
-    options.add_argument("chrome_options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36')")
-    options.add_argument('--window-size=1920,1080')
+    options.add_argument(
+        "chrome_options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36')"
+    )
+    options.add_argument("--window-size=1920,1080")
 
     # open the webpage
     driver = webdriver.Chrome(service=s, options=options)
@@ -399,7 +402,7 @@ for c in channels:
     channelName = c
     channelURL = channels[c]
 
-    try: 
+    try:
         # scrape the videos in the channel
         fullChannel(channelURL)
         logger.info(f"Videos URLs for channel {c} scraped successfully")
@@ -426,7 +429,9 @@ for c in channels:
     parsedV = json.loads(jvideos)
     vdict[channelName] = parsedV
 
-    telegram_send.send(messages=[f"YOUTUBE DAILY --> Data scraping for channel {c} has successfully completed."])
+    telegram_send.send(
+        messages=[f"YOUTUBE DAILY --> Data scraping for channel {c} has successfully completed."]
+    )
     logger.info(f"Data scraping for channel {c} has successfully completed.")
 
     driver.quit()
@@ -439,6 +444,7 @@ save_json("daily_youtube_data.json", vdict)
 
 end = time.time()
 
-telegram_send.send(messages=[f"YOUTUBE DAILY --> Daily crawling completed.\nTOTAL TIME TAKEN: {end} - {start}"])
+telegram_send.send(
+    messages=[f"YOUTUBE DAILY --> Daily crawling completed.\nTOTAL TIME TAKEN: {end} - {start}"]
+)
 logger.info(f"Daily crawling completed.\nTOTAL TIME TAKEN: {end} - {start}")
-
