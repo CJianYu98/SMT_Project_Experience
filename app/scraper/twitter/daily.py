@@ -1,20 +1,3 @@
-import json
-import os
-import time
-from datetime import datetime, timezone
-
-import pytz
-import requests
-import telegram_send
-from dotenv import load_dotenv
-from loguru import logger
-
-# Load environment variables
-load_dotenv()
-
-
-# Change to this file directory
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
 # Import packages
 import os
 import sys
