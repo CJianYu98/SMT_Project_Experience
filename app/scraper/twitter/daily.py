@@ -71,31 +71,36 @@ try:
         # Intialize S3 client
         s3_client = boto3.client("s3")
 
+        telegram_send.send(
+            messages=[
+                f"TWITTER DAILY --> Daily scraping for {date}: ({i}) - {start_datetime.date()} data completed."
+            ]
+        )
+        logger.info(f"Daily scraping for {date}: {start_datetime.date()} data completed.")
+
+        # Wait for 5 minutes to prevent request limit
+        time.sleep(300)
+
         # Upload file to S3 and delete file from local folder afterwards
-        try:
-            s3_client.upload_file(output_file, S3_BUCKET_NAME, s3_object_name)
-            # tele_end_msg += f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.\n"
-            logger.info(f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.")
+        # try:
+        #     s3_client.upload_file(output_file, S3_BUCKET_NAME, s3_object_name)
+        #     # tele_end_msg += f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.\n"
+        #     logger.info(f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.")
 
-            os.remove(output_file)
-            # tele_end_msg += f"File: {output_file} removed from local folder successfully.\n"
-            logger.info(f"File: {output_file} removed from local folder successfully.")
+        #     os.remove(output_file)
+        #     # tele_end_msg += f"File: {output_file} removed from local folder successfully.\n"
+        #     logger.info(f"File: {output_file} removed from local folder successfully.")
+        # except botocore.exceptions.ClientError as s3_error:
+        #     tele_end_msg += f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.\n{s3_error}"
+        #     logger.exception(f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.")
+        # except Exception as e:
+        #     tele_end_msg += f"Error occured.\n{e}\n"
+        #     logger.exception("Error occured.")
+        # finally:
+        #     time.sleep(300)
+        #     continue
 
-            telegram_send.send(
-                messages=[
-                    f"TWITTER DAILY --> Daily scraping for {date}: ({i}) - {start_datetime.date()} data completed."
-                ]
-            )
-            logger.info(f"Daily scraping for {date}: {start_datetime.date()} data completed.")
-        except botocore.exceptions.ClientError as s3_error:
-            tele_end_msg += f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.\n{s3_error}"
-            logger.exception(f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.")
-        except Exception as e:
-            tele_end_msg += f"Error occured.\n{e}\n"
-            logger.exception("Error occured.")
-        finally:
-            time.sleep(300)
-            continue
+        
     tele_end_msg += f"Twitter daily scraping for {date} is fully completed."
     logger.info(f"Daily craping for {date} is fully completed.")
 

@@ -91,21 +91,22 @@ try:
         json.dump(subs_dict, f, ensure_ascii=False, indent=4, default=str)
 
     # Upload file to S3 and delete file from local folder afterwards
-    try:
-        s3_client.upload_file(output_file, S3_BUCKET_NAME, s3_object_name)
-        logger.info(f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.")
+    # try:
+    #     s3_client.upload_file(output_file, S3_BUCKET_NAME, s3_object_name)
+    #     logger.info(f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.")
 
-        os.remove(output_file)
-        logger.info(f"File: {output_file} removed from local folder successfully.")
+    #     os.remove(output_file)
+    #     logger.info(f"File: {output_file} removed from local folder successfully.")
 
-        tele_end_msg += f"Reddit daily scraping for {date} completed. {counter} posts scraped."
-        logger.info(f"Daily scraping for {date} completed. {counter} posts scraped.")
-    except botocore.exceptions.ClientError as s3_error:
-        tele_end_msg += f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.\n{s3_error}"
-        logger.exception(f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.")
-    except Exception as e:
-        tele_end_msg += f"Error occured.\n{e}\n"
-        logger.exception("Error occured.")
+    # except botocore.exceptions.ClientError as s3_error:
+    #     tele_end_msg += f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.\n{s3_error}"
+    #     logger.exception(f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.")
+    # except Exception as e:
+    #     tele_end_msg += f"Error occured.\n{e}\n"
+    #     logger.exception("Error occured.")
+    
+    tele_end_msg += f"Reddit daily scraping for {date} completed. {counter} posts scraped."
+    logger.info(f"Daily scraping for {date} completed. {counter} posts scraped.")
 
 except botocore.exceptions.ClientError as aws_error:
     tele_end_msg += f"Error while connecting to AWS S3 client.\n{aws_error}\n"
