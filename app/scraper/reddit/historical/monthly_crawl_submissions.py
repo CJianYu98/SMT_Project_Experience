@@ -23,18 +23,21 @@ logger.add(
     level="DEBUG",
 )
 
+
 def monthly_crawl_submissions():
     # Constants
     TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
     last_created_utc = 1577836800  # 2020-01-01 00:00:00
-    cutoff_date = 1609459200  #2021-01-01 00:00:00
+    cutoff_date = 1609459200  # 2021-01-01 00:00:00
     run = True
 
     OUTPUT_DIR = "./data"
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     telegram_send.send(
-        messages=[f"REDDIT HISTORICAL --> Submissions crawling for 2020-2021 started at {datetime.now(TIMEZONE)}"]
+        messages=[
+            f"REDDIT HISTORICAL --> Submissions crawling for 2020-2021 started at {datetime.now(TIMEZONE)}"
+        ]
     )
 
     # Start scraping from given date
@@ -57,7 +60,9 @@ def monthly_crawl_submissions():
                 if jobj.get("data"):
                     for submission in jobj.get("data"):
                         created_utc = submission["created_utc"]
-                        if datetime.fromtimestamp(created_utc, timezone.utc) > datetime.fromtimestamp(cutoff_date, timezone.utc):
+                        if datetime.fromtimestamp(
+                            created_utc, timezone.utc
+                        ) > datetime.fromtimestamp(cutoff_date, timezone.utc):
                             run = False
                             break
 
@@ -79,4 +84,6 @@ def monthly_crawl_submissions():
             time.sleep(15)
             continue
     logger.debug("Submissions crawling complete.")
-    telegram_send.send(messages=["REDDIT HISTORICAL --> Submissions crawling for 2020-2021 is completed."])
+    telegram_send.send(
+        messages=["REDDIT HISTORICAL --> Submissions crawling for 2020-2021 is completed."]
+    )

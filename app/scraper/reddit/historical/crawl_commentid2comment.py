@@ -1,17 +1,16 @@
 import glob
 import json
+import math
 import os
 import time
 from datetime import datetime
-import math
 
 import pytz
 import requests
 import telegram_send
+from dotenv import load_dotenv
 from loguru import logger
 from tqdm import tqdm
-from dotenv import load_dotenv
-
 
 # Load environment variables
 load_dotenv()
@@ -64,7 +63,9 @@ def crawl_commentid2comment():
                             for start_index in range(math.ceil(len(comments) / BATCH_SIZE)):
                                 comments_to_crawl = comments[
                                     start_index
-                                    * BATCH_SIZE : min(len(comments), (start_index + 1) * BATCH_SIZE)
+                                    * BATCH_SIZE : min(
+                                        len(comments), (start_index + 1) * BATCH_SIZE
+                                    )
                                 ]
                                 if not comments_to_crawl:
                                     continue
@@ -87,14 +88,23 @@ def crawl_commentid2comment():
                                     continue
                                 fo.write(f"{sid}\t{comments_to_crawl}\t{json.dumps(jobj)}\n")
                     except Exception as e:
-                        telegram_send.send(messages=[f"REDDIT HISTORICAL (2020-2021) --> Error: {e}"])
+                        telegram_send.send(
+                            messages=[f"REDDIT HISTORICAL (2020-2021) --> Error: {e}"]
+                        )
                         logger.exception(e)
 
-            telegram_send.send(messages=[f"REDDIT HISTORICAL (2020-2021) --> {afile}'s comments crawled successfully."])
-            logger.debug(f"REDDIT HISTORICAL (2020-2021) --> {afile}'s comments crawled successfully.")
+            telegram_send.send(
+                messages=[
+                    f"REDDIT HISTORICAL (2020-2021) --> {afile}'s comments crawled successfully."
+                ]
+            )
+            logger.debug(
+                f"REDDIT HISTORICAL (2020-2021) --> {afile}'s comments crawled successfully."
+            )
         except Exception as e:
             telegram_send.send(messages=[f"REDDIT HISTORICAL (2020-2021) --> Error: {e}"])
             logger.exception(e)
 
-    telegram_send.send(messages=["REDDIT HISTORICAL (2020-2021) --> CommentID2Comments crawled completely."])
-    
+    telegram_send.send(
+        messages=["REDDIT HISTORICAL (2020-2021) --> CommentID2Comments crawled completely."]
+    )

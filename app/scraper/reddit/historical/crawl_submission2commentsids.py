@@ -7,8 +7,8 @@ from datetime import datetime
 import pytz
 import requests
 import telegram_send
-from loguru import logger
 from dotenv import load_dotenv
+from loguru import logger
 from tqdm import tqdm
 
 # Load environment variables
@@ -73,4 +73,6 @@ def crawl_submission2commentsids():
         telegram_send.send(messages=[f"REDDIT HISTORICAL --> {afile}'s cids crawled successfully."])
         logger.debug(f"REDDIT HISTORICAL --> {afile}'s cids crawled successfully.")
 
-    telegram_send.send(messages=["REDDIT HISTORICAL --> Submission2CommentIDs for 2020-2021 crawled completely."])
+    telegram_send.send(
+        messages=["REDDIT HISTORICAL --> Submission2CommentIDs for 2020-2021 crawled completely."]
+    )
