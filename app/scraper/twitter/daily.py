@@ -16,10 +16,9 @@ from loguru import logger
 load_dotenv()
 
 # Constants and variables
-S3_BUCKET_NAME = os.getenv("S3_TWITTER_DAILY_BUCKET_NAME")
 TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
 TWITTER_DAILY_DATA_PATH = os.getenv("TWITTER_DAILY_DATA_PATH")
-TWITTER_DAILY_LOG_FILE = os.getenv("TWITTER_DAILY_LOG_PATH")
+TWITTER_DAILY_LOG_FILE = os.getenv("TWITTER_DAILY_LOG_FILE")
 LOG_DIVIDER = "=" * 20
 
 start_datetime = datetime.now()

@@ -18,17 +18,10 @@ load_dotenv()
 # Change to file directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-# Add logger configurations
-logger.add(
-    "../../../logs/scraper/reddit/daily_scraper.log",
-    format="{time} {file} {level} {message}",
-    level="DEBUG",
-)
-
 # Constants and variables
-S3_BUCKET_NAME = os.getenv("S3_REDDIT_DAILY_BUCKET_NAME")
 TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
-DATA_FOLDER = "./daily_data"
+REDDIT_DAILY_DATA_PATH = os.getenv("REDDIT_DAILY_DATA_PATH")
+REDDIT_DAILY_LOG_FILE = os.getenv("REDDIT_DAILY_LOG_FILE")
 LOG_DIVIDER = "=" * 20
 
 cutoff_days = int(os.getenv("CUTOFF_DAYS"))
@@ -42,11 +35,15 @@ tele_end_msg = "REDDIT DAILY --> \n"
 
 subs_dict = {}  # Storage dict
 counter = 0  # Post counter for tracking
-output_file = f"./{DATA_FOLDER}/{date}.json"
+output_file = f"{REDDIT_DAILY_DATA_PATH}/{date}.json"
 s3_object_name = f"{date}.json"
 
-# Create temp folder to store scraped data
-os.makedirs(f"./{DATA_FOLDER}", exist_ok=True)
+# Add logger configurations
+logger.add(
+    REDDIT_DAILY_LOG_FILE,
+    format="{time} {file} {level} {message}",
+    level="DEBUG",
+)
 
 try:
     telegram_send.send(messages=[tele_start_msg])
@@ -89,28 +86,10 @@ try:
     # Save data to json file
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(subs_dict, f, ensure_ascii=False, indent=4, default=str)
-
-    # Upload file to S3 and delete file from local folder afterwards
-    # try:
-    #     s3_client.upload_file(output_file, S3_BUCKET_NAME, s3_object_name)
-    #     logger.info(f"File: {output_file} has been uploaded to {S3_BUCKET_NAME}.")
-
-    #     os.remove(output_file)
-    #     logger.info(f"File: {output_file} removed from local folder successfully.")
-
-    # except botocore.exceptions.ClientError as s3_error:
-    #     tele_end_msg += f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.\n{s3_error}"
-    #     logger.exception(f"File: {output_file} failed to upload to {S3_BUCKET_NAME}.")
-    # except Exception as e:
-    #     tele_end_msg += f"Error occured.\n{e}\n"
-    #     logger.exception("Error occured.")
     
     tele_end_msg += f"Reddit daily scraping for {date} completed. {counter} posts scraped."
     logger.info(f"Daily scraping for {date} completed. {counter} posts scraped.")
 
-except botocore.exceptions.ClientError as aws_error:
-    tele_end_msg += f"Error while connecting to AWS S3 client.\n{aws_error}\n"
-    logger.exception("Error while connecting to AWS S3 client.")
 except praw.exceptions.PRAWException as reddit_error:
     tele_end_msg += f"Error with Reddit API.\n{reddit_error}\n"
     logger.exception("Error with Reddit API.")
