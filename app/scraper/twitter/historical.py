@@ -15,6 +15,9 @@ from loguru import logger
 # Load environment variables
 load_dotenv()
 
+# # Change to file directory
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
 # Constants and variables
 S3_BUCKET_NAME = os.getenv("S3_TWITTER_HISTORICAL_BUCKET_NAME")
 TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
@@ -29,6 +32,13 @@ year = from_date.split("-")[0]
 
 tele_start_msg = f"TWITTER HISTORICAL --> Historical data crawling started from {from_date} to {end_date} at {sg_datetime}"
 tele_end_msg = "TWITTER HISTORICAL --> \n"
+
+# Add logger configurations
+logger.add(
+    "../../../logs/scraper/twitter/historical.log",
+    format="{time} {file} {level} {message}",
+    level="DEBUG",
+)
 
 os.makedirs("./historical_data", exist_ok=True)
 
@@ -51,6 +61,8 @@ try:
         ).get_items()
     ):
 
+        logger.debug(tweet)
+
         tweets_list.append(
             [
                 tweet.date,
@@ -59,7 +71,7 @@ try:
                 tweet.content,
                 tweet.url,
                 tweet.user.verified,
-                tweet.profileImageUrl,
+                # tweet.profileImageUrl,
                 tweet.replyCount,
                 tweet.retweetCount,
                 tweet.likeCount,
@@ -68,9 +80,9 @@ try:
             ]
         )
 
-        if i > max_tweet:
-            tele_end_msg += f"maximum hit, scrape again from date: {tweet.date}"
-            break
+        # if i > max_tweet:
+        #     tele_end_msg += f"maximum hit, scrape again from date: {tweet.date}"
+        #     break
 
         # Creating a dataframe from the tweets list above
         tweets_df = pd.DataFrame(
@@ -82,7 +94,7 @@ try:
                 "Text",
                 "URL",
                 "isVerified",
-                "Profile URL",
+                # "Profile URL",
                 "Reply Count",
                 "Retweet Count",
                 "Like Count",
