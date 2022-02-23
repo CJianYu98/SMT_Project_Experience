@@ -229,6 +229,18 @@ def getComments(container):
         comments.extend(comment.text for comment in anchorTag)
     videoDetails.loc[len(videoDetails) - 1, VID_COMMENTS] = comments
 
+def clickMoreComments(container):
+    for readMore in container:
+        try:
+            moreTag = readMore.find_element(
+                By.XPATH, ".//ytd-expander[@id='expander' and @class='style-scope ytd-comment-renderer']"
+            )
+            moreText = moreTag.find_element(
+                By.XPATH,".//tp-yt-paper-button[@id='more' and @class='style-scope ytd-expander']/span"
+            )
+            moreText.click()
+        except Exception as e:
+            logger.exception(f"No click more element in comment {e}")
 
 # scrape all the videos for each channel
 def fullChannel(channelURL):
@@ -304,7 +316,7 @@ def fullVideo(video):
             )
             getDescription(description)
         except Exception as e:
-            logger.exception(f"Error {e}")
+            logger.exception(f"Error: Unable to get video description {e}")
 
         # Video Comments
         try:
@@ -325,7 +337,7 @@ def fullVideo(video):
                 By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']"
             )
         except Exception as e:
-            logger.exception(f"Error {e}")
+            logger.exception(f"Error: Unable to locate comments container {e}")
 
         scrollVideoPage()
         # Get scroll height
@@ -344,14 +356,25 @@ def fullVideo(video):
             commentsInView = commentContainer.find_elements(
                 By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']"
             )
+        #find long comments that require read more to expand
+        readMoreInView = commentContainer.find_elements(
+            By.XPATH,"//div[@id='main' and @class='style-scope ytd-comment-renderer']"
+        )
+        try:
+            clickMoreComments(readMoreInView)
 
+            commentsInView = commentContainer.find_elements(
+                    By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']"
+            )
+        except Exception as e:
+            logger.exception(f"Error: Unable to expand comments {e}")
         if len(commentsInView) > 0:
             getComments(commentsInView)
         else:
             videoDetails.loc[len(videoDetails) - 1, VID_COMMENTS] = []
     except Exception as e:
         telegram_send.send(messages=[f"YOUTUBE DAILY --> Error occurred: {e}"])
-        logger.exception(f"Error: {e}")
+        logger.exception(f"Error: Unable to scrape video {e}")
 
 
 # save file in json
@@ -407,7 +430,7 @@ for c in channels:
         fullChannel(channelURL)
         logger.info(f"Videos URLs for channel {c} scraped successfully")
     except Exception as e:
-        logger.exception(f"Error {e}")
+        logger.exception(f"Error: Unable to scrape video URLs for channel {c} sucessfully {e}")
 
     # scrape details of each video
     for video in channelVideos.index:
@@ -422,7 +445,7 @@ for c in channels:
 
             logger.info(f"Video data for channel {c}: video url - {url} scraped successfully")
         except Exception as e:
-            logger.exception(f"Error {e}")
+            logger.exception(f"Error: Unable to scrape video data for channel {c}: video url - {url} successfully {e}")
 
     # add records to dict
     jvideos = videoDetails.to_json(orient="records")
