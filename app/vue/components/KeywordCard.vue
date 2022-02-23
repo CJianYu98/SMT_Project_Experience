@@ -3,7 +3,7 @@
     elevation="3"
     class="mx-8 mt-8"
   >
-    <v-card-title class="pb-4 accent--text">
+    <v-card-title class="pb-4 accent--text text-h6">
       Top Keywords
       <HelpTextTooltip :help-text="wordcloudHelpText"/>
     </v-card-title>

@@ -33,7 +33,7 @@
           max-width="30"
         />
       </router-link>
-      <v-toolbar-title class="accent--text">
+      <v-toolbar-title class="accent--text text-h5">
         <router-link to="/" tag="span">
           {{ appTitle }}
         </router-link>
@@ -47,7 +47,7 @@
           :key="item.title"
           :to="item.path"
           active-class="navSelected"
-          class="accent--text">
+          class="accent--text text-h6">
           {{ item.title }}
         </v-btn>
       </v-toolbar-items>
@@ -57,8 +57,7 @@
 </template>
 
 <script>
-// import HelloWorld from "./components/HelloWorld";
-import "@fontsource/poppins/500.css"
+
 
 export default {
   name: "App",
