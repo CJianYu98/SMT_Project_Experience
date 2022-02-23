@@ -1,0 +1,10 @@
+boto3
+loguru 
+pandas 
+praw
+python-dotenv 
+pytz 
+requests 
+selenium 
+telegram-send
+tqdm
