@@ -21,18 +21,14 @@ load_dotenv()
 # # Change to file directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-# Add logger configurations
-logger.add(
-    "../../../logs/scraper/youtube/daily_scraper.log",
-    format="{time} {file} {level} {message}",
-    level="DEBUG",
-)
-
 # Read json file for channels to scrape
 f = open("../accounts_to_scrape/youtube.json")
 channels = json.load(f)
 
 # Constants
+YOUTUBE_DAILY_DATA_PATH = os.getenv("YOUTUBE_DAILY_DATA_PATH")
+YOUTUBE_DAILY_LOG_FILE = os.getenv("YOUTUBE_DAILY_LOG_FILE")
+
 CHNL_TITLE = "Title"
 CHNL_URL = "URL"
 CHNL_THUMBNAIL = "Thumbnail"
@@ -60,11 +56,18 @@ videoDetails = pd.DataFrame(
     ]
 )
 
-# DATE VARIABLES
+# Date Variables
 today = datetime.now()
 STOPDATE = today - (timedelta(days=int(os.getenv("CUTOFF_DAYS"))))  # stop at 2 weeks ago
 TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
 sg_datetime = datetime.now(TIMEZONE)
+
+# Add logger configurations
+logger.add(
+    YOUTUBE_DAILY_LOG_FILE,
+    format="{time} {file} {level} {message}",
+    level="DEBUG",
+)
 
 ############################### Methods ###############################
 
@@ -128,14 +131,14 @@ def checkDate(video):
             splitDate = uploaded.split(" ")
             newDate = f"{splitDate[-3]} {splitDate[-2][:-1]} {splitDate[-1]}"
             date = datetime.strptime(newDate, "%b %d %Y")
-            logger.debug(newDate)
-            logger.debug(splitDate)
+            # logger.debug(newDate)
+            # logger.debug(splitDate)
         elif "ago" in uploaded:
             date = datetime.now()
         else:
             newDate = uploaded
             date = datetime.strptime(newDate, "%d %b %Y")
-        logger.debug(date)
+        # logger.debug(date)
 
         # Note that earlier dates are considered smaller than later dates
         # i.e. 2022-01-14 < 2022-01-15
@@ -240,7 +243,8 @@ def clickMoreComments(container):
             )
             moreText.click()
         except Exception as e:
-            logger.exception(f"No click more element in comment {e}")
+            continue
+            # logger.debug(f"No click more element in comment {e}")
 
 # scrape all the videos for each channel
 def fullChannel(channelURL):
@@ -388,6 +392,7 @@ def save_json(filename, new_dict):
 
 ############################### SCRAPING  ###############################
 start = time.time()
+telegram_send.send(messages=[f"YOUTUBE DAILY --> Daily data crawling started at {sg_datetime}"])
 logger.info(f"Daily data crawling started at {sg_datetime}")
 
 vdict = {}
@@ -463,7 +468,7 @@ for c in channels:
     time.sleep(3)
 
 # export file in json
-save_json("daily_youtube_data.json", vdict)
+save_json(YOUTUBE_DAILY_DATA_PATH, vdict)
 
 end = time.time()
 
