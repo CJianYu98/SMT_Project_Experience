@@ -4,14 +4,29 @@
 // $font-size-root: 20px;
 
 
-// $font-size-root: 16px;
+$font-size-root: 16px;
+    
+$heading-font-family: "Poppins", sans-serif;
+$body-font-family: "Inter", sans-serif;
 
-// $heading-font-family: "Poppins", sans-serif;
-// $body-font-family: "Poppins", sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $heading-font-family;
+}
 
-// // .v-application {
-// //   font-family: $body-font-family
-// // }
+h6 {
+  font-size: 12px;
+}
 
-// @import "~@fontsource/poppins/index.css";
-// @import "~vuetify/src/styles/styles.sass";
+body {
+  font-family: $body-font-family;
+}
+
+@import "@fontsource/poppins/600.css"; // Defaults to weight 400 with normal variant.
+@import "@fontsource/inter/latin.css"; // Defaults to weight 400 with normal variant.
+@import "~vuetify/src/styles/styles.sass"; //this has to be last
+

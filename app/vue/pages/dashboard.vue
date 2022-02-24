@@ -4,23 +4,32 @@
     <!--  align="stretch" in v-row works with d-flex in v-col -->
     <v-row>
       <v-col cols="4">
-        <TrendingTopics :top-five-topics="topFiveTopicsData" @clickQuery="updateDashboardWithQuery"/>
+        <TrendingTopics 
+          :top-five-topics="topFiveTopicsData" 
+          @clickQuery="updateDashboardWithQuery"
+        />
       </v-col>
       <v-col cols="8">
-        <TrendAnalysis :overall-stats="overallStatsData" :platform-data="platformMetricsData"/>
+        <TrendAnalysis 
+          :overall-stats="overallStatsData" 
+          :platform-data="platformMetricsData"
+        />
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="5">
-        <KeywordWordCloud :keywords-word-cloud="keywords"/>
+        <KeywordCard
+          :keywords-word-cloud="keywords" 
+          :keywords-word-cloud-legend="keywordsWordCloudLegend"
+        />
       </v-col>
       <v-col cols="7">
-        <KeywordAnalysis />
+        <!-- <KeywordAnalysis /> -->
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="5">
-        <NoteworthyComments />
+        <!-- <NoteworthyComments /> -->
       </v-col>
       <v-col cols="7">
 
@@ -31,9 +40,9 @@
 
 <script>
 import TrendAnalysis from '../components/TrendAnalysis.vue'
-import KeywordWordCloud from '../components/KeywordCard.vue'
-import KeywordAnalysis from '../components/KeywordAnalysis.vue'
-import NoteworthyComments from '../components/NoteworthyComments.vue'
+import KeywordCard from '../components/KeywordCard.vue'
+// import KeywordAnalysis from '../components/KeywordAnalysis.vue'
+// import NoteworthyComments from '../components/NoteworthyComments.vue'
 import TrendingTopics from '@/components/TrendingTopics.vue'
 import SearchFilters from '@/components/SearchFilters'
 export default {
@@ -42,9 +51,9 @@ export default {
     TrendingTopics,            
     SearchFilters,
     TrendAnalysis,
-    KeywordWordCloud,
-    KeywordAnalysis,
-    NoteworthyComments,
+    KeywordCard,
+    // KeywordAnalysis,
+    // NoteworthyComments,
   },
   data: () => ({
     allData: [
@@ -153,7 +162,12 @@ export default {
       {word: "Kiting", size: "30", sentiment: "positive"}, 
       {word: "Sailing", size: "20", sentiment: "negative"}, 
       {word: "Snowboarding", size: "60", sentiment: "neutral"} 
-    ]
+    ],
+    keywordsWordCloudLegend: {
+      positive: "#78D549",
+      neutral: "#EFB727",
+      negative: "#EB8159"
+    } 
   }),
 
   computed: {

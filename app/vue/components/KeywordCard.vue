@@ -2,26 +2,34 @@
   <v-card
     elevation="3"
     class="mx-8 mt-8"
+    height="100%"
   >
-    <v-card-title class="pb-4 accent--text">
+    <v-card-title class="pb-4 accent--text text-h6">
       Top Keywords
       <HelpTextTooltip :help-text="wordcloudHelpText"/>
     </v-card-title>
-    <KeywordWordCloud :keywords-word-cloud="keywordsWordCloud"/>
+    <KeywordWordCloudLegend :keywords-word-cloud-legend="keywordsWordCloudLegend"/>
+    <KeywordWordCloud :keywords-word-cloud="keywordsWordCloud" :keywords-word-cloud-legend="keywordsWordCloudLegend"/>
   </v-card>
 </template>
 
 <script>
 import HelpTextTooltip from './HelpTextTooltip.vue'
 import KeywordWordCloud from './KeywordWordCloud.vue'
+import KeywordWordCloudLegend from './KeywordWordCloudLegend.vue'
 export default {
   components: {
     HelpTextTooltip,
-    KeywordWordCloud
+    KeywordWordCloud,
+    KeywordWordCloudLegend
   },
   props: {
     keywordsWordCloud: {
       type: Array,
+      required: true
+    },
+    keywordsWordCloudLegend: {
+      type: Object,
       required: true
     }
   },

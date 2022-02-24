@@ -4,7 +4,7 @@
       <v-row>
         <v-col class="pb-1">
           <v-list-item-title 
-            class="text-h6 mb-1 pl-3" 
+            class="mb-1 pl-3 font-weight-bold" 
             v-text="`${index+1}. ${topicAssigned.name}`"
           >
           </v-list-item-title>
