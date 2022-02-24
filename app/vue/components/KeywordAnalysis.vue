@@ -3,15 +3,22 @@
     elevation="3"
     class="mx-8 mt-8"
   >
-    <v-card-title class="pb-4 accent--text">
+    <!-- <v-card-title class="pb-4 accent--text">
       Keyword Relational Graph
       <HelpTextTooltip :help-text="keywordAnalysisHelpText"/>
-    </v-card-title>
+    </v-card-title> -->
     <v-row>
       <v-col>
+        <v-card-title class="pb-4 accent--text">
+          Keyword Relational Graph
+          <HelpTextTooltip :help-text="keywordAnalysisHelpText"/>
+        </v-card-title>
         <KeywordRelationalGraph />
       </v-col>
       <v-col>
+        <v-card-title class="pb-4 accent--text">
+          Related Comments
+        </v-card-title>
         <KeywordRelatedComments />
       </v-col>
     </v-row>
