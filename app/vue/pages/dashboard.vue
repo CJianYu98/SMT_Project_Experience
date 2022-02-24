@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-10">
     <SearchFilters @changeFilter="rerenderDashboard"/>
     <!--  align="stretch" in v-row works with d-flex in v-col -->
     <v-row>
@@ -265,6 +265,15 @@ export default {
           trend: -0.2
         }
       }
+
+      this.keywords = [
+        {word: "Chocolate", size: "10", sentiment: "positive"}, 
+        {word: "Chicken Rice", size: "20", sentiment: "neutral"}, 
+        {word: "Bingsoo", size: "50", sentiment: "negative"}, 
+        {word: "Kiting", size: "30", sentiment: "positive"}, 
+        {word: "Sailing", size: "20", sentiment: "negative"}, 
+        {word: "Snowboarding", size: "60", sentiment: "neutral"} 
+      ]
 
 
       console.log("=== END rerenderDashboard ===")
