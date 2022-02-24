@@ -18,6 +18,14 @@ export default {
 
     // }
   }),
+  computed: {
+    
+  },
+  watch: {
+    keywordsWordCloud(val) {
+      this.generateKeywordsWordcloud().update(val)
+    }
+  },
   mounted() {
     // this.generateKeywordsWordcloud();
     this.generateKeywordsWordcloud().update(this.keywordsWordCloud)
@@ -115,15 +123,6 @@ export default {
       }
     }
   },
-  computed: {
-    
-  },
-  watch: {
-    keywordsWordCloud(val) {
-      this.generateKeywordsWordcloud().update(val)
-    }
-  },
-
 }
 
 </script>

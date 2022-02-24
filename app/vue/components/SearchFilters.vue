@@ -1,6 +1,6 @@
 <template>
   <!-- <v-app> -->
-  <div class="mt-2 mb-n3" id="searchFilter">
+  <div id="searchFilter" class="mt-2 mb-n3">
     <v-container fluid class="px-8 mt-n2 pb-0">
       <v-row no-gutters align="stretch">
         <v-col
@@ -68,14 +68,14 @@
         <div>
           <div class="d-block">
             <v-select
-              d-block
               v-model="dateSelected"
+              d-block
               :items="dateFilter"
               item-text="date"
               label="Select a date period"
               outlined
-              @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected)"
               dense
+              @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected)"
             >
               <template slot="selection" slot-scope="data">
                 <span v-if="data.item.date === 'Custom'" class="accent--text">{{ data.item.period }}</span>
@@ -86,12 +86,13 @@
 
           <div class="d-block">
             <v-date-picker 
-              d-block 
+              v-if="dateSelected == 'Custom'"
               v-model="dateRange" 
+              d-block 
               no-title 
               range 
               scrollable 
-              v-if="dateSelected == 'Custom'">
+            >
               <v-spacer></v-spacer>
             </v-date-picker>
           </div>

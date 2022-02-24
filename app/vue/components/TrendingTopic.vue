@@ -10,7 +10,7 @@
           </v-list-item-title>
         </v-col>
         <v-col>
-          <v-list-item-subtitle v-text="`${topicAssigned.mentions.toLocaleString()} mentions`" class="text-right pr-3 primary--text">></v-list-item-subtitle>
+          <v-list-item-subtitle class="text-right pr-3 primary--text" v-text="`${topicAssigned.mentions.toLocaleString()} mentions`">></v-list-item-subtitle>
         </v-col>
       </v-row>
 
@@ -37,17 +37,19 @@
 
 <script>
 export default {
-  data: () => ({
-    
-  }),
   props: {
     index: {
       type: Number,
+      required: true,
     },
     topicAssigned: {
-      topic: Object,
+      type: Object,
+      required: true,
     }
   },
+  data: () => ({
+    
+  }),
   methods: {
     emitQueryToDashboard(topic) {
       console.log("=== START emitQueryToDashboard ===")
