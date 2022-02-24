@@ -158,7 +158,7 @@ import LineChart from '@/components/LineChart'
           datasets: [
             {
               label: 'Instagram',
-              data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1545, 5000, 8500, 9841],
+              data: [3300,	5450,	9042,	50,	2552,	7241,	4259,	5157,	145, 5800, 6600, 8841],
               fill: false,
               borderColor: '#392A9B',
               backgroundColor: '#392A9B',
@@ -172,7 +172,7 @@ import LineChart from '@/components/LineChart'
           datasets: [
             {
               label: 'Reddit',
-              data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1545, 5000, 8500, 9841],
+              data: [7700,	1150,	342,	7050,	5522,	341,	259,	1577,	2345, 6000, 8000, 9041],
               fill: false,
               borderColor: '#392A9B',
               backgroundColor: '#392A9B',
@@ -186,7 +186,7 @@ import LineChart from '@/components/LineChart'
           datasets: [
             {
               label: 'Twitter',
-              data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1545, 5000, 8500, 9841],
+              data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1445, 3000, 4500, 6641],
               fill: false,
               borderColor: '#392A9B',
               backgroundColor: '#392A9B',
@@ -200,7 +200,7 @@ import LineChart from '@/components/LineChart'
           datasets: [
             {
               label: 'Youtube',
-              data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1545, 5000, 8500, 9841],
+              data: [6880,	550,	2342,	6070,	522,	2241,	1259,	3157,	1545, 6000, 8500, 9841],
               fill: false,
               borderColor: '#392A9B',
               backgroundColor: '#392A9B',
