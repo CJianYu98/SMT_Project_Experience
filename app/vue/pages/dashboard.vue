@@ -1,12 +1,12 @@
 <template>
   <div class="mb-10">
-    <SearchFilters @changeFilter="rerenderDashboard"/>
+    <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
     <!--  align="stretch" in v-row works with d-flex in v-col -->
     <v-row>
       <v-col cols="4">
         <TrendingTopics 
           :top-five-topics="topFiveTopicsData" 
-          @clickQuery="updateDashboardWithQuery"
+          @clickQuery="updateDashboardWithQuery" @selectedTrendingTopicInDashboard="passTrendingTopicsToDashboard" 
         />
       </v-col>
       <v-col cols="8">
@@ -87,7 +87,7 @@ export default {
     topFiveTopicsData: [
       {
         name: 'Politics',
-        topThreeMentions: ['GE2020', 'GE2024', 'Reesah Khan'],
+        topThreeMentions: ['0.5X Long Algorand Token', '0cash', 'RealT Token - 11078 Longview St, Detroit, MI 48213'],
         mentions: 294940, 
         sentiment: {
           negative: 0.2, neutral: 0.6, positive: 0.2
@@ -167,7 +167,8 @@ export default {
       positive: "#78D549",
       neutral: "#EFB727",
       negative: "#EB8159"
-    } 
+    },
+    selectedTrendingQuery: "", 
   }),
 
   computed: {
@@ -285,6 +286,14 @@ export default {
       // need to call multiple apis to call with query
       // should be done from the main dashboard page
       console.log("=== END updateDashboardWithQuery() ===")
+    },
+
+    passTrendingTopicsToDashboard(topic) {
+      console.log("=== START passTrendingTopicsToDashboard() ===")
+      console.log(topic)
+      this.selectedTrendingQuery = topic
+      console.log("this.selectedTrendingQuery", this.selectedTrendingQuery)
+      console.log("=== END passTrendingTopicsToDashboard() ===")
     }
   }
   

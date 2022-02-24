@@ -14,7 +14,7 @@
       class="py-3"
     >
       <v-col class="py-0">
-        <TrendingTopic :index="i" :topic-assigned="topic" v-on="$listeners"/>
+        <TrendingTopic :index="i" :topic-assigned="topic" @selectedTrendingTopicInTopics="passTrendingTopicToTopics"/>
       </v-col>
     </v-row>
   </v-card>
@@ -36,7 +36,16 @@ export default {
   },
   data: () => ({
     trendingTopicsHelpText: "Study the most popular topics talked about within the selected time period across the platform(s) selected.",
+    selectedTrendingTopic: "",
   }),
+  methods: {
+    passTrendingTopicToTopics(topic) {
+      console.log("=== START passTrendingTopicToTopics() ===")
+      console.log(topic)
+      this.$emit('selectedTrendingTopicInDashboard', topic)
+      console.log("=== END passTrendingTopicToTopics() ===")
+    }
+  }
 }
 </script>
 

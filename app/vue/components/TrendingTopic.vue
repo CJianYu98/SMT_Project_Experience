@@ -20,7 +20,7 @@
         <span 
           v-for="(mention, index) in topicAssigned.topThreeMentions"
           :key="mention"
-          @click="emitQueryToDashboard(mention)"
+          @click="passSelectedTrendingTopicToTopics(mention)"
         >
             {{ mention }}{{ (index+1 &lt; topicAssigned.topThreeMentions.length) ? ', ' : '' }}
         </span>
@@ -45,16 +45,16 @@ export default {
     topicAssigned: {
       type: Object,
       required: true,
-    }
+    },
   },
   data: () => ({
     
   }),
   methods: {
-    emitQueryToDashboard(topic) {
-      console.log("=== START emitQueryToDashboard ===")
-      this.$emit('clickQuery', topic)
-      console.log("=== END emitQueryToDashboard ===")
+    passSelectedTrendingTopicToTopics(topic) {
+      console.log("=== START passSelectedTrendingTopicToTopics ===")
+      this.$emit('selectedTrendingTopicInTopics', topic)
+      console.log("=== END passSelectedTrendingTopicToTopics ===")
 
     }
   }

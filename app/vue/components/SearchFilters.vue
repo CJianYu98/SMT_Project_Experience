@@ -8,10 +8,10 @@
           class="d-flex"
         >
           <v-autocomplete
+            v-if="selectedTrendingQuery"
             v-model="autocompleteModel"
             :items="items"
             :loading="isLoading"
-            :search-input.sync="search"
             chips
             clearable
             hide-details
@@ -21,7 +21,10 @@
             label="Enter a keyword you are interested in!"
             solo
             dense
+            return-object
           >
+            <!-- :label="selectedTrendingQuery" -->
+                      <!-- return-object -->
             <!-- <template v-slot:no-data>
               <v-list-item>
                 <v-list-item-title>
@@ -54,9 +57,67 @@
                 <v-list-item-title v-text="item.name"></v-list-item-title>
                 <v-list-item-subtitle v-text="item.symbol"></v-list-item-subtitle>
               </v-list-item-content>
-              <v-list-item-action>
+              <!-- <v-list-item-action>
                 <v-icon>mdi-bitcoin</v-icon>
-              </v-list-item-action>
+              </v-list-item-action> -->
+            </template>
+          </v-autocomplete>
+
+
+
+          <v-autocomplete
+            v-else
+            v-model="autocompleteModel"
+            :items="items"
+            :loading="isLoading"
+            :search-input.sync="search"
+            chips
+            clearable
+            hide-details
+            hide-selected
+            item-text="name"
+            item-value="symbol"
+            label="Enter a keyword you are interested in!"
+            solo
+            dense
+            return-object
+          >
+                      <!-- return-object -->
+            <!-- <template v-slot:no-data>
+              <v-list-item>
+                <v-list-item-title>
+                  Search for your favorite
+                  <strong>Cryptocurrency</strong>
+                </v-list-item-title>
+              </v-list-item>
+            </template> -->
+            <template #selection="{ attr, on, item, selected }">
+              <v-chip
+                v-bind="attr"
+                :input-value="selected"
+                class="primary--text"
+                v-on="on"
+              >
+                <!-- <v-icon left>
+                  mdi-bitcoin
+                </v-icon> -->
+                <span v-text="item.name"></span>
+              </v-chip>
+            </template>
+            <template #item="{ item }">
+              <v-list-item-avatar
+                color="indigo"
+                class="text-h5 font-weight-light white--text"
+              >
+                {{ item.name.charAt(0) }}
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.name"></v-list-item-title>
+                <v-list-item-subtitle v-text="item.symbol"></v-list-item-subtitle>
+              </v-list-item-content>
+              <!-- <v-list-item-action>
+                <v-icon>mdi-bitcoin</v-icon>
+              </v-list-item-action> -->
             </template>
           </v-autocomplete>
         </v-col>
@@ -265,10 +326,17 @@
 
 <script>
   export default {
+    props: {
+      selectedTrendingQuery: {
+        type: String,
+        default: null,
+      }
+    },
+
     data: () => ({
       isLoading: false,
       items: [],
-      autocompleteModel: null,
+      autocompleteModel: null, // stores the symbol (value), not the name (text)
       search: null,
       tab: null,
       menu1: false,
@@ -336,13 +404,23 @@
           .then(res => res.clone().json())
           .then(res => {
             this.items = res
+            console.log("UNDER WATCH this.items", this.items)
           })
           .catch(err => {
             console.log(err)
           })
           .finally(() => (this.isLoading = false))
       },
+      selectedTrendingQuery (newVal, oldVal) { // watch it
+        console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+        console.log("this.autocompleteModel 1", this.autocompleteModel)
+        this.updateAutoComplete(newVal)
+      },
     },
+
+    // mounted() {
+    //   this.updateAutocompleteModel()
+    // },
 
     methods: {
       // select all functionality in filters, to separate according to sentiment and platforms
@@ -367,8 +445,34 @@
     //       }
     //     })
     //   }
-      emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected) {
-        this.$emit('changeFilter', [dateSelected, platformsSelected, sentimentsSelected])
+      emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected) {
+        this.$emit('changeFilter', [autocompleteModel, dateSelected, platformsSelected, sentimentsSelected])
+      },
+
+      updateAutoComplete(val) {
+        console.log("=== START updateAutoComplete() === ")
+        console.log("val", val)
+        // if val is found in items, update autocompletemodel variable
+        console.log("this.items", this.items)
+
+        const checkValInAutoComplete = this.items.find(x => x.name === val)
+        
+        if (checkValInAutoComplete) {
+          console.log("inside if loop")
+          this.autocompleteModel = checkValInAutoComplete
+          console.log("checkValInAutoComplete", checkValInAutoComplete)
+        }
+
+        // let obj = this.items.find((o, i) => {
+        //   if (o.name === val) {
+        //       arr[i] = { name: 'new string', value: 'this', other: 'that' };
+        //       return true; // stop searching
+        //   }
+        // });
+
+        
+        console.log("this.autocompleteModel 2", this.autocompleteModel)
+        console.log("=== END updateAutoComplete() === ")
       }
     },
 
