@@ -282,9 +282,9 @@
       sentimentsFilter: ['Negative', 'Neutral', 'Positive'],
       // sentimentsChange: false,
       sentimentsSelected: ['Negative', 'Neutral', 'Positive'],
-      platformsFilter: ['Facebook', 'Instagram', 'Reddit', 'Twitter', 'YouTube'],
+      platformsFilter: ['Facebook', 'Reddit', 'Twitter', 'YouTube'],
       // platformsChange: false,
-      platformsSelected: ['Facebook', 'Instagram', 'Reddit', 'Twitter', 'YouTube'],
+      platformsSelected: ['Facebook', 'Reddit', 'Twitter', 'YouTube'],
     }),
 
     computed: {

@@ -46,7 +46,7 @@
           <line-chart class="chartBox" v-bind:chartData="fbChartData"></line-chart>
         </v-card>
       </v-tab-item>
-      <v-tab-item>
+      <!-- <v-tab-item>
         <v-card flat>
           <v-container fluid class="px-8 mt-n2 pb-0">
             <v-row no-gutters align="stretch">
@@ -59,14 +59,14 @@
               </v-col>
             </v-row>
           </v-container>
-          <line-chart class="chartBox" v-bind:chartData="instaChartData"></line-chart>
+          <line-chart class="chartBox" v-bind:chartData="instaChartData"></line-chart> -->
           <!-- <v-img
             :aspect-ratio="2.8"
             :width="width"
             src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
             ></v-img> -->
-        </v-card>
-      </v-tab-item>
+        <!-- </v-card>
+      </v-tab-item> -->
       <v-tab-item>
         <v-card flat>
           <v-container fluid class="px-8 mt-n2 pb-0">
@@ -125,14 +125,19 @@ import DropDownSelect from "./DropDownSelect.vue"
 import LineChart from '@/components/LineChart'
 
   export default {
+    props: {
+      platforms: {
+        required: true
+      }
+    },
     components: {
         LineChart,
-        DropDownSelect
+        DropDownSelect,
     },
     data () {
       return {
         tabs: null,
-        medias: ['facebook','instagram','reddit','twitter','youtube'],
+        medias: ['facebook','reddit','twitter','youtube'],
         fbView: [{view: 'Number of Likes'}, {view: 'Number of Comments'}, {view: 'Number of Shares'}],
         redditView: [{view: 'Number of Net Votes'}, {view: 'Number of Comments'}, {view: 'Number of Awards'}],        
         twitterView: [{view: 'Number of Likes'}, {view: 'Number of Retweets'}, {view: 'Number of Replies'}],
@@ -149,20 +154,6 @@ import LineChart from '@/components/LineChart'
               backgroundColor: '#392A9B',
               borderWidth: 1,
               // tension: 0.1
-            }
-          ]
-        },
-        instaChartData: {
-          labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
-          "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-          datasets: [
-            {
-              label: 'Instagram',
-              data: [3300,	5450,	9042,	50,	2552,	7241,	4259,	5157,	145, 5800, 6600, 8841],
-              fill: false,
-              borderColor: '#392A9B',
-              backgroundColor: '#392A9B',
-              borderWidth: 1
             }
           ]
         },
