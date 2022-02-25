@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <SearchFilters @changeFilter="rerenderDashboard"/>
+  <div class="mb-10">
+    <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
     <!--  align="stretch" in v-row works with d-flex in v-col -->
     <v-row>
       <v-col cols="4">
         <TrendingTopics 
           :top-five-topics="topFiveTopicsData" 
-          @clickQuery="updateDashboardWithQuery"
+          @clickQuery="updateDashboardWithQuery" @selectedTrendingTopicInDashboard="passTrendingTopicsToDashboard" 
         />
       </v-col>
       <v-col cols="8">
@@ -17,14 +17,14 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="5">
+      <v-col cols="4">
         <KeywordCard
           :keywords-word-cloud="keywords" 
           :keywords-word-cloud-legend="keywordsWordCloudLegend"
         />
       </v-col>
-      <v-col cols="7">
-        <!-- <KeywordAnalysis /> -->
+      <v-col cols="8">
+        <KeywordAnalysis />
       </v-col>
     </v-row>
     <v-row>
@@ -41,7 +41,7 @@
 <script>
 import TrendAnalysis from '../components/TrendAnalysis.vue'
 import KeywordCard from '../components/KeywordCard.vue'
-// import KeywordAnalysis from '../components/KeywordAnalysis.vue'
+import KeywordAnalysis from '../components/KeywordAnalysisCard.vue'
 // import NoteworthyComments from '../components/NoteworthyComments.vue'
 import TrendingTopics from '@/components/TrendingTopics.vue'
 import SearchFilters from '@/components/SearchFilters'
@@ -52,7 +52,7 @@ export default {
     SearchFilters,
     TrendAnalysis,
     KeywordCard,
-    // KeywordAnalysis,
+    KeywordAnalysis,
     // NoteworthyComments,
   },
   data: () => ({
@@ -86,8 +86,8 @@ export default {
     ],
     topFiveTopicsData: [
       {
-        name: 'Politics',
-        topThreeMentions: ['GE2020', 'GE2024', 'Reesah Khan'],
+        name: 'Bitcoin',
+        topThreeMentions: ['0.5X Long Algorand Token', '0cash', 'RealT Token - 11078 Longview St, Detroit, MI 48213'],
         mentions: 294940, 
         sentiment: {
           negative: 0.2, neutral: 0.6, positive: 0.2
@@ -138,10 +138,6 @@ export default {
         mentions: 0.24,
         trend: -0.2
       },
-      Instagram: {
-        mentions: 0.34,
-        trend: -0.4
-      },
       Reddit: {
         mentions: 0.14,
         trend: 0.2
@@ -151,7 +147,7 @@ export default {
         trend: 0.2
       },
       Youtube: {
-        mentions: 0.20,
+        mentions: 0.54,
         trend: -0.2
       }
     },
@@ -167,7 +163,8 @@ export default {
       positive: "#78D549",
       neutral: "#EFB727",
       negative: "#EB8159"
-    } 
+    },
+    selectedTrendingQuery: "", 
   }),
 
   computed: {
@@ -248,10 +245,6 @@ export default {
           mentions: 0.54,
           trend: 0.98
         },
-        instagram: {
-          mentions: 0.34,
-          trend: -0.4
-        },
         reddit: {
           mentions: 0.14,
           trend: 0.2
@@ -266,6 +259,15 @@ export default {
         }
       }
 
+      this.keywords = [
+        {word: "Chocolate", size: "10", sentiment: "positive"}, 
+        {word: "Chicken Rice", size: "20", sentiment: "neutral"}, 
+        {word: "Bingsoo", size: "50", sentiment: "negative"}, 
+        {word: "Kiting", size: "30", sentiment: "positive"}, 
+        {word: "Sailing", size: "20", sentiment: "negative"}, 
+        {word: "Snowboarding", size: "60", sentiment: "neutral"} 
+      ]
+
 
       console.log("=== END rerenderDashboard ===")
     },
@@ -276,6 +278,14 @@ export default {
       // need to call multiple apis to call with query
       // should be done from the main dashboard page
       console.log("=== END updateDashboardWithQuery() ===")
+    },
+
+    passTrendingTopicsToDashboard(topic) {
+      console.log("=== START passTrendingTopicsToDashboard() ===")
+      console.log(topic)
+      this.selectedTrendingQuery = topic
+      console.log("this.selectedTrendingQuery", this.selectedTrendingQuery)
+      console.log("=== END passTrendingTopicsToDashboard() ===")
     }
   }
   

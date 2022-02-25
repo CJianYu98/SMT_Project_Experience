@@ -42,9 +42,9 @@
       <!-- hide toolbar items when screens are smaller than md, ie show when screens are >= md breakpoint -->
       <v-toolbar-items class="d-none d-md-block">
         <v-btn
-          text
           v-for="item in menuItems"
           :key="item.title"
+          text
           :to="item.path"
           active-class="navSelected"
           class="accent--text text-h6">

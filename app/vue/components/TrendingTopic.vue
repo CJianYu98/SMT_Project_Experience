@@ -10,7 +10,7 @@
           </v-list-item-title>
         </v-col>
         <v-col>
-          <v-list-item-subtitle v-text="`${topicAssigned.mentions.toLocaleString()} mentions`" class="text-right pr-3 primary--text">></v-list-item-subtitle>
+          <v-list-item-subtitle class="text-right pr-3 primary--text" v-text="`${topicAssigned.mentions.toLocaleString()} mentions`">></v-list-item-subtitle>
         </v-col>
       </v-row>
 
@@ -20,7 +20,8 @@
         <span 
           v-for="(mention, index) in topicAssigned.topThreeMentions"
           :key="mention"
-          @click="emitQueryToDashboard(mention)"
+          @click="passSelectedTrendingTopicToTopics(mention)"
+          class="trending-category"
         >
             {{ mention }}{{ (index+1 &lt; topicAssigned.topThreeMentions.length) ? ', ' : '' }}
         </span>
@@ -38,23 +39,24 @@
 <script>
 // import BarChart from '@/components/BarChart'
 export default {
-  // components: {BarChart},
-  data: () => ({
-    
-  }),
   props: {
     index: {
       type: Number,
+      required: true,
     },
     topicAssigned: {
-      topic: Object,
-    }
+      type: Object,
+      required: true,
+    },
   },
+  data: () => ({
+    
+  }),
   methods: {
-    emitQueryToDashboard(topic) {
-      console.log("=== START emitQueryToDashboard ===")
-      this.$emit('clickQuery', topic)
-      console.log("=== END emitQueryToDashboard ===")
+    passSelectedTrendingTopicToTopics(topic) {
+      console.log("=== START passSelectedTrendingTopicToTopics ===")
+      this.$emit('selectedTrendingTopicInTopics', topic)
+      console.log("=== END passSelectedTrendingTopicToTopics ===")
 
     }
   }
@@ -62,9 +64,12 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
   .chartBox {
     width: 800px;
     height: 300px;
   }
+.trending-category {
+  cursor: pointer;
+}
 </style>

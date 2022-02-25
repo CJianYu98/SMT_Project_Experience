@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-icon
+      small
       color="light-green lighten-1"
     >
       mdi-trending-up
