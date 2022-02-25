@@ -135,17 +135,35 @@
               item-text="date"
               label="Select a date period"
               outlined
-              dense
-              @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected)"
+              @change="openDialogueIfCustomSelected(dateSelected);"
             >
               <template slot="selection" slot-scope="data">
-                <span v-if="data.item.date === 'Custom'" class="accent--text">{{ data.item.period }}</span>
+                <span v-if="data.item.date === 'Custom' && dateRange.length === 1" class="accent--text">{{ dateRange[0] }}</span>
+                <span v-else-if="data.item.date === 'Custom' && dateRange.length > 1" class="accent--text">{{ dateRange.join(" - ") }}</span>
                 <span v-else class="accent--text">{{ data.item.date }}</span>
               </template>
             </v-select>
           </div>
 
-          <div class="d-block">
+          <v-dialog
+            v-model="dialog"
+            max-width="290"
+            overlay-opacity="0"
+            content-class="custom-dialog-datepicker"
+          >
+            <v-date-picker 
+              v-model="dateRange" 
+              d-block 
+              no-title 
+              range 
+              scrollable 
+            >
+              <v-spacer></v-spacer>
+            </v-date-picker>
+          </v-dialog>
+          
+
+          <!-- <div class="d-block">
             <v-date-picker 
               v-if="dateSelected == 'Custom'"
               v-model="dateRange" 
@@ -156,7 +174,7 @@
             >
               <v-spacer></v-spacer>
             </v-date-picker>
-          </div>
+          </div> -->
         </div>
         </v-col>
         <!-- <v-spacer></v-spacer>
@@ -343,16 +361,12 @@
       menu: false,
       date: null,
       dateRange: ['2019-09-10', '2019-09-20'],
-      // date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       dateSelected: "All",
-      dateFilter: [{date: 'All'}, {date: 'Yesterday'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom', period: ['2019-09-10', '2019-09-20'].join()}],
-      // this.dateRange.join()
-      // this.customDateRangeSelected
+      dateFilter: [{date: 'All'}, {date: 'Yesterday'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom'}],
+      dialog: false,
       sentimentsFilter: ['Negative', 'Neutral', 'Positive'],
-      // sentimentsChange: false,
       sentimentsSelected: ['Negative', 'Neutral', 'Positive'],
       platformsFilter: ['Facebook', 'Instagram', 'Reddit', 'Twitter', 'YouTube'],
-      // platformsChange: false,
       platformsSelected: ['Facebook', 'Instagram', 'Reddit', 'Twitter', 'YouTube'],
     }),
 
@@ -383,10 +397,6 @@
         return this.dateRange.join()
       },
     },
-
-    // created() {
-    //   this.customDateRangeSelected;
-    // },
 
     watch: {
       model (val) {
@@ -423,8 +433,8 @@
       },
     },
 
-    // mounted() {
-    // },
+    mounted() {
+    },
 
     methods: {
       // select all functionality in filters, to separate according to sentiment and platforms
@@ -471,7 +481,12 @@
         console.log("=== END updateAutoComplete() === ")
       },
 
-
+      openDialogueIfCustomSelected(dateSelected) {
+        if (dateSelected === 'Custom') {
+          this.dialog = true
+        }
+        this.emitFilterSelectionToDashboard(this.autocompleteModel, dateSelected, this.platformsSelected, this.sentimentsSelected);
+      }
     },
 
   }
@@ -483,4 +498,10 @@
 }
 </style>
 
-
+<style scoped>
+  >>> .custom-dialog-datepicker {
+    position: absolute;
+    top: 20%;
+    left: 28%;
+  }
+</style>
