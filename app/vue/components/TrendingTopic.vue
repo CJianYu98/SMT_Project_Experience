@@ -21,6 +21,7 @@
           v-for="(mention, index) in topicAssigned.topThreeMentions"
           :key="mention"
           @click="passSelectedTrendingTopicToTopics(mention)"
+          class="trending-category"
         >
             {{ mention }}{{ (index+1 &lt; topicAssigned.topThreeMentions.length) ? ', ' : '' }}
         </span>
@@ -62,6 +63,8 @@ export default {
 </script>
 
 
-<style>
-
+<style scoped>
+.trending-category {
+  cursor: pointer;
+}
 </style>
