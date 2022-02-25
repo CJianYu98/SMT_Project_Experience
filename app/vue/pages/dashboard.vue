@@ -17,14 +17,14 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="5">
+      <v-col cols="4">
         <KeywordCard
           :keywords-word-cloud="keywords" 
           :keywords-word-cloud-legend="keywordsWordCloudLegend"
         />
       </v-col>
-      <v-col cols="7">
-        <!-- <KeywordAnalysis /> -->
+      <v-col cols="8">
+        <KeywordAnalysis />
       </v-col>
     </v-row>
     <v-row>
@@ -41,7 +41,7 @@
 <script>
 import TrendAnalysis from '../components/TrendAnalysis.vue'
 import KeywordCard from '../components/KeywordCard.vue'
-// import KeywordAnalysis from '../components/KeywordAnalysis.vue'
+import KeywordAnalysis from '../components/KeywordAnalysisCard.vue'
 // import NoteworthyComments from '../components/NoteworthyComments.vue'
 import TrendingTopics from '@/components/TrendingTopics.vue'
 import SearchFilters from '@/components/SearchFilters'
@@ -52,7 +52,7 @@ export default {
     SearchFilters,
     TrendAnalysis,
     KeywordCard,
-    // KeywordAnalysis,
+    KeywordAnalysis,
     // NoteworthyComments,
   },
   data: () => ({
@@ -137,10 +137,6 @@ export default {
       Facebook: {
         mentions: 0.24,
         trend: -0.2
-      },
-      Instagram: {
-        mentions: 0.34,
-        trend: -0.4
       },
       Reddit: {
         mentions: 0.14,
@@ -248,10 +244,6 @@ export default {
         facebook: {
           mentions: 0.54,
           trend: 0.98
-        },
-        instagram: {
-          mentions: 0.34,
-          trend: -0.4
         },
         reddit: {
           mentions: 0.14,

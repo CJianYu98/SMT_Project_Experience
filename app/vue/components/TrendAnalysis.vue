@@ -1,7 +1,7 @@
 <template>
   <v-card
     elevation="3"
-    class="mr-8 mt-8"
+    class="mr-8 mt-8 rounded-lg"
     height="100%"
   >
     <v-card-title class="pb-4 accent--text text-h6">

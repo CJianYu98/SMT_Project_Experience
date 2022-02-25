@@ -63,8 +63,6 @@
             </template>
           </v-autocomplete>
 
-
-
           <v-autocomplete
             v-else
             v-model="autocompleteModel"
@@ -248,7 +246,7 @@
         <v-row> -->
         <v-spacer></v-spacer>
         <v-col
-          cols="2"
+          cols="3"
         >
           <v-select
             v-model="sentimentsSelected"
@@ -293,7 +291,7 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col
-          cols="4"
+          cols="3"
         >
           <v-select
             v-model="platformsSelected"
@@ -366,8 +364,8 @@
       dialog: false,
       sentimentsFilter: ['Negative', 'Neutral', 'Positive'],
       sentimentsSelected: ['Negative', 'Neutral', 'Positive'],
-      platformsFilter: ['Facebook', 'Instagram', 'Reddit', 'Twitter', 'YouTube'],
-      platformsSelected: ['Facebook', 'Instagram', 'Reddit', 'Twitter', 'YouTube'],
+      platformsFilter: ['Facebook', 'Reddit', 'Twitter', 'YouTube'],
+      platformsSelected: ['Facebook', 'Reddit', 'Twitter', 'YouTube'],
     }),
 
     computed: {
