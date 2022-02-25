@@ -499,7 +499,7 @@
 <style scoped>
   >>> .custom-dialog-datepicker {
     position: absolute;
-    top: 20%;
-    left: 28%;
+    top: 10%;
+    left: 29%;
   }
 </style>

@@ -86,7 +86,7 @@ export default {
     ],
     topFiveTopicsData: [
       {
-        name: 'Politics',
+        name: 'Bitcoin',
         topThreeMentions: ['0.5X Long Algorand Token', '0cash', 'RealT Token - 11078 Longview St, Detroit, MI 48213'],
         mentions: 294940, 
         sentiment: {
@@ -147,7 +147,7 @@ export default {
         trend: 0.2
       },
       Youtube: {
-        mentions: 0.20,
+        mentions: 0.54,
         trend: -0.2
       }
     },

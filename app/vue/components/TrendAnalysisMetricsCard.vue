@@ -1,16 +1,17 @@
 <template>
   <v-row class="px-4">
-    <v-col cols="3" class="py-0"> 
+    <v-col cols="3" class="py-0 "> 
       <v-simple-table class="mb-2">
         <template v-slot:default>
           <thead class="deep-purple">
-            <tr>
+            <tr width="100%">
               <th class="white--text">
                 Posts
               </th>
               <th class="white--text">
                 Trend
               </th>
+              <!-- text-center, width 100% -->
             </tr>
           </thead>
           <tbody>
@@ -54,7 +55,7 @@
         </template>
       </v-simple-table>
 
-      <v-simple-table dense class="mb-3">
+      <v-simple-table class="mb-3">
         <template v-slot:default>
           <thead class="deep-purple">
             <tr>
