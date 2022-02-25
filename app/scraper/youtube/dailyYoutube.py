@@ -465,7 +465,6 @@ for c in channels:
     driver.quit()
     for _ in range(5):
         os.system("pkill --oldest chrome")
-    break
     time.sleep(3)
 
 # export file in json
