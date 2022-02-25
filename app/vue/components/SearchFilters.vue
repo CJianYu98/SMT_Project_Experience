@@ -136,7 +136,7 @@
               label="Select a date period"
               outlined
               dense
-              @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected)"
+              @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected)"
             >
               <template slot="selection" slot-scope="data">
                 <span v-if="data.item.date === 'Custom'" class="accent--text">{{ data.item.period }}</span>
@@ -240,7 +240,7 @@
             multiple
             outlined
             dense
-            @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected)"
+            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected)"
           >
           <!-- select all functionality -->
             <!-- <template #prepend-item>
@@ -285,7 +285,7 @@
             multiple
             outlined
             dense
-            @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected)"
+            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected)"
           >
           <!-- select all functionality -->
             <!-- <template #prepend-item>
@@ -393,33 +393,37 @@
         if (val != null) this.tab = 0
         else this.tab = null
       },
-      search (val) {
-        // Items have already been loaded
-        if (this.items.length > 0) return
 
-        this.isLoading = true
+      search: {
+        handler(val) {
+          if (this.items.length > 0) return
+            this.isLoading = true
 
-        // Lazily load input items
-        fetch('https://api.coingecko.com/api/v3/coins/list')
-          .then(res => res.clone().json())
-          .then(res => {
-            this.items = res
-            console.log("UNDER WATCH this.items", this.items)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-          .finally(() => (this.isLoading = false))
+          // Lazily load input items
+          fetch('https://api.coingecko.com/api/v3/coins/list')
+            .then(res => res.clone().json())
+            .then(res => {
+              this.items = res
+              console.log("UNDER WATCH this.items", this.items)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+            .finally(() => (this.isLoading = false))
+        },
+        immediate: true
       },
+
       selectedTrendingQuery (newVal, oldVal) { // watch it
         console.log('Prop changed: ', newVal, ' | was: ', oldVal)
         console.log("this.autocompleteModel 1", this.autocompleteModel)
         this.updateAutoComplete(newVal)
+
+        this.emitFilterSelectionToDashboard(this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected)
       },
     },
 
     // mounted() {
-    //   this.updateAutocompleteModel()
     // },
 
     methods: {
@@ -462,18 +466,12 @@
           this.autocompleteModel = checkValInAutoComplete
           console.log("checkValInAutoComplete", checkValInAutoComplete)
         }
-
-        // let obj = this.items.find((o, i) => {
-        //   if (o.name === val) {
-        //       arr[i] = { name: 'new string', value: 'this', other: 'that' };
-        //       return true; // stop searching
-        //   }
-        // });
-
         
         console.log("this.autocompleteModel 2", this.autocompleteModel)
         console.log("=== END updateAutoComplete() === ")
-      }
+      },
+
+
     },
 
   }
