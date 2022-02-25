@@ -30,13 +30,15 @@
           2. pass the query into rerenderDashboard method (inside dashboard page)
         -->
       </v-list-item-subtitle>
-
+      <!-- <bar-chart class="chartBox"></bar-chart> -->
     </v-list-item-content>
   </v-list-item>
 </template>
 
 <script>
+// import BarChart from '@/components/BarChart'
 export default {
+  // components: {BarChart},
   data: () => ({
     
   }),
@@ -61,5 +63,8 @@ export default {
 
 
 <style>
-
+  .chartBox {
+    width: 800px;
+    height: 300px;
+  }
 </style>
