@@ -24,8 +24,9 @@ def classify_emotions(text: str) -> str:
 ############### SENTIMENT ###############
 MODEL = "cardiffnlp/twitter-roberta-base-sentiment"
 tokenizer = AutoTokenizer.from_pretrained(MODEL)
+# tokenizer.save_pretrained(MODEL)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL)
-model.save_pretrained(MODEL)
+# model.save_pretrained(MODEL)
 labels = ["negative", "neutral", "positive"]
 
 

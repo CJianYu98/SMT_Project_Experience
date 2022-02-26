@@ -4,9 +4,9 @@ import os
 import pandas as pd
 from dotenv import load_dotenv
 from loguru import logger
-from ml.models import sentiment_analysis as sa
 
-from connect import client
+from ..ml.models.sentiment_analysis import *
+from .connect import client
 
 # Load environment variables
 load_dotenv()
@@ -80,10 +80,10 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     df_comments.reset_index(inplace=True, drop=True)
 
     # Run classification on df_posts and df_comments
-    df_posts["sentiment_label"] = df_posts["message"].apply(lambda x: sa.classify_sentiment(x))
-    df_posts["emotions_label"] = df_posts["message"].apply(lambda x: sa.classify_emotions(x))
-    df_comments["sentiment_label"] = df_comments["message"].apply(lambda x: sa.classify_sentiment(x))
-    df_comments["emotions_label"] = df_comments["message"].apply(lambda x: sa.classify_emotions(x))
+    df_posts["sentiment_label"] = df_posts["message"].apply(lambda x: classify_sentiment(x))
+    df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
+    df_comments["sentiment_label"] = df_comments["message"].apply(lambda x: classify_sentiment(x))
+    df_comments["emotions_label"] = df_comments["message"].apply(lambda x: classify_emotions(x))
 
     # Save processed data to json file, with each row as a json record
     df_posts.to_json(f"{FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH}/{file_name}_posts.json", orient="index")
