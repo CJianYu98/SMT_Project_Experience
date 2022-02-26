@@ -5,7 +5,7 @@ from datetime import datetime
 class FbPost(BaseModel):
     id: int
     fb_group: str
-    created_time: str
+    created_time: datetime
     message: str
     likes_cnt: int
     comments_cnt: int

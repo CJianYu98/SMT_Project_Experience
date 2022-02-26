@@ -29,13 +29,13 @@ async def get_posts(
     Returns:
         facebook.FbPostRes: Pydantic response model
     """
-    end_date_inclusive = datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)
-    end_date_str = end_date_inclusive.strftime('%Y-%m-%d')
+    start_date =  datetime.strptime(start_date, '%Y-%m-%d')
+    end_date = datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)
 
     db_query = {
         "created_time": {
             "$gte": start_date,
-            "$lte": end_date_str
+            "$lte": end_date
         }
     }
 
