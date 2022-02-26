@@ -1,0 +1,7 @@
+from .crawl_commentid2comment import crawl_commentid2comment
+from .crawl_submission2commentsids import crawl_submission2commentsids
+from .monthly_crawl_submissions import monthly_crawl_submissions
+
+monthly_crawl_submissions()
+crawl_submission2commentsids()
+crawl_commentid2comment()
