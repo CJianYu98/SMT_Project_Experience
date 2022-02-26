@@ -1,8 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List
 from datetime import datetime
 
-class FbPost(BaseModel):
+
+class FbPostRes(BaseModel):
     id: int
     fb_group: str
     created_time: datetime
@@ -11,7 +12,11 @@ class FbPost(BaseModel):
     comments_cnt: int
 
 
-class FbPostRes(BaseModel):
-    code: int
-    datetime: datetime
-    data: List[FbPost]
+class FbDailyStatsRes(BaseModel):
+    date: dict
+    total_comments: int
+    total_likes: int
+    count: int
+
+class FbTrendRes(BaseModel):
+    perc_change: float
