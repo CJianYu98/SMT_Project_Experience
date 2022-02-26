@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List
 from datetime import datetime
-from .py_object_id import PyObjectId
 
 
 class FbPostRes(BaseModel):
@@ -18,3 +17,6 @@ class FbDailyStatsRes(BaseModel):
     total_comments: int
     total_likes: int
     count: int
+
+class FbTrendRes(BaseModel):
+    perc_change: float
