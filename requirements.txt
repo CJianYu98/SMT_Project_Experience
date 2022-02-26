@@ -1,0 +1,16 @@
+boto3
+fastapi[all]
+loguru 
+pandas 
+praw
+pymongo
+python-dotenv 
+pytz 
+requests 
+scipy
+selenium 
+telegram-send
+tensorflow
+torch
+tqdm
+transformers

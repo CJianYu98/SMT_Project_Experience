@@ -1,29 +1,118 @@
-# Import packages
-import datetime
-import sys
+# Installation: Install dev version of snscrape to get more attributes from Twitter scraping
+# !pip install git+https://github.com/JustAnotherArchivist/snscrape.git
 
-import twint
+import math
+import os
+from datetime import datetime, timedelta
+
+import pandas as pd
+import pytz
+import snscrape.modules.twitter as sntwitter
+import telegram_send
 from dotenv import load_dotenv
+from loguru import logger
 
 # Load environment variables
 load_dotenv()
 
-# Initialise scraping start date
-start_datetime = datetime.datetime.now()
+# # Change to file directory
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-# Set up Twint
-c = twint.Config()
-c.Near = "Singapore"  # Set geographic location to near Singapore
-c.Lang = "en"  # Set language to english
-c.Limit = sys.maxsize  # Set tweet limit to unlimited
-c.Retweets = True  # Include retweets done by user
+# Constants and variables
+S3_BUCKET_NAME = os.getenv("S3_TWITTER_HISTORICAL_BUCKET_NAME")
+TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
+sg_datetime = datetime.now(TIMEZONE)
 
-c.Since = "2018-01-01 00:00:00"  # Set end date for collection
-c.Until = str(start_datetime.strftime("%Y-%m-%d %H:%M:%S"))  # Set start date for collection
+# Set parameters used to retrieve tweets
+from_date = "2018-01-01"  # Inclusive of first date
+end_date = "2019-01-01"  # Exclusive of this date
+max_tweet = math.inf  # For yearly scraping, set to >1mil
+location = "Singapore"
+year = from_date.split("-")[0]
 
-# Saves json to same folder as scraper (edit later)
-c.Store_json = True 
-c.Output = "./app/scraper/twitter/historical.json"
+tele_start_msg = f"TWITTER HISTORICAL --> Historical data crawling started from {from_date} to {end_date} at {sg_datetime}"
+tele_end_msg = "TWITTER HISTORICAL --> \n"
 
-# Run Twint
-twint.run.Search(c)
+# Add logger configurations
+logger.add(
+    "../../../logs/scraper/twitter/historical.log",
+    format="{time} {file} {level} {message}",
+    level="DEBUG",
+)
+
+os.makedirs("./historical_data", exist_ok=True)
+
+try:
+    telegram_send.send(messages=[tele_start_msg])
+    logger.info(f"Historical data crawling started from {from_date} to {end_date} at {sg_datetime}")
+
+    # Using TwitterSearchScraper to scrape data and append tweets to list
+    tweets_list = []
+
+    for i, tweet in enumerate(
+        sntwitter.TwitterSearchScraper(
+            "near:"
+            + location
+            + " lang:en since:"
+            + from_date
+            + " until:"
+            + end_date
+            + "-filter:retweets"
+        ).get_items()
+    ):
+
+        logger.debug(tweet)
+
+        tweets_list.append(
+            [
+                tweet.date,
+                tweet.id,
+                tweet.username,
+                tweet.content,
+                tweet.url,
+                tweet.user.verified,
+                # tweet.profileImageUrl,
+                tweet.replyCount,
+                tweet.retweetCount,
+                tweet.likeCount,
+                tweet.quoteCount,
+                tweet.media,
+            ]
+        )
+
+        # if i > max_tweet:
+        #     tele_end_msg += f"maximum hit, scrape again from date: {tweet.date}"
+        #     break
+
+        # Creating a dataframe from the tweets list above
+        tweets_df = pd.DataFrame(
+            tweets_list,
+            columns=[
+                "Datetime",
+                "Tweet Id",
+                "Username",
+                "Text",
+                "URL",
+                "isVerified",
+                # "Profile URL",
+                "Reply Count",
+                "Retweet Count",
+                "Like Count",
+                "Quote Count",
+                "Media",
+            ],
+        )
+        output_file = tweets_df.to_csv(f"./historical_data/{year}.csv")
+
+    tele_end_msg += (
+        f"Historical data crawling started from {from_date} to {end_date} is fully completed"
+    )
+    logger.info(
+        f"Historical data crawling started from {from_date} to {end_date} is fully completed"
+    )
+
+except Exception as e:
+    tele_end_msg += f"Error occured.\n{e}\n"
+    logger.exception("Error occured.")
+finally:
+    telegram_send.send(messages=[tele_end_msg])
