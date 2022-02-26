@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -73,6 +74,9 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     # Add fb_group column
     df_new["fb_group"] = file_name
 
+    # Convert datetime string to datetime type
+    df_new['created_time'] = df_new['created_time'].apply(lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S%z'))
+
     # Filter df to df_posts and df_comments
     df_posts = df_new[df_new["is_post"] == 1]
     df_posts.reset_index(inplace=True, drop=True)
@@ -80,23 +84,17 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     df_comments.reset_index(inplace=True, drop=True)
 
     # Run classification on df_posts and df_comments
-    df_posts["sentiment_label"] = df_posts["message"].apply(lambda x: classify_sentiment(x))
-    df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
-    df_comments["sentiment_label"] = df_comments["message"].apply(lambda x: classify_sentiment(x))
-    df_comments["emotions_label"] = df_comments["message"].apply(lambda x: classify_emotions(x))
+    # df_posts["sentiment_label"] = df_posts["message"].apply(lambda x: classify_sentiment(x))
+    # df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
+    # df_comments["sentiment_label"] = df_comments["message"].apply(lambda x: classify_sentiment(x))
+    # df_comments["emotions_label"] = df_comments["message"].apply(lambda x: classify_emotions(x))
 
-    # Save processed data to json file, with each row as a json record
-    df_posts.to_json(f"{FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH}/{file_name}_posts.json", orient="index")
-    df_comments.to_json(f"{FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH}/{file_name}_comments.json", orient="index")
-
-    # Read the json date file
-    posts = open(f"{FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH}/{file_name}_posts.json")
-    posts_data = json.load(posts)
-    comments = open(f"{FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH}/{file_name}_comments.json")
-    comments_data = json.load(comments)
+    # Convert dataframe to dict
+    posts = df_posts.to_dict(orient="index")
+    comments = df_comments.to_dict(orient="index")
 
     # Insert data into MongoDB
-    num_posts = len(posts_data)
-    num_comments = len(comments_data)
-    fb_posts.insert_many([posts_data[str(i)] for i in range(num_posts)])
-    fb_comments.insert_many([comments_data[str(i)] for i in range(num_comments)])
+    num_posts = len(posts)
+    num_comments = len(comments)
+    fb_posts.insert_many([posts[i] for i in range(num_posts)])
+    fb_comments.insert_many([comments[i] for i in range(num_comments)])
