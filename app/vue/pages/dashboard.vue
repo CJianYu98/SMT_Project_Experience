@@ -130,10 +130,13 @@ export default {
     ],
     overallStatsData: {
       posts: 2940490,
-      trend: 0.4,
+      trend: 0,
       comments: 93893,
       likes: 93398,
-      shares: 2732
+      shares: 2732,
+      filters: {
+        date: ["All"],
+      }
     },
     platformMetricsData: {
       Facebook: {
@@ -167,6 +170,7 @@ export default {
       negative: "#EB8159"
     },
     selectedTrendingQuery: "", 
+    // dateSelected: 
   }),
 
   computed: {
@@ -239,7 +243,10 @@ export default {
         trend: 0.4,
         comments: 93893,
         likes: 93398,
-        shares: 2732
+        shares: 2732,
+        filters: {
+          date: ["All"],
+        }
       }
 
       this.platformMetricsData = {

@@ -19,8 +19,15 @@
                 {{ overallStats.posts.toLocaleString() }}
               </td>
               <td>
-                <TrendAnalysisUpwardTrend v-if="overallStats.trend > 0" :percentage-increase="overallStats.trend"/>
+                <div
+                  class="font-weight-medium"
+                  v-if="overallStats.filters.date[0] === 'All'"
+                >
+                  -
+                </div>
+                <TrendAnalysisUpwardTrend v-else-if="overallStats.trend > 0" :percentage-increase="overallStats.trend"/>
                 <TrendAnalysisDownwardTrend v-else-if="overallStats.trend < 0" :percentage-decrease="overallStats.trend"/>
+                <TrendAnalysisNoTrend v-else/>
               </td>
             </tr> 
           </tbody>
@@ -87,8 +94,15 @@
                 {{ (data.mentions * 100).toFixed(0) }}%
               </td>
               <td>
-                <TrendAnalysisUpwardTrend v-if="data.trend > 0" :percentage-increase="data.trend"/>
+                <div
+                  class="font-weight-medium"
+                  v-if="overallStats.filters.date[0] === 'All'"
+                >
+                  -
+                </div>
+                <TrendAnalysisUpwardTrend v-else-if="data.trend > 0" :percentage-increase="data.trend"/>
                 <TrendAnalysisDownwardTrend v-else-if="data.trend < 0" :percentage-decrease="data.trend"/>
+                <TrendAnalysisNoTrend v-else/>
               </td>
             </tr> 
           </tbody>
@@ -99,11 +113,13 @@
 
 <script>
 import TrendAnalysisDownwardTrend from './TrendAnalysisDownwardTrend.vue'
+import TrendAnalysisNoTrend from './TrendAnalysisNoTrend.vue'
 import TrendAnalysisUpwardTrend from './TrendAnalysisUpwardTrend.vue'
 export default {
   components: { 
     TrendAnalysisDownwardTrend, 
-    TrendAnalysisUpwardTrend 
+    TrendAnalysisUpwardTrend,
+    TrendAnalysisNoTrend 
   },
   props: {
     overallStats: {
@@ -113,7 +129,7 @@ export default {
     platformData: {
       type: Object,
       required: true
-    }
+    },
   },
   data: () => ({
 
