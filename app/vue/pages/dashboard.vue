@@ -24,7 +24,7 @@
         />
       </v-col>
       <v-col cols="8">
-        <KeywordAnalysis />
+        <ComplaintsCard />
       </v-col>
     </v-row>
     <v-row>
@@ -32,7 +32,7 @@
         <!-- <NoteworthyComments /> -->
       </v-col>
       <v-col cols="7">
-
+        <!-- <KeywordAnalysis /> -->
       </v-col>      
     </v-row>
   </div>
@@ -40,9 +40,10 @@
 
 <script>
 import TrendAnalysis from '../components/TrendAnalysis.vue'
-import KeywordCard from '../components/KeywordCard.vue'
-import KeywordAnalysis from '../components/KeywordAnalysisCard.vue'
+import KeywordCard from '../components/KeywordWordCloudCard.vue'
+// import KeywordAnalysis from '../components/KeywordAnalysisCard.vue'
 // import NoteworthyComments from '../components/NoteworthyComments.vue'
+import ComplaintsCard from '../components/ComplaintsCard.vue'
 import TrendingTopics from '@/components/TrendingTopics.vue'
 import SearchFilters from '@/components/SearchFilters'
 export default {
@@ -52,7 +53,8 @@ export default {
     SearchFilters,
     TrendAnalysis,
     KeywordCard,
-    KeywordAnalysis,
+    // KeywordAnalysis,,
+    ComplaintsCard
     // NoteworthyComments,
   },
   data: () => ({
