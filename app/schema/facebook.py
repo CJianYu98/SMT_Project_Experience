@@ -3,7 +3,7 @@ from typing import List
 from datetime import datetime
 
 class FbPost(BaseModel):
-    _id: int
+    id: int
     fb_group: str
     created_time: str
     message: str
