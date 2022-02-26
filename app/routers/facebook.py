@@ -20,22 +20,22 @@ async def get_posts(
     end_date: str = Query(..., regex="\d\d\d\d-\d\d-\d\d")
 ):
     """
-    Get all Facebook posts within a date range.
+    Get all Facebook posts within a date range. To add one more day to the end_date argument in order to include data within that date.
 
     Args:
         start_date (str): Start date of the date range (Inclusive). Defaults to Query(..., regex="\d\d\d\d-\d\d-\d\d").
         end_date (str): End date of the date range (Exclusive). Defaults to Query(..., regex="\d\d\d\d-\d\d-\d\d").
 
     Returns:
-        _type_: _description_
+        facebook.FbPostRes: Pydantic response model
     """
-    end_date_inclusive = datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)
-    end_date_str = end_date_inclusive.strftime('%Y-%m-%d')
+    start_date =  datetime.strptime(start_date, '%Y-%m-%d')
+    end_date = datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)
 
     db_query = {
         "created_time": {
             "$gte": start_date,
-            "$lte": end_date_str
+            "$lte": end_date
         }
     }
 
