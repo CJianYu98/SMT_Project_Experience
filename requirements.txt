@@ -7,9 +7,10 @@ pymongo
 python-dotenv 
 pytz 
 requests 
+scipy
 selenium 
 telegram-send
 tensorflow
 torch
-transformers
 tqdm
+transformers
