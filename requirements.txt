@@ -10,3 +10,6 @@ requests
 selenium 
 telegram-send
 tqdm
+tensorflow
+torch
+transformers
