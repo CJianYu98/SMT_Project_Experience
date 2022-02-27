@@ -85,7 +85,6 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     df_comments.reset_index(inplace=True, drop=True)
 
     # Run classification on df_posts and df_comments
-<<<<<<< HEAD
     df_posts["sentiment_label"] = df_posts["message"].apply(lambda x: classify_sentiment(x))
     df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
     df_comments["sentiment_label"] = df_comments["message"].apply(lambda x: classify_sentiment(x))
@@ -93,23 +92,13 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     # Extract entities from df_posts and df_comments
     df_posts["entities"] = df_posts["message"].apply(extract_entities)
-    df_comments["entities"] = df_posts["message"].apply(extract_entities)
-
-    # Save processed data to json file, with each row as a json record
-    df_posts.to_json(f"{FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH}/{file_name}_posts.json", orient="index")
-    df_comments.to_json(f"{FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH}/{file_name}_comments.json", orient="index")
-=======
-    # df_posts["sentiment_label"] = df_posts["message"].apply(lambda x: classify_sentiment(x))
-    # df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
-    # df_comments["sentiment_label"] = df_comments["message"].apply(lambda x: classify_sentiment(x))
-    # df_comments["emotions_label"] = df_comments["message"].apply(lambda x: classify_emotions(x))
->>>>>>> 94998c8afef8ad463a5cef3eb6eb1dd6cde587ea
+     df_comments["entities"] = df_posts["message"].apply(extract_entities)
 
     # Convert dataframe to dict
     posts = df_posts.to_dict(orient="index")
     comments = df_comments.to_dict(orient="index")
 
-    # Insert data into MongoDB
+    Insert data into MongoDB
     num_posts = len(posts)
     num_comments = len(comments)
     fb_posts.insert_many([posts[i] for i in range(num_posts)])
