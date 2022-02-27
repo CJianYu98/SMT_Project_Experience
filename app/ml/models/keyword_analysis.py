@@ -8,7 +8,7 @@ stemmer = PorterStemmer()
 wnl = WordNetLemmatizer()
 
 # List of entities we want to extract
-entity_list = ["PERSON", "NORP", "FAC", "ORG", "GPE", "LOC", "PRODUCT", "EVENT", "WORK_OF_ART", "DATE"]
+ENTITIES = ["PERSON", "NORP", "FAC", "ORG", "GPE", "LOC", "PRODUCT", "EVENT", "WORK_OF_ART", "DATE"]
 
 
 def extract_entities(text):
@@ -21,17 +21,19 @@ def extract_entities(text):
     Returns:
         dict: Dictionary with key as entity tag and value as the word itself
     """
-    entity_dict = {}
-    entities = entity_list
+    entity_list = []
+    entities = ENTITIES
 
     text = ner(text)
     for word in text.ents:
         word, label = word.text, word.label_
 
-        word = word.lower()
-        stemmed_word = stemmer.stem(word)
-        lemma = wnl.lemmatize(stemmed_word)
+        if label in entities:
+            word = word.lower()
+            stemmed_word = stemmer.stem(word)
+            lemma = wnl.lemmatize(stemmed_word)
 
-        if len(lemma)>1:
-            entity_list.append(lemma)
+            if len(lemma)>1:
+                entity_list.append(lemma)
+                
     return entity_list
