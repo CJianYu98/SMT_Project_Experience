@@ -1,9 +1,13 @@
-import spacy
 import pandas as pd
+import spacy
+ner = spacy.load('en_core_web_sm')
+
+import nltk
+nltk.download('wordnet') # NLTK Package WordNet for WordNetLemmatizer
+nltk.download('omw-1.4') # Open Multilingual Wordnet
 from nltk.stem import PorterStemmer
 from nltk.stem import WordNetLemmatizer 
 
-ner = spacy.load('en_core_web_sm')
 stemmer = PorterStemmer()
 wnl = WordNetLemmatizer()
 
