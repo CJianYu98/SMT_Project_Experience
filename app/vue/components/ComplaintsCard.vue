@@ -10,7 +10,7 @@
         Top Complaints
         <HelpTextTooltip :help-text="complaintsWordCloudHelpText"/>
       </v-card-title>
-      <ComplaintsWordCloud />
+      <ComplaintsWordCloud  :complaints-word-cloud="complaintsWordCloud"/>
     </v-col>
     <v-divider vertical></v-divider>
     <v-col cols="6">
@@ -34,7 +34,14 @@ export default {
   components: { 
     ComplaintsWordCloud, 
     ComplaintsRelatedComments, 
-    HelpTextTooltip 
+    HelpTextTooltip,
+  },
+
+  props: {
+    complaintsWordCloud: {
+      type: Array,
+      required: true
+    }
   },
 
   data: () => ({

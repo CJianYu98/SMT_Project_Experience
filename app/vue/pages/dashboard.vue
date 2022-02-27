@@ -24,7 +24,9 @@
         />
       </v-col>
       <v-col cols="8">
-        <ComplaintsCard />
+        <ComplaintsCard 
+          :complaints-word-cloud="complaintsKeywords"
+        />
       </v-col>
     </v-row>
     <v-row>
@@ -157,12 +159,20 @@ export default {
       }
     },
     keywords: [
-      {word: "Running", size: "10", sentiment: "positive"}, 
-      {word: "Surfing", size: "20", sentiment: "neutral"}, 
-      {word: "Climbing", size: "50", sentiment: "negative"}, 
-      {word: "Kiting", size: "30", sentiment: "positive"}, 
-      {word: "Sailing", size: "20", sentiment: "negative"}, 
-      {word: "Snowboarding", size: "60", sentiment: "neutral"} 
+      {word: "Running", size: "10", sentiment: "positive", hover: "9210"}, 
+      {word: "Surfing", size: "20", sentiment: "neutral", hover: "9210"}, 
+      {word: "Climbing", size: "50", sentiment: "negative", hover: "9210"}, 
+      {word: "Kiting", size: "30", sentiment: "positive", hover: "9210"}, 
+      {word: "Sailing", size: "20", sentiment: "negative", hover: "9210"}, 
+      {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "9210"} 
+    ],
+    complaintsKeywords: [
+      {word: "Running", size: "10", sentiment: "positive", hover: "9210"}, 
+      {word: "Surfing", size: "20", sentiment: "neutral", hover: "9210"}, 
+      {word: "Hot", size: "50", sentiment: "negative", hover: "9210"}, 
+      {word: "Kiting", size: "30", sentiment: "positive", hover: "9210"}, 
+      {word: "Sailing", size: "20", sentiment: "negative", hover: "9210"}, 
+      {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "9210"} 
     ],
     keywordsWordCloudLegend: {
       positive: "#78D549",
@@ -269,14 +279,22 @@ export default {
       }
 
       this.keywords = [
-        {word: "Chocolate", size: "10", sentiment: "positive"}, 
-        {word: "Chicken Rice", size: "20", sentiment: "neutral"}, 
-        {word: "Bingsoo", size: "50", sentiment: "negative"}, 
-        {word: "Kiting", size: "30", sentiment: "positive"}, 
-        {word: "Sailing", size: "20", sentiment: "negative"}, 
-        {word: "Snowboarding", size: "60", sentiment: "neutral"} 
+        {word: "Chocolate", size: "10", sentiment: "positive", hover: "9210"}, 
+        {word: "Chicken Rice", size: "20", sentiment: "neutral", hover: "9210"}, 
+        {word: "Bingsoo", size: "50", sentiment: "negative", hover: "9210"}, 
+        {word: "Kiting", size: "30", sentiment: "positive", hover: "9210"}, 
+        {word: "Sailing", size: "20", sentiment: "negative", hover: "9210"}, 
+        {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "9210"} 
       ]
 
+      this.complaintsKeywords = [
+      {word: "Running", size: "10", sentiment: "positive", hover: "9210"}, 
+      {word: "Surfing", size: "20", sentiment: "neutral", hover: "9210"}, 
+      {word: "Rain", size: "50", sentiment: "negative", hover: "9210"}, 
+      {word: "Kiting", size: "30", sentiment: "positive", hover: "9210"}, 
+      {word: "Sailing", size: "20", sentiment: "negative", hover: "9210"}, 
+      {word: "Queue", size: "60", sentiment: "neutral", hover: "9210"} 
+    ]
 
       console.log("=== END rerenderDashboard ===")
     },
