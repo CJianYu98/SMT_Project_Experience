@@ -73,10 +73,7 @@ export default {
             cloudSvg.enter()
               .append("text")
               .style("font-size", function(d) { return d.size; })
-              .style("fill", function(d) { 
-                // console.log("d.sentiment", d.sentiment) 
-                return d.sentiment === "positive" ? "#78D549" : (d.sentiment === "negative" ? "#EB8159" : "#EFB727")
-                }
+              .style("fill", "#392A9B"
               )
               .attr("text-anchor", "middle")
               .style("font-family", "Impact")

@@ -167,12 +167,12 @@ export default {
       {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "9210"} 
     ],
     complaintsKeywords: [
-      {word: "Running", size: "10", sentiment: "positive", hover: "9210"}, 
-      {word: "Surfing", size: "20", sentiment: "neutral", hover: "9210"}, 
-      {word: "Hot", size: "50", sentiment: "negative", hover: "9210"}, 
-      {word: "Kiting", size: "30", sentiment: "positive", hover: "9210"}, 
-      {word: "Sailing", size: "20", sentiment: "negative", hover: "9210"}, 
-      {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "9210"} 
+      {word: "Running", size: "10", hover: "9210"}, 
+      {word: "Surfing", size: "20", hover: "9210"}, 
+      {word: "Hot", size: "50", hover: "9210"}, 
+      {word: "Kiting", size: "30", hover: "9210"}, 
+      {word: "Sailing", size: "20", hover: "9210"}, 
+      {word: "Snowboarding", size: "60", hover: "9210"} 
     ],
     keywordsWordCloudLegend: {
       positive: "#78D549",
@@ -288,12 +288,12 @@ export default {
       ]
 
       this.complaintsKeywords = [
-      {word: "Running", size: "10", sentiment: "positive", hover: "9210"}, 
-      {word: "Surfing", size: "20", sentiment: "neutral", hover: "9210"}, 
-      {word: "Rain", size: "50", sentiment: "negative", hover: "9210"}, 
-      {word: "Kiting", size: "30", sentiment: "positive", hover: "9210"}, 
-      {word: "Sailing", size: "20", sentiment: "negative", hover: "9210"}, 
-      {word: "Queue", size: "60", sentiment: "neutral", hover: "9210"} 
+      {word: "Running", size: "10", hover: "9210"}, 
+      {word: "Surfing", size: "20", hover: "9210"}, 
+      {word: "Rain", size: "50", hover: "9210"}, 
+      {word: "Kiting", size: "30", hover: "9210"}, 
+      {word: "Sailing", size: "20", hover: "9210"}, 
+      {word: "Queue", size: "60", hover: "9210"} 
     ]
 
       console.log("=== END rerenderDashboard ===")
