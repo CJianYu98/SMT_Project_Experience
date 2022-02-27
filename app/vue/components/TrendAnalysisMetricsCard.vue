@@ -1,13 +1,13 @@
 <template>
-  <v-row class="px-4 ml-1">
-      <v-simple-table class="mb-2">
+  <v-container class="px-4 ml-2 pt-0">
+      <v-simple-table class="mb-2 text-center">
         <template v-slot:default>
           <thead class="deep-purple">
-            <tr width="100%">
-              <th class="white--text">
+            <tr>
+              <th class="white--text text-center">
                 Posts
               </th>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Trend
               </th>
               <!-- text-center, width 100% -->
@@ -19,22 +19,26 @@
                 {{ overallStats.posts.toLocaleString() }}
               </td>
               <td>
-                <TrendAnalysisUpwardTrend v-if="overallStats.trend > 0" :percentage-increase="overallStats.trend"/>
+                <div
+                  class="font-weight-medium"
+                  v-if="overallStats.filters.date[0] === 'All'"
+                >
+                  -
+                </div>
+                <TrendAnalysisUpwardTrend v-else-if="overallStats.trend > 0" :percentage-increase="overallStats.trend"/>
                 <TrendAnalysisDownwardTrend v-else-if="overallStats.trend < 0" :percentage-decrease="overallStats.trend"/>
+                <TrendAnalysisNoTrend v-else/>
               </td>
             </tr> 
           </tbody>
 
           <thead class="deep-purple">
             <tr>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Comments
               </th>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Likes
-              </th>
-              <th class="white--text">
-                Shares
               </th>
             </tr>
           </thead>
@@ -46,25 +50,22 @@
               <td>
                 {{ overallStats.likes.toLocaleString() }}
               </td>              
-              <td>
-                {{ overallStats.shares.toLocaleString() }}
-              </td>
             </tr> 
           </tbody>
         </template>
       </v-simple-table>
 
-      <v-simple-table class="mb-3">
+      <v-simple-table class="mb-3 text-center">
         <template v-slot:default>
           <thead class="deep-purple">
             <tr>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Platform
               </th>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Mentions
               </th>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Trend
               </th>
             </tr>
@@ -81,29 +82,39 @@
                   max-width="20"
                   :src="`/${platform}_icon.png`"
                   :alt="`${platform} icon`"
+                  class="mx-auto"
                 ></v-img>
               </td>
               <td class="primary--text">
                 {{ (data.mentions * 100).toFixed(0) }}%
               </td>
               <td>
-                <TrendAnalysisUpwardTrend v-if="data.trend > 0" :percentage-increase="data.trend"/>
+                <div
+                  class="font-weight-medium"
+                  v-if="overallStats.filters.date[0] === 'All'"
+                >
+                  -
+                </div>
+                <TrendAnalysisUpwardTrend v-else-if="data.trend > 0" :percentage-increase="data.trend"/>
                 <TrendAnalysisDownwardTrend v-else-if="data.trend < 0" :percentage-decrease="data.trend"/>
+                <TrendAnalysisNoTrend v-else/>
               </td>
             </tr> 
           </tbody>
         </template>
       </v-simple-table>
-  </v-row>
+  </v-container>
 </template>
 
 <script>
 import TrendAnalysisDownwardTrend from './TrendAnalysisDownwardTrend.vue'
+import TrendAnalysisNoTrend from './TrendAnalysisNoTrend.vue'
 import TrendAnalysisUpwardTrend from './TrendAnalysisUpwardTrend.vue'
 export default {
   components: { 
     TrendAnalysisDownwardTrend, 
-    TrendAnalysisUpwardTrend 
+    TrendAnalysisUpwardTrend,
+    TrendAnalysisNoTrend 
   },
   props: {
     overallStats: {
@@ -113,7 +124,7 @@ export default {
     platformData: {
       type: Object,
       required: true
-    }
+    },
   },
   data: () => ({
 
