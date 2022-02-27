@@ -122,7 +122,7 @@
 
 <script>
 import DropDownSelect from "./DropDownSelect.vue"
-import LineChart from '@/components/LineChart'
+import LineChart from '@/components/TrendAnalysisLineChart'
 
   export default {
     props: {
