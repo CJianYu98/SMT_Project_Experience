@@ -24,5 +24,3 @@ wheel
 # python -m spacy download en_core_web_trf
 
 # python3
-# nltk.download('wordnet')
-# nltk.download('omw-1.4')
