@@ -6,8 +6,8 @@ import pandas as pd
 from dotenv import load_dotenv
 from loguru import logger
 
-from ..ml.models.sentiment_analysis import *
 from ..ml.models.keyword_analysis import *
+from ..ml.models.sentiment_analysis import *
 from .connect import client
 
 # Load environment variables
@@ -85,20 +85,20 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     df_comments.reset_index(inplace=True, drop=True)
 
     # Run classification on df_posts and df_comments
-    df_posts["sentiment_label"] = df_posts["message"].apply(lambda x: classify_sentiment(x))
-    df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
-    df_comments["sentiment_label"] = df_comments["message"].apply(lambda x: classify_sentiment(x))
-    df_comments["emotions_label"] = df_comments["message"].apply(lambda x: classify_emotions(x))
+    # df_posts["sentiment_label"] = df_posts["message"].apply(lambda x: classify_sentiment(x))
+    # df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
+    # df_comments["sentiment_label"] = df_comments["message"].apply(lambda x: classify_sentiment(x))
+    # df_comments["emotions_label"] = df_comments["message"].apply(lambda x: classify_emotions(x))
 
     # Extract entities from df_posts and df_comments
     df_posts["entities"] = df_posts["message"].apply(extract_entities)
-     df_comments["entities"] = df_posts["message"].apply(extract_entities)
+    df_comments["entities"] = df_posts["message"].apply(extract_entities)
 
     # Convert dataframe to dict
     posts = df_posts.to_dict(orient="index")
     comments = df_comments.to_dict(orient="index")
 
-    Insert data into MongoDB
+    # Insert data into MongoDB
     num_posts = len(posts)
     num_comments = len(comments)
     fb_posts.insert_many([posts[i] for i in range(num_posts)])
