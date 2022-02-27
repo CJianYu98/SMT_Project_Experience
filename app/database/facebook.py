@@ -92,13 +92,13 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     # Extract entities from df_posts and df_comments
     df_posts["entities"] = df_posts["message"].apply(extract_entities)
-     df_comments["entities"] = df_posts["message"].apply(extract_entities)
+    df_comments["entities"] = df_posts["message"].apply(extract_entities)
 
     # Convert dataframe to dict
     posts = df_posts.to_dict(orient="index")
     comments = df_comments.to_dict(orient="index")
 
-    Insert data into MongoDB
+    # Insert data into MongoDB
     num_posts = len(posts)
     num_comments = len(comments)
     fb_posts.insert_many([posts[i] for i in range(num_posts)])
