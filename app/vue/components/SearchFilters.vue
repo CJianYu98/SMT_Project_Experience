@@ -39,6 +39,7 @@
                 :input-value="selected"
                 class="primary--text"
                 v-on="on"
+                small
               >
                 <!-- <v-icon left>
                   mdi-bitcoin
@@ -95,10 +96,8 @@
                 :input-value="selected"
                 class="primary--text"
                 v-on="on"
+                small
               >
-                <!-- <v-icon left>
-                  mdi-bitcoin
-                </v-icon> -->
                 <span v-text="item.name"></span>
               </v-chip>
             </template>
@@ -124,24 +123,21 @@
           class="d-flex"
           cols="2"
         >
-        <div>
-          <div class="d-block">
-            <v-select
-              v-model="dateSelected"
-              d-block
-              :items="dateFilter"
-              item-text="date"
-              label="Select a date period"
-              outlined
-              @change="openDialogueIfCustomSelected(dateSelected);"
-            >
-              <template slot="selection" slot-scope="data">
-                <span v-if="data.item.date === 'Custom' && dateRange.length === 1" class="accent--text">{{ dateRange[0] }}</span>
-                <span v-else-if="data.item.date === 'Custom' && dateRange.length > 1" class="accent--text">{{ dateRange.join(" - ") }}</span>
-                <span v-else class="accent--text">{{ data.item.date }}</span>
-              </template>
-            </v-select>
-          </div>
+          <v-select
+            v-model="dateSelected"
+            d-block
+            :items="dateFilter"
+            item-text="date"
+            label="Select a date period"
+            outlined
+            @change="openDialogueIfCustomSelected(dateSelected);"
+          >
+            <template slot="selection" slot-scope="data">
+              <span v-if="data.item.date === 'Custom' && dateRange.length === 1" class="accent--text">{{ dateRange[0] }}</span>
+              <span v-else-if="data.item.date === 'Custom' && dateRange.length > 1" class="accent--text">{{ dateRange.join(" - ") }}</span>
+              <span v-else class="accent--text">{{ data.item.date }}</span>
+            </template>
+          </v-select>
 
           <v-dialog
             v-model="dialog"
@@ -159,91 +155,7 @@
               <v-spacer></v-spacer>
             </v-date-picker>
           </v-dialog>
-          
-
-          <!-- <div class="d-block">
-            <v-date-picker 
-              v-if="dateSelected == 'Custom'"
-              v-model="dateRange" 
-              d-block 
-              no-title 
-              range 
-              scrollable 
-            >
-              <v-spacer></v-spacer>
-            </v-date-picker>
-          </div> -->
-        </div>
         </v-col>
-        <!-- <v-spacer></v-spacer>
-        <v-col> -->
-          <!-- <v-date-picker
-            v-model="dateRange"
-            range
-            no-title
-            v-if="dateSelected == 'Custom'"
-          ></v-date-picker> -->
-
-        <!-- template for vmenu and date picker inside menu -->
-        <!-- <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          :return-value.sync="date"
-          transition="scale-transition"
-          offset-y
-          min-width="290px"
-          nudge-right="300px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="date"
-              label="Picker in menu"
-              prepend-icon="event"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="date" no-title scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-          </v-date-picker>
-        </v-menu> -->
-
-      <!-- <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          :return-value.sync="dateRange"
-          transition="scale-transition"
-          offset-y
-          min-width="290px"
-          nudge-right="300px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="dateRange"
-              label="Picker in menu"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="dateRange" no-title range scrollable>
-            <v-spacer></v-spacer>
-          </v-date-picker>
-        </v-menu> -->
-
-
-
-          <!-- <v-date-picker v-model="dateRange" no-title range scrollable>
-            <v-spacer></v-spacer>
-          </v-date-picker> -->
-        <!-- </v-col> -->
-        <!-- </v-row>
-        <v-row> -->
         <v-spacer></v-spacer>
         <v-col
           cols="3"
@@ -283,6 +195,7 @@
                 color="accent"
                 outlined
                 class="my-1"
+                small
               >
                 {{item}}
               </v-chip>
@@ -328,6 +241,7 @@
                 color="accent"
                 outlined
                 class="my-1"
+                small
               >
                 {{item}}
               </v-chip>
