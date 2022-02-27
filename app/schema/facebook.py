@@ -12,7 +12,7 @@ class FbPostRes(BaseModel):
     comments_cnt: int
 
 
-class FbDailyStatsRes(BaseModel):
+class FbStatsRes(BaseModel):
     date: dict
     total_comments: int
     total_likes: int
