@@ -1,13 +1,13 @@
 <template>
-  <v-row class="px-4 ml-1">
-      <v-simple-table class="mb-2">
+  <v-container class="px-4 ml-2 pt-0">
+      <v-simple-table class="mb-2 text-center">
         <template v-slot:default>
           <thead class="deep-purple">
-            <tr width="100%">
-              <th class="white--text">
+            <tr>
+              <th class="white--text text-center">
                 Posts
               </th>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Trend
               </th>
               <!-- text-center, width 100% -->
@@ -34,14 +34,11 @@
 
           <thead class="deep-purple">
             <tr>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Comments
               </th>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Likes
-              </th>
-              <th class="white--text">
-                Shares
               </th>
             </tr>
           </thead>
@@ -53,25 +50,22 @@
               <td>
                 {{ overallStats.likes.toLocaleString() }}
               </td>              
-              <td>
-                {{ overallStats.shares.toLocaleString() }}
-              </td>
             </tr> 
           </tbody>
         </template>
       </v-simple-table>
 
-      <v-simple-table class="mb-3">
+      <v-simple-table class="mb-3 text-center">
         <template v-slot:default>
           <thead class="deep-purple">
             <tr>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Platform
               </th>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Mentions
               </th>
-              <th class="white--text">
+              <th class="white--text text-center">
                 Trend
               </th>
             </tr>
@@ -88,6 +82,7 @@
                   max-width="20"
                   :src="`/${platform}_icon.png`"
                   :alt="`${platform} icon`"
+                  class="mx-auto"
                 ></v-img>
               </td>
               <td class="primary--text">
@@ -108,7 +103,7 @@
           </tbody>
         </template>
       </v-simple-table>
-  </v-row>
+  </v-container>
 </template>
 
 <script>
