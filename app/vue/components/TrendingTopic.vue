@@ -1,7 +1,7 @@
 <template>
   <v-list-item class="primary--text">
-    <v-list-item-content class="pt-1">
-      <v-row>
+    <v-list-item-content class="pt-1 pb-0">
+      <v-row class="mb-n1">
         <v-col class="pb-1">
           <v-list-item-title 
             class="mb-1 pl-3 font-weight-bold" 
@@ -17,14 +17,19 @@
       <v-list-item-subtitle
         class="pl-3 primary--text" 
       >
-        <span 
-          v-for="(mention, index) in topicAssigned.topThreeMentions"
-          :key="mention"
-          @click="passSelectedTrendingTopicToTopics(mention)"
-          class="trending-category"
-        >
+        <v-chip-group column>
+          <v-chip
+            v-bind="attr"
+            :input-value="selected"
+            class="primary trending-category mr-1"
+            small
+            v-for="(mention, index) in topicAssigned.topThreeMentions"
+            :key="mention"
+            @click="passSelectedTrendingTopicToTopics(mention)"
+          >
             {{ mention }}{{ (index+1 &lt; topicAssigned.topThreeMentions.length) ? ', ' : '' }}
-        </span>
+          </v-chip>
+        </v-chip-group>
 
         <!-- 
           1. pass the mention (inside trending topic component) to autocompleteModel (inside search filters component)

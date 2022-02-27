@@ -12,55 +12,16 @@
             v-model="autocompleteModel"
             :items="items"
             :loading="isLoading"
-            chips
             clearable
             hide-details
             hide-selected
             item-text="name"
             item-value="symbol"
-            label="Enter a keyword you are interested in!"
+            label="Enter a query!"
             solo
             dense
             return-object
           >
-            <!-- :label="selectedTrendingQuery" -->
-                      <!-- return-object -->
-            <!-- <template v-slot:no-data>
-              <v-list-item>
-                <v-list-item-title>
-                  Search for your favorite
-                  <strong>Cryptocurrency</strong>
-                </v-list-item-title>
-              </v-list-item>
-            </template> -->
-            <template #selection="{ attr, on, item, selected }">
-              <v-chip
-                v-bind="attr"
-                :input-value="selected"
-                class="primary--text"
-                v-on="on"
-              >
-                <!-- <v-icon left>
-                  mdi-bitcoin
-                </v-icon> -->
-                <span v-text="item.name"></span>
-              </v-chip>
-            </template>
-            <template #item="{ item }">
-              <v-list-item-avatar
-                color="indigo"
-                class="text-h5 font-weight-light white--text"
-              >
-                {{ item.name.charAt(0) }}
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.name"></v-list-item-title>
-                <v-list-item-subtitle v-text="item.symbol"></v-list-item-subtitle>
-              </v-list-item-content>
-              <!-- <v-list-item-action>
-                <v-icon>mdi-bitcoin</v-icon>
-              </v-list-item-action> -->
-            </template>
           </v-autocomplete>
 
           <v-autocomplete
@@ -69,54 +30,16 @@
             :items="items"
             :loading="isLoading"
             :search-input.sync="search"
-            chips
             clearable
             hide-details
             hide-selected
             item-text="name"
             item-value="symbol"
-            label="Enter a keyword you are interested in!"
+            label="Enter a query!"
             solo
             dense
             return-object
           >
-                      <!-- return-object -->
-            <!-- <template v-slot:no-data>
-              <v-list-item>
-                <v-list-item-title>
-                  Search for your favorite
-                  <strong>Cryptocurrency</strong>
-                </v-list-item-title>
-              </v-list-item>
-            </template> -->
-            <template #selection="{ attr, on, item, selected }">
-              <v-chip
-                v-bind="attr"
-                :input-value="selected"
-                class="primary--text"
-                v-on="on"
-              >
-                <!-- <v-icon left>
-                  mdi-bitcoin
-                </v-icon> -->
-                <span v-text="item.name"></span>
-              </v-chip>
-            </template>
-            <template #item="{ item }">
-              <v-list-item-avatar
-                color="indigo"
-                class="text-h5 font-weight-light white--text"
-              >
-                {{ item.name.charAt(0) }}
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.name"></v-list-item-title>
-                <v-list-item-subtitle v-text="item.symbol"></v-list-item-subtitle>
-              </v-list-item-content>
-              <!-- <v-list-item-action>
-                <v-icon>mdi-bitcoin</v-icon>
-              </v-list-item-action> -->
-            </template>
           </v-autocomplete>
         </v-col>
         <v-spacer></v-spacer>
@@ -124,24 +47,21 @@
           class="d-flex"
           cols="2"
         >
-        <div>
-          <div class="d-block">
-            <v-select
-              v-model="dateSelected"
-              d-block
-              :items="dateFilter"
-              item-text="date"
-              label="Select a date period"
-              outlined
-              @change="openDialogueIfCustomSelected(dateSelected);"
-            >
-              <template slot="selection" slot-scope="data">
-                <span v-if="data.item.date === 'Custom' && dateRange.length === 1" class="accent--text">{{ dateRange[0] }}</span>
-                <span v-else-if="data.item.date === 'Custom' && dateRange.length > 1" class="accent--text">{{ dateRange.join(" - ") }}</span>
-                <span v-else class="accent--text">{{ data.item.date }}</span>
-              </template>
-            </v-select>
-          </div>
+          <v-select
+            v-model="dateSelected"
+            d-block
+            :items="dateFilter"
+            item-text="date"
+            label="Select a date period"
+            outlined
+            @change="openDialogueIfCustomSelected(dateSelected);"
+          >
+            <template slot="selection" slot-scope="data">
+              <span v-if="data.item.date === 'Custom' && dateRange.length === 1" class="accent--text">{{ dateRange[0] }}</span>
+              <span v-else-if="data.item.date === 'Custom' && dateRange.length > 1" class="accent--text">{{ dateRange.join(" - ") }}</span>
+              <span v-else class="accent--text">{{ data.item.date }}</span>
+            </template>
+          </v-select>
 
           <v-dialog
             v-model="dialog"
@@ -159,91 +79,7 @@
               <v-spacer></v-spacer>
             </v-date-picker>
           </v-dialog>
-          
-
-          <!-- <div class="d-block">
-            <v-date-picker 
-              v-if="dateSelected == 'Custom'"
-              v-model="dateRange" 
-              d-block 
-              no-title 
-              range 
-              scrollable 
-            >
-              <v-spacer></v-spacer>
-            </v-date-picker>
-          </div> -->
-        </div>
         </v-col>
-        <!-- <v-spacer></v-spacer>
-        <v-col> -->
-          <!-- <v-date-picker
-            v-model="dateRange"
-            range
-            no-title
-            v-if="dateSelected == 'Custom'"
-          ></v-date-picker> -->
-
-        <!-- template for vmenu and date picker inside menu -->
-        <!-- <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          :return-value.sync="date"
-          transition="scale-transition"
-          offset-y
-          min-width="290px"
-          nudge-right="300px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="date"
-              label="Picker in menu"
-              prepend-icon="event"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="date" no-title scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-          </v-date-picker>
-        </v-menu> -->
-
-      <!-- <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          :return-value.sync="dateRange"
-          transition="scale-transition"
-          offset-y
-          min-width="290px"
-          nudge-right="300px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="dateRange"
-              label="Picker in menu"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="dateRange" no-title range scrollable>
-            <v-spacer></v-spacer>
-          </v-date-picker>
-        </v-menu> -->
-
-
-
-          <!-- <v-date-picker v-model="dateRange" no-title range scrollable>
-            <v-spacer></v-spacer>
-          </v-date-picker> -->
-        <!-- </v-col> -->
-        <!-- </v-row>
-        <v-row> -->
         <v-spacer></v-spacer>
         <v-col
           cols="3"
@@ -283,6 +119,7 @@
                 color="accent"
                 outlined
                 class="my-1"
+                small
               >
                 {{item}}
               </v-chip>
@@ -328,6 +165,7 @@
                 color="accent"
                 outlined
                 class="my-1"
+                small
               >
                 {{item}}
               </v-chip>

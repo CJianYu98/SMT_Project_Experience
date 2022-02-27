@@ -19,7 +19,7 @@
       </v-list>
     </v-navigation-drawer> -->
 
-    <v-toolbar class="px-4" flat>
+    <v-toolbar class="px-4 my-n2" flat>
       <!-- hide icon on screens larger than md, show on screens <= md -->
       <span class="d-md-none"> 
         <v-app-bar-nav-icon @click="sidebar = !sidebar">

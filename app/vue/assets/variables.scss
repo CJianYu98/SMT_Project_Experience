@@ -4,17 +4,14 @@
 // $font-size-root: 20px;
 
 
-$font-size-root: 16px;
+$font-size-root: 12px;
     
 $heading-font-family: "Poppins", sans-serif;
 $body-font-family: "Inter", sans-serif;
+$list-item-subtitle-font-size: 1.2rem;
+$list-item-title-font-size: 1.3rem;
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   font-family: $heading-font-family;
 }
 
@@ -26,7 +23,16 @@ body {
   font-family: $body-font-family;
 }
 
-@import "@fontsource/poppins/600.css"; // Defaults to weight 400 with normal variant.
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > th, .v-data-table > .v-data-table__wrapper > table > thead > tr > th, .v-data-table > .v-data-table__wrapper > table > tfoot > tr > th {
+  font-size: 1.3rem;
+}
+
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > td, .v-data-table > .v-data-table__wrapper > table > thead > tr > td, .v-data-table > .v-data-table__wrapper > table > tfoot > tr > td {
+  font-size: 1.2rem;
+}
+
+
+@import "@fontsource/poppins/600.css"; // Defaults to weight 600 with normal variant.
 @import "@fontsource/inter/latin.css"; // Defaults to weight 400 with normal variant.
 @import "~vuetify/src/styles/styles.sass"; //this has to be last
 

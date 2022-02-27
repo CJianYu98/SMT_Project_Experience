@@ -78,8 +78,8 @@
               <td>
                 <!-- {{ platform }} -->
                 <v-img
-                  max-height="20"
-                  max-width="20"
+                  max-height="30"
+                  max-width="30"
                   :src="`/${platform}_icon.png`"
                   :alt="`${platform} icon`"
                   class="mx-auto"
