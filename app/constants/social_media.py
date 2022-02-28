@@ -1,20 +1,6 @@
-# from enum import Enum
-
-# class FacebookGroups(Enum):
-#     MUST_SHARE_NEWS = "Mustsharenews.com"
-#     MOTHERSHIP = "Mothership"
-#     STOMP = "Stomp"
-#     RICE_MEDIA= "Rice Media"
-#     ST_COMMENTS = "The Straits Times Comment Section"
-#     SINGPORE_MATTERS = "Singapore Matters"
-#     WAKE_UP_SINGAPORE = "Wake Up, Singapore"
-#     CNA = "CNA"
-#     CNA_INSIDER = "CNA Insider"
-#     YAHOO_SINGAPORE = "Yahoo Singapore"
-#     THE_STRAITS_TIME = "The Straits Times"
-#     TODAY = "Today"
-
+# FACEBOOK
 FACEBOOK_GROUPS = {
+    "all_singapore_stuff": "All Singapore Stuff",
     "mustsharenews": "Mustsharenews.com",
     "mothership": "Mothership",
     "stomp": "Stomp",
@@ -28,3 +14,36 @@ FACEBOOK_GROUPS = {
     "straits_times": "The Straits Times",
     "today": "Today",
 }
+
+# REDDIT
+REDDIT_COMMENTS_FIELDS = [
+    "author",
+    "author_fullname",
+    "body",
+    "created_utc",
+    "id",
+    "parent_id",
+    "permalink",
+    "score",
+    "total_awards_received",
+]
+
+
+REDDIT_SUBMISSION_FIELDS = [
+    "author_fullname", 
+    "title", 
+    "upvote_ratio", 
+    "total_awards_received", 
+    "selftext",
+    "media_embed", 
+    "link_flair_text", 
+    "score", 
+    "thumbnail",
+    "over_18", 
+    "all_awardings", 
+    "author", 
+    "id",
+    "num_comments", 
+    "url", 
+    "created_utc"
+]

@@ -82,7 +82,7 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     df_new["created_time"] = df_new["created_time"].apply(
         lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S%z")
     )
-    df_new["parent_id"] = df_new["created_time"].apply(lambda x: int(x))
+    df_new["parent_id"] = df_new["parent_id"].apply(lambda x: int(x))
 
     # Filter df to df_posts and df_comments
     df_posts = df_new[df_new["is_post"] == 1].drop(["is_post"], axis=1)
@@ -91,6 +91,7 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     df_comments.reset_index(inplace=True, drop=True)
 
     # Classify Sentiment on df_posts and df_comments
+    logger.info(f"Now classifying {file_name}")
     df_posts = classify_sentiment(df_posts)
     df_comments = classify_sentiment(df_comments)
 

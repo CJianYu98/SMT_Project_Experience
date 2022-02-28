@@ -21,7 +21,7 @@ transformers
 wheel
 
 
-# python -m spacy download en_core_web_sm
-# python -m spacy download en_core_web_trf
-
-# python3
+# python3 -m spacy download en_core_web_sm
+# python3 -m spacy download en_core_web_trf
+# nltk.download('wordnet') # NLTK Package WordNet for WordNetLemmatizer
+# nltk.download('omw-1.4') # Open Multilingual Wordnet
