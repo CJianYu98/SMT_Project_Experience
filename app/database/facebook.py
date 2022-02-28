@@ -76,7 +76,7 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     df_new["fb_group"] = file_name
 
     # Convert datetime string to datetime type
-    df_new['created_time'] = df_new['created_time'].apply(lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S%z'))
+    df_new["created_time"] = df_new["created_time"].apply(lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S%z"))
 
     # Filter df to df_posts and df_comments
     df_posts = df_new[df_new["is_post"] == 1]
@@ -84,10 +84,14 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     df_comments = df_new[df_new["is_post"] == 0]
     df_comments.reset_index(inplace=True, drop=True)
 
-    # Run classification on df_posts and df_comments
+    # Classify Sentiment on df_posts and df_comments
+    df_posts = classify_sentiment(df_posts)
+    df_comments = classify_sentiment(df_comments)
     # df_posts["sentiment_label"] = df_posts["message"].apply(lambda x: classify_sentiment(x))
-    # df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
     # df_comments["sentiment_label"] = df_comments["message"].apply(lambda x: classify_sentiment(x))
+
+    # Classify Emotions on df_posts and df_comments
+    # df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
     # df_comments["emotions_label"] = df_comments["message"].apply(lambda x: classify_emotions(x))
 
     # Extract entities from df_posts and df_comments
