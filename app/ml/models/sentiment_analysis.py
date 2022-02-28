@@ -3,7 +3,7 @@ from datasets import Dataset
 from scipy.special import softmax
 from tqdm.auto import tqdm
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
-from transformers.pipelines.pt_utils import KeyDataset
+from transformers.pipelines.base import KeyDataset
 
 
 ############### EMOTIONS ###############
