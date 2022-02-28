@@ -87,13 +87,13 @@
           <v-select
             v-model="sentimentsSelected"
             :items="sentimentsFilter"
-            small-chips
             label="Sentiment Filter"
             multiple
             outlined
             dense
             @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected)"
           >
+          <!-- small-chips -->
           <!-- select all functionality -->
             <!-- <template #prepend-item>
               <v-list-item
@@ -114,7 +114,8 @@
               </v-list-item>
               <v-divider class="mt-2"></v-divider>
             </template> -->
-            <template #selection="{ item }">
+            
+            <!-- <template #selection="{ item }">
               <v-chip 
                 color="accent"
                 outlined
@@ -123,7 +124,7 @@
               >
                 {{item}}
               </v-chip>
-            </template>
+            </template> -->
           </v-select>
         </v-col>
         <v-spacer></v-spacer>
@@ -133,13 +134,14 @@
           <v-select
             v-model="platformsSelected"
             :items="platformsFilter"
-            small-chips
             label="Platform Filter"
             multiple
             outlined
             dense
             @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected)"
+            class="accent--text"
           >
+            <!-- small-chips -->
           <!-- select all functionality -->
             <!-- <template #prepend-item>
               <v-list-item
@@ -160,7 +162,8 @@
               </v-list-item>
               <v-divider class="mt-2"></v-divider>
             </template> -->
-            <template #selection="{ item }">
+
+            <!-- <template #selection="{ item }">
               <v-chip 
                 color="accent"
                 outlined
@@ -169,7 +172,7 @@
               >
                 {{item}}
               </v-chip>
-            </template>
+            </template> -->
           </v-select>
         </v-col>
       </v-row>
