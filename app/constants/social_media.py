@@ -15,16 +15,16 @@
 #     TODAY = "Today"
 
 FACEBOOK_GROUPS = {
-    "mustsharenews": "Mustsharenews.com"
-    "mothership": "Mothership"
-    "stomp": "Stomp"
-    "rice_media": "Rice Media"
-    "straits_times_comments": "The Straits Times Comment Section"
-    "singapore_matters": "Singapore Matters"
-    "wakeup_singapore": "Wake Up, Singapore"
-    "cna": "CNA"
-    "cna_insider": "CNA Insider"
-    "yahoo_singapore": "Yahoo Singapore"
-    "straits_times": "The Straits Times"
-    "today": "Today"
+    "mustsharenews": "Mustsharenews.com",
+    "mothership": "Mothership",
+    "stomp": "Stomp",
+    "rice_media": "Rice Media",
+    "straits_times_comments": "The Straits Times Comment Section",
+    "singapore_matters": "Singapore Matters",
+    "wakeup_singapore": "Wake Up, Singapore",
+    "cna": "CNA",
+    "cna_insider": "CNA Insider",
+    "yahoo_singapore": "Yahoo Singapore",
+    "straits_times": "The Straits Times",
+    "today": "Today",
 }
