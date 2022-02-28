@@ -26,6 +26,7 @@
       <v-col cols="8">
         <ComplaintsCard 
           :complaints-word-cloud="complaintsKeywords"
+          :complaints-related-comments="complaintsRelatedComments"
         />
       </v-col>
     </v-row>
@@ -173,6 +174,22 @@ export default {
       {word: "Kiting", size: "30", hover: "9210"}, 
       {word: "Sailing", size: "20", hover: "9210"}, 
       {word: "Snowboarding", size: "60", hover: "9210"} 
+    ],
+    complaintsRelatedComments: [
+      {
+        media: 'facebook',
+        likes: '65,000',
+        date: '21 December 2021',
+        comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+        topic: 'Healthcare'
+      },
+      {
+        media: 'facebook',
+        likes: '23,000',
+        date: '22 December 2021',
+        comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+        topic: 'Healthcare'
+      },
     ],
     keywordsWordCloudLegend: {
       positive: "#78D549",
