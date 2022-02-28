@@ -39,7 +39,7 @@
                   Number of Posts
                 </v-card-title>
                 <v-spacer></v-spacer>
-                <DropDownSelect v-bind:viewFilter="fbView"></DropDownSelect>
+                <DropDownSelect v-bind:viewFilter="fbView" v-bind:label="label"></DropDownSelect>
               </v-col>
             </v-row>
           </v-container>
@@ -76,7 +76,7 @@
                   Number of Posts
                 </v-card-title>
                 <v-spacer></v-spacer>
-                <DropDownSelect v-bind:viewFilter="redditView"></DropDownSelect>
+                <DropDownSelect v-bind:viewFilter="redditView" v-bind:label="label"></DropDownSelect>
               </v-col>
             </v-row>
           </v-container>
@@ -92,7 +92,7 @@
                   Number of Posts
                 </v-card-title>
                 <v-spacer></v-spacer>
-                <DropDownSelect v-bind:viewFilter="twitterView"></DropDownSelect>
+                <DropDownSelect v-bind:viewFilter="twitterView" v-bind:label="label"></DropDownSelect>
               </v-col>
             </v-row>
           </v-container>
@@ -108,7 +108,7 @@
                   Number of Posts
                 </v-card-title>
                 <v-spacer></v-spacer>
-                <DropDownSelect v-bind:viewFilter="youtubeView"></DropDownSelect>
+                <DropDownSelect v-bind:viewFilter="youtubeView" v-bind:label="label"></DropDownSelect>
               </v-col>
             </v-row>
           </v-container>
@@ -137,6 +137,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
     data () {
       return {
         tabs: null,
+        label: 'View',
         medias: ['facebook','reddit','twitter','youtube'],
         fbView: [{view: 'Number of Likes'}, {view: 'Number of Comments'}, {view: 'Number of Shares'}],
         redditView: [{view: 'Number of Net Votes'}, {view: 'Number of Comments'}, {view: 'Number of Awards'}],        

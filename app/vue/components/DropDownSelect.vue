@@ -2,10 +2,10 @@
     <div class="d-block">
         <v-select
             d-block
-            v-model="viewSelected"
+            :v-model="viewSelected"
             :items="viewFilter"
             item-text="view"
-            label="View"
+            :label="label"
             outlined
             dense
         >
@@ -18,7 +18,13 @@
     props:{
       viewFilter:{
         required: true
-      }
+      },
+      label: {
+        required: true
+      },
+      // viewSelected: {
+      //   required: true
+      // }
     },
     data: () => ({
       items: [],
