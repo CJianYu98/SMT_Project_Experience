@@ -45,5 +45,6 @@ REDDIT_SUBMISSION_FIELDS = [
     "id",
     "num_comments", 
     "url", 
-    "created_utc"
+    "created_utc",
+    "full_link"
 ]

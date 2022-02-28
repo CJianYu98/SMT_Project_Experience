@@ -40,6 +40,7 @@ for year_folder in os.listdir(REDDIT_HISTORICAL_DATA_PATH):
                     except:
                         continue
                 submission_data.append(sub)
+
         reddit_submissions.insert_many(submission_data)
     
     # # Inserting reddit comments data 
@@ -56,15 +57,16 @@ for year_folder in os.listdir(REDDIT_HISTORICAL_DATA_PATH):
 
         for i in range(len(lines)):
             record = lines[i].split('\t')[2]
-            jobj = json.loads(record)
+            comments = json.loads(record)['data']
 
-            temp = {}
-            for field in REDDIT_COMMENTS_FIELDS:
-                try:
-                    temp[field] = jobj['data'][0][field]
-                except:
-                    continue
-            comments_data.append(temp)
+            for j in range(len(comments)):
+                temp = {}
+                for field in REDDIT_COMMENTS_FIELDS:
+                    try:
+                        temp[field] = jobj['data'][j][field]
+                    except:
+                        continue
+                comments_data.append(temp)
 
         reddit_comments.insert_many(comments_data)
     logger.info(f"{year_folder} folder completed.")
