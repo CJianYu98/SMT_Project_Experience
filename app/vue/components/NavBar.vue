@@ -33,7 +33,7 @@
           max-width="30"
         />
       </router-link>
-      <v-toolbar-title class="accent--text text-h5">
+      <v-toolbar-title class="accent--text text-h5 appTitle">
         <router-link to="/" tag="span">
           {{ appTitle }}
         </router-link>
@@ -73,12 +73,16 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 /* .navSelected {
   color: var(--v-primary-base);
   text-decoration: underline;
   text-decoration-color: #4734C2;
   background-color: white;
 } */
+
+.appTitle {
+  cursor: pointer;
+}
 
 </style>
