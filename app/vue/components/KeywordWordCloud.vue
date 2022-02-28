@@ -43,6 +43,7 @@ export default {
       const svg = d3.select("#keywordWordcloud").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
+        .attr("id","svgId")
 
       const focus = svg.append("g")
                     .attr("transform",
@@ -230,8 +231,10 @@ export default {
             console.log("=== start update() ===")
             console.log("words")
 
+            console.log("wordcloud length check", d3.select("#keywordWordcloud")._groups[0][0].childNodes.length)
+
             if (d3.select("#keywordWordcloud")._groups[0][0].childNodes.length > 1) {
-              d3.select("svg").remove();
+              d3.select("#svgId").remove();
             }
 
             layout = cloud()
