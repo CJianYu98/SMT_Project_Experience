@@ -1,5 +1,5 @@
 <template>
-  <v-card :key="media" class="ml-3 mr-3">
+  <v-card :key="media" class="mx-4 mb-4">
     <v-list-item-subtitle
         class="pl-3 primary--text" 
       >
@@ -33,15 +33,31 @@
 
 <script>
 export default {
-  data () {
-    return {
-      media: 'facebook',
-      likes: '65,000',
-      date: '21 December 2021',
-      comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
-      topic: 'Healthcare',
-    }
-  }
+  props: {
+    media: {
+      type: String,
+      required: true
+    },
+    likes: {
+      type: String,
+      required: true
+    },
+    date: {
+      type: String,
+      required: true
+    },
+    comment: {
+      type: String,
+      required: true
+    },
+    topic: {
+      type: String,
+      required: true
+    },
+  },
+  data: () => ({
+
+  }),
 }
 </script>
 

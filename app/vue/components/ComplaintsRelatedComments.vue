@@ -1,30 +1,32 @@
 <template>
   <div>
-    <v-row no-gutters align="stretch">
-      &nbsp; &nbsp; 
-      <DropDownSelect 
-      v-bind:viewFilter="sortView" v-bind:label="label" v-bind:viewSelected="viewSelected">
-      </DropDownSelect>
-    </v-row>
-    <ComplaintsRelatedComment/>
-    &nbsp;
-    <ComplaintsRelatedComment/>
+    <ComplaintsRelatedComment
+      v-for="complaint in complaintsRelatedComments"
+      :key="complaint"
+      :media="complaint.media"
+      :likes="complaint.likes"
+      :date="complaint.date"
+      :comment="complaint.comment"
+      :topic="complaint.topic"
+    />
   </div>
 </template>
 
 <script>
-import DropDownSelect from "./DropDownSelect.vue"
 import ComplaintsRelatedComment from './ComplaintsRelatedComment.vue'
 
 export default {
   components: {
-    DropDownSelect, 
     ComplaintsRelatedComment 
   },
+  props: {
+    complaintsRelatedComments: {
+      type: Array,
+      required: true
+    },
+  },
   data: () => ({
-      sortView: [{view: 'Likes'}, {view: 'Date'}],
-      label: 'Sort By',
-      // viewSelected: 'Likes',
+
   }),
 }
 </script>

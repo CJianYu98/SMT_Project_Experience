@@ -14,11 +14,23 @@
     </v-col>
     <v-divider vertical></v-divider>
     <v-col cols="6">
-        <v-card-title class="pb-4 accent--text text-h6">
-        Related Comments
-        <HelpTextTooltip :help-text="complaintsCommentsHelpText"/>
-      </v-card-title>
-      <ComplaintsRelatedComments />
+      <v-row>
+        <v-col cols="8">
+          <v-card-title class="pb-4 accent--text text-h6">
+            Related Comments
+            <HelpTextTooltip :help-text="complaintsCommentsHelpText"/>
+          </v-card-title>
+        </v-col>
+        <v-col>
+          <DropDownSelect 
+            :viewFilter="sortView" 
+            :label="label">
+          </DropDownSelect>
+        </v-col>
+      </v-row>
+      <ComplaintsRelatedComments 
+        :complaints-related-comments="complaintsRelatedComments"
+      />
     </v-col>
   </v-row>
     
@@ -29,25 +41,34 @@
 <script>
 import ComplaintsRelatedComments from './ComplaintsRelatedComments.vue'
 import ComplaintsWordCloud from './ComplaintsWordCloud.vue'
+import DropDownSelect from './DropDownSelect.vue'
 import HelpTextTooltip from './HelpTextTooltip.vue'
 export default {
   components: { 
     ComplaintsWordCloud, 
     ComplaintsRelatedComments, 
     HelpTextTooltip,
+    DropDownSelect,
   },
 
   props: {
     complaintsWordCloud: {
       type: Array,
       required: true
-    }
+    },
+    complaintsRelatedComments: {
+      type: Array,
+      required: true
+    },
   },
 
   data: () => ({
     complaintsWordCloudHelpText: "Observe the most common complaint topics mentioned across the selected time period and platform(s).",
     complaintsCommentsHelpText: "Study the most common complaints, or, if a complaint keyword has been selected, the comments related to that complaint. Words highlighted in red are indicative of the negative sentiment.",
-  }),
+    sortView: [{view: 'Likes'}, {view: 'Date'}],
+      label: 'Sort By',
+      // viewSelected: 'Likes',
+    }),
   
 }
 </script>

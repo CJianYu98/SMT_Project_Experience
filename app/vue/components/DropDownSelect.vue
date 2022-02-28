@@ -1,5 +1,5 @@
 <template>
-    <div class="d-block">
+    <div class="d-block pt-4 mr-3">
         <v-select
             d-block
             :v-model="viewSelected"
