@@ -20,7 +20,7 @@ export default {
     
   },
   watch: {
-    keywordsWordCloud(val) {
+    complaintsWordCloud(val) {
       this.generateKeywordsWordcloud().update(val)
     }
   },
@@ -43,9 +43,11 @@ export default {
       const svg = d3.select("#complaintWordcloud").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
+        .attr("id","complaintSvgId")
+        
+      const focus = svg.append("g")
+                    .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
 
       // This function takes the output of 'layout' above and draw the words
       // Wordcloud features that are THE SAME from one word to the other can be here
@@ -58,7 +60,7 @@ export default {
         console.log("=== start draw() ===")
         console.log("words", words)
 
-        const cloudSvg = svg
+        const cloudSvg = focus
           .append("g")
           .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
           .selectAll("text")
@@ -67,7 +69,7 @@ export default {
             // cloud.attr("transform", "translate(" + cloud.size()[0] / 2 + "," + cloud.size()[1] / 2 + ")")
             console.log("cloudSvg -1", cloudSvg)
             console.log("this.cloudSvg 1", this.cloudSvgTest)
-            this.cloudSvgTest = cloudSvg
+            // this.cloudSvgTest = cloudSvg
             console.log("this.cloudSvg 2", this.cloudSvgTest)
 
             cloudSvg.enter()
@@ -82,10 +84,10 @@ export default {
               })
               // .attr("transform", "translate(" + cloud.size()[0] / 2 + "," + cloud.size()[1] / 2 + ")")
               .text(function(d) { return d.text; })
-              .on('mouseover', handleMouseOver)
-              .on('mouseout', handleMouseOut);
+              // .on('mouseover', handleMouseOver)
+              // .on('mouseout', handleMouseOut);
 
-            console.log("this.cloudSvg 4", this.cloudSvg)
+            // console.log("this.cloudSvg 4", this.cloudSvg)
 
             // Exiting words
             cloudSvg.exit()
@@ -102,51 +104,51 @@ export default {
             
       }
 
-      function handleMouseOver(d) {
-        console.log("=== START handleMouseOver() ===")
-        console.log("d", d)
-        console.log("d.text", d.target.__data__.text)
-        console.log("this.cloudSvg 3", this.cloudSvg)
-        const group = this.cloudSvg.append('g')
-                        .attr('id', 'story-titles');
-        const base = d.y - d.size;
-        const hoverText = this.complaintsWordCloud.find(o => o.word === d.target.__data__.text)
-        console.log("hoverText", hoverText)
+      // function handleMouseOver(d) {
+      //   console.log("=== START handleMouseOver() ===")
+      //   console.log("d", d)
+      //   console.log("d.text", d.target.__data__.text)
+      //   console.log("this.cloudSvg 3", this.cloudSvg)
+      //   const group = this.cloudSvg.append('g')
+      //                   .attr('id', 'story-titles');
+      //   const base = d.y - d.size;
+      //   const hoverText = this.complaintsWordCloud.find(o => o.word === d.target.__data__.text)
+      //   console.log("hoverText", hoverText)
 
-        group.selectAll('text')
-            // .data(data['sample_title'][d.key])
-            .data(hoverText)
-            .enter().append('text')
-            .attr('x', d.x)
-            .attr('y', function(title, i) {
-              return (base - i*14);
-            })
-            .attr('text-anchor', 'middle')
-            .text(function(title) { return title; });
+      //   group.selectAll('text')
+      //       // .data(data['sample_title'][d.key])
+      //       .data(hoverText)
+      //       .enter().append('text')
+      //       .attr('x', d.x)
+      //       .attr('y', function(title, i) {
+      //         return (base - i*14);
+      //       })
+      //       .attr('text-anchor', 'middle')
+      //       .text(function(title) { return title; });
 
-        const bbox = group.node().getBBox();
-        const bboxPadding = 5;
+      //   const bbox = group.node().getBBox();
+      //   const bboxPadding = 5;
 
-        // place a white background to see text more clearly
-        // var rect = group.insert('rect', ':first-child')
-                  group.insert('rect', ':first-child')
-                      .attr('x', bbox.x)
-                      .attr('y', bbox.y)
-                      .attr('width', bbox.width + bboxPadding)
-                      .attr('height', bbox.height + bboxPadding)
-                      .attr('rx', 10)
-                      .attr('ry', 10)
-                      .attr('class', 'label-background-strong');
+      //   // place a white background to see text more clearly
+      //   // var rect = group.insert('rect', ':first-child')
+      //             group.insert('rect', ':first-child')
+      //                 .attr('x', bbox.x)
+      //                 .attr('y', bbox.y)
+      //                 .attr('width', bbox.width + bboxPadding)
+      //                 .attr('height', bbox.height + bboxPadding)
+      //                 .attr('rx', 10)
+      //                 .attr('ry', 10)
+      //                 .attr('class', 'label-background-strong');
         
-        console.log("=== END handleMouseOver() ===")
-      }
+      //   console.log("=== END handleMouseOver() ===")
+      // }
 
-      function handleMouseOut(d) {
-        console.log("=== START handleMouseOut() ===")
-        console.log("d", d)
-        d3.select('#story-titles').remove();
-        console.log("=== END handleMouseOut() ===")
-      }
+      // function handleMouseOut(d) {
+      //   console.log("=== START handleMouseOut() ===")
+      //   console.log("d", d)
+      //   d3.select('#story-titles').remove();
+      //   console.log("=== END handleMouseOut() ===")
+      // }
 
         // Use the module pattern to encapsulate the visualisation code. We'll
         // expose only the parts that need to be public.
@@ -162,7 +164,7 @@ export default {
             console.log("words")
 
             if (d3.select("#complaintWordcloud")._groups[0][0].childNodes.length > 1) {
-              d3.select("svg").remove();
+              d3.select("#complaintSvgId").remove();
             }
 
             layout = cloud()
