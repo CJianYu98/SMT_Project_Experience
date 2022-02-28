@@ -63,7 +63,7 @@
                 Platform
               </th>
               <th class="white--text text-center">
-                Mentions
+                % Posts
               </th>
               <th class="white--text text-center">
                 Trend

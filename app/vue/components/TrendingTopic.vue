@@ -1,16 +1,17 @@
 <template>
-  <v-list-item class="primary--text">
+  <v-list-item class="primary--text mb-1">
     <v-list-item-content class="pt-1 pb-0">
+      <v-list-item-title 
+        class="mb-1 font-weight-bold" 
+        v-text="`${index+1}. ${topicAssigned.name}`"
+      >
+      </v-list-item-title>
       <v-row class="mb-n1">
         <v-col class="pb-1">
-          <v-list-item-title 
-            class="mb-1 pl-3 font-weight-bold" 
-            v-text="`${index+1}. ${topicAssigned.name}`"
-          >
-          </v-list-item-title>
+          <v-list-item-subtitle class="pl-3 pr-3 primary--text" v-text="`${topicAssigned.mentions.toLocaleString()} mentions`">></v-list-item-subtitle>
         </v-col>
-        <v-col>
-          <v-list-item-subtitle class="text-right pr-3 primary--text" v-text="`${topicAssigned.mentions.toLocaleString()} mentions`">></v-list-item-subtitle>
+        <v-col class="pb-1">
+          <TrendingTopicSentimentBarChart :trending-topic-sentiment="topicAssigned.sentiment" :sentiment-graph-id="'topic'+index"/>
         </v-col>
       </v-row>
 
@@ -19,15 +20,13 @@
       >
         <v-chip-group column>
           <v-chip
-            v-bind="attr"
-            :input-value="selected"
             class="primary trending-category mr-1"
             small
-            v-for="(mention, index) in topicAssigned.topThreeMentions"
+            v-for="(mention) in topicAssigned.topThreeMentions"
             :key="mention"
             @click="passSelectedTrendingTopicToTopics(mention)"
           >
-            {{ mention }}{{ (index+1 &lt; topicAssigned.topThreeMentions.length) ? ', ' : '' }}
+            {{ mention }}
           </v-chip>
         </v-chip-group>
 
@@ -42,8 +41,10 @@
 </template>
 
 <script>
+import TrendingTopicSentimentBarChart from './TrendingTopicSentimentBarChart.vue'
 // import BarChart from '@/components/TrendiingTopicSentimentBarChart'
 export default {
+  components: { TrendingTopicSentimentBarChart },
   props: {
     index: {
       type: Number,
