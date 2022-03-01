@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container style="max-height: 450px" class="overflow-y-auto">
     <ComplaintsRelatedComment
       v-for="complaint in complaintsRelatedComments"
       :key="complaint"
@@ -10,7 +10,7 @@
       :topic="complaint.topic"
       :link="complaint.link"
     />
-  </div>
+  </v-container>
 </template>
 
 <script>
