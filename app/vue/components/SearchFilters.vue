@@ -269,7 +269,7 @@
       menu1: false,
       menu: false,
       date: null,
-      dateRange: ['2019-09-10', '2019-09-20'],
+      dateRange: ['2021-02-01', '2022-01-31'],
       dateSelected: "Past 7 Days",
       dateFilter: [{date: 'All'}, {date: 'Yesterday'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom'}],
       emotionsSelected: ["Anger", "Joy", "Fear",  "Sadness", "Neutral"],
