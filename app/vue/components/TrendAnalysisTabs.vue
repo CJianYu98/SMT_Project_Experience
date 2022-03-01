@@ -22,16 +22,16 @@
             v-for="media in medias"
             :key="media"
         >
-            <v-img :src="`/${media}_icon.png`">
+            <v-img v-if="media !== 'all'" :src="`/${media}_icon.png`">
             </v-img>
             &nbsp;
             {{ media }}
         </v-tab>
         <v-tab-item
-          v-for="media in medias"
-          :key="media"
+          v-for="view in dropdownMetrics" 
+          :key="view" 
         >
-        <v-card v-if="media === 'all'">
+        <!-- <v-card v-if="view === 'all'"> -->
           <v-card flat >
             <v-container fluid class="px-4 mt-n4 pb-0">
               <v-row no-gutters align="stretch">
@@ -40,7 +40,7 @@
                     Number of Posts
                   </v-card-title>
                   <v-spacer></v-spacer>
-                  <DropDownSelect :viewFilter="allView" :label="label"></DropDownSelect>
+                  <DropDownSelect :viewFilter="view" :label="label"></DropDownSelect>
                 </v-col>
               </v-row>
             </v-container>
@@ -48,7 +48,7 @@
           <v-card>
             <line-chart class="chartBox" :chartData="allChartData"></line-chart>
           </v-card>  
-        </v-card>
+        <!-- </v-card> -->
         </v-tab-item>
     </v-tabs>
     
@@ -168,6 +168,14 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         tabs: null,
         label: 'View',
         medias: ['all','facebook','reddit','twitter','youtube'],
+        dropdownMetrics: { 
+          all: ['Number of Likes'], 
+          facebook: ['Number of Likes', 'Number of Comments', 'Number of Shares'], 
+          reddit: ['Number of Net Votes', 'Number of Comments', 'Number of Awards'],         
+          twitter: ['Number of Likes','Number of Retweets','Number of Replies'], 
+          youtube: ['Number of Likes', 'Number of Views', 'Number of Comments']
+ 
+        },
         allView: [{view: 'Number of Likes'}],
         facebookView: [{view: 'Number of Likes'}, {view: 'Number of Comments'}, {view: 'Number of Shares'}],
         redditView: [{view: 'Number of Net Votes'}, {view: 'Number of Comments'}, {view: 'Number of Awards'}],        
