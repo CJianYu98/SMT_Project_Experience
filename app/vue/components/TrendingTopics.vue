@@ -8,15 +8,13 @@
       Trending Topics
       <HelpTextTooltip :help-text="trendingTopicsHelpText"/>
     </v-card-title>
-    <v-row
-      v-for="(topic, i) in topFiveTopics"
-      :key="i"
-      class="py-3"
-    >
-      <v-col class="py-0">
-        <TrendingTopic :index="i" :topic-assigned="topic" @selectedTrendingTopicInTopics="passTrendingTopicToTopics"/>
-      </v-col>
-    </v-row>
+      <TrendingTopic 
+        v-for="(topic, i) in topFiveTopics" 
+        :key="i"
+        :index="i" 
+        :topic-assigned="topic" 
+        @selectedTrendingTopicInTopics="passTrendingTopicToTopics"
+      />
   </v-card>
 </template>
 

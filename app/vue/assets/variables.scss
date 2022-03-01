@@ -32,6 +32,14 @@ body {
 }
 
 
+// trying to change the colours in v-select (doesn't work)
+
+// .theme--light.v-input, .v-input__slot, .theme--light.v-select, .v-select__selections, .v-select__selection, .v-select__selection--comma,
+// .v-select.v-text-field input {
+//   color: '#604AF0' !important;
+// }
+
+
 @import "@fontsource/poppins/600.css"; // Defaults to weight 600 with normal variant.
 @import "@fontsource/inter/latin.css"; // Defaults to weight 400 with normal variant.
 @import "~vuetify/src/styles/styles.sass"; //this has to be last

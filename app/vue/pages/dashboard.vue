@@ -94,41 +94,111 @@ export default {
         name: 'Bitcoin',
         topThreeMentions: ['0.5X Long Algorand Token', '0cash', 'RealT Token - 11078 Longview St, Detroit, MI 48213'],
         mentions: 294940, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
-        }
+        sentiment: [
+            {
+              sentiment: "negative",
+              percentage: 0.2,
+              count: 58988
+            },
+            {
+              sentiment: "neutral",
+              percentage: 0.6,
+              count: 176946
+            },
+            {
+              sentiment: "positive",
+              percentage: 0.2,
+              count: 58988
+            },
+          ],
       },
       {
         name: 'Economics',
         topThreeMentions: ['GST Increase', 'STI', 'Taxes'], 
         mentions: 29494, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
-        }
+        sentiment: [
+            {
+              sentiment: "negative",
+              percentage: 0.2,
+              count: 58988
+            },
+            {
+              sentiment: "neutral",
+              percentage: 0.6,
+              count: 176946
+            },
+            {
+              sentiment: "positive",
+              percentage: 0.2,
+              count: 58988
+            },
+          ],
       },
       {
         name: 'Environment',
         topThreeMentions: ['Tengah Forest', 'Plastic Bags', 'Carbon Tax'], 
         mentions: 29494, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
-        }
+        sentiment: [
+            {
+              sentiment: "negative",
+              percentage: 0.2,
+              count: 58988
+            },
+            {
+              sentiment: "neutral",
+              percentage: 0.6,
+              count: 176946
+            },
+            {
+              sentiment: "positive",
+              percentage: 0.2,
+              count: 58988
+            },
+          ],
       },
       {
         name: 'Travel',
         topThreeMentions: ['SG Rediscover Vouchers', 'ART test', 'VTL'], 
         mentions: 29494, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
-        }
+        sentiment: [
+            {
+              sentiment: "negative",
+              percentage: 0.2,
+              count: 58988
+            },
+            {
+              sentiment: "neutral",
+              percentage: 0.6,
+              count: 176946
+            },
+            {
+              sentiment: "positive",
+              percentage: 0.2,
+              count: 58988
+            },
+          ],
       },
       {
         name: 'Education',
         topThreeMentions: ['PSLE results', 'O Level results', 'June holidays'], 
         mentions: 29494, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
-        }
+        sentiment: [
+            {
+              sentiment: "negative",
+              percentage: 0.2,
+              count: 58988
+            },
+            {
+              sentiment: "neutral",
+              percentage: 0.6,
+              count: 176946
+            },
+            {
+              sentiment: "positive",
+              percentage: 0.2,
+              count: 58988
+            },
+          ],
       }
     ],
     overallStatsData: {
@@ -160,20 +230,20 @@ export default {
       }
     },
     keywords: [
-      {word: "Running", size: "10", sentiment: "positive", hover: "9210"}, 
-      {word: "Surfing", size: "20", sentiment: "neutral", hover: "9210"}, 
-      {word: "Climbing", size: "50", sentiment: "negative", hover: "9210"}, 
-      {word: "Kiting", size: "30", sentiment: "positive", hover: "9210"}, 
-      {word: "Sailing", size: "20", sentiment: "negative", hover: "9210"}, 
-      {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "9210"} 
+      {word: "Running", size: "10", sentiment: "positive", hover: "10"}, 
+      {word: "Surfing", size: "20", sentiment: "neutral", hover: "20"}, 
+      {word: "Climbing", size: "50", sentiment: "negative", hover: "50"}, 
+      {word: "Kiting", size: "30", sentiment: "positive", hover: "30"}, 
+      {word: "Sailing", size: "20", sentiment: "negative", hover: "20"}, 
+      {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "60"} 
     ],
     complaintsKeywords: [
-      {word: "Running", size: "10", hover: "9210"}, 
-      {word: "Surfing", size: "20", hover: "9210"}, 
-      {word: "Hot", size: "50", hover: "9210"}, 
-      {word: "Kiting", size: "30", hover: "9210"}, 
-      {word: "Sailing", size: "20", hover: "9210"}, 
-      {word: "Snowboarding", size: "60", hover: "9210"} 
+      {word: "Running", size: "10", hover: "10"}, 
+      {word: "Surfing", size: "20", hover: "20"}, 
+      {word: "Hot", size: "50", hover: "50"}, 
+      {word: "Kiting", size: "30", hover: "30"}, 
+      {word: "Sailing", size: "20", hover: "20"}, 
+      {word: "Snowboarding", size: "60", hover: "60"} 
     ],
     complaintsRelatedComments: [
       {
@@ -227,41 +297,111 @@ export default {
           name: 'Healthcare',
           topThreeMentions: ['GE2020', 'GE2024', 'Reesah Khan'],
           mentions: 294940, 
-          sentiment: {
-            negative: 0.2, neutral: 0.6, positive: 0.2
-          }
+          sentiment: [
+            {
+              sentiment: "negative",
+              percentage: 0,
+              count: 0
+            },
+            {
+              sentiment: "neutral",
+              percentage: 0,
+              count: 0
+            },
+            {
+              sentiment: "positive",
+              percentage: 1,
+              count: 294940
+            },
+          ],
         },
         {
-          name: 'Economics',
+          name: 'DiffName',
           topThreeMentions: ['GST Increase', 'STI', 'Taxes'], 
           mentions: 29494, 
-          sentiment: {
-            negative: 0.2, neutral: 0.6, positive: 0.2
-          }
+          sentiment: [
+            {
+              sentiment: "negative",
+              percentage: 0,
+              count: 0
+            },
+            {
+              sentiment: "neutral",
+              percentage: 1,
+              count: 294940
+            },
+            {
+              sentiment: "positive",
+              percentage: 0,
+              count: 0
+            },
+          ],
         },
         {
           name: 'Environment',
           topThreeMentions: ['Tengah Forest', 'Plastic Bags', 'Carbon Tax'], 
           mentions: 29494, 
-          sentiment: {
-            negative: 0.2, neutral: 0.6, positive: 0.2
-          }
+          sentiment: [
+            {
+              sentiment: "negative",
+              percentage: 1,
+              count: 294940
+            },
+            {
+              sentiment: "neutral",
+              percentage: 0,
+              count: 0
+            },
+            {
+              sentiment: "positive",
+              percentage: 0,
+              count: 0
+            },
+          ],
         },
         {
           name: 'Travel',
           topThreeMentions: ['SG Rediscover Vouchers', 'ART test', 'VTL'], 
           mentions: 29494, 
-          sentiment: {
-            negative: 0.2, neutral: 0.6, positive: 0.2
-          }
+          sentiment: [
+            {
+              sentiment: "negative",
+              percentage: 0.2,
+              count: 58988
+            },
+            {
+              sentiment: "neutral",
+              percentage: 0.6,
+              count: 176946
+            },
+            {
+              sentiment: "positive",
+              percentage: 0.2,
+              count: 58988
+            },
+          ],
         },
         {
           name: 'Education',
           topThreeMentions: ['PSLE results', 'O Level results', 'June holidays'], 
           mentions: 29494, 
-          sentiment: {
-            negative: 0.2, neutral: 0.6, positive: 0.2
-          }
+          sentiment: [
+            {
+              sentiment: "negative",
+              percentage: 0.2,
+              count: 58988
+            },
+            {
+              sentiment: "neutral",
+              percentage: 0.6,
+              count: 176946
+            },
+            {
+              sentiment: "positive",
+              percentage: 0.2,
+              count: 58988
+            },
+          ],
         }
       ]
 
