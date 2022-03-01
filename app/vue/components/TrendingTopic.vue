@@ -21,7 +21,6 @@
         <v-chip-group column>
           <v-chip
             class="primary trending-category mr-1"
-            small
             v-for="(mention) in topicAssigned.topThreeMentions"
             :key="mention"
             @click="passSelectedTrendingTopicToTopics(mention)"

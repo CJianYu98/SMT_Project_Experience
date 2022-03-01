@@ -1589,7 +1589,7 @@ export default {
         }
       }
     },
-    }
+    
   }),
 
   computed: {

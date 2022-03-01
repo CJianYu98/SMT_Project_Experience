@@ -29,7 +29,7 @@
             yAxes: [{
               scaleLabel: {
                 display: true,
-                labelString: 'Volume of Data Points'
+                labelString: 'Number of Posts'
               },
               ticks: {
                 beginAtZero: true
