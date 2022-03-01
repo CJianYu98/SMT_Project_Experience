@@ -64,8 +64,75 @@ export default {
     fakeData: {
         defaultFilters: {
           topFiveTopicsData: [
+            // arts and entertainment, business and economy, covid19, crime, culture, education, environment, fashion, food, healthcare, law, lifestyle, others, politics, science and medicine, society, sports, technology, transportation, travel
             {
-              name: "test1",
+              name: "Business and Economy",
+              topThreeMentions: ["GST Hike", "Budget 2022", "Higher Costs"],
+              mentions: 19872, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.4,
+                    count: 7949
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.4,
+                    count: 7949
+                  },
+                ],
+            },
+            {
+              name: "covid19",
+              topThreeMentions: ["Endemic", "Throat Spray", "Singapore VTL"],
+              mentions: 18790, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.3,
+                    count: 5673
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.2,
+                    count: 3758
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.5,
+                    count: 9395
+                  },
+                ],
+            },
+            {
+              name: "Politics",
+              topThreeMentions: ["Singapore Parliament", "Generation Covid", "Jobs Growth Incentive"],
+              mentions: 17393, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.6,
+                    count: 10436
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.2,
+                    count: 3479
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.2,
+                    count: 3479
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
               topThreeMentions: ["test1", "test2", "test3"],
               mentions: 294940, 
               sentiment: [
@@ -85,189 +152,760 @@ export default {
                     count: 58988
                   },
                 ],
+            },
+            {
+              name: "Law",
+              topThreeMentions: ["Section 377A", "Drug Trafficker", "Sex Crime"],
+              mentions: 16493, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.4,
+                    count: 6597
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.3,
+                    count: 4948
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.3,
+                    count: 4948
+                  },
+                ],
+            },
+          ],
+          overallStatsData: {
+            posts: 2940490,
+            trend: 0,
+            comments: 93893,
+            likes: 93398,
+            shares: 2732,
+            filters: {
+              date: ["All"],
             }
-          ]
+          },
+          platformMetricsData: {
+            Facebook: {
+              mentions: 0.24,
+              trend: -0.2
+            },
+            Reddit: {
+              mentions: 0.14,
+              trend: 0.2
+            },
+            Twitter: {
+              mentions: 0.08,
+              trend: 0.2
+            },
+            Youtube: {
+              mentions: 0.54,
+              trend: -0.2
+            }
+          },
+          keywords: [
+            {word: "Running", size: "10", sentiment: "positive", hover: "10"}, 
+            {word: "Surfing", size: "20", sentiment: "neutral", hover: "20"}, 
+            {word: "Climbing", size: "50", sentiment: "negative", hover: "50"}, 
+            {word: "Kiting", size: "30", sentiment: "positive", hover: "30"}, 
+            {word: "Sailing", size: "20", sentiment: "negative", hover: "20"}, 
+            {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "60"} 
+          ],
+          complaintsKeywords: [
+            {word: "Running", size: "10", hover: "10"}, 
+            {word: "Surfing", size: "20", hover: "20"}, 
+            {word: "Hot", size: "50", hover: "50"}, 
+            {word: "Kiting", size: "30", hover: "30"}, 
+            {word: "Sailing", size: "20", hover: "20"}, 
+            {word: "Snowboarding", size: "60", hover: "60"} 
+          ],
+          complaintsRelatedComments: [
+            {
+              media: 'facebook',
+              likes: '65,000',
+              date: '21 December 2021',
+              comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+              topic: 'Healthcare'
+            },
+            {
+              media: 'facebook',
+              likes: '23,000',
+              date: '22 December 2021',
+              comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+              topic: 'Healthcare'
+            },
+          ],
+          keywordsWordCloudLegend: {
+            positive: "#78D549",
+            neutral: "#EFB727",
+            negative: "#EB8159"
+          },
+          selectedTrendingQuery: "", 
         },
+        customDate: {
+          topFiveTopicsData: [
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                ],
+            },
+          ],
+          overallStatsData: {
+            posts: 2940490,
+            trend: 0,
+            comments: 93893,
+            likes: 93398,
+            shares: 2732,
+            filters: {
+              date: ["All"],
+            }
+          },
+          platformMetricsData: {
+            Facebook: {
+              mentions: 0.24,
+              trend: -0.2
+            },
+            Reddit: {
+              mentions: 0.14,
+              trend: 0.2
+            },
+            Twitter: {
+              mentions: 0.08,
+              trend: 0.2
+            },
+            Youtube: {
+              mentions: 0.54,
+              trend: -0.2
+            }
+          },
+          keywords: [
+            {word: "Running", size: "10", sentiment: "positive", hover: "10"}, 
+            {word: "Surfing", size: "20", sentiment: "neutral", hover: "20"}, 
+            {word: "Climbing", size: "50", sentiment: "negative", hover: "50"}, 
+            {word: "Kiting", size: "30", sentiment: "positive", hover: "30"}, 
+            {word: "Sailing", size: "20", sentiment: "negative", hover: "20"}, 
+            {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "60"} 
+          ],
+          complaintsKeywords: [
+            {word: "Running", size: "10", hover: "10"}, 
+            {word: "Surfing", size: "20", hover: "20"}, 
+            {word: "Hot", size: "50", hover: "50"}, 
+            {word: "Kiting", size: "30", hover: "30"}, 
+            {word: "Sailing", size: "20", hover: "20"}, 
+            {word: "Snowboarding", size: "60", hover: "60"} 
+          ],
+          complaintsRelatedComments: [
+            {
+              media: 'facebook',
+              likes: '65,000',
+              date: '21 December 2021',
+              comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+              topic: 'Healthcare'
+            },
+            {
+              media: 'facebook',
+              likes: '23,000',
+              date: '22 December 2021',
+              comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+              topic: 'Healthcare'
+            },
+          ],
+          keywordsWordCloudLegend: {
+            positive: "#78D549",
+            neutral: "#EFB727",
+            negative: "#EB8159"
+          },
+          selectedTrendingQuery: "",
+        },
+        customDateNegativeNeutral: {
+          topFiveTopicsData: [
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                ],
+            },
+          ],
+          overallStatsData: {
+            posts: 2940490,
+            trend: 0,
+            comments: 93893,
+            likes: 93398,
+            shares: 2732,
+            filters: {
+              date: ["All"],
+            }
+          },
+          platformMetricsData: {
+            Facebook: {
+              mentions: 0.24,
+              trend: -0.2
+            },
+            Reddit: {
+              mentions: 0.14,
+              trend: 0.2
+            },
+            Twitter: {
+              mentions: 0.08,
+              trend: 0.2
+            },
+            Youtube: {
+              mentions: 0.54,
+              trend: -0.2
+            }
+          },
+          keywords: [
+            {word: "Surfing", size: "20", sentiment: "neutral", hover: "20"}, 
+            {word: "Climbing", size: "50", sentiment: "negative", hover: "50"}, 
+            {word: "Sailing", size: "20", sentiment: "negative", hover: "20"}, 
+            {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "60"} 
+          ],
+          complaintsKeywords: [
+            {word: "Running", size: "10", hover: "10"}, 
+            {word: "Surfing", size: "20", hover: "20"}, 
+            {word: "Hot", size: "50", hover: "50"}, 
+            {word: "Kiting", size: "30", hover: "30"}, 
+            {word: "Sailing", size: "20", hover: "20"}, 
+            {word: "Snowboarding", size: "60", hover: "60"} 
+          ],
+          complaintsRelatedComments: [
+            {
+              media: 'facebook',
+              likes: '65,000',
+              date: '21 December 2021',
+              comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+              topic: 'Healthcare'
+            },
+            {
+              media: 'facebook',
+              likes: '23,000',
+              date: '22 December 2021',
+              comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+              topic: 'Healthcare'
+            },
+          ],
+          keywordsWordCloudLegend: {
+            positive: "#78D549",
+            neutral: "#EFB727",
+            negative: "#EB8159"
+          },
+          selectedTrendingQuery: "",
+        },
+        customDateNegativeNeutralFbReddit: {
+          topFiveTopicsData: [
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                ],
+            },
+            {
+              name: "topFiveTopicsData test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                ],
+            },
+          ],
+          overallStatsData: {
+            posts: 2940490,
+            trend: 0,
+            comments: 93893,
+            likes: 93398,
+            shares: 2732,
+            filters: {
+              date: ["All"],
+            }
+          },
+          platformMetricsData: {
+            Facebook: {
+              mentions: 0.24,
+              trend: -0.2
+            },
+            Reddit: {
+              mentions: 0.14,
+              trend: 0.2
+            },
+          },
+          keywords: [
+            {word: "Surfing", size: "20", sentiment: "neutral", hover: "20"}, 
+            {word: "Climbing", size: "50", sentiment: "negative", hover: "50"}, 
+            {word: "Sailing", size: "20", sentiment: "negative", hover: "20"}, 
+            {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "60"} 
+          ],
+          complaintsKeywords: [
+            {word: "Running", size: "10", hover: "10"}, 
+            {word: "Surfing", size: "20", hover: "20"}, 
+            {word: "Hot", size: "50", hover: "50"}, 
+            {word: "Kiting", size: "30", hover: "30"}, 
+            {word: "Sailing", size: "20", hover: "20"}, 
+            {word: "Snowboarding", size: "60", hover: "60"} 
+          ],
+          complaintsRelatedComments: [
+            {
+              media: 'facebook',
+              likes: '65,000',
+              date: '21 December 2021',
+              comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+              topic: 'Healthcare'
+            },
+            {
+              media: 'facebook',
+              likes: '23,000',
+              date: '22 December 2021',
+              comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+              topic: 'Healthcare'
+            },
+          ],
+          keywordsWordCloudLegend: {
+            positive: "#78D549",
+            neutral: "#EFB727",
+            negative: "#EB8159"
+          },
+          selectedTrendingQuery: "",
+        }
     },
-    topFiveTopicsData: [
-      {
-        name: 'Bitcoin',
-        topThreeMentions: ['0.5X Long Algorand Token', '0cash', 'RealT Token - 11078 Longview St, Detroit, MI 48213'],
-        mentions: 294940, 
-        sentiment: [
+    
+
+
+
+
+          topFiveTopicsData: [
+            // arts and entertainment, business and economy, covid19, crime, culture, education, environment, fashion, food, healthcare, law, lifestyle, others, politics, science and medicine, society, sports, technology, transportation, travel
             {
-              sentiment: "negative",
-              percentage: 0.2,
-              count: 58988
+              name: "Business and Economy",
+              topThreeMentions: ["GST Hike", "Budget 2022", "Higher Costs"],
+              mentions: 19872, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.4,
+                    count: 7949
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.4,
+                    count: 7949
+                  },
+                ],
             },
             {
-              sentiment: "neutral",
-              percentage: 0.6,
-              count: 176946
+              name: "covid19",
+              topThreeMentions: ["Endemic", "Throat Spray", "Singapore VTL"],
+              mentions: 18790, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.3,
+                    count: 5673
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.2,
+                    count: 3758
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.5,
+                    count: 9395
+                  },
+                ],
             },
             {
-              sentiment: "positive",
-              percentage: 0.2,
-              count: 58988
+              name: "Politics",
+              topThreeMentions: ["Singapore Parliament", "Generation Covid", "Jobs Growth Incentive"],
+              mentions: 17393, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.6,
+                    count: 10436
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.2,
+                    count: 3479
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.2,
+                    count: 3479
+                  },
+                ],
+            },
+            {
+              name: "Health",
+              topThreeMentions: ["Burnout", "Spin Workout", "Home Disinfection Services"],
+              mentions: 16790, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 3358
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.1,
+                    count: 1679
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.7,
+                    count: 11753
+                  },
+                ],
+            },
+            {
+              name: "Law",
+              topThreeMentions: ["Section 377A", "Drug Trafficker", "Sex Crime"],
+              mentions: 16493, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.4,
+                    count: 6597
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.3,
+                    count: 4948
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.3,
+                    count: 4948
+                  },
+                ],
             },
           ],
-      },
-      {
-        name: 'Economics',
-        topThreeMentions: ['GST Increase', 'STI', 'Taxes'], 
-        mentions: 29494, 
-        sentiment: [
+          overallStatsData: {
+            posts: 90857,
+            trend: 0.6,
+            comments: 7894,
+            likes: 100394,
+            shares: 3097,
+            filters: {
+              date: ["", "All"],
+            }
+          },
+          platformMetricsData: {
+            Facebook: {
+              mentions: 0.44,
+              trend: -0.2
+            },
+            Reddit: {
+              mentions: 0.23,
+              trend: 0.2
+            },
+            Twitter: {
+              mentions: 0.19,
+              trend: 0.2
+            },
+            Youtube: {
+              mentions: 0.14,
+              trend: -0.2
+            }
+          },
+          keywords: [
+            {word: "GST Hike", size: "10", sentiment: "positive", hover: "10"}, 
+            {word: "Dormitory Workers", size: "20", sentiment: "neutral", hover: "20"}, 
+            {word: "Russian Embassy", size: "50", sentiment: "negative", hover: "50"}, 
+            {word: "Kiting", size: "30", sentiment: "positive", hover: "30"}, 
+            {word: "Sailing", size: "20", sentiment: "negative", hover: "20"}, 
+            {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "60"} 
+          ],
+          complaintsKeywords: [
+            {word: "foodpanda", size: "10", hover: "10"}, 
+            {word: "Surfing", size: "20", hover: "20"}, 
+            {word: "Hot", size: "50", hover: "50"}, 
+            {word: "Kiting", size: "30", hover: "30"}, 
+            {word: "Sailing", size: "20", hover: "20"}, 
+            {word: "Snowboarding", size: "60", hover: "60"} 
+          ],
+          complaintsRelatedComments: [
             {
-              sentiment: "negative",
-              percentage: 0.2,
-              count: 58988
+              media: 'facebook',
+              likes: '65,000',
+              date: '21 December 2021',
+              comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+              topic: 'Healthcare'
             },
             {
-              sentiment: "neutral",
-              percentage: 0.6,
-              count: 176946
-            },
-            {
-              sentiment: "positive",
-              percentage: 0.2,
-              count: 58988
+              media: 'facebook',
+              likes: '23,000',
+              date: '22 December 2021',
+              comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
+              topic: 'Healthcare'
             },
           ],
-      },
-      {
-        name: 'Environment',
-        topThreeMentions: ['Tengah Forest', 'Plastic Bags', 'Carbon Tax'], 
-        mentions: 29494, 
-        sentiment: [
-            {
-              sentiment: "negative",
-              percentage: 0.2,
-              count: 58988
-            },
-            {
-              sentiment: "neutral",
-              percentage: 0.6,
-              count: 176946
-            },
-            {
-              sentiment: "positive",
-              percentage: 0.2,
-              count: 58988
-            },
-          ],
-      },
-      {
-        name: 'Travel',
-        topThreeMentions: ['SG Rediscover Vouchers', 'ART test', 'VTL'], 
-        mentions: 29494, 
-        sentiment: [
-            {
-              sentiment: "negative",
-              percentage: 0.2,
-              count: 58988
-            },
-            {
-              sentiment: "neutral",
-              percentage: 0.6,
-              count: 176946
-            },
-            {
-              sentiment: "positive",
-              percentage: 0.2,
-              count: 58988
-            },
-          ],
-      },
-      {
-        name: 'Education',
-        topThreeMentions: ['PSLE results', 'O Level results', 'June holidays'], 
-        mentions: 29494, 
-        sentiment: [
-            {
-              sentiment: "negative",
-              percentage: 0.2,
-              count: 58988
-            },
-            {
-              sentiment: "neutral",
-              percentage: 0.6,
-              count: 176946
-            },
-            {
-              sentiment: "positive",
-              percentage: 0.2,
-              count: 58988
-            },
-          ],
-      }
-    ],
-    overallStatsData: {
-      posts: 2940490,
-      trend: 0,
-      comments: 93893,
-      likes: 93398,
-      shares: 2732,
-      filters: {
-        date: ["All"],
-      }
-    },
-    platformMetricsData: {
-      Facebook: {
-        mentions: 0.24,
-        trend: -0.2
-      },
-      Reddit: {
-        mentions: 0.14,
-        trend: 0.2
-      },
-      Twitter: {
-        mentions: 0.08,
-        trend: 0.2
-      },
-      Youtube: {
-        mentions: 0.54,
-        trend: -0.2
-      }
-    },
-    keywords: [
-      {word: "Running", size: "10", sentiment: "positive", hover: "10"}, 
-      {word: "Surfing", size: "20", sentiment: "neutral", hover: "20"}, 
-      {word: "Climbing", size: "50", sentiment: "negative", hover: "50"}, 
-      {word: "Kiting", size: "30", sentiment: "positive", hover: "30"}, 
-      {word: "Sailing", size: "20", sentiment: "negative", hover: "20"}, 
-      {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "60"} 
-    ],
-    complaintsKeywords: [
-      {word: "Running", size: "10", hover: "10"}, 
-      {word: "Surfing", size: "20", hover: "20"}, 
-      {word: "Hot", size: "50", hover: "50"}, 
-      {word: "Kiting", size: "30", hover: "30"}, 
-      {word: "Sailing", size: "20", hover: "20"}, 
-      {word: "Snowboarding", size: "60", hover: "60"} 
-    ],
-    complaintsRelatedComments: [
-      {
-        media: 'facebook',
-        likes: '65,000',
-        date: '21 December 2021',
-        comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
-        topic: 'Healthcare'
-      },
-      {
-        media: 'facebook',
-        likes: '23,000',
-        date: '22 December 2021',
-        comment: 'The dreadful breakthrough infection can effectively be prevented with VCO/Lauric Acid, and total community viral load can be lowered, do not play dice with Covid, try to protect the community and your loved ones at the same time.',
-        topic: 'Healthcare'
-      },
-    ],
-    keywordsWordCloudLegend: {
-      positive: "#78D549",
-      neutral: "#EFB727",
-      negative: "#EB8159"
-    },
-    selectedTrendingQuery: "", 
-    // dateSelected: 
+          keywordsWordCloudLegend: {
+            positive: "#78D549",
+            neutral: "#EFB727",
+            negative: "#EB8159"
+          },
+          selectedTrendingQuery: "",
   }),
 
   computed: {
@@ -296,7 +934,17 @@ export default {
       console.log("filterCheck", filterCheck)
       // console.log("query", query)
       // console.log("filterSelection", filterSelection)
-      console.log("this.fakeData", this.fakeData)
+      // console.log("this.fakeData", this.fakeData)
+      // console.log("this.fakeData.filterCheck", this.fakeData[filterCheck])
+      console.log("this.fakeData[filterCheck].topFiveTopicsData", this.fakeData[filterCheck].topFiveTopicsData)
+
+      this.topFiveTopicsData = this.fakeData[filterCheck].topFiveTopicsData
+      this.overallStatsData = this.fakeData[filterCheck].overallStatsData
+      this.platformMetricsData = this.fakeData[filterCheck].platformMetricsData
+      this.keywordsWordCloudLegend = this.fakeData[filterCheck].keywordsWordCloudLegend
+      this.keywords = this.fakeData[filterCheck].keywords
+      this.complaintsKeywords = this.fakeData[filterCheck].complaintsKeywords
+      this.complaintsRelatedComments = this.fakeData[filterCheck].complaintsRelatedComments
 
       // axios.get('/login', {
       //   firstName: 'Finn',
@@ -308,118 +956,118 @@ export default {
       //   console.log(error);
       // })
 
-      this.topFiveTopicsData = [
-        {
-          name: 'Healthcare',
-          topThreeMentions: ['GE2020', 'GE2024', 'Reesah Khan'],
-          mentions: 294940, 
-          sentiment: [
-            {
-              sentiment: "negative",
-              percentage: 0,
-              count: 0
-            },
-            {
-              sentiment: "neutral",
-              percentage: 0,
-              count: 0
-            },
-            {
-              sentiment: "positive",
-              percentage: 1,
-              count: 294940
-            },
-          ],
-        },
-        {
-          name: 'DiffName',
-          topThreeMentions: ['GST Increase', 'STI', 'Taxes'], 
-          mentions: 29494, 
-          sentiment: [
-            {
-              sentiment: "negative",
-              percentage: 0,
-              count: 0
-            },
-            {
-              sentiment: "neutral",
-              percentage: 1,
-              count: 294940
-            },
-            {
-              sentiment: "positive",
-              percentage: 0,
-              count: 0
-            },
-          ],
-        },
-        {
-          name: 'Environment',
-          topThreeMentions: ['Tengah Forest', 'Plastic Bags', 'Carbon Tax'], 
-          mentions: 29494, 
-          sentiment: [
-            {
-              sentiment: "negative",
-              percentage: 1,
-              count: 294940
-            },
-            {
-              sentiment: "neutral",
-              percentage: 0,
-              count: 0
-            },
-            {
-              sentiment: "positive",
-              percentage: 0,
-              count: 0
-            },
-          ],
-        },
-        {
-          name: 'Travel',
-          topThreeMentions: ['SG Rediscover Vouchers', 'ART test', 'VTL'], 
-          mentions: 29494, 
-          sentiment: [
-            {
-              sentiment: "negative",
-              percentage: 0.2,
-              count: 58988
-            },
-            {
-              sentiment: "neutral",
-              percentage: 0.6,
-              count: 176946
-            },
-            {
-              sentiment: "positive",
-              percentage: 0.2,
-              count: 58988
-            },
-          ],
-        },
-        {
-          name: 'Education',
-          topThreeMentions: ['PSLE results', 'O Level results', 'June holidays'], 
-          mentions: 29494, 
-          sentiment: [
-            {
-              sentiment: "negative",
-              percentage: 0.2,
-              count: 58988
-            },
-            {
-              sentiment: "neutral",
-              percentage: 0.6,
-              count: 176946
-            },
-            {
-              sentiment: "positive",
-              percentage: 0.2,
-              count: 58988
-            },
-          ],
-        }
-      ]
+      // this.topFiveTopicsData = [
+      //   {
+      //     name: 'Healthcare',
+      //     topThreeMentions: ['GE2020', 'GE2024', 'Reesah Khan'],
+      //     mentions: 294940, 
+      //     sentiment: [
+      //       {
+      //         sentiment: "negative",
+      //         percentage: 0,
+      //         count: 0
+      //       },
+      //       {
+      //         sentiment: "neutral",
+      //         percentage: 0,
+      //         count: 0
+      //       },
+      //       {
+      //         sentiment: "positive",
+      //         percentage: 1,
+      //         count: 294940
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     name: 'DiffName',
+      //     topThreeMentions: ['GST Increase', 'STI', 'Taxes'], 
+      //     mentions: 29494, 
+      //     sentiment: [
+      //       {
+      //         sentiment: "negative",
+      //         percentage: 0,
+      //         count: 0
+      //       },
+      //       {
+      //         sentiment: "neutral",
+      //         percentage: 1,
+      //         count: 294940
+      //       },
+      //       {
+      //         sentiment: "positive",
+      //         percentage: 0,
+      //         count: 0
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     name: 'Environment',
+      //     topThreeMentions: ['Tengah Forest', 'Plastic Bags', 'Carbon Tax'], 
+      //     mentions: 29494, 
+      //     sentiment: [
+      //       {
+      //         sentiment: "negative",
+      //         percentage: 1,
+      //         count: 294940
+      //       },
+      //       {
+      //         sentiment: "neutral",
+      //         percentage: 0,
+      //         count: 0
+      //       },
+      //       {
+      //         sentiment: "positive",
+      //         percentage: 0,
+      //         count: 0
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     name: 'Travel',
+      //     topThreeMentions: ['SG Rediscover Vouchers', 'ART test', 'VTL'], 
+      //     mentions: 29494, 
+      //     sentiment: [
+      //       {
+      //         sentiment: "negative",
+      //         percentage: 0.2,
+      //         count: 58988
+      //       },
+      //       {
+      //         sentiment: "neutral",
+      //         percentage: 0.6,
+      //         count: 176946
+      //       },
+      //       {
+      //         sentiment: "positive",
+      //         percentage: 0.2,
+      //         count: 58988
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     name: 'Education',
+      //     topThreeMentions: ['PSLE results', 'O Level results', 'June holidays'], 
+      //     mentions: 29494, 
+      //     sentiment: [
+      //       {
+      //         sentiment: "negative",
+      //         percentage: 0.2,
+      //         count: 58988
+      //       },
+      //       {
+      //         sentiment: "neutral",
+      //         percentage: 0.6,
+      //         count: 176946
+      //       },
+      //       {
+      //         sentiment: "positive",
+      //         percentage: 0.2,
+      //         count: 58988
+      //       },
+      //     ],
+      //   }
+      // ]
 
       this.overallStatsData = {
         posts: 12,
@@ -503,12 +1151,44 @@ export default {
       // console.log("sentSelection", sentSelection)
       // console.log("emotionSelection", emotionSelection)
 
-      if (dateSelection==="Past 7 Days" && platformSelection.length===4 && sentSelection.length===3 && emotionSelection.length===5) {
-        console.log("inside if loop")
-        console.log("default filters")
-        return ["covid","defaultFilters"]
-      } else {
-        console.log("inside else loop")
+      if (
+        dateSelection==="Past 7 Days" && 
+        platformSelection.length===4 && 
+        sentSelection.length===3 && 
+        emotionSelection.length===5
+      ) {
+        // console.log("inside if loop")
+        // console.log("default filters")
+        return "defaultFilters"
+      } else if (
+        dateSelection==="Custom" && 
+        platformSelection.length===4 && 
+        sentSelection.length===3 && 
+        emotionSelection.length===5
+      ) {
+        // console.log("inside else if loop")
+        return "customDate"
+      } else if (
+        dateSelection==="Custom" && 
+        platformSelection.length===4 && 
+        sentSelection.length===2 && 
+        sentSelection.includes("Negative") && 
+        sentSelection.includes("Neutral") && 
+        emotionSelection.length===5
+      ) {
+        // console.log("inside else if loop")
+        return "customDateNegativeNeutral"
+      } else if (
+        dateSelection==="Custom" && 
+        platformSelection.length===2 &&
+        platformSelection.includes("Reddit") && 
+        platformSelection.includes("Facebook") && 
+        sentSelection.length===2 && 
+        sentSelection.includes("Negative") && 
+        sentSelection.includes("Neutral") && 
+        emotionSelection.length===5
+      ) {
+        return "customDateNegativeNeutralFbReddit"
       }
 
     }

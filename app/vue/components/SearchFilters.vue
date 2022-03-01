@@ -59,7 +59,7 @@
             label="Select a date period"
             outlined
             dense
-            @change="openDialogueIfCustomSelected(dateSelected);"
+            @change="openDialogueIfCustomSelected(dateSelected); emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected, emotionsSelected);"
           >
             <template slot="selection" slot-scope="data">
               <span v-if="data.item.date === 'Custom' && dateRange.length === 1" class="accent--text">{{ dateRange[0] }}</span>
@@ -415,7 +415,7 @@
   ::v-deep .custom-dialog-datepicker {
     position: absolute;
     top: 10%;
-    left: 29%;
+    left: 0%;
   }
 
 </style>
