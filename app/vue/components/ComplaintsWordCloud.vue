@@ -32,7 +32,7 @@ export default {
   methods: {
     generateKeywordsWordcloud() {
       console.log("=== start generateKeywordsWordcloud() ===")
-      console.log("this.complaintsWordCloud", this.complaintsWordCloud)
+      // console.log("this.complaintsWordCloud", this.complaintsWordCloud)
 
       // set the dimensions and margins of the graph
       const margin = {top: 10, right: 10, bottom: 10, left: 10}
@@ -52,13 +52,13 @@ export default {
       // This function takes the output of 'layout' above and draw the words
       // Wordcloud features that are THE SAME from one word to the other can be here
       // update(this.keywordsWordCloud)
-      console.log("bef function draw")
+      // console.log("bef function draw")
 
       let layout = {} 
 
       function draw(words) {
         console.log("=== start draw() ===")
-        console.log("words", words)
+        // console.log("words", words)
 
         const cloudSvg = focus
           .append("g")
@@ -67,10 +67,10 @@ export default {
           .data(words)
 
             // cloud.attr("transform", "translate(" + cloud.size()[0] / 2 + "," + cloud.size()[1] / 2 + ")")
-            console.log("cloudSvg -1", cloudSvg)
-            console.log("this.cloudSvg 1", this.cloudSvgTest)
-            // this.cloudSvgTest = cloudSvg
-            console.log("this.cloudSvg 2", this.cloudSvgTest)
+            // console.log("cloudSvg -1", cloudSvg)
+            // console.log("this.cloudSvg 1", this.cloudSvgTest)
+            // // this.cloudSvgTest = cloudSvg
+            // console.log("this.cloudSvg 2", this.cloudSvgTest)
 
             cloudSvg.enter()
               .append("text")
@@ -161,7 +161,7 @@ export default {
 
           update(val) {
             console.log("=== start update() ===")
-            console.log("words")
+            // console.log("words")
 
             if (d3.select("#complaintWordcloud")._groups[0][0].childNodes.length > 1) {
               d3.select("#complaintSvgId").remove();

@@ -4,23 +4,18 @@
     class="mr-8 mt-8 rounded-lg"
     height="100%"
   >
+
     <v-card-title class="pb-4 accent--text text-h6">
       Keyword Relational Graph
       <HelpTextTooltip :help-text="keywordAnalysisHelpText"/>
-    </v-card-title> -->
+    </v-card-title>
+    
     <v-row>
-      <v-col>
-        <v-card-title class="pb-4 accent--text">
-          Keyword Relational Graph
-          <HelpTextTooltip :help-text="keywordAnalysisHelpText"/>
-        </v-card-title>
+      <v-col cols="8">
         <KeywordRelationalGraph />
       </v-col>
       <v-col>
-        <v-card-title class="pb-4 accent--text">
-          Related Comments
-        </v-card-title>
-        <KeywordRelatedComments />
+        <!-- <KeywordRelatedComments /> -->
       </v-col>
     </v-row>
   </v-card>
@@ -28,12 +23,14 @@
 
 
 <script>
-import KeywordRelatedComments from './KeywordRelatedComments.vue'
+// import KeywordRelatedComments from './KeywordRelatedComments.vue'
 import KeywordRelationalGraph from './KeywordRelationalGraph.vue'
+import HelpTextTooltip from './HelpTextTooltip.vue'
 export default {
   components: { 
     KeywordRelationalGraph, 
-    KeywordRelatedComments 
+    // KeywordRelatedComments,
+    HelpTextTooltip 
   },
   
   data: () => ({

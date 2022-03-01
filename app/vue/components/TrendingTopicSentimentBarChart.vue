@@ -29,7 +29,7 @@ export default {
     generateSentimentGraph(data) {
       console.log("=== START generateSentimentGraph() === ")
 
-      console.log("test 0", this.sentimentGraphId)
+      // console.log("test 0", this.sentimentGraphId)
       // console.log('test 1', d3.select(`#${this.sentimentGraphId}`))
       // console.log("test 2", d3.select(`#${this.sentimentGraphId}`)._groups)
       // console.log("test 3", d3.select(`#${this.sentimentGraphId}`)._groups[0])
@@ -54,13 +54,13 @@ export default {
       const formatPercent = x.tickFormat(null, "%")
 
       const stack = generateStack(data)
-      console.log("stack", stack)
-      console.log("x", x)
-      console.log("formatPercent", formatPercent)
+      // console.log("stack", stack)
+      // console.log("x", x)
+      // console.log("formatPercent", formatPercent)
 
       function generateStack(data) {
         console.log("=== START generateStack() ===")
-        console.log("data", data)
+        // console.log("data", data)
         const total = d3.sum(data, d => d.count);
         let value = 0
 
@@ -78,7 +78,7 @@ export default {
       const svg = d3.select(`#${this.sentimentGraphId}`).append("svg")
         .attr("viewBox", [0, 0, width, height])
         .style("display", "block");
-      console.log("svg test", svg)
+      // console.log("svg test", svg)
 
       svg.append("g")
         .attr("stroke", "white")
@@ -104,7 +104,7 @@ export default {
         .append("title")
         .text(d => `${formatPercent(d.value)} of posts (${d.count} posts) are ${d.label}`);
 
-      console.log("svg test 2", svg)
+      // console.log("svg test 2", svg)
 
 
       // return svg.node();

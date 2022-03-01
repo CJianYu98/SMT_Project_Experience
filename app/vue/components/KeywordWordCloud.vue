@@ -32,7 +32,7 @@ export default {
   methods: {
     generateKeywordsWordcloud() {
       console.log("=== start generateKeywordsWordcloud() ===")
-      console.log("this.keywordsWordCloud", this.keywordsWordCloud)
+      // console.log("this.keywordsWordCloud", this.keywordsWordCloud)
 
       // set the dimensions and margins of the graph
       const margin = {top: 10, right: 10, bottom: 10, left: 10}
@@ -229,7 +229,7 @@ export default {
 
           update(val) {
             console.log("=== start update() ===")
-            console.log("words")
+            // console.log("words")
 
             console.log("wordcloud length check", d3.select("#keywordWordcloud")._groups[0][0].childNodes.length)
 
