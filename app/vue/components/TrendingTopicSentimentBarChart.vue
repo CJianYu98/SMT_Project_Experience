@@ -49,7 +49,7 @@ export default {
       // const height = 33 - margin.top - margin.bottom
       const margin = {top: 0, right: 0, bottom: 0, left: 0}
       const width = 80
-      const height = 8
+      const height = 6
       const x = d3.scaleLinear([0, 1], [margin.left, width - margin.right])
       const formatPercent = x.tickFormat(null, "%")
 
