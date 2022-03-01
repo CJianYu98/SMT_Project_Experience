@@ -14,7 +14,10 @@
         <TrendAnalysisMetricsCard :overall-stats="overallStats" :platform-data="platformData"/>
       </v-col>
       <v-col cols="" class="py-0">
-        <TrendAnalysisTabs/>
+        <TrendAnalysisTabs
+          :medias="medias"
+          :mediasMetrics="mediasMetrics"
+        />
       </v-col>
     </v-row>
   </v-card>
@@ -40,6 +43,14 @@ export default {
       type: Object,
       required: true
     },
+    medias: {
+      type: Object,
+      required: true
+    },
+    mediasMetrics: {
+      type: Array,
+      required: true
+    }
   },
   data: () => ({
     trendingTopicsHelpText: "Study the breakdown of aggregated statistics across platforms. Posts refer to videos (YouTube), posts (Facebook, Reddit and Instagram), and tweets (Twitter).",
