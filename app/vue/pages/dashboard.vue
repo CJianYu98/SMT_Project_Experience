@@ -277,13 +277,21 @@ export default {
     // }
   },
 
+  // mounted(): {
+  //   this.checkFilterSelectionToReturnFakeData(updatedSentiments)
+  // },
+
   methods: {
     rerenderDashboard(updatedSentiments) {
       // code to rerender dashboard when the filters are selected, by passing them to the api
       console.log("=== START rerenderDashboard ===")
       console.log("rerenderDashboard updatedSentiments", updatedSentiments)
 
-      const filterCheck = this.checkFilterSelectionToReturnFakeData(updatedSentiments)
+      let filterCheck = this.checkFilterSelectionToReturnFakeData(updatedSentiments)
+
+      if (filterCheck == null) {
+        filterCheck = "defaultFilters"
+      }
 
       console.log("filterCheck", filterCheck)
       // console.log("query", query)
@@ -484,11 +492,10 @@ export default {
       console.log("=== START checkFilterSelectionToReturnFakeData ====")
       console.log("filters", filters)
 
-      const query = filters[0]
-      const dateSelection = filters[1]
-      const platformSelection = filters[2]
-      const sentSelection =  filters[3]
-      const emotionSelection = filters[4]
+      const dateSelection = filters[0]
+      const platformSelection = filters[1]
+      const sentSelection =  filters[2]
+      const emotionSelection = filters[3]
 
       // console.log("query", query)
       // console.log("dateSelection", dateSelection)
@@ -496,7 +503,7 @@ export default {
       // console.log("sentSelection", sentSelection)
       // console.log("emotionSelection", emotionSelection)
 
-      if (query==="covid" && dateSelection==="Past 7 Days" && platformSelection.length===4 && sentSelection.length===3 && emotionSelection.length===5) {
+      if (dateSelection==="Past 7 Days" && platformSelection.length===4 && sentSelection.length===3 && emotionSelection.length===5) {
         console.log("inside if loop")
         console.log("default filters")
         return ["covid","defaultFilters"]
