@@ -8,7 +8,7 @@
       </v-list-item-title>
       <v-row class="mb-n1">
         <v-col class="pb-1">
-          <v-list-item-subtitle class="pl-3 pr-3 primary--text" v-text="`${topicAssigned.mentions.toLocaleString()} posts`">></v-list-item-subtitle>
+          <v-list-item-subtitle class="pl-3 pr-3 primary--text" v-text="`${topicAssigned.mentions.toLocaleString()} mentions`">></v-list-item-subtitle>
         </v-col>
         <v-col class="pb-1">
           <TrendingTopicSentimentBarChart :trending-topic-sentiment="topicAssigned.sentiment" :sentiment-graph-id="'topic'+index"/>
