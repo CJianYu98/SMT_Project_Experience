@@ -1,7 +1,7 @@
 <template>
   <v-card :key="media" class="mx-4 mb-4">
     <v-list-item-subtitle
-        class="pl-3 primary--text" 
+        class="px-3 primary--text" 
       >
       <v-row no-gutters align="stretch" class="mt-2">
         &nbsp;

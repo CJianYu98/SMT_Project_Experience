@@ -54,11 +54,11 @@
         >
           <v-select
             v-model="dateSelected"
-            d-block
             :items="dateFilter"
             item-text="date"
             label="Select a date period"
             outlined
+            dense
             @change="openDialogueIfCustomSelected(dateSelected);"
           >
             <template slot="selection" slot-scope="data">
@@ -87,7 +87,7 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col
-          cols="3"
+          cols="2"
         >
           <v-select
             v-model="sentimentsSelected"
@@ -98,6 +98,13 @@
             dense
             @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
+
+            <template #selection="{ item }">
+              <span v-if="sentimentsFilter.indexOf(item) === 0" class="accent--text">{{item}}</span>
+              <span v-else class="accent--text">, {{item}}</span>
+              <span> </span>
+            </template>
+
           <!-- small-chips -->
           <!-- select all functionality -->
             <!-- <template #prepend-item>
@@ -198,6 +205,12 @@
             dense
             @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
+            <template #selection="{ item }">
+              <span v-if="emotionsFilter.indexOf(item) === 0" class="accent--text">{{item}}</span>
+              <span v-else class="accent--text">, {{item}}</span>
+              <span> </span>
+            </template>
+
             <!-- small-chips -->
           <!-- select all functionality -->
             <!-- <template #prepend-item>
@@ -257,8 +270,10 @@
       menu: false,
       date: null,
       dateRange: ['2019-09-10', '2019-09-20'],
-      dateSelected: "All",
+      dateSelected: "Past 7 Days",
       dateFilter: [{date: 'All'}, {date: 'Yesterday'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom'}],
+      emotionsSelected: ["Anger", "Joy", "Fear",  "Sadness", "Neutral"],
+      emotionsFilter: ["Anger", "Joy", "Fear",  "Sadness", "Neutral"],
       dialog: false,
       sentimentsFilter: ['Negative', 'Neutral', 'Positive'],
       sentimentsSelected: ['Negative', 'Neutral', 'Positive'],
@@ -397,9 +412,10 @@
 </style>
 
 <style scoped>
-  >>> .custom-dialog-datepicker {
+  ::v-deep .custom-dialog-datepicker {
     position: absolute;
     top: 10%;
     left: 29%;
   }
+
 </style>
