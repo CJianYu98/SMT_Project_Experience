@@ -4,7 +4,7 @@
     <v-container fluid class="px-8 mt-n2 pb-0">
       <v-row no-gutters align="stretch">
         <v-col
-          cols="3"
+          cols="2"
           class="d-flex"
         >
           <v-autocomplete
@@ -82,7 +82,7 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col
-          cols="3"
+          cols="2"
         >
           <v-select
             v-model="sentimentsSelected"
@@ -91,7 +91,7 @@
             multiple
             outlined
             dense
-            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected)"
+            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
 
             <template #selection="{ item }">
@@ -136,7 +136,7 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col
-          cols="3"
+          cols="2"
         >
           <v-select
             v-model="platformsSelected"
@@ -145,10 +145,63 @@
             multiple
             outlined
             dense
-            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected)"
+            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
             <template #selection="{ item }">
               <span v-if="platformsFilter.indexOf(item) === 0" class="accent--text">{{item}}</span>
+              <span v-else class="accent--text">, {{item}}</span>
+              <span> </span>
+            </template>
+
+            <!-- small-chips -->
+          <!-- select all functionality -->
+            <!-- <template #prepend-item>
+              <v-list-item
+                ripple
+                @mousedown.prevent
+                @click="toggle"
+              >
+                <v-list-item-action>
+                  <v-icon :color="platformsSelected.length > 0 ? 'indigo darken-4' : ''">
+                    {{ platformIcon }}
+                  </v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    Select All
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider class="mt-2"></v-divider>
+            </template> -->
+
+            <!-- <template #selection="{ item }">
+              <v-chip 
+                color="accent"
+                outlined
+                class="my-1"
+                small
+              >
+                {{item}}
+              </v-chip>
+            </template> -->
+          </v-select>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col
+          cols="3"
+        >
+          <v-select
+            v-model="emotionsSelected"
+            :items="emotionsFilter"
+            label="Emotion Filter"
+            multiple
+            outlined
+            dense
+            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
+          >
+            <template #selection="{ item }">
+              <span v-if="emotionsFilter.indexOf(item) === 0" class="accent--text">{{item}}</span>
               <span v-else class="accent--text">, {{item}}</span>
               <span> </span>
             </template>
@@ -214,6 +267,8 @@
       dateRange: ['2019-09-10', '2019-09-20'],
       dateSelected: "Past 7 Days",
       dateFilter: [{date: 'All'}, {date: 'Yesterday'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom'}],
+      emotionsSelected: ["Anger", "Joy", "Fear",  "Sadness", "Neutral"],
+      emotionsFilter: ["Anger", "Joy", "Fear",  "Sadness", "Neutral"],
       dialog: false,
       sentimentsFilter: ['Negative', 'Neutral', 'Positive'],
       sentimentsSelected: ['Negative', 'Neutral', 'Positive'],
@@ -280,7 +335,7 @@
         console.log("this.autocompleteModel 1", this.autocompleteModel)
         this.updateAutoComplete(newVal)
 
-        this.emitFilterSelectionToDashboard(this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected)
+        this.emitFilterSelectionToDashboard(this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected)
       },
     },
 
@@ -310,8 +365,8 @@
     //       }
     //     })
     //   }
-      emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected) {
-        this.$emit('changeFilter', [autocompleteModel, dateSelected, platformsSelected, sentimentsSelected])
+      emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected) {
+        this.$emit('changeFilter', [autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected])
       },
 
       updateAutoComplete(val) {
@@ -336,7 +391,7 @@
         if (dateSelected === 'Custom') {
           this.dialog = true
         }
-        this.emitFilterSelectionToDashboard(this.autocompleteModel, dateSelected, this.platformsSelected, this.sentimentsSelected);
+        this.emitFilterSelectionToDashboard(this.autocompleteModel, dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
       }
     },
 
@@ -350,7 +405,7 @@
 </style>
 
 <style scoped>
-  >>> .custom-dialog-datepicker {
+  ::v-deep .custom-dialog-datepicker {
     position: absolute;
     top: 10%;
     left: 29%;
