@@ -39,7 +39,7 @@ export default {
     platformData: {
       type: Object,
       required: true
-    },
+    }
   },
   data: () => ({
     trendingTopicsHelpText: "Study the breakdown of aggregated statistics across platforms. Posts refer to videos (YouTube), posts (Facebook, Reddit and Instagram), and tweets (Twitter).",
