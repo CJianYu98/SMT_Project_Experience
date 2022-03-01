@@ -93,6 +93,13 @@
             dense
             @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected)"
           >
+
+            <template #selection="{ item }">
+              <span v-if="sentimentsFilter.indexOf(item) === 0" class="accent--text">{{item}}</span>
+              <span v-else class="accent--text">, {{item}}</span>
+              <span> </span>
+            </template>
+
           <!-- small-chips -->
           <!-- select all functionality -->
             <!-- <template #prepend-item>
@@ -139,8 +146,13 @@
             outlined
             dense
             @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected)"
-            class="accent--text"
           >
+            <template #selection="{ item }">
+              <span v-if="platformsFilter.indexOf(item) === 0" class="accent--text">{{item}}</span>
+              <span v-else class="accent--text">, {{item}}</span>
+              <span> </span>
+            </template>
+
             <!-- small-chips -->
           <!-- select all functionality -->
             <!-- <template #prepend-item>
