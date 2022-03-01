@@ -28,11 +28,30 @@
             {{ media }}
         </v-tab>
     </v-tabs>
-
+    
     <v-tabs-items v-model="tabs">
       <v-tab-item>
         <v-card flat>
-          <v-container fluid class="px-8 mt-n2 pb-0">
+          <v-container fluid class="px-4 mt-n4 pb-0">
+            <v-row no-gutters align="stretch">
+              <v-col class="d-flex">
+                <v-card-title class="text-h5">
+                  Number of Posts
+                </v-card-title>
+                <v-spacer></v-spacer>
+                <DropDownSelect v-bind:viewFilter="allView" v-bind:label="label"></DropDownSelect>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card>
+        <v-card>
+          <line-chart class="chartBox" v-bind:chartData="allChartData"></line-chart>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card flat>
+          <v-container fluid class="px-4 mt-n4 pb-0">
             <v-row no-gutters align="stretch">
               <v-col class="d-flex">
                 <v-card-title class="text-h5">
@@ -43,33 +62,14 @@
               </v-col>
             </v-row>
           </v-container>
+        </v-card>
+        <v-card>
           <line-chart class="chartBox" v-bind:chartData="fbChartData"></line-chart>
         </v-card>
       </v-tab-item>
-      <!-- <v-tab-item>
-        <v-card flat>
-          <v-container fluid class="px-8 mt-n2 pb-0">
-            <v-row no-gutters align="stretch">
-              <v-col class="d-flex">
-                <v-card-title class="text-h5">
-                  Number of Posts
-                </v-card-title>
-                <v-spacer></v-spacer>
-                <DropDownSelect v-bind:viewFilter="fbView"></DropDownSelect>
-              </v-col>
-            </v-row>
-          </v-container>
-          <line-chart class="chartBox" v-bind:chartData="instaChartData"></line-chart> -->
-          <!-- <v-img
-            :aspect-ratio="2.8"
-            :width="width"
-            src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
-            ></v-img> -->
-        <!-- </v-card>
-      </v-tab-item> -->
       <v-tab-item>
         <v-card flat>
-          <v-container fluid class="px-8 mt-n2 pb-0">
+          <v-container fluid class="px-4 mt-n4 pb-0">
             <v-row no-gutters align="stretch">
               <v-col class="d-flex">
                 <v-card-title class="text-h5">
@@ -80,12 +80,14 @@
               </v-col>
             </v-row>
           </v-container>
+        </v-card>
+        <v-card>
           <line-chart class="chartBox" v-bind:chartData="redditChartData"></line-chart>
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <v-container fluid class="px-8 mt-n2 pb-0">
+          <v-container fluid class="px-4 mt-n4 pb-0">
             <v-row no-gutters align="stretch">
               <v-col class="d-flex">
                 <v-card-title class="text-h5">
@@ -96,12 +98,14 @@
               </v-col>
             </v-row>
           </v-container>
+        </v-card>
+        <v-card>
           <line-chart class="chartBox" v-bind:chartData="twitterChartData"></line-chart>
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <v-container fluid class="px-8 mt-n2 pb-0">
+          <v-container fluid class="px-4 mt-n4 pb-0">
             <v-row no-gutters align="stretch">
               <v-col class="d-flex">
                 <v-card-title class="text-h5">
@@ -112,6 +116,8 @@
               </v-col>
             </v-row>
           </v-container>
+        </v-card>
+        <v-card>
           <line-chart class="chartBox" v-bind:chartData="youtubeChartData"></line-chart>
         </v-card>
       </v-tab-item>
@@ -138,11 +144,51 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       return {
         tabs: null,
         label: 'View',
-        medias: ['facebook','reddit','twitter','youtube'],
+        medias: ['all','facebook','reddit','twitter','youtube'],
+        allView: [{view: 'Number of Likes'}],
         fbView: [{view: 'Number of Likes'}, {view: 'Number of Comments'}, {view: 'Number of Shares'}],
         redditView: [{view: 'Number of Net Votes'}, {view: 'Number of Comments'}, {view: 'Number of Awards'}],        
         twitterView: [{view: 'Number of Likes'}, {view: 'Number of Retweets'}, {view: 'Number of Replies'}],
         youtubeView: [{view: 'Number of Likes'}, {view: 'Number of Views'}, {view: 'Number of Comments'}],
+        allChartData: {
+          labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
+          "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+          datasets: [
+            {
+              label: 'Facebook',
+              data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1545, 5000, 8500, 9841],
+              fill: false,
+              borderColor: '#3949AB',
+              backgroundColor: '#3949AB',
+              borderWidth: 1,
+              // tension: 0.1
+            },
+            {
+              label: 'Reddit',
+              data: [7700,	1150,	342,	7050,	5522,	341,	259,	1577,	2345, 6000, 8000, 9041],
+              fill: false,
+              borderColor: '#EF6C00',
+              backgroundColor: '#EF6C00',
+              borderWidth: 1,
+            },
+            {
+              label: 'Twitter',
+              data: [2300,	150,	4342,	7050,	1522,	3841,	1559,	657,	1445, 3000, 4500, 6641],
+              fill: false,
+              borderColor: '#42A5F5',
+              backgroundColor: '#42A5F5',
+              borderWidth: 1
+            },
+            {
+              label: 'Youtube',
+              data: [6880,	550,	2342,	6070,	522,	2241,	1259,	3157,	1545, 6000, 8500, 9841],
+              fill: false,
+              borderColor: '#C62828',
+              backgroundColor: '#C62828',
+              borderWidth: 1
+            },
+          ]
+        },
         fbChartData: {
           labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
           "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
@@ -151,8 +197,8 @@ import LineChart from '@/components/TrendAnalysisLineChart'
               label: 'Facebook',
               data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1545, 5000, 8500, 9841],
               fill: false,
-              borderColor: '#392A9B',
-              backgroundColor: '#392A9B',
+              borderColor: '#3949AB',
+              backgroundColor: '#3949AB',
               borderWidth: 1,
               // tension: 0.1
             }
@@ -166,8 +212,8 @@ import LineChart from '@/components/TrendAnalysisLineChart'
               label: 'Reddit',
               data: [7700,	1150,	342,	7050,	5522,	341,	259,	1577,	2345, 6000, 8000, 9041],
               fill: false,
-              borderColor: '#392A9B',
-              backgroundColor: '#392A9B',
+              borderColor: '#EF6C00',
+              backgroundColor: '#EF6C00',
               borderWidth: 1
             }
           ]
@@ -178,10 +224,10 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           datasets: [
             {
               label: 'Twitter',
-              data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1445, 3000, 4500, 6641],
+              data: [2300,	150,	4342,	7050,	1522,	3841,	1559,	657,	1445, 3000, 4500, 6641],
               fill: false,
-              borderColor: '#392A9B',
-              backgroundColor: '#392A9B',
+              borderColor: '#42A5F5',
+              backgroundColor: '#42A5F5',
               borderWidth: 1
             }
           ]
@@ -194,8 +240,8 @@ import LineChart from '@/components/TrendAnalysisLineChart'
               label: 'Youtube',
               data: [6880,	550,	2342,	6070,	522,	2241,	1259,	3157,	1545, 6000, 8500, 9841],
               fill: false,
-              borderColor: '#392A9B',
-              backgroundColor: '#392A9B',
+              borderColor: '#C62828',
+              backgroundColor: '#C62828',
               borderWidth: 1
             }
           ]
@@ -208,6 +254,6 @@ import LineChart from '@/components/TrendAnalysisLineChart'
 <style>
   .chartBox {
     width: 800px;
-    height: 300px;
+    height: 360px;
   }
 </style>
