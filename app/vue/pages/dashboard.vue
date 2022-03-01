@@ -13,6 +13,8 @@
         <TrendAnalysis 
           :overall-stats="overallStatsData" 
           :platform-data="platformMetricsData"
+          :medias="medias"
+          :mediasMetrics="mediasMetrics"
         />
       </v-col>
     </v-row>
@@ -177,13 +179,13 @@ export default {
             },
           ],
           overallStatsData: {
-            posts: 2940490,
-            trend: 0,
-            comments: 93893,
-            likes: 93398,
-            shares: 2732,
+            posts: 90857,
+            trend: 0.6,
+            comments: 7894,
+            likes: 100394,
+            shares: 3097,
             filters: {
-              date: ["All"],
+              date: ["", "All"],
             }
           },
           platformMetricsData: {
@@ -205,12 +207,21 @@ export default {
             }
           },
           keywords: [
-            {word: "Running", size: "10", sentiment: "positive", hover: "10"}, 
-            {word: "Surfing", size: "20", sentiment: "neutral", hover: "20"}, 
-            {word: "Climbing", size: "50", sentiment: "negative", hover: "50"}, 
-            {word: "Kiting", size: "30", sentiment: "positive", hover: "30"}, 
-            {word: "Sailing", size: "20", sentiment: "negative", hover: "20"}, 
-            {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "60"} 
+            {word: "GST Hike", size: "10", sentiment: "neutral", hover: "60"}, 
+            {word: "Dormitory Workers", size: "20", sentiment: "neutral", hover: "20"}, 
+            {word: "Russian Embassy", size: "50", sentiment: "negative", hover: "50"}, 
+            {word: "2022 Budget", size: "30", sentiment: "positive", hover: "30"}, 
+            {word: "Valentine's Day", size: "20", sentiment: "positive", hover: "20"}, 
+            {word: "Progressive Wages", size: "60", sentiment: "positive", hover: "60"}, 
+            {word: "Sylvia Lim", size: "60", sentiment: "neutral", hover: "60"}, 
+            {word: "Plastic Bag", size: "60", sentiment: "negative", hover: "60"}, 
+            {word: "Rental Fees", size: "60", sentiment: "neutral", hover: "60"}, 
+            {word: "Phising Scam", size: "60", sentiment: "negative", hover: "60"}, 
+            {word: "BTO Prices", size: "60", sentiment: "negative", hover: "60"}, 
+            {word: "Inflation", size: "60", sentiment: "neutral", hover: "60"}, 
+            {word: "Booster Shot", size: "60", sentiment: "neutral", hover: "60"}, 
+            {word: "SEA Games", size: "60", sentiment: "neutral", hover: "60"}, 
+            {word: "Iris Koh", size: "60", sentiment: "neutral", hover: "60"}, 
           ],
           complaintsKeywords: [
             {word: "Running", size: "10", hover: "10"}, 
@@ -906,6 +917,121 @@ export default {
             negative: "#EB8159"
           },
           selectedTrendingQuery: "",
+
+          medias: ['all','facebook','reddit','twitter','youtube'],
+          mediasMetrics: { 
+            all: {
+              view: ['Number of Likes'],
+              chartData: {
+                labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+                "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+                datasets: [
+                  {
+                    label: 'Facebook',
+                    data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+                    fill: false,
+                    borderColor: '#3949AB',
+                    backgroundColor: '#3949AB',
+                    borderWidth: 1,
+                    // tension: 0.1
+                  },
+                  {
+                    label: 'Reddit',
+                    data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                    fill: false,
+                    borderColor: '#EF6C00',
+                    backgroundColor: '#EF6C00',
+                    borderWidth: 1,
+                  },
+                  {
+                    label: 'Twitter',
+                    data: [2300,  150,  4342,  7050,  1522,  3841,  1559,  657,  1445, 3000, 4500, 6641],
+                    fill: false,
+                    borderColor: '#42A5F5',
+                    backgroundColor: '#42A5F5',
+                    borderWidth: 1
+                  },
+                  {
+                    label: 'Youtube',
+                    data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                    fill: false,
+                    borderColor: '#C62828',
+                    backgroundColor: '#C62828',
+                    borderWidth: 1
+                  },
+                ]
+              },
+            }, 
+            facebook: {
+              view: ['Number of Likes', 'Number of Comments', 'Number of Shares'],
+              chartData: {
+                labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+                "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+                datasets: [
+                  {
+                    label: 'Facebook',
+                    data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+                    fill: false,
+                    borderColor: '#3949AB',
+                    backgroundColor: '#3949AB',
+                    borderWidth: 1,
+                  }
+                ]
+              }
+            }, 
+            reddit: {
+              view: ['Number of Net Votes', 'Number of Comments', 'Number of Awards'],
+              chartData: {
+                labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+                "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+                datasets: [
+                  {
+                    label: 'Reddit',
+                    data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                    fill: false,
+                    borderColor: '#EF6C00',
+                    backgroundColor: '#EF6C00',
+                    borderWidth: 1
+                  }
+                ]
+              }
+            },         
+            twitter: {
+              view: ['Number of Likes','Number of Retweets','Number of Replies'],
+              chartData: {
+                labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+                "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+                datasets: [
+                  {
+                    label: 'Twitter',
+                    data: [2300,  150,  4342,  7050,  1522,  3841,  1559,  657,  1445, 3000, 4500, 6641],
+                    fill: false,
+                    borderColor: '#42A5F5',
+                    backgroundColor: '#42A5F5',
+                    borderWidth: 1
+                  }
+                ]
+              }
+            }, 
+            youtube: {
+              view: ['Number of Likes', 'Number of Views', 'Number of Comments'],
+              chartData: {
+
+                labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+                "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+                datasets: [
+                  {
+                    label: 'Youtube',
+                    data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                    fill: false,
+                    borderColor: '#C62828',
+                    backgroundColor: '#C62828',
+                    borderWidth: 1
+                  }
+                ]
+              }
+            }
+          },
   }),
 
   computed: {
@@ -945,177 +1071,6 @@ export default {
       this.keywords = this.fakeData[filterCheck].keywords
       this.complaintsKeywords = this.fakeData[filterCheck].complaintsKeywords
       this.complaintsRelatedComments = this.fakeData[filterCheck].complaintsRelatedComments
-
-      // axios.get('/login', {
-      //   firstName: 'Finn',
-      //   lastName: 'Williams'
-      // })
-      // .then((response) => {
-      //   console.log(response);
-      // }, (error) => {
-      //   console.log(error);
-      // })
-
-      // this.topFiveTopicsData = [
-      //   {
-      //     name: 'Healthcare',
-      //     topThreeMentions: ['GE2020', 'GE2024', 'Reesah Khan'],
-      //     mentions: 294940, 
-      //     sentiment: [
-      //       {
-      //         sentiment: "negative",
-      //         percentage: 0,
-      //         count: 0
-      //       },
-      //       {
-      //         sentiment: "neutral",
-      //         percentage: 0,
-      //         count: 0
-      //       },
-      //       {
-      //         sentiment: "positive",
-      //         percentage: 1,
-      //         count: 294940
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     name: 'DiffName',
-      //     topThreeMentions: ['GST Increase', 'STI', 'Taxes'], 
-      //     mentions: 29494, 
-      //     sentiment: [
-      //       {
-      //         sentiment: "negative",
-      //         percentage: 0,
-      //         count: 0
-      //       },
-      //       {
-      //         sentiment: "neutral",
-      //         percentage: 1,
-      //         count: 294940
-      //       },
-      //       {
-      //         sentiment: "positive",
-      //         percentage: 0,
-      //         count: 0
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     name: 'Environment',
-      //     topThreeMentions: ['Tengah Forest', 'Plastic Bags', 'Carbon Tax'], 
-      //     mentions: 29494, 
-      //     sentiment: [
-      //       {
-      //         sentiment: "negative",
-      //         percentage: 1,
-      //         count: 294940
-      //       },
-      //       {
-      //         sentiment: "neutral",
-      //         percentage: 0,
-      //         count: 0
-      //       },
-      //       {
-      //         sentiment: "positive",
-      //         percentage: 0,
-      //         count: 0
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     name: 'Travel',
-      //     topThreeMentions: ['SG Rediscover Vouchers', 'ART test', 'VTL'], 
-      //     mentions: 29494, 
-      //     sentiment: [
-      //       {
-      //         sentiment: "negative",
-      //         percentage: 0.2,
-      //         count: 58988
-      //       },
-      //       {
-      //         sentiment: "neutral",
-      //         percentage: 0.6,
-      //         count: 176946
-      //       },
-      //       {
-      //         sentiment: "positive",
-      //         percentage: 0.2,
-      //         count: 58988
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     name: 'Education',
-      //     topThreeMentions: ['PSLE results', 'O Level results', 'June holidays'], 
-      //     mentions: 29494, 
-      //     sentiment: [
-      //       {
-      //         sentiment: "negative",
-      //         percentage: 0.2,
-      //         count: 58988
-      //       },
-      //       {
-      //         sentiment: "neutral",
-      //         percentage: 0.6,
-      //         count: 176946
-      //       },
-      //       {
-      //         sentiment: "positive",
-      //         percentage: 0.2,
-      //         count: 58988
-      //       },
-      //     ],
-      //   }
-      // ]
-
-      this.overallStatsData = {
-        posts: 12,
-        trend: 0.4,
-        comments: 93893,
-        likes: 93398,
-        shares: 2732,
-        filters: {
-          date: ["All"],
-        }
-      }
-
-      this.platformMetricsData = {
-        facebook: {
-          mentions: 0.54,
-          trend: 0.98
-        },
-        reddit: {
-          mentions: 0.14,
-          trend: 0.2
-        },
-        twitter: {
-          mentions: 0.08,
-          trend: 0.2
-        },
-        youtube: {
-          mentions: 0.20,
-          trend: -0.2
-        }
-      }
-
-      this.keywords = [
-        {word: "Chocolate", size: "10", sentiment: "positive", hover: "9210"}, 
-        {word: "Chicken Rice", size: "20", sentiment: "neutral", hover: "9210"}, 
-        {word: "Bingsoo", size: "50", sentiment: "negative", hover: "9210"}, 
-        {word: "Kiting", size: "30", sentiment: "positive", hover: "9210"}, 
-        {word: "Sailing", size: "20", sentiment: "negative", hover: "9210"}, 
-        {word: "Snowboarding", size: "60", sentiment: "neutral", hover: "9210"} 
-      ]
-
-      this.complaintsKeywords = [
-      {word: "Running", size: "10", hover: "9210"}, 
-      {word: "Surfing", size: "20", hover: "9210"}, 
-      {word: "Rain", size: "50", hover: "9210"}, 
-      {word: "Kiting", size: "30", hover: "9210"}, 
-      {word: "Sailing", size: "20", hover: "9210"}, 
-      {word: "Queue", size: "60", hover: "9210"} 
-    ]
 
       console.log("=== END rerenderDashboard ===")
     },
