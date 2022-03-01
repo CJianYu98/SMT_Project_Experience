@@ -3,34 +3,38 @@
   <div id="searchFilter" class="mt-2 mb-n3">
     <v-container fluid class="px-8 mt-n2 pb-0">
       <v-row no-gutters align="stretch">
-        <v-col
+        <!-- <v-col
           cols="2"
           class="d-flex"
         >
-          <v-autocomplete
+          <v-combobox
             v-if="selectedTrendingQuery"
             v-model="autocompleteModel"
             :items="items"
             :loading="isLoading"
             clearable
+            hide-no-data
             hide-details
             hide-selected
-            item-text="name"
-            item-value="symbol"
             label="Enter a query!"
             solo
+            item-text="name"
+            item-value="symbol"
             dense
-            return-object
-          >
-          </v-autocomplete>
+            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
+          > -->
+            <!-- @update:search-input="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)" -->
+            <!-- return-object -->
+          <!-- </v-combobox>
 
-          <v-autocomplete
+          <v-combobox
             v-else
             v-model="autocompleteModel"
             :items="items"
             :loading="isLoading"
             :search-input.sync="search"
             clearable
+            hide-no-data
             hide-details
             hide-selected
             item-text="name"
@@ -38,14 +42,15 @@
             label="Enter a query!"
             solo
             dense
-            return-object
-          >
-          </v-autocomplete>
+            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
+          > -->
+            <!-- return-object -->
+          <!-- </v-combobox>
         </v-col>
-        <v-spacer></v-spacer>
+        <v-spacer></v-spacer> -->
         <v-col
           class="d-flex"
-          cols="2"
+          cols="3"
         >
           <v-select
             v-model="dateSelected"
@@ -91,7 +96,7 @@
             multiple
             outlined
             dense
-            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
+            @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
 
             <template #selection="{ item }">
@@ -136,7 +141,7 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col
-          cols="2"
+          cols="3"
         >
           <v-select
             v-model="platformsSelected"
@@ -145,7 +150,7 @@
             multiple
             outlined
             dense
-            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
+            @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
             <template #selection="{ item }">
               <span v-if="platformsFilter.indexOf(item) === 0" class="accent--text">{{item}}</span>
@@ -198,7 +203,7 @@
             multiple
             outlined
             dense
-            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
+            @change="emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
             <template #selection="{ item }">
               <span v-if="emotionsFilter.indexOf(item) === 0" class="accent--text">{{item}}</span>
@@ -312,20 +317,20 @@
 
       search: {
         handler(val) {
-          if (this.items.length > 0) return
-            this.isLoading = true
+          // if (this.items.length > 0) return
+          //   this.isLoading = true
 
           // Lazily load input items
-          fetch('https://api.coingecko.com/api/v3/coins/list')
-            .then(res => res.clone().json())
-            .then(res => {
-              this.items = res
-              console.log("UNDER WATCH this.items", this.items)
-            })
-            .catch(err => {
-              console.log(err)
-            })
-            .finally(() => (this.isLoading = false))
+          // fetch('https://api.coingecko.com/api/v3/coins/list')
+          //   .then(res => res.clone().json())
+          //   .then(res => {
+          //     this.items = res
+          //     console.log("UNDER WATCH this.items", this.items)
+          //   })
+          //   .catch(err => {
+          //     console.log(err)
+          //   })
+          //   .finally(() => (this.isLoading = false))
         },
         immediate: true
       },
@@ -335,7 +340,7 @@
         console.log("this.autocompleteModel 1", this.autocompleteModel)
         this.updateAutoComplete(newVal)
 
-        this.emitFilterSelectionToDashboard(this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected)
+        this.emitFilterSelectionToDashboard(this.dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected)
       },
     },
 
@@ -365,8 +370,10 @@
     //       }
     //     })
     //   }
-      emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected) {
-        this.$emit('changeFilter', [autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected])
+      emitFilterSelectionToDashboard(dateSelected, platformsSelected, sentimentsSelected, emotionsSelected) {
+        console.log("=== START emitFilterSelectionToDashboard() ===")
+        this.$emit('changeFilter', [dateSelected, platformsSelected, sentimentsSelected, emotionsSelected])
+        console.log("=== END emitFilterSelectionToDashboard() ===")
       },
 
       updateAutoComplete(val) {
@@ -391,7 +398,7 @@
         if (dateSelected === 'Custom') {
           this.dialog = true
         }
-        this.emitFilterSelectionToDashboard(this.autocompleteModel, dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
+        this.emitFilterSelectionToDashboard(dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
       }
     },
 

@@ -61,34 +61,34 @@ export default {
     // NoteworthyComments,
   },
   data: () => ({
-    allData: [
-      {
-        name: 'GE2020', 
-        mentions: 294940, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
+    fakeData: {
+        defaultFilters: {
+          topFiveTopicsData: [
+            {
+              name: "test1",
+              topThreeMentions: ["test1", "test2", "test3"],
+              mentions: 294940, 
+              sentiment: [
+                  {
+                    sentiment: "negative",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                  {
+                    sentiment: "neutral",
+                    percentage: 0.6,
+                    count: 176946
+                  },
+                  {
+                    sentiment: "positive",
+                    percentage: 0.2,
+                    count: 58988
+                  },
+                ],
+            }
+          ]
         },
-        post: 'GE2020 could have gone better',
-        comment: `Couldn't have agreed more`,
-        likeCount: 200,
-        commentCount: 198,
-        shareCount: 56,
-        categories: ['Politics'],
-      },
-      {
-        name: 'GE2024', 
-        mentions: 29494, 
-        sentiment: {
-          negative: 0.2, neutral: 0.6, positive: 0.2
-        },
-        post: 'Looking forward to 2024',
-        comment: `Couldn't have agreed more`,
-        likeCount: 200,
-        commentCount: 198,
-        shareCount: 56,
-        categories: ['Politics'],
-      },
-    ],
+    },
     topFiveTopicsData: [
       {
         name: 'Bitcoin',
@@ -281,7 +281,15 @@ export default {
     rerenderDashboard(updatedSentiments) {
       // code to rerender dashboard when the filters are selected, by passing them to the api
       console.log("=== START rerenderDashboard ===")
-      console.log(updatedSentiments)
+      console.log("rerenderDashboard updatedSentiments", updatedSentiments)
+
+      const filterCheck = this.checkFilterSelectionToReturnFakeData(updatedSentiments)
+
+      console.log("filterCheck", filterCheck)
+      // console.log("query", query)
+      // console.log("filterSelection", filterSelection)
+      console.log("this.fakeData", this.fakeData)
+
       // axios.get('/login', {
       //   firstName: 'Finn',
       //   lastName: 'Williams'
@@ -470,6 +478,32 @@ export default {
       this.selectedTrendingQuery = topic
       console.log("this.selectedTrendingQuery", this.selectedTrendingQuery)
       console.log("=== END passTrendingTopicsToDashboard() ===")
+    },
+
+    checkFilterSelectionToReturnFakeData(filters) {
+      console.log("=== START checkFilterSelectionToReturnFakeData ====")
+      console.log("filters", filters)
+
+      const query = filters[0]
+      const dateSelection = filters[1]
+      const platformSelection = filters[2]
+      const sentSelection =  filters[3]
+      const emotionSelection = filters[4]
+
+      // console.log("query", query)
+      // console.log("dateSelection", dateSelection)
+      // console.log("platformSelection", platformSelection)
+      // console.log("sentSelection", sentSelection)
+      // console.log("emotionSelection", emotionSelection)
+
+      if (query==="covid" && dateSelection==="Past 7 Days" && platformSelection.length===4 && sentSelection.length===3 && emotionSelection.length===5) {
+        console.log("inside if loop")
+        console.log("default filters")
+        return ["covid","defaultFilters"]
+      } else {
+        console.log("inside else loop")
+      }
+
     }
   }
   
