@@ -8,6 +8,7 @@
       :date="complaint.date"
       :comment="complaint.comment"
       :topic="complaint.topic"
+      :link="complaint.link"
     />
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <v-card :key="media" class="mx-4 mb-4">
+  <v-card :key="media" class="mx-4 mb-4" :href="link" target="_blank">
     <v-list-item-subtitle
         class="px-3 primary--text" 
       >
@@ -24,9 +24,15 @@
       <p class="text-wrap mt-1">
       {{comment}}
       </p>
-      <v-chip class="mb-2 primary trending-category mr-1">
-        {{topic}}
-      </v-chip>
+      <v-chip-group column>
+        <v-chip 
+          class="mb-2 primary trending-category mr-1"
+          v-for="indvTopic in topic"
+          :key="indvTopic"
+        >
+          {{indvTopic}}
+        </v-chip>
+      </v-chip-group>
     </v-list-item-subtitle>
   </v-card>
 </template>
@@ -54,6 +60,10 @@ export default {
       type: String,
       required: true
     },
+    link: {
+      type: String,
+      required: true
+    }
   },
   data: () => ({
 
