@@ -1,16 +1,27 @@
 boto3
+datasets
 fastapi[all]
 loguru 
+nltk
 pandas 
 praw
 pymongo
 python-dotenv 
 pytz 
+regex
 requests 
 scipy
 selenium 
+spacy
 telegram-send
 tensorflow
 torch
 tqdm
 transformers
+wheel
+
+
+# python3 -m spacy download en_core_web_sm
+# python3 -m spacy download en_core_web_trf
+# nltk.download('wordnet') # NLTK Package WordNet for WordNetLemmatizer
+# nltk.download('omw-1.4') # Open Multilingual Wordnet

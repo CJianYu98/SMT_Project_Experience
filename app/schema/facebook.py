@@ -5,6 +5,7 @@ from datetime import datetime
 
 class FbPostRes(BaseModel):
     id: int
+    object_id: str
     fb_group: str
     created_time: datetime
     message: str

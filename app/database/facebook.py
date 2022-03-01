@@ -6,6 +6,8 @@ import pandas as pd
 from dotenv import load_dotenv
 from loguru import logger
 
+from ..constants.social_media import FACEBOOK_GROUPS
+from ..ml.models.keyword_analysis import *
 from ..ml.models.sentiment_analysis import *
 from .connect import client
 
@@ -17,8 +19,8 @@ FACEBOOK_HISTORICAL_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_DATA_PATH")
 FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH")
 
 # Select MongoDB collection to work with
-fb_posts = client.smt483.fb_posts
-fb_comments = client.smt483.fb_comments
+fb_posts = client.smt483.fb_posts_new
+fb_comments = client.smt483.fb_comments_new
 
 for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     file_name = file[:-4]
@@ -69,25 +71,37 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     )
 
     # Label encoding
-    df_new["is_post"].replace({"Facebook:/<page-id>/posts": 1, "Facebook:/<post-id>/comments": 0}, inplace=True)
+    df_new["is_post"].replace(
+        {"Facebook:/<page-id>/posts": 1, "Facebook:/<post-id>/comments": 0}, inplace=True
+    )
 
     # Add fb_group column
-    df_new["fb_group"] = file_name
+    df_new["fb_group"] = FACEBOOK_GROUPS[file_name]
 
-    # Convert datetime string to datetime type
-    df_new['created_time'] = df_new['created_time'].apply(lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S%z'))
+    # Convert data type
+    df_new["created_time"] = df_new["created_time"].apply(
+        lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S%z")
+    )
+    df_new["parent_id"] = df_new["parent_id"].apply(lambda x: int(x))
 
     # Filter df to df_posts and df_comments
-    df_posts = df_new[df_new["is_post"] == 1]
+    df_posts = df_new[df_new["is_post"] == 1].drop(["is_post"], axis=1)
     df_posts.reset_index(inplace=True, drop=True)
-    df_comments = df_new[df_new["is_post"] == 0]
+    df_comments = df_new[df_new["is_post"] == 0].drop(["is_post"], axis=1)
     df_comments.reset_index(inplace=True, drop=True)
 
-    # Run classification on df_posts and df_comments
-    # df_posts["sentiment_label"] = df_posts["message"].apply(lambda x: classify_sentiment(x))
+    # Classify Sentiment on df_posts and df_comments
+    logger.info(f"Now classifying {file_name}")
+    df_posts = classify_sentiment(df_posts)
+    df_comments = classify_sentiment(df_comments)
+
+    # Classify Emotions on df_posts and df_comments
     # df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
-    # df_comments["sentiment_label"] = df_comments["message"].apply(lambda x: classify_sentiment(x))
     # df_comments["emotions_label"] = df_comments["message"].apply(lambda x: classify_emotions(x))
+
+    # Extract entities from df_posts and df_comments
+    df_posts["entities"] = df_posts["message"].apply(extract_entities)
+    df_comments["entities"] = df_posts["message"].apply(extract_entities)
 
     # Convert dataframe to dict
     posts = df_posts.to_dict(orient="index")
