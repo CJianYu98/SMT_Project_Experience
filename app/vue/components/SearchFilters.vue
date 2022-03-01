@@ -49,11 +49,11 @@
         >
           <v-select
             v-model="dateSelected"
-            d-block
             :items="dateFilter"
             item-text="date"
             label="Select a date period"
             outlined
+            dense
             @change="openDialogueIfCustomSelected(dateSelected);"
           >
             <template slot="selection" slot-scope="data">
@@ -200,7 +200,7 @@
       menu: false,
       date: null,
       dateRange: ['2019-09-10', '2019-09-20'],
-      dateSelected: "All",
+      dateSelected: "Past 7 Days",
       dateFilter: [{date: 'All'}, {date: 'Yesterday'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom'}],
       dialog: false,
       sentimentsFilter: ['Negative', 'Neutral', 'Positive'],
@@ -343,4 +343,5 @@
     top: 10%;
     left: 29%;
   }
+
 </style>
