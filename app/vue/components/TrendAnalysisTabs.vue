@@ -27,9 +27,32 @@
             &nbsp;
             {{ media }}
         </v-tab>
+        <v-tab-item
+          v-for="media in medias"
+          :key="media"
+        >
+        <v-card v-if="media === 'all'">
+          <v-card flat >
+            <v-container fluid class="px-4 mt-n4 pb-0">
+              <v-row no-gutters align="stretch">
+                <v-col class="d-flex">
+                  <v-card-title class="text-h5">
+                    Number of Posts
+                  </v-card-title>
+                  <v-spacer></v-spacer>
+                  <DropDownSelect :viewFilter="allView" :label="label"></DropDownSelect>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+          <v-card>
+            <line-chart class="chartBox" :chartData="allChartData"></line-chart>
+          </v-card>  
+        </v-card>
+        </v-tab-item>
     </v-tabs>
     
-    <v-tabs-items v-model="tabs">
+    <!-- <v-tabs-items v-model="tabs">
       <v-tab-item>
         <v-card flat>
           <v-container fluid class="px-4 mt-n4 pb-0">
@@ -39,13 +62,13 @@
                   Number of Posts
                 </v-card-title>
                 <v-spacer></v-spacer>
-                <DropDownSelect v-bind:viewFilter="allView" v-bind:label="label"></DropDownSelect>
+                <DropDownSelect :viewFilter="allView" :label="label"></DropDownSelect>
               </v-col>
             </v-row>
           </v-container>
         </v-card>
         <v-card>
-          <line-chart class="chartBox" v-bind:chartData="allChartData"></line-chart>
+          <line-chart class="chartBox" :chartData="allChartData"></line-chart>
         </v-card>
       </v-tab-item>
 
@@ -58,13 +81,13 @@
                   Number of Posts
                 </v-card-title>
                 <v-spacer></v-spacer>
-                <DropDownSelect v-bind:viewFilter="fbView" v-bind:label="label"></DropDownSelect>
+                <DropDownSelect :viewFilter="facebookView" :label="label"></DropDownSelect>
               </v-col>
             </v-row>
           </v-container>
         </v-card>
         <v-card>
-          <line-chart class="chartBox" v-bind:chartData="fbChartData"></line-chart>
+          <line-chart class="chartBox" :chartData="facebookChartData"></line-chart>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -76,13 +99,13 @@
                   Number of Posts
                 </v-card-title>
                 <v-spacer></v-spacer>
-                <DropDownSelect v-bind:viewFilter="redditView" v-bind:label="label"></DropDownSelect>
+                <DropDownSelect :viewFilter="redditView" :label="label"></DropDownSelect>
               </v-col>
             </v-row>
           </v-container>
         </v-card>
         <v-card>
-          <line-chart class="chartBox" v-bind:chartData="redditChartData"></line-chart>
+          <line-chart class="chartBox" :chartData="redditChartData"></line-chart>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -94,13 +117,13 @@
                   Number of Posts
                 </v-card-title>
                 <v-spacer></v-spacer>
-                <DropDownSelect v-bind:viewFilter="twitterView" v-bind:label="label"></DropDownSelect>
+                <DropDownSelect :viewFilter="twitterView" :label="label"></DropDownSelect>
               </v-col>
             </v-row>
           </v-container>
         </v-card>
         <v-card>
-          <line-chart class="chartBox" v-bind:chartData="twitterChartData"></line-chart>
+          <line-chart class="chartBox" :chartData="twitterChartData"></line-chart>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -112,16 +135,16 @@
                   Number of Posts
                 </v-card-title>
                 <v-spacer></v-spacer>
-                <DropDownSelect v-bind:viewFilter="youtubeView" v-bind:label="label"></DropDownSelect>
+                <DropDownSelect :viewFilter="youtubeView" :label="label"></DropDownSelect>
               </v-col>
             </v-row>
           </v-container>
         </v-card>
         <v-card>
-          <line-chart class="chartBox" v-bind:chartData="youtubeChartData"></line-chart>
+          <line-chart class="chartBox" :chartData="youtubeChartData"></line-chart>
         </v-card>
       </v-tab-item>
-    </v-tabs-items>
+    </v-tabs-items> -->
   </v-card>
 
 </template>
@@ -140,13 +163,13 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         LineChart,
         DropDownSelect,
     },
-    data () {
+    data: () => {
       return {
         tabs: null,
         label: 'View',
         medias: ['all','facebook','reddit','twitter','youtube'],
         allView: [{view: 'Number of Likes'}],
-        fbView: [{view: 'Number of Likes'}, {view: 'Number of Comments'}, {view: 'Number of Shares'}],
+        facebookView: [{view: 'Number of Likes'}, {view: 'Number of Comments'}, {view: 'Number of Shares'}],
         redditView: [{view: 'Number of Net Votes'}, {view: 'Number of Comments'}, {view: 'Number of Awards'}],        
         twitterView: [{view: 'Number of Likes'}, {view: 'Number of Retweets'}, {view: 'Number of Replies'}],
         youtubeView: [{view: 'Number of Likes'}, {view: 'Number of Views'}, {view: 'Number of Comments'}],
@@ -189,7 +212,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             },
           ]
         },
-        fbChartData: {
+        facebookChartData: {
           labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
           "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
           datasets: [
@@ -252,8 +275,8 @@ import LineChart from '@/components/TrendAnalysisLineChart'
 </script>
 
 <style>
-  .chartBox {
+  /* .chartBox {
     width: 800px;
     height: 360px;
-  }
+  } */
 </style>
