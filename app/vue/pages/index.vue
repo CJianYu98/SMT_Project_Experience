@@ -1,70 +1,77 @@
 <template>
-  <v-container align="center" class="mb-6">
-    <v-img
-      max-height="300"
-      max-width="300"
-      :src="`/tls_logo_landing_text.png`"
-      class="mx-auto mt-13 mb-n5"
-    ></v-img>
-
-    <v-row class="justify-center my-7">
-      <v-btn to="/dashboard" class="accent" align="center">Bring me to the Dashboard!</v-btn>
+  <v-container fluid align="center">
+    <v-row class="header-bg fill-height">
+      <v-col cols="5" class="px-3 py-4 d-flex align-center">
+        <v-container class="mr-3 ml-5">
+          <p class="pb-4 accent--text text-h3">
+            {{ header }}
+          </p>
+          <p class="pb-4 primary--text text-h5">
+            {{ headerDesc }}
+          </p>
+          <v-container class="d-flex justify-center">
+            <v-btn to="/dashboard" class="accent text-h6">
+              To the Dashboard!
+            </v-btn>
+          </v-container>
+        </v-container>
+      </v-col>
+      <v-col>
+        <v-img
+          max-height="500"
+          :aspect-ratio="16/9"
+          :src="`/landing_page_components.png`"
+        ></v-img>
+      </v-col>
+    </v-row>
+    <v-row class="py-4 even-row">
+      <v-spacer></v-spacer>
+      <v-col cols="4">
+        <LandingImageFirst 
+          :component-image="filterComponent.componentImage"
+          :component-header="filterComponent.componentHeader"
+          :component-desc="filterComponent.componentDesc"
+        />
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col cols="4">
+        <LandingImageLast
+          :component-image="keywordComponent.componentImage"
+          :component-header="keywordComponent.componentHeader"
+          :component-desc="keywordComponent.componentDesc"
+        />
+      </v-col>
+      <v-spacer></v-spacer>
     </v-row>
 
-    <v-row class="justify-center my-16">
-      <v-icon>mdi-chevron-triple-down</v-icon>
+    <v-row>
+      <LandingTwoSections
+        :component-image-one="trendingComponent.componentImageOne"
+        :component-image-two="trendingComponent.componentImageTwo"
+        :component-image-three="trendingComponent.componentImageThree"
+        :component-header="trendingComponent.componentHeader"
+        :component-desc-one="trendingComponent.componentDescOne"
+        :component-desc-two="trendingComponent.componentDescTwo"
+      />
     </v-row>
 
-    <v-row align="stretch">
-      <v-col 
-        v-for="comp in modules" 
-        :key="comp.name"
-        cols="4"
-      >
-        <v-card class="card-container" height="100%">
-          <v-img
-            :src="`/${comp.imageName}.jpg`"
-            height="200px"
-          ></v-img>
 
-          <v-card-title>
-            {{ comp.name }}
-          </v-card-title>
-
-          <v-card-subtitle v-for="desc in comp.description" :key="desc">
-            {{ desc }}
-          </v-card-subtitle>
-
-        
-
-          <!-- <v-card-actions v-if="comp.additionalDesc">
-            <v-btn
-              color="orange lighten-2"
-              text
-            >
-              See more
-            </v-btn>
-
-            <v-spacer></v-spacer>
-
-            <v-btn
-              icon
-              @click="show = !show"
-            >
-              <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-            </v-btn>
-          </v-card-actions>
-
-          <v-expand-transition v-if="comp.additionalDesc">
-            <div v-show="show">
-              <v-divider></v-divider>
-
-              <v-card-text>
-                {{ comp.additionalDesc }}
-              </v-card-text>
-            </div>
-          </v-expand-transition> -->
-        </v-card>
+    <v-row class="py-4 even-row">
+      <v-spacer></v-spacer>
+      <v-col cols="5">
+        <LandingImageLast
+          :component-image="sentimentComponent.componentImage"
+          :component-header="sentimentComponent.componentHeader"
+          :component-desc="sentimentComponent.componentDesc"
+        />
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col cols="5">
+        <LandingImageFirst 
+          :component-image="complaintComponent.componentImage"
+          :component-header="complaintComponent.componentHeader"
+          :component-desc="complaintComponent.componentDesc"
+        />
       </v-col>
       <v-spacer></v-spacer>
     </v-row>
@@ -72,47 +79,64 @@
 </template>
 
 <script>
+import LandingImageFirst from '../components/LandingImageFirst.vue'
+import LandingImageLast from '../components/LandingImageLast.vue'
+import LandingTwoSections from '../components/LandingTwoSections.vue'
 export default {
+  components: { 
+    LandingImageFirst, 
+    LandingImageLast,
+    LandingTwoSections 
+  },
   name: 'IndexPage',
   data: () => ({
     show: false,
-    modules: [
-      {
-        imageName: 'filters',
-        name: 'Filter Module',
-        description: ['Customise data visualised on the dashboard based on date, sentiments, platforms and emotions!'],
-        additionalDesc: "Sentiments include negative, neutral and positive. Platforms consist of Facebook, Reddit, Twitter and Youtube. Emotions include Anger, Joy, Fear, Sadness and Neutral.",
-      },
-      {
-        imageName: 'trendAnalysis',
-        name: 'Trend Analysis Module',
-        description: ['See the top topics mentioned based on the selected filters, and the associated top keywords, along with sentiment breakdown of the topic!', 'Visualise the aggregated social media platform metrics, and the trend in number of posts across time! Gain insights into activities of Singaporeans on social media platforms, and changes in trend.'],
-        additionalDesc: "Topics are pre-defined, with a total of 20 possible topics a post can belong to. These topics include arts and entertainment, business and economy, covid19, crime, culture, education, environment, fashion, food, healthcare, law, lifestyle, others, politics, science and medicine, society, sports, technology, transportation and travel.",
-      },
-      {
-        imageName: 'keywordAnalysis',
-        name: 'Keyword Analysis Module',
-        description: ['See the top keywords associated with the selected filters, along with their sentiments, to find out what Singaporeans have been complaining about lately!'],
-        // additionalDesc: "Topics are pre-defined, with a total of 20 possible topics a post can belong to. <br> These topics include arts and entertainment, business and economy, covid19, crime, culture, education, environment, fashion, food, healthcare, law, lifestyle, others, politics, science and medicine, society, sports, technology, transportation and travel.",
-      },
-      {
-        imageName: 'complaints',
-        name: "Complaint identification module",
-        description: ['See the top complaint keywords associated with the selected filters, and related complaints!'],
-      },
-      {
-        imageName: 'sentiment',
-        name: "Online Mood Analysis module",
-        description: ['See the sentiments associated with the top topics and top keywords, to know how people are feeling regarding these topics!'],
-      }
-    ]
+    header: "SOCIAL LISTENING PLATFORM FOR SINGAPOREANS",
+    headerDesc: "Gather insights on what Singaporeans have been talking about lately",
+    filterComponent: {
+      componentImage: 'filters',
+      componentHeader: 'FILTERING DATA TO MEET YOUR NEEDS',
+      componentDesc: 'Filters include date period, sentiment of posts, data platforms, and emotion of post',
+    },
+    keywordComponent: {
+      componentImage: 'keyword',
+      componentHeader: 'ANALYSE BUZZING KEYWORDS',
+      componentDesc: 'Analyse buzzing keywords and associated public sentiment',
+    },
+    // to be updated:
+    sentimentComponent: {
+      componentImage: 'sentiment',
+      componentHeader: 'VIEW ONLINE MOODS AND RELATED TOPICS',
+      componentDesc: 'Analyse buzzing keywords and associated public sentiment',
+    },
+    complaintComponent: {
+      componentImage: 'complaints',
+      componentHeader: 'LEARN SINGAPOREANS’ COMPLAINTS',
+      componentDesc: 'View most common complaints, their related comments and topics associated to the comments',
+    },
+    trendingComponent: {
+      componentImageOne: 'trending',
+      componentImageTwo: 'trendingMetrics',
+      componentImageThree: 'trendingGraph',
+      componentHeader: 'ANALYSE PATTERNS OVER TIME',
+      componentDescOne: 'View top topics mentioned, associated top keywords, and sentiment breakdown of topic',
+      componentDescTwo: 'Visualise aggregated metrics, and trend in number of posts across time',
+    },
+
   })
 }
 </script>
 
 <style scoped>
-  .card-container {
-    margin: 10px;
-    padding: 10px;
-  }
+.header-bg {
+  background: url("/index_background_dark.png");
+  background-size: cover;
+  /* opacity: 0.5; */
+  /* height: 100vh; */
+}
+
+.even-row {
+  background: url("/index_background_light.png");
+  background-size: cover;
+}
 </style>
