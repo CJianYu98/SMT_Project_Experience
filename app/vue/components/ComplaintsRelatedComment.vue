@@ -57,7 +57,7 @@ export default {
       required: true
     },
     topic: {
-      type: String,
+      type: Array,
       required: true
     },
     link: {

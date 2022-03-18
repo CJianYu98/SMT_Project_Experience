@@ -69,22 +69,19 @@ export default {
             // arts and entertainment, business and economy, covid19, crime, culture, education, environment, fashion, food, healthcare, law, lifestyle, others, politics, science and medicine, society, sports, technology, transportation, travel
             {
               name: "Business and Economy",
-              topThreeMentions: ["GST Hike", "Budget 2022", "Higher Costs"],
+              topThreeMentions: ["01coin", "Budget 2022", "Higher Costs"],
               mentions: 19872, 
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.4,
                     count: 7949
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.2,
                     count: 3974
                   },
                   {
                     sentiment: "positive",
-                    percentage: 0.4,
                     count: 7949
                   },
                 ],
@@ -96,17 +93,14 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.3,
                     count: 5673
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.2,
                     count: 3758
                   },
                   {
                     sentiment: "positive",
-                    percentage: 0.5,
                     count: 9395
                   },
                 ],
@@ -118,17 +112,14 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.6,
                     count: 10436
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.2,
                     count: 3479
                   },
                   {
                     sentiment: "positive",
-                    percentage: 0.2,
                     count: 3479
                   },
                 ],
@@ -140,17 +131,14 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.3,
                     count: 4482
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.2,
                     count: 2988
                   },
                   {
                     sentiment: "positive",
-                    percentage: 0.5,
                     count: 7470
                   },
                 ],
@@ -162,17 +150,14 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.4,
                     count: 5398
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.4,
                     count: 5398
                   },
                   {
                     sentiment: "positive",
-                    percentage: 0.2,
                     count: 2699
                   },
                 ],
@@ -407,17 +392,14 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.4,
                     count: 9071
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.2,
                     count: 4536
                   },
                   {
                     sentiment: "positive",
-                    percentage: 0.4,
                     count: 9071
                   },
                 ],
@@ -429,17 +411,14 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.5,
                     count: 9395
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.2,
                     count: 3758
                   },
                   {
                     sentiment: "positive",
-                    percentage: 0.3,
                     count: 5673
                   },
                 ],
@@ -451,17 +430,14 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.6,
                     count: 10436
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.2,
                     count: 3479
                   },
                   {
                     sentiment: "positive",
-                    percentage: 0.2,
                     count: 3479
                   },
                 ],
@@ -473,17 +449,14 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.2,
                     count: 3428
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.6,
                     count: 10284
                   },
                   {
                     sentiment: "positive",
-                    percentage: 0.2,
                     count: 3428
                   },
                 ],
@@ -495,17 +468,14 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.8,
                     count: 13196
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.1,
                     count: 1649
                   },
                   {
                     sentiment: "positive",
-                    percentage: 0.1,
                     count: 1650
                   },
                 ],
@@ -722,12 +692,10 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.66,
                     count: 9071
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.34,
                     count: 4536
                   },
                 ],
@@ -739,12 +707,10 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.71,
                     count: 9395
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.29,
                     count: 3758
                   },
                 ],
@@ -756,12 +722,10 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.75,
                     count: 10436
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.25,
                     count: 3479
                   },
                 ],
@@ -773,12 +737,10 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.25,
                     count: 3428
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.75,
                     count: 10284
                   },
                 ],
@@ -790,12 +752,10 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.89,
                     count: 13196
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.11,
                     count: 1649
                   },
                 ],
@@ -1009,12 +969,10 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.66,
                     count: 9071
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.34,
                     count: 4536
                   },
                 ],
@@ -1026,12 +984,10 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.71,
                     count: 9395
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.29,
                     count: 3758
                   },
                 ],
@@ -1043,12 +999,10 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.75,
                     count: 10436
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.25,
                     count: 3479
                   },
                 ],
@@ -1060,12 +1014,10 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.25,
                     count: 3428
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.75,
                     count: 10284
                   },
                 ],
@@ -1077,12 +1029,10 @@ export default {
               sentiment: [
                   {
                     sentiment: "negative",
-                    percentage: 0.89,
                     count: 13196
                   },
                   {
                     sentiment: "neutral",
-                    percentage: 0.11,
                     count: 1649
                   },
                 ],
@@ -1234,7 +1184,7 @@ export default {
       // arts and entertainment, business and economy, covid19, crime, culture, education, environment, fashion, food, healthcare, law, lifestyle, others, politics, science and medicine, society, sports, technology, transportation, travel
       {
         name: "Business and Economy",
-        topThreeMentions: ["GST Hike", "Budget 2022", "Higher Costs"],
+        topThreeMentions: ["01coin", "Budget 2022", "Higher Costs"],
         mentions: 19872, 
         sentiment: [
             {
@@ -1299,9 +1249,9 @@ export default {
           ],
       },
       {
-        name: "topFiveTopicsData test1",
-        topThreeMentions: ["test1", "test2", "test3"],
-        mentions: 294940, 
+        name: "Sports",
+        topThreeMentions: ["Para Sport Academy", "Singapore Football", "Soh Rui Yong"],
+        mentions: 16985, 
         sentiment: [
             {
               sentiment: "negative",
@@ -1356,19 +1306,19 @@ export default {
     platformMetricsData: {
       Facebook: {
         mentions: 0.24,
-        trend: -0.2
+        trend: -0.18
       },
       Reddit: {
         mentions: 0.14,
-        trend: 0.2
+        trend: 0.39
       },
       Twitter: {
         mentions: 0.08,
-        trend: 0.2
+        trend: 0.05
       },
       Youtube: {
         mentions: 0.54,
-        trend: -0.2
+        trend: -0.32
       }
     },
     keywords: [
@@ -1626,10 +1576,10 @@ export default {
       console.log("=== START checkFilterSelectionToReturnFakeData ====")
       console.log("filters", filters)
 
-      const dateSelection = filters[0]
-      const platformSelection = filters[1]
-      const sentSelection =  filters[2]
-      const emotionSelection = filters[3]
+      const dateSelection = filters[1]
+      const platformSelection = filters[2]
+      const sentSelection =  filters[3]
+      const emotionSelection = filters[4]
 
       // console.log("query", query)
       // console.log("dateSelection", dateSelection)
