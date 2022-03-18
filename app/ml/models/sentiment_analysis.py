@@ -37,7 +37,7 @@ def classify_sentiment(df):
     }
     labels = []
 
-    for out in tqdm(pipe(KeyDataset(dataset, "message"))):
+    for out in tqdm(pipe(KeyDataset(dataset, "cleantext"))):
         current_label = out["label"]
         labels.append(labels_dict[current_label])
     df['sentiment_label'] = labels
