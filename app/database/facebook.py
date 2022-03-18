@@ -91,13 +91,13 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     #Apply preprocessing on text to clean data
     df_posts["cleantext"] = df_posts["message"].apply(preprocessing)
-    # df_comments["cleantext"] = df_comments["message"].apply(preprocessing)
+    df_comments["cleantext"] = df_comments["message"].apply(preprocessing)
 
     # Classify Sentiment on df_posts and df_comments
     logger.info(f"Now classifying {file_name}")
     start = time.process_time()
     df_posts = classify_sentiment(df_posts)
-    # df_comments = classify_sentiment(df_comments)
+    df_comments = classify_sentiment(df_comments)
     print("Sentiment classification took: ", time.process_time() - start)
 
     # Classify Emotions on df_posts and df_comments
@@ -107,11 +107,12 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     # Extract entities from df_posts and df_comments
     start2 = time.process_time()
     df_posts["entities"] = df_posts["cleantext"].apply(extract_entities)
-    # df_comments["entities"] = df_posts["cleantext"].apply(extract_entities)
+    df_comments["entities"] = df_posts["cleantext"].apply(extract_entities)
     print("NER took: ", time.process_time() - start2)
 
     # Classify Intention on df_posts and df_comments
     df_posts["intent"] = df_posts["cleantext"].apply(classify_intent)
+    df_comments["intent"] = df_comments["cleantext"].apply(classify_intent)
 
     # Convert dataframe to dict
     posts = df_posts.to_dict(orient="index")
