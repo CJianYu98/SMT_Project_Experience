@@ -1,5 +1,3 @@
-import string
-import regex as re
 import pandas as pd
 import spacy
 ner = spacy.load('en_core_web_sm')
@@ -12,28 +10,6 @@ from nltk.stem import WordNetLemmatizer
 
 stemmer = PorterStemmer()
 wnl = WordNetLemmatizer()
-
-# Text Preprocessing Function
-def preprocessing(text):
-    text = text.encode('ascii', errors="ignore").decode()
-    text = "".join([ch for ch in text if ch in string.printable])
-    text = text.replace("\n", "").replace("\nl", "").replace("[", "").replace("]", "").replace("\\","").replace("--", "").replace("|:-", "").replace("|", " ").replace("&x200B;", "")
-
-    remove_news_tags = re.sub('<[\w*\s*:-]*\>', '', text)
-    markdown_removed = re.sub('\*+\W+', '', remove_news_tags)
-    link_removed = re.sub('\(?https?://[A-Za-z0-9./_\-!@#$%^&*+={}[\]<>:;?]*\)?', '', markdown_removed)
-
-    return link_removed
-
-def extract_hashtags(text):
-    text = text.lower()
-    list_of_hashtags = re.findall('#\w+', text)
-    return list_of_hashtags
-
-def extract_mentions(text):
-    text = text.lower()
-    list_of_mentions = re.findall('@\w+', text)
-    return list_of_mentions
 
 # List of entities we want to extract
 ENTITIES = ["PERSON", "NORP", "FAC", "ORG", "GPE", "LOC", "PRODUCT", "EVENT", "WORK_OF_ART"]
