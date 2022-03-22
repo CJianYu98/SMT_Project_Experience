@@ -1,6 +1,14 @@
 import os
 
+from dotenv import load_dotenv
 from pymongo import MongoClient
 
-client = MongoClient("mongodb://smt483:SMT483tls@10.0.104.84:27017/smt483")
-db = client.smt483
+# Load environment variables
+load_dotenv()
+
+# Constant
+DB_URL = os.getenv("DB_URL")
+DB_TABLE_NAME = os.getenv("DB_TABLE_NAME")
+
+client = MongoClient(DB_URL)
+db = client[DB_TABLE_NAME]
