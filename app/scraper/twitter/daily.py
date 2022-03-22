@@ -1,4 +1,5 @@
 # Import packages
+import json
 import os
 import sys
 import time
@@ -19,6 +20,7 @@ load_dotenv()
 TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
 TWITTER_DAILY_DATA_PATH = os.getenv("TWITTER_DAILY_DATA_PATH")
 TWITTER_DAILY_LOG_FILE = os.getenv("TWITTER_DAILY_LOG_FILE")
+STATUS_CHECK_FILE = os.getenv("STATUS_CHECK_FILE")
 LOG_DIVIDER = "=" * 20
 
 start_datetime = datetime.now()
@@ -37,7 +39,7 @@ logger.add(
 )
 
 # Create folder to store scraped data
-os.makedirs(f"{TWITTER_DAILY_DATA_PATH}/{date}", exist_ok=True)
+# os.makedirs(f"{TWITTER_DAILY_DATA_PATH}/{date}", exist_ok=True)
 
 try:
     telegram_send.send(messages=[tele_start_msg])
@@ -73,7 +75,7 @@ try:
 
         # Wait for 5 minutes to prevent request limit
         time.sleep(300)
-        
+
     tele_end_msg += f"Twitter daily scraping for {date} is fully completed."
     logger.info(f"Daily craping for {date} is fully completed.")
 
@@ -81,4 +83,9 @@ except Exception as e:
     tele_end_msg += f"Error occured.\n{e}\n"
     logger.exception("Error occured.")
 finally:
+    file = open(STATUS_CHECK_FILE)
+    jobj = json.load(file)
+    jobj["twitter"]["latest_collection_date"] = date.strftime("%Y-%m-%d")
+    with open(STATUS_CHECK_FILE, "w") as f:
+        json.dump(jobj, f, indent=4)
     telegram_send.send(messages=[tele_end_msg])

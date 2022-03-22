@@ -28,6 +28,7 @@ channels = json.load(f)
 # Constants
 YOUTUBE_DAILY_DATA_PATH = os.getenv("YOUTUBE_DAILY_DATA_PATH")
 YOUTUBE_DAILY_LOG_FILE = os.getenv("YOUTUBE_DAILY_LOG_FILE")
+STATUS_CHECK_FILE = os.getenv('STATUS_CHECK_FILE')
 
 CHNL_TITLE = "Title"
 CHNL_URL = "URL"
@@ -471,6 +472,12 @@ for c in channels:
 save_json(f"{YOUTUBE_DAILY_DATA_PATH}/{today.date()}.json", vdict)
 
 end = time.time()
+
+file = open(STATUS_CHECK_FILE)
+jobj = json.load(file)
+jobj['reddit']['latest_collection_date'] = date.strftime("%Y-%m-%d")
+with open(STATUS_CHECK_FILE, 'w') as f:
+    json.dump(jobj, f, indent=4)
 
 telegram_send.send(
     messages=[f"YOUTUBE DAILY --> Daily crawling completed.\nTOTAL TIME TAKEN: {end} - {start}"]

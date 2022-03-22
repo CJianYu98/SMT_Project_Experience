@@ -22,6 +22,7 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
 REDDIT_DAILY_DATA_PATH = os.getenv("REDDIT_DAILY_DATA_PATH")
 REDDIT_DAILY_LOG_FILE = os.getenv("REDDIT_DAILY_LOG_FILE")
+STATUS_CHECK_FILE = os.getenv('STATUS_CHECK_FILE')
 LOG_DIVIDER = "=" * 20
 
 cutoff_days = int(os.getenv("CUTOFF_DAYS"))
@@ -97,4 +98,9 @@ except Exception as e:
     tele_end_msg += f"Error occured.\n{e}\n"
     logger.exception("Error occured.")
 finally:
+    file = open(STATUS_CHECK_FILE)
+    jobj = json.load(file)
+    jobj['reddit']['latest_collection_date'] = date.strftime("%Y-%m-%d")
+    with open(STATUS_CHECK_FILE, 'w') as f:
+        json.dump(jobj, f, indent=4)
     telegram_send.send(messages=[tele_end_msg])
