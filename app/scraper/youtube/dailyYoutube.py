@@ -475,7 +475,7 @@ end = time.time()
 
 file = open(STATUS_CHECK_FILE)
 jobj = json.load(file)
-jobj['reddit']['latest_collection_date'] = date.strftime("%Y-%m-%d")
+jobj['youtube']['latest_collection_date'] = date.strftime("%Y-%m-%d")
 with open(STATUS_CHECK_FILE, 'w') as f:
     json.dump(jobj, f, indent=4)
 
