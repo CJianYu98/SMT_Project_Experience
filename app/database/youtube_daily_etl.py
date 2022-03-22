@@ -13,6 +13,7 @@ from loguru import logger
 
 from ..constants.social_media import YOUTUBE_COMMENT_FIELDS, YOUTUBE_VIDEO_FIELDS
 from .connect import db
+from .status_check import check_status
 
 # Load environment variables
 load_dotenv()
@@ -73,6 +74,9 @@ latest_collection_date = datetime.strptime(
 curr_date = datetime.now(SG_TIMEZONE).date()
 
 if latest_collection_date.date() == curr_date:
+    logger.info(f"Starting daily ETL Youtube {file}")
+    tele.send(messages=[f"Starting daily ETL Youtube {file} in GPU server"])
+
     # Store all the comments
     comments = []
 
@@ -115,3 +119,4 @@ if latest_collection_date.date() == curr_date:
                             )
 
     youtube_comments.insert_many(comments)
+    tele.send(messages=[f"Daily ETL for Youtube completed"])

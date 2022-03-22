@@ -15,6 +15,7 @@ from ..constants.social_media import (
     TWITTER_DAILY_COMMENT_FIELDS,
 )
 from .connect import db
+from .status_check import check_status
 
 # Load environment variables
 load_dotenv()
