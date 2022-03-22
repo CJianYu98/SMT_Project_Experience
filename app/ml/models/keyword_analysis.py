@@ -11,6 +11,8 @@ from nltk.stem import WordNetLemmatizer
 stemmer = PorterStemmer()
 wnl = WordNetLemmatizer()
 
+from .preprocessing import *
+
 # List of entities we want to extract
 ENTITIES = ["PERSON", "NORP", "FAC", "ORG", "GPE", "LOC", "PRODUCT", "EVENT", "WORK_OF_ART"]
 
@@ -28,8 +30,8 @@ def extract_entities(text):
     entity_list = []
     entities = ENTITIES
 
-    text = ner(text)
-    for word in text.ents:
+    ner_text = ner(text)
+    for word in ner_text.ents:
         word, label = word.text, word.label_
 
         if label in entities:
