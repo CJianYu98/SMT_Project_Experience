@@ -43,10 +43,10 @@ status_file = open(STATUS_CHECK_FILE)
 status_jobj = json.load(status_file)
 latest_collection_date = datetime.strptime(
     status_jobj["reddit"]["latest_collection_date"], "%Y-%m-%d"
-).date()
+)
 curr_date = datetime.now(SG_TIMEZONE).date()
 
-if latest_collection_date == curr_date:
+if latest_collection_date.date() == curr_date:
     start = time.time()
     logger.info(f"Starting daily ETL Reddit {file}")
     tele.send(messages=[f"Starting daily ETL Reddit {file} in GPU server"])

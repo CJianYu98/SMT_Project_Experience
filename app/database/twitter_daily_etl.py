@@ -24,6 +24,7 @@ TWITTER_DAILY_DATA_PATH = os.getenv("TWITTER_DAILY_DATA_PATH")
 TWITTER_DAILY_ETL_LOG_FILE = os.getenv("TWITTER_DAILY_ETL_LOG_FILE")
 DB_TWIITER_TWEETS_COLLECTION = os.getenv("DB_TWIITER_TWEETS_COLLECTION")
 DB_TWITTER_COMMENTS_COLLECTION = os.getenv("DB_TWITTER_COMMENTS_COLLECTION")
+SG_TIMEZONE = pytz.timezone('Asia/Singapore')
 
 # Add logger configurations
 logger.add(
@@ -36,21 +37,29 @@ logger.add(
 twitter_tweets = db[DB_TWIITER_TWEETS_COLLECTION]
 twitter_comments = db[DB_TWITTER_COMMENTS_COLLECTION]
 
-daily_folders = sorted(os.listdir(TWITTER_DAILY_DATA_PATH))
-for folder in daily_folders:
-    logger.info(f">>> Starting ETL for {folder}")
-    
-    end_date = datetime.strptime(folder, "%Y-%m-%d")
+# Check status for reddit daily collection
+status_file = open(STATUS_CHECK_FILE)
+status_jobj = json.load(status_file)
+latest_collection_date = datetime.strptime(
+    status_jobj["twitter"]["latest_collection_date"], "%Y-%m-%d"
+)
+curr_date = datetime.now(SG_TIMEZONE).date()
+
+if latest_collection_date.date() == curr_date:
+    logger.info(f"Starting daily ETL Twitter {file} in GPU server")
+    tele.send(messages=[f"Starting daily ETL Twitter {file} in GPU server"])
+
+    end_date = datetime.strptime(latest_collection_date, "%Y-%m-%d")
     start_date = end_date - timedelta(days=7)
     db_query = {"date": {"$gte": start_date, "$lte": end_date}}
     twitter_tweets.delete_many(db_query)
     twitter_comments.delete_many(db_query)
 
-    files = sorted(os.listdir(f"{TWITTER_DAILY_DATA_PATH}/{folder}"))
+    files = sorted(os.listdir(f"{TWITTER_DAILY_DATA_PATH}/{latest_collection_date}"))
 
     for file in files:
         logger.info(f"Processing {file}")
-        df = pd.read_json(f"{TWITTER_DAILY_DATA_PATH}/{folder}/{file}", orient='records', lines=True)
+        df = pd.read_json(f"{TWITTER_DAILY_DATA_PATH}/{latest_collection_date}/{file}", orient='records', lines=True)
 
         df_en = df[df['language'] == 'en']
         df_filtered = df_en[TWITTER_DAILY_TWEET_FIELDS]
@@ -66,3 +75,5 @@ for folder in daily_folders:
         twitter_comments.insert_many([comments[i] for i in range(len(comments))])
 
         logger.info(f"{file} processed")
+
+    tele.send(messages=[f"Daily ETL for Twitter completed"])
