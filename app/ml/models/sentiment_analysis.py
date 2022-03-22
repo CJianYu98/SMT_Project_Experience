@@ -16,7 +16,7 @@ def classify_emotions(text: str) -> str:
     Returns:
         str: Label of the given input text.
     """
-    classifier = pipeline("zero-shot-classification")
+    classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
     results = classifier(text, candidate_labels=["anger", "joy", "fear", "sadness"])
 
     # Classify as neutral if probability score is too low
