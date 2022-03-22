@@ -4,6 +4,8 @@ import time
 from datetime import datetime
 
 import pandas as pd
+
+pd.options.mode.chained_assignment = None
 from dotenv import load_dotenv
 from loguru import logger
 
