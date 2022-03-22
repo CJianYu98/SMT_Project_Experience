@@ -8,6 +8,9 @@ import pandas as pd
 pd.options.mode.chained_assignment = None
 from dotenv import load_dotenv
 from loguru import logger
+from tqdm.auto import tqdm
+
+tqdm.pandas()
 
 from ..constants.social_media import FACEBOOK_GROUPS
 from ..ml.models.intent_classification import *
@@ -99,27 +102,27 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     # Extract entities from df_posts and df_comments
     start = time.process_time()
-    df_posts["entities"] = df_posts["cleantext"].apply(extract_entities)
-    df_comments["entities"] = df_posts["cleantext"].apply(extract_entities)
-    print("NER took: ", time.process_time() - start)
+    df_posts["entities"] = df_posts["cleantext"].progress_apply(extract_entities)
+    df_comments["entities"] = df_posts["cleantext"].progress_apply(extract_entities)
+    logger.info(f"NER took: {time.process_time() - start}")
+
+    # Classify Emotions on df_posts and df_comments
+    start3 = time.process_time()
+    df_posts["emotions_label"] = df_posts["message"].progress_apply(lambda x: classify_emotions(x))
+    df_comments["emotions_label"] = df_comments["message"].progress_apply(lambda x: classify_emotions(x))
+    logger.info(f"Emotions classification took: {time.process_time() - start}")
+
+    # Classify Intention on df_posts and df_comments
+    start4 = time.process_time()
+    df_posts["intent"] = df_posts["cleantext"].progress_apply(classify_intent)
+    df_comments["intent"] = df_comments["cleantext"].progress_apply(classify_intent)
+    logger.info(f"Intent classification took: {time.process_time() - start}")
 
     # Classify Sentiment on df_posts and df_comments
     start2 = time.process_time()
     df_posts = classify_sentiment(df_posts)
     df_comments = classify_sentiment(df_comments)
-    print("Sentiment classification took: ", time.process_time() - start2)
-
-    # Classify Emotions on df_posts and df_comments
-    start3 = time.process_time()
-    df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
-    df_comments["emotions_label"] = df_comments["message"].apply(lambda x: classify_emotions(x))
-    print("Sentiment classification took: ", time.process_time() - start3)
-
-    # Classify Intention on df_posts and df_comments
-    start4 = time.process_time()
-    df_posts["intent"] = df_posts["cleantext"].apply(classify_intent)
-    df_comments["intent"] = df_comments["cleantext"].apply(classify_intent)
-    print("Sentiment classification took: ", time.process_time() - start4)
+    logger.info(f"Sentiment classification took: {time.process_time() - start}")
 
     # Convert dataframe to dict
     posts = df_posts.to_dict(orient="index")
