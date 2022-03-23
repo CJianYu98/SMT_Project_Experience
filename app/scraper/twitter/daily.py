@@ -39,7 +39,7 @@ logger.add(
 )
 
 # Create folder to store scraped data
-# os.makedirs(f"{TWITTER_DAILY_DATA_PATH}/{date}", exist_ok=True)
+os.makedirs(f"{TWITTER_DAILY_DATA_PATH}/{date}", exist_ok=True)
 
 try:
     telegram_send.send(messages=[tele_start_msg])
