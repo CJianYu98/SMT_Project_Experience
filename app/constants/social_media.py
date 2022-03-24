@@ -42,10 +42,30 @@ REDDIT_COMMENT_FIELDS = [
     "body",
     "created_utc",
     "id",
-    "link_id" "parent_id",
+    "link_id", 
+    "parent_id",
     "permalink",
     "score",
     "total_awards_received",
+]
+
+REDDIT_DAILY_SUBMISSION_FIELDS = [
+    "author_fullname",
+    "title",
+    "upvote_ratio",
+    "total_awards_received",
+    "selftext",
+    "media_embed",
+    "link_flair_text",
+    "score",
+    "thumbnail",
+    "over_18",
+    "all_awardings",
+    "author",
+    "id",
+    "num_comments",
+    "url",
+    "created_utc",
 ]
 
 REDDIT_DAILY_COMMENT_FIELDS = [
