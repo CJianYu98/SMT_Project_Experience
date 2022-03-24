@@ -45,16 +45,18 @@ status_jobj = json.load(status_file)
 latest_collection_date = datetime.strptime(
     status_jobj["reddit"]["latest_collection_date"], "%Y-%m-%d"
 )
-curr_date = datetime.now(SG_TIMEZONE).date()
+latest_etl_date = datetime.strptime(
+    status_jobj["reddit"]["latest_etl_date"], "%Y-%m-%d"
+)
+curr_date = datetime.now(SG_TIMEZONE).date() - timedelta(days=1)
 
-if latest_collection_date.date() == curr_date:
+if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < latest_collection_date.date()):
     start = time.time()
-    logger.info(f"Starting daily ETL Reddit {file}")
-    tele.send(messages=[f"Starting daily ETL Reddit {file} in GPU server"])
+    logger.info(f"Starting daily ETL Reddit {latest_collection_date.date()}.json")
+    tele.send(messages=[f"Starting daily ETL Reddit {latest_collection_date.date()}.json in GPU server"])
 
     # Delete all submissions within date range
-    date = file[:-5]
-    end_date = datetime.strptime(date, "%Y-%m-%d")
+    end_date = latest_collection_date
     start_date = end_date - timedelta(days=14)
     db_query = {"created_datetime": {"$gte": start_date, "$lte": end_date}}
     subs = list(reddit_submissions.find(db_query))
@@ -62,7 +64,7 @@ if latest_collection_date.date() == curr_date:
     reddit_submissions.delete_many(db_query)
 
     # Read in json date file for each date
-    df = pd.read_json(f"{REDDIT_DAILY_DATA_PATH}/{latest_collection_date}.json", orient="index")
+    df = pd.read_json(f"{REDDIT_DAILY_DATA_PATH}/{latest_collection_date.date()}.json", orient="index")
 
     # Process data for Reddit submissions
     df_sub = df[REDDIT_DAILY_SUBMISSION_FIELDS]
@@ -104,6 +106,13 @@ if latest_collection_date.date() == curr_date:
 
     logger.info(f"Num submissions: {len(sub_data)}, Num comments: {len(comments)}")
 
-    logger.info(f"ETL for Reddit {file} completed")
-    tele.send(messages=[f"ETL for Reddit {file} completed"])
+    # Update status file
+    file = open(STATUS_CHECK_FILE)
+    jobj = json.load(file)
+    jobj['reddit']['latest_etl_date'] = datetime.now().date().strftime("%Y-%m-%d")
+    with open(STATUS_CHECK_FILE, 'w') as f:
+        json.dump(jobj, f, indent=4)
+
+    logger.info(f"ETL for Reddit {latest_collection_date.date()}.json in GPU completed")
+    tele.send(messages=[f"ETL for Reddit {latest_collection_date.date()}.json in GPU completed"])
 
