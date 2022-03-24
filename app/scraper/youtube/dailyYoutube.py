@@ -59,6 +59,7 @@ videoDetails = pd.DataFrame(
 
 # Date Variables
 today = datetime.now()
+date = today.date()
 STOPDATE = today - (timedelta(days=int(os.getenv("CUTOFF_DAYS"))))  # stop at 2 weeks ago
 TIMEZONE = pytz.timezone(os.getenv("TIMEZONE"))
 sg_datetime = datetime.now(TIMEZONE)
