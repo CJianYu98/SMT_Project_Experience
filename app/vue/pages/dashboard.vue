@@ -2068,9 +2068,9 @@ export default {
       },
     ],
     keywordsWordCloudLegend: {
-      positive: "#78D549",
+      negative: "#EB8159",
       neutral: "#EFB727",
-      negative: "#EB8159"
+      positive: "#78D549",
     },
     trendingTopicsEmotionsLegend: {
       anger: "#ff0000",

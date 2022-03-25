@@ -10,14 +10,14 @@
     </v-card-title>
     <v-row class="mx-1">
       <!-- <v-spacer></v-spacer> -->
-      <v-col cols="5">
+      <v-col cols="6" class="pt-0">
         <GraphLegend 
           :graph-legend="keywordsWordCloudLegend"
         />
       </v-col>
       <!-- <v-spacer></v-spacer> -->
 
-      <v-col cols="7">
+      <v-col cols="6" class="pt-0">
         <GraphLegend
           :graph-legend="trendingTopicsEmotionsLegend"
         />
