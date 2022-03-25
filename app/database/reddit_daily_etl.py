@@ -48,7 +48,7 @@ latest_collection_date = datetime.strptime(
 latest_etl_date = datetime.strptime(
     status_jobj["reddit"]["latest_etl_date"], "%Y-%m-%d"
 )
-curr_date = datetime.now(SG_TIMEZONE).date() - timedelta(days=1)
+curr_date = datetime.now(SG_TIMEZONE).date()
 
 if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < latest_collection_date.date()):
     start = time.time()
@@ -107,12 +107,11 @@ if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < la
     logger.info(f"Num submissions: {len(sub_data)}, Num comments: {len(comments)}")
 
     # Update status file
-    file = open(STATUS_CHECK_FILE)
-    jobj = json.load(file)
-    jobj['reddit']['latest_etl_date'] = datetime.now().date().strftime("%Y-%m-%d")
+    status_jobj['reddit']['latest_etl_date'] = datetime.now().date().strftime("%Y-%m-%d")
     with open(STATUS_CHECK_FILE, 'w') as f:
-        json.dump(jobj, f, indent=4)
+        json.dump(status_jobj, f, indent=4)
 
-    logger.info(f"ETL for Reddit {latest_collection_date.date()}.json in GPU completed")
-    tele.send(messages=[f"ETL for Reddit {latest_collection_date.date()}.json in GPU completed"])
+    duration = time.time() - start
+    logger.info(f"ETL for Reddit {latest_collection_date.date()}.json in GPU completed, time taken: {duration}")
+    tele.send(messages=[f"ETL for Reddit {latest_collection_date.date()}.json in GPU completed, time taken: {duration}"])
 
