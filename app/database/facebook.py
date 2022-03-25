@@ -13,11 +13,12 @@ from tqdm.auto import tqdm
 tqdm.pandas()
 
 from ..constants.social_media import FACEBOOK_GROUPS
+from ..ml.models.emotions import *
 from ..ml.models.intent_classification import *
 from ..ml.models.keyword_analysis import *
 from ..ml.models.preprocessing import *
-from ..ml.models.sentiment_analysis import *
-from .connect import db
+from ..ml.models.sentiment import *
+from .connect import client
 
 # Load environment variables
 load_dotenv()
@@ -25,12 +26,10 @@ load_dotenv()
 # Constants
 FACEBOOK_HISTORICAL_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_DATA_PATH")
 FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH")
-DB_FACEBOOK_POSTS_COLLECTION = os.getenv("DB_FACEBOOK_POSTS_COLLECTION")
-DB_FACEBOOK_COMMENTS_COLLECTION = os.getenv("DB_FACEBOOK_COMMENTS_COLLECTION")
 
 # Select MongoDB collection to work with
-fb_posts = db[DB_FACEBOOK_POSTS_COLLECTION]
-fb_comments = db[DB_FACEBOOK_COMMENTS_COLLECTION]
+fb_posts = client.smt483.fb_posts_test
+fb_comments = client.smt483.fb_comments_test
 
 for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     file_name = file[:-4]
@@ -81,17 +80,13 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     )
 
     # Label encoding
-    df_new["is_post"].replace(
-        {"Facebook:/<page-id>/posts": 1, "Facebook:/<post-id>/comments": 0}, inplace=True
-    )
+    df_new["is_post"].replace({"Facebook:/<page-id>/posts": 1, "Facebook:/<post-id>/comments": 0}, inplace=True)
 
     # Add fb_group column
     df_new["fb_group"] = FACEBOOK_GROUPS[file_name]
 
     # Convert data type
-    df_new["created_time"] = df_new["created_time"].apply(
-        lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S%z")
-    )
+    df_new["created_time"] = df_new["created_time"].apply(lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S%z"))
     df_new["parent_id"] = df_new["parent_id"].apply(lambda x: int(x))
 
     # Filter df to df_posts and df_comments
@@ -104,41 +99,41 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     df_posts["cleantext"] = df_posts["message"].apply(preprocessing)
     df_comments["cleantext"] = df_comments["message"].apply(preprocessing)
 
-    logger.info(f"Now classifying {file_name}")
+    logger.info(f"Now classifying {file_name}\n")
 
-    # Extract entities from df_posts and df_comments
-    start = time.process_time()
-    df_posts["entities"] = df_posts["cleantext"].progress_apply(extract_entities)
-    df_comments["entities"] = df_posts["cleantext"].progress_apply(extract_entities)
-    logger.info(f"NER took: {time.process_time() - start}")
+    # # # Extract entities from df_posts and df_comments
+    # start = time.process_time()
+    # df_posts["entities"] = df_posts["cleantext"].progress_apply(extract_entities)
+    # # df_comments["entities"] = df_comments["cleantext"].progress_apply(extract_entities)
+    # logger.info(f"NER took: {time.process_time() - start}\n")
 
-    # Classify Emotions on df_posts and df_comments
+    # # Classify Emotions on df_posts and df_comments
+    print("now classifying emotions..")
     start3 = time.process_time()
     df_posts["emotions_label"] = df_posts["message"].progress_apply(lambda x: classify_emotions(x))
-    df_comments["emotions_label"] = df_comments["message"].progress_apply(
-        lambda x: classify_emotions(x)
-    )
-    logger.info(f"Emotions classification took: {time.process_time() - start}")
+    # df_comments["emotions_label"] = df_comments["message"].progress_apply(lambda x: classify_emotions(x))
+    logger.info(f"Emotions classification took: {time.process_time() - start}\n")
 
-    # Classify Intention on df_posts and df_comments
-    start4 = time.process_time()
-    df_posts["intent"] = df_posts["cleantext"].progress_apply(classify_intent)
-    df_comments["intent"] = df_comments["cleantext"].progress_apply(classify_intent)
-    logger.info(f"Intent classification took: {time.process_time() - start}")
+    # # Classify Intention on df_posts and df_comments
+    # start4 = time.process_time()
+    # df_posts["intent"] = df_posts["cleantext"].progress_apply(classify_intent)
+    # # df_comments["intent"] = df_comments["cleantext"].progress_apply(classify_intent)
+    # logger.info(f"Intent classification took: {time.process_time() - start}\n")
 
-    # Classify Sentiment on df_posts and df_comments
-    start2 = time.process_time()
-    df_posts = classify_sentiment(df_posts)
-    df_comments = classify_sentiment(df_comments)
-    logger.info(f"Sentiment classification took: {time.process_time() - start}")
+    # # Classify Sentiment on df_posts and df_comments
+    # start2 = time.process_time()
+    # df_posts = classify_sentiment(df_posts)
+    # # df_comments = classify_sentiment(df_comments)
+    # logger.info(f"Sentiment classification took: {time.process_time() - start}\n")
 
     # Convert dataframe to dict
     posts = df_posts.to_dict(orient="index")
-    comments = df_comments.to_dict(orient="index")
+    # comments = df_comments.to_dict(orient="index")
 
     # Insert data into MongoDB
     num_posts = len(posts)
-    num_comments = len(comments)
+    # num_comments = len(comments)
     fb_posts.insert_many([posts[i] for i in range(num_posts)])
-    fb_comments.insert_many([comments[i] for i in range(num_comments)])
-    logger.info(f">>>> {file_name} done.")
+    # fb_comments.insert_many([comments[i] for i in range(num_comments)])
+    logger.info(f">>>> {file_name} done.\n")
+    break

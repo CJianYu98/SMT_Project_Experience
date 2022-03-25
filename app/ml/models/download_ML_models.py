@@ -2,14 +2,23 @@ import os
 
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
+# Path to ml model data folder
+path = "./app/ml/models/model_data"
+
 # Create folder to store ML models offline
-path = "app/ml/models/test"
 if not os.path.exists(path):
     os.mkdir(path)
 
+# Sentiment
+sentiment = "cardiffnlp/twitter-roberta-base-sentiment"
+tokenizer_sentiment = AutoTokenizer.from_pretrained(f"{sentiment}")
+model_sentiment = AutoModelForSequenceClassification.from_pretrained(f"{sentiment}")
+tokenizer_sentiment.save_pretrained(f"{path}/{sentiment}")
+model_sentiment.save_pretrained(f"{path}/{sentiment}")
 
-# Sentiment analysis
-tokenizer = AutoTokenizer.from_pretrained("facebook/bart-large-mnli")
-model = AutoModelForSequenceClassification.from_pretrained("facebook/bart-large-mnli")
-tokenizer.save_pretrained("../models/model_data/bart-large-mnli")
-model.save_pretrained("../models/model_data/bart-large-mnli")
+# Emotion
+emotion = "facebook/bart-large-mnli"
+tokenizer_emotion = AutoTokenizer.from_pretrained(f"{emotion}")
+model_emotion = AutoModelForSequenceClassification.from_pretrained(f"{emotion}")
+tokenizer_emotion.save_pretrained(f"{path}/{emotion}")
+model_emotion.save_pretrained(f"{path}/{emotion}")
