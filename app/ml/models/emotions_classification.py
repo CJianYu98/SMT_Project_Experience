@@ -14,6 +14,8 @@ EMOTIONS_MODEL_PATH = os.getenv("EMOTIONS_MODEL_PATH")
 tokenizer = AutoTokenizer.from_pretrained(f"{MODEL_DATA_FOLDER_PATH}/{EMOTIONS_MODEL_PATH}")
 model = AutoModelForSequenceClassification.from_pretrained(f"{MODEL_DATA_FOLDER_PATH}/{EMOTIONS_MODEL_PATH}")
 
+# Load zeroshot classification pipeline
+classifier = pipeline("zero-shot-classification", tokenizer=tokenizer, model=model)
 
 def classify_emotions(text: str) -> str:
     """
@@ -25,8 +27,6 @@ def classify_emotions(text: str) -> str:
     Returns:
         str: Label of the given input text.
     """
-
-    classifier = pipeline("zero-shot-classification", tokenizer=tokenizer, model=model)
 
     results = classifier(text, candidate_labels=["anger", "joy", "fear", "sadness"])
 
