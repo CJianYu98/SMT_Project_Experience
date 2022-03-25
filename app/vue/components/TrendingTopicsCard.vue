@@ -13,6 +13,7 @@
       <v-col cols="6" class="pt-0">
         <GraphLegend 
           :graph-legend="keywordsWordCloudLegend"
+          type="sentiment"
         />
       </v-col>
       <!-- <v-spacer></v-spacer> -->
@@ -20,6 +21,7 @@
       <v-col cols="6" class="pt-0">
         <GraphLegend
           :graph-legend="trendingTopicsEmotionsLegend"
+          type="emotion"
         />
       </v-col>
       <!-- <v-spacer></v-spacer> -->

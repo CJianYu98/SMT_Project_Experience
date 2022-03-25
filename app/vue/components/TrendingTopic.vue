@@ -1,5 +1,6 @@
 <template>
-  <v-list-item class="primary--text mb-2 mx-2">
+  <v-container fluid>
+  <v-list-item class="primary--text mx-2">
     <v-list-item-content class="pt-1 pb-0">
       <v-row>
         <v-col class="pb-0 pr-0">
@@ -23,7 +24,7 @@
       </v-row>
 
       <v-list-item-subtitle
-        class="pl-3 primary--text" 
+        class="pl-3 mt-0" 
       >
         <span
           class="trending-category mr-1 text-wrap text-decoration-underline font-weight-medium trendingTopicsLink--text"
@@ -56,6 +57,10 @@
       </v-list-item-subtitle>
     </v-list-item-content>
   </v-list-item>
+  <template v-if="index < 4">
+    <v-divider class="mt-4 mb-n3"></v-divider>
+  </template>
+  </v-container>
 </template>
 
 <script>

@@ -34,7 +34,7 @@ export default {
       required: true,
     },
     relatedComments: {
-      type: Object,
+      type: Array,
       required: true,
     },
   },
