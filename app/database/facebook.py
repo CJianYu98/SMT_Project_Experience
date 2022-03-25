@@ -17,7 +17,7 @@ from ..ml.models.intent_classification import *
 from ..ml.models.keyword_analysis import *
 from ..ml.models.preprocessing import *
 from ..ml.models.sentiment_analysis import *
-from .connect import client
+from .connect import db
 
 # Load environment variables
 load_dotenv()
@@ -25,10 +25,12 @@ load_dotenv()
 # Constants
 FACEBOOK_HISTORICAL_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_DATA_PATH")
 FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH")
+DB_FACEBOOK_POSTS_COLLECTION = os.getenv("DB_FACEBOOK_POSTS_COLLECTION")
+DB_FACEBOOK_COMMENTS_COLLECTION = os.getenv("DB_FACEBOOK_COMMENTS_COLLECTION")
 
 # Select MongoDB collection to work with
-fb_posts = client.smt483.fb_posts_test
-fb_comments = client.smt483.fb_comments_test
+fb_posts = db[DB_FACEBOOK_POSTS_COLLECTION]
+fb_comments = db[DB_FACEBOOK_COMMENTS_COLLECTION]
 
 for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     file_name = file[:-4]
@@ -79,13 +81,17 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     )
 
     # Label encoding
-    df_new["is_post"].replace({"Facebook:/<page-id>/posts": 1, "Facebook:/<post-id>/comments": 0}, inplace=True)
+    df_new["is_post"].replace(
+        {"Facebook:/<page-id>/posts": 1, "Facebook:/<post-id>/comments": 0}, inplace=True
+    )
 
     # Add fb_group column
     df_new["fb_group"] = FACEBOOK_GROUPS[file_name]
 
     # Convert data type
-    df_new["created_time"] = df_new["created_time"].apply(lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S%z"))
+    df_new["created_time"] = df_new["created_time"].apply(
+        lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S%z")
+    )
     df_new["parent_id"] = df_new["parent_id"].apply(lambda x: int(x))
 
     # Filter df to df_posts and df_comments
@@ -109,7 +115,9 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     # Classify Emotions on df_posts and df_comments
     start3 = time.process_time()
     df_posts["emotions_label"] = df_posts["message"].progress_apply(lambda x: classify_emotions(x))
-    df_comments["emotions_label"] = df_comments["message"].progress_apply(lambda x: classify_emotions(x))
+    df_comments["emotions_label"] = df_comments["message"].progress_apply(
+        lambda x: classify_emotions(x)
+    )
     logger.info(f"Emotions classification took: {time.process_time() - start}")
 
     # Classify Intention on df_posts and df_comments
