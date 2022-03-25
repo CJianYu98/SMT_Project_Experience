@@ -53,7 +53,7 @@ export default {
     }
   },
   data: () => ({
-    trendingTopicsHelpText: "Study the breakdown of aggregated statistics across platforms. Posts refer to videos (YouTube), posts (Facebook, Reddit and Instagram), and tweets (Twitter).",
+    trendingTopicsHelpText: "Study aggregated statistics across platforms, including each platform's change in activity and dominant emotion. Mentions refer to both posts and comments. The trend is calculated by comparing the selected time interval against the previous.",
   }),
 }
 </script>

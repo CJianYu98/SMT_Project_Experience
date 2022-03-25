@@ -1,6 +1,6 @@
 <template>
   <div class="text-left ml-2 mb-1">
-    <v-tooltip top max-width="180px">
+    <v-tooltip top max-width="350px">
       <template v-slot:activator="{ on, attrs }">
         <v-icon
           class="accent--text"

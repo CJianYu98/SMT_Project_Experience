@@ -34,7 +34,7 @@ export default {
     }
   },
   data: () => ({
-    wordcloudHelpText: "Observe the most popular keywords associated with the query. In the case where there is no query, the default keywords shown will be related to the top trending topic.",
+    wordcloudHelpText: "Observe the most popular keywords associated with the query. In the case where there is no query, the keywords shown are aggregated across all data according to the filters.",
     })
 }
 </script>

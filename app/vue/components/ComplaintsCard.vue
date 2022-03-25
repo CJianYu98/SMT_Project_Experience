@@ -63,7 +63,7 @@ export default {
   },
 
   data: () => ({
-    complaintsWordCloudHelpText: "Observe the most common complaint topics mentioned across the selected time period and platform(s).",
+    complaintsWordCloudHelpText: "Observe the most common keywords related to complaints mentioned across the selected time period and platform(s).",
     complaintsCommentsHelpText: "Study the most common complaints, or, if a complaint keyword has been selected, the comments related to that complaint. Words highlighted in red are indicative of the negative sentiment.",
     sortView: [{view: 'Likes'}, {view: 'Date'}],
       label: 'Sort By',

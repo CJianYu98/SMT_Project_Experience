@@ -63,7 +63,7 @@ export default {
     },
   },
   data: () => ({
-    trendingTopicsHelpText: "Study the most popular topics talked about within the selected time period across the platform(s) selected.",
+    trendingTopicsHelpText: "Study the 5 most popular topics out of 20 topics, associated sentiment and emotion analysis, number of mentions (posts and comments) related to the topic, and top 3 keywords associated with the topic.",
     selectedTrendingTopic: "",
   }),
   methods: {
