@@ -45,15 +45,17 @@ status_jobj = json.load(status_file)
 latest_collection_date = datetime.strptime(
     status_jobj["reddit"]["latest_collection_date"], "%Y-%m-%d"
 )
-latest_etl_date = datetime.strptime(
-    status_jobj["reddit"]["latest_etl_date"], "%Y-%m-%d"
-)
+latest_etl_date = datetime.strptime(status_jobj["reddit"]["latest_etl_date"], "%Y-%m-%d")
 curr_date = datetime.now(SG_TIMEZONE).date()
 
-if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < latest_collection_date.date()):
+if (latest_collection_date.date() == curr_date) and (
+    latest_etl_date.date() < latest_collection_date.date()
+):
     start = time.time()
     logger.info(f"Starting daily ETL Reddit {latest_collection_date.date()}.json")
-    tele.send(messages=[f"Starting daily ETL Reddit {latest_collection_date.date()}.json in GPU server"])
+    tele.send(
+        messages=[f"Starting daily ETL Reddit {latest_collection_date.date()}.json in GPU server"]
+    )
 
     # Delete all submissions within date range
     end_date = latest_collection_date
@@ -64,7 +66,9 @@ if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < la
     reddit_submissions.delete_many(db_query)
 
     # Read in json date file for each date
-    df = pd.read_json(f"{REDDIT_DAILY_DATA_PATH}/{latest_collection_date.date()}.json", orient="index")
+    df = pd.read_json(
+        f"{REDDIT_DAILY_DATA_PATH}/{latest_collection_date.date()}.json", orient="index"
+    )
 
     # Process data for Reddit submissions
     df_sub = df[REDDIT_DAILY_SUBMISSION_FIELDS]
@@ -107,11 +111,16 @@ if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < la
     logger.info(f"Num submissions: {len(sub_data)}, Num comments: {len(comments)}")
 
     # Update status file
-    status_jobj['reddit']['latest_etl_date'] = datetime.now().date().strftime("%Y-%m-%d")
-    with open(STATUS_CHECK_FILE, 'w') as f:
+    status_jobj["reddit"]["latest_etl_date"] = datetime.now().date().strftime("%Y-%m-%d")
+    with open(STATUS_CHECK_FILE, "w") as f:
         json.dump(status_jobj, f, indent=4)
 
     duration = time.time() - start
-    logger.info(f"ETL for Reddit {latest_collection_date.date()}.json in GPU completed, time taken: {duration}")
-    tele.send(messages=[f"ETL for Reddit {latest_collection_date.date()}.json in GPU completed, time taken: {duration}"])
-
+    logger.info(
+        f"ETL for Reddit {latest_collection_date.date()}.json in GPU completed, time taken: {duration}"
+    )
+    tele.send(
+        messages=[
+            f"ETL for Reddit {latest_collection_date.date()}.json in GPU completed, time taken: {duration}"
+        ]
+    )
