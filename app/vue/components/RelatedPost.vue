@@ -22,7 +22,7 @@
         &nbsp;
       </v-row>
       <p class="text-wrap mt-1">
-      {{comment}}
+        {{comment}}
       </p>
       <v-chip-group column>
         <v-chip 

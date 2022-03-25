@@ -8,16 +8,16 @@
       Noteworthy Comment
       <HelpTextTooltip :help-text="noteworthyCommentHelpText"/>
     </v-card-title>
-    <NoteworthyComment />
+    <RelatedComment />
   </v-card>
 </template>
 
 
 <script>
-import NoteworthyComment from './NoteworthyComment.vue'
+import RelatedComment from './RelatedPost.vue'
 export default {
   components: { 
-    NoteworthyComment 
+    RelatedComment 
   },
   
   data: () => ({
