@@ -314,19 +314,23 @@ export default {
           platformMetricsData: {
             Facebook: {
               mentions: 0.24,
-              trend: -0.2
+              trend: -0.2,
+              emotion: 'anger',
             },
             Reddit: {
               mentions: 0.14,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'fear',
             },
             Twitter: {
               mentions: 0.08,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'joy',
             },
             Youtube: {
               mentions: 0.54,
-              trend: -0.2
+              trend: -0.2,
+              emotion: 'neutral',
             }
           },
           keywords: [
@@ -767,19 +771,23 @@ export default {
           platformMetricsData: {
             Facebook: {
               mentions: 0.27,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'anger',
             },
             Reddit: {
               mentions: 0.06,
-              trend: -0.05
+              trend: -0.05,
+              emotion: 'neutral',
             },
             Twitter: {
               mentions: 0.07,
-              trend: 0.1
+              trend: 0.1,
+              emotion: 'joy',
             },
             Youtube: {
               mentions: 0.60,
-              trend: 0.5
+              trend: 0.5,
+              emotion: 'fear',
             }
           },
           keywords: [
@@ -1182,19 +1190,23 @@ export default {
           platformMetricsData: {
             Facebook: {
               mentions: 0.24,
-              trend: -0.2
+              trend: -0.2,
+              emotion: 'anger',
             },
             Reddit: {
               mentions: 0.14,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'anger',
             },
             Twitter: {
               mentions: 0.08,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'anger',
             },
             Youtube: {
               mentions: 0.54,
-              trend: -0.2
+              trend: -0.2,
+              emotion: 'anger',
             },
           },
           keywords: [
@@ -1594,11 +1606,13 @@ export default {
           platformMetricsData: {
             Facebook: {
               mentions: 0.24,
-              trend: -0.2
+              trend: -0.2,
+              emotion: 'anger',
             },
             Reddit: {
               mentions: 0.14,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'anger',
             },
           },
           keywords: [
@@ -1984,19 +1998,23 @@ export default {
     platformMetricsData: {
       Facebook: {
         mentions: 0.24,
-        trend: -0.18
+        trend: -0.18,
+        emotion: 'anger',
       },
       Reddit: {
         mentions: 0.14,
-        trend: 0.39
+        trend: 0.39,
+        emotion: 'joy',
       },
       Twitter: {
         mentions: 0.08,
-        trend: 0.05
+        trend: 0.05,
+        emotion: 'fear',
       },
       Youtube: {
         mentions: 0.54,
-        trend: -0.32
+        trend: -0.32,
+        emotion: 'neutral',
       }
     },
     keywords: [
