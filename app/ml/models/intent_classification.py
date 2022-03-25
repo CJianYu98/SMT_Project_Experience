@@ -8,7 +8,10 @@ classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnl
 def classify_intent(text):
     labels = ["suggestion", "complaint", "educational", "question", "remark"]
 
-    results_dict = classifier(text, labels)
+    try:
+        results_dict = classifier(text, labels)
+    except:
+        return None
 
     labels = results_dict["labels"]
     intent = labels[0]
