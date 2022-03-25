@@ -187,13 +187,32 @@ def getInfo(container):
     ).text
 
     # getting the date uploaded
-    uploadedTag = container.find_element(
-        By.XPATH,
-        "//div[@id='info-strings' and @class='style-scope ytd-video-primary-info-renderer']",
-    )
-    uploaded = uploadedTag.find_element(
-        By.XPATH, ".//yt-formatted-string[@class='style-scope ytd-video-primary-info-renderer']"
-    ).text
+    try:
+        uploadedTag = container.find_element(
+            By.XPATH,
+            "//div[@id='info-strings' and @class='style-scope ytd-video-primary-info-renderer']",
+        )
+        uploaded = uploadedTag.find_element(
+            By.XPATH, ".//yt-formatted-string[@class='style-scope ytd-video-primary-info-renderer']"
+        ).text
+        
+        if "ago" in uploaded:
+            today = datetime.now()
+            if "hours" in uploaded:
+                splitDate = uploaded.split(" ")
+                hour= splitDate[2]
+                newDate = (today - timedelta(hours=int(hour))).date()
+                uploaded = newDate.strftime("%b %d, %Y")
+            elif "minutes" in uploaded:
+                splitDate = uploaded.split(" ")
+                minute= splitDate[2]
+                newDate = (today - timedelta(hours=int(minute))).date()
+                uploaded = newDate.strftime("%b %d, %Y")
+            else:
+                uploaded = today.strftime("%b %d, %Y")
+    except Exception as e:
+            logger.exception(f"Error: Unable to get video uploaded date {e}")
+
 
     # getting the number of likes
     likesTag = container.find_element(
