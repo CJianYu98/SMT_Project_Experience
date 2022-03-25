@@ -6,6 +6,8 @@
       <v-col cols="4">
         <TrendingTopics 
           :top-five-topics="topFiveTopicsData" 
+          :keywords-word-cloud-legend="keywordsWordCloudLegend"
+          :trending-topics-emotions-legend="trendingTopicsEmotionsLegend"
           @clickQuery="updateDashboardWithQuery" @selectedTrendingTopicInDashboard="passTrendingTopicsToDashboard" 
         />
       </v-col>
@@ -28,7 +30,7 @@
       <v-col cols="8">
         <ComplaintsCard 
           :complaints-word-cloud="complaintsKeywords"
-          :complaints-related-comments="complaintsRelatedComments"
+          :related-comments="complaintsRelatedComments"
         />
       </v-col>
     </v-row>
@@ -49,7 +51,7 @@ import KeywordCard from '../components/KeywordWordCloudCard.vue'
 // import KeywordAnalysis from '../components/KeywordAnalysisCard.vue'
 // import NoteworthyComments from '../components/NoteworthyComments.vue'
 import ComplaintsCard from '../components/ComplaintsCard.vue'
-import TrendingTopics from '@/components/TrendingTopics.vue'
+import TrendingTopics from '@/components/TrendingTopicsCard.vue'
 import SearchFilters from '@/components/SearchFilters'
 export default {
   name: 'DashBoard',
@@ -85,6 +87,33 @@ export default {
                     count: 7949
                   },
                 ],
+                emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
             {
               name: "Covid19",
@@ -104,6 +133,34 @@ export default {
                     count: 9395
                   },
                 ],
+                emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
+                
             },
             {
               name: "Healthcare",
@@ -121,6 +178,33 @@ export default {
                   {
                     sentiment: "positive",
                     count: 3479
+                  },
+                ],
+                emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
                   },
                 ],
             },
@@ -142,6 +226,33 @@ export default {
                     count: 7470
                   },
                 ],
+                emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
             {
               name: "Law",
@@ -161,6 +272,33 @@ export default {
                     count: 2699
                   },
                 ],
+                emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
           ],
           overallStatsData: {
@@ -176,19 +314,23 @@ export default {
           platformMetricsData: {
             Facebook: {
               mentions: 0.24,
-              trend: -0.2
+              trend: -0.2,
+              emotion: 'anger',
             },
             Reddit: {
               mentions: 0.14,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'fear',
             },
             Twitter: {
               mentions: 0.08,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'joy',
             },
             Youtube: {
               mentions: 0.54,
-              trend: -0.2
+              trend: -0.2,
+              emotion: 'neutral',
             }
           },
           keywords: [
@@ -403,6 +545,33 @@ export default {
                     count: 9071
                   },
                 ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
             {
               name: "Covid19",
@@ -420,6 +589,33 @@ export default {
                   {
                     sentiment: "positive",
                     count: 5673
+                  },
+                ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
                   },
                 ],
             },
@@ -441,6 +637,33 @@ export default {
                     count: 3479
                   },
                 ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
             {
               name: "Sports",
@@ -458,6 +681,33 @@ export default {
                   {
                     sentiment: "positive",
                     count: 3428
+                  },
+                ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
                   },
                 ],
             },
@@ -479,6 +729,33 @@ export default {
                     count: 1650
                   },
                 ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
           ],
           overallStatsData: {
@@ -494,19 +771,23 @@ export default {
           platformMetricsData: {
             Facebook: {
               mentions: 0.27,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'anger',
             },
             Reddit: {
               mentions: 0.06,
-              trend: -0.05
+              trend: -0.05,
+              emotion: 'neutral',
             },
             Twitter: {
               mentions: 0.07,
-              trend: 0.1
+              trend: 0.1,
+              emotion: 'joy',
             },
             Youtube: {
               mentions: 0.60,
-              trend: 0.5
+              trend: 0.5,
+              emotion: 'fear',
             }
           },
           keywords: [
@@ -699,6 +980,33 @@ export default {
                     count: 4536
                   },
                 ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
             {
               name: "Covid19",
@@ -712,6 +1020,33 @@ export default {
                   {
                     sentiment: "neutral",
                     count: 3758
+                  },
+                ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
                   },
                 ],
             },
@@ -729,6 +1064,33 @@ export default {
                     count: 3479
                   },
                 ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
             {
               name: "Sports",
@@ -742,6 +1104,33 @@ export default {
                   {
                     sentiment: "neutral",
                     count: 10284
+                  },
+                ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
                   },
                 ],
             },
@@ -759,6 +1148,33 @@ export default {
                     count: 1649
                   },
                 ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
           ],
           overallStatsData: {
@@ -774,19 +1190,23 @@ export default {
           platformMetricsData: {
             Facebook: {
               mentions: 0.24,
-              trend: -0.2
+              trend: -0.2,
+              emotion: 'anger',
             },
             Reddit: {
               mentions: 0.14,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'anger',
             },
             Twitter: {
               mentions: 0.08,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'anger',
             },
             Youtube: {
               mentions: 0.54,
-              trend: -0.2
+              trend: -0.2,
+              emotion: 'anger',
             },
           },
           keywords: [
@@ -976,6 +1396,33 @@ export default {
                     count: 4536
                   },
                 ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
             {
               name: "Covid19",
@@ -989,6 +1436,33 @@ export default {
                   {
                     sentiment: "neutral",
                     count: 3758
+                  },
+                ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
                   },
                 ],
             },
@@ -1006,6 +1480,33 @@ export default {
                     count: 3479
                   },
                 ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
             {
               name: "Sports",
@@ -1019,6 +1520,33 @@ export default {
                   {
                     sentiment: "neutral",
                     count: 10284
+                  },
+                ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
                   },
                 ],
             },
@@ -1036,6 +1564,33 @@ export default {
                     count: 1649
                   },
                 ],
+              emotions: [
+                  {
+                    emotion: "anger",
+                    percentage: 0.3,
+                    count: 5961
+                  },
+                  {
+                    emotion: "fear",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "joy",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                  {
+                    emotion: "neutral",
+                    percentage: 0.1,
+                    count: 1987
+                  },
+                  {
+                    emotion: "sadness",
+                    percentage: 0.2,
+                    count: 3974
+                  },
+                ],
             },
           ],
           overallStatsData: {
@@ -1051,11 +1606,13 @@ export default {
           platformMetricsData: {
             Facebook: {
               mentions: 0.24,
-              trend: -0.2
+              trend: -0.2,
+              emotion: 'anger',
             },
             Reddit: {
               mentions: 0.14,
-              trend: 0.2
+              trend: 0.2,
+              emotion: 'anger',
             },
           },
           keywords: [
@@ -1203,6 +1760,33 @@ export default {
               count: 7949
             },
           ],
+          emotions: [
+            {
+              emotion: "anger",
+              percentage: 0.3,
+              count: 5961
+            },
+            {
+              emotion: "fear",
+              percentage: 0.2,
+              count: 3974
+            },
+            {
+              emotion: "joy",
+              percentage: 0.2,
+              count: 3974
+            },
+            {
+              emotion: "neutral",
+              percentage: 0.1,
+              count: 1987
+            },
+            {
+              emotion: "sadness",
+              percentage: 0.2,
+              count: 3974
+            },
+          ],
       },
       {
         name: "covid19",
@@ -1223,6 +1807,33 @@ export default {
               sentiment: "positive",
               percentage: 0.5,
               count: 9395
+            },
+          ],
+          emotions: [
+            {
+              emotion: "anger",
+              percentage: 0.3,
+              count: 5961
+            },
+            {
+              emotion: "fear",
+              percentage: 0.2,
+              count: 3974
+            },
+            {
+              emotion: "joy",
+              percentage: 0.2,
+              count: 3974
+            },
+            {
+              emotion: "neutral",
+              percentage: 0.1,
+              count: 1987
+            },
+            {
+              emotion: "sadness",
+              percentage: 0.2,
+              count: 3974
             },
           ],
       },
@@ -1247,6 +1858,33 @@ export default {
               count: 3479
             },
           ],
+          emotions: [
+            {
+              emotion: "anger",
+              percentage: 0.3,
+              count: 5961
+            },
+            {
+              emotion: "fear",
+              percentage: 0.2,
+              count: 3974
+            },
+            {
+              emotion: "joy",
+              percentage: 0.2,
+              count: 3974
+            },
+            {
+              emotion: "neutral",
+              percentage: 0.1,
+              count: 1987
+            },
+            {
+              emotion: "sadness",
+              percentage: 0.2,
+              count: 3974
+            },
+          ],
       },
       {
         name: "Sports",
@@ -1267,6 +1905,33 @@ export default {
               sentiment: "positive",
               percentage: 0.2,
               count: 58988
+            },
+          ],
+          emotions: [
+            {
+              emotion: "anger",
+              percentage: 0.3,
+              count: 5961
+            },
+            {
+              emotion: "fear",
+              percentage: 0.2,
+              count: 3974
+            },
+            {
+              emotion: "joy",
+              percentage: 0.2,
+              count: 3974
+            },
+            {
+              emotion: "neutral",
+              percentage: 0.1,
+              count: 1987
+            },
+            {
+              emotion: "sadness",
+              percentage: 0.2,
+              count: 3974
             },
           ],
       },
@@ -1291,6 +1956,33 @@ export default {
               count: 4948
             },
           ],
+          emotions: [
+            {
+              emotion: "anger",
+              percentage: 0.3,
+              count: 5961
+            },
+            {
+              emotion: "fear",
+              percentage: 0.2,
+              count: 3974
+            },
+            {
+              emotion: "joy",
+              percentage: 0.2,
+              count: 3974
+            },
+            {
+              emotion: "neutral",
+              percentage: 0.1,
+              count: 1987
+            },
+            {
+              emotion: "sadness",
+              percentage: 0.2,
+              count: 3974
+            },
+          ],
       },
     ],
     overallStatsData: {
@@ -1306,19 +1998,23 @@ export default {
     platformMetricsData: {
       Facebook: {
         mentions: 0.24,
-        trend: -0.18
+        trend: -0.18,
+        emotion: 'anger',
       },
       Reddit: {
         mentions: 0.14,
-        trend: 0.39
+        trend: 0.39,
+        emotion: 'joy',
       },
       Twitter: {
         mentions: 0.08,
-        trend: 0.05
+        trend: 0.05,
+        emotion: 'fear',
       },
       Youtube: {
         mentions: 0.54,
-        trend: -0.32
+        trend: -0.32,
+        emotion: 'neutral',
       }
     },
     keywords: [
@@ -1390,9 +2086,16 @@ export default {
       },
     ],
     keywordsWordCloudLegend: {
-      positive: "#78D549",
+      negative: "#EB8159",
       neutral: "#EFB727",
-      negative: "#EB8159"
+      positive: "#78D549",
+    },
+    trendingTopicsEmotionsLegend: {
+      anger: "#ff0000",
+      fear: "#000000",
+      joy: "#fff700",
+      neutral: "#a1a08d",
+      sadness: "#007bff",
     },
     selectedTrendingQuery: "",
 

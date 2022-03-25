@@ -60,17 +60,33 @@ export default {
 
       function generateStack(data) {
         console.log("=== START generateStack() ===")
-        // console.log("data", data)
+        console.log("data", data)
+        // console.log("sentiment object?", data.some(obj => Object.prototype.hasOwnProperty.call(obj, "sentiment")))
+        // console.log("emotion object?", data.some(obj => Object.prototype.hasOwnProperty.call(obj, "emotion")))
+        const isSentiment = data.some(obj => Object.prototype.hasOwnProperty.call(obj, "sentiment"))
+
         const total = d3.sum(data, d => d.count);
         let value = 0
 
-        return data.map(d => ({
-          label: d.sentiment,
-          value: d.count / total,
-          startValue: value / total,
-          endValue: (value += d.count) / total,
-          count: d.count
-        }));
+        if (isSentiment) {
+          return data.map(d => ({
+            type: "sentiment",
+            label: d.sentiment,
+            value: d.count / total,
+            startValue: value / total,
+            endValue: (value += d.count) / total,
+            count: d.count
+          }));
+        } else {
+          return data.map(d => ({
+            type: "emotion",
+            label: d.emotion,
+            value: d.count / total,
+            startValue: value / total,
+            endValue: (value += d.count) / total,
+            count: d.count
+          }));
+        }
       }
 
 
@@ -86,9 +102,18 @@ export default {
         .data(stack)
         .join("rect")
         .attr("fill", function(d) { 
-                // console.log("d.sentiment", d.sentiment) 
-                return d.label === "positive" ? "#78D549" : (d.label === "negative" ? "#EB8159" : "#EFB727")
+                console.log("d", d)
+
+                if (d.type === "sentiment") {
+                  return d.label === "positive" ? "#78D549" : (d.label === "negative" ? "#EB8159" : "#EFB727")
+                  } else if (d.type === "emotion") {
+                    return d.label === "anger" ? "#ff0000" : 
+                      (d.label === "fear" ? "#000000" :
+                      (d.label === "joy" ? "#fff700" : 
+                      (d.label === "neutral" ? "#a1a08d" : "#007bff")))
+                  }
                 }
+                
               )
         // rounded corners
         // .attr("rx", function(d) { 
@@ -102,7 +127,7 @@ export default {
         .attr("width", d => x(d.endValue) - x(d.startValue))
         .attr("height", height - margin.top - margin.bottom)
         .append("title")
-        .text(d => `${formatPercent(d.value)} of posts (${d.count} posts) are ${d.label}`);
+        .text(d => `${formatPercent(d.value)} of posts (${d.count} posts) are associated with the ${d.type} ${d.label}`);
 
       // console.log("svg test 2", svg)
 

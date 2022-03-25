@@ -1,8 +1,8 @@
 <template>
   <v-container style="max-height: 450px" class="overflow-y-auto">
-    <ComplaintsRelatedComment
-      v-for="complaint in complaintsRelatedComments"
-      :key="complaint"
+    <RelatedComment
+      v-for="(complaint, index) in relatedComments"
+      :key="index"
       :media="complaint.media"
       :likes="complaint.likes"
       :date="complaint.date"
@@ -14,15 +14,15 @@
 </template>
 
 <script>
-import ComplaintsRelatedComment from './ComplaintsRelatedComment.vue'
+import RelatedComment from './RelatedPost.vue'
 
 export default {
   components: {
-    ComplaintsRelatedComment 
+    RelatedComment 
   },
   props: {
-    complaintsRelatedComments: {
-      type: Array,
+    relatedComments: {
+      type: Object,
       required: true
     },
   },
