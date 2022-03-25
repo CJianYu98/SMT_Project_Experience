@@ -1,10 +1,18 @@
+import os
+
+from dotenv import load_dotenv
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
-path = "./app/ml/models/model_data"
-emotion = "facebook/bart-large-mnli"
+# Load environment variables
+load_dotenv()
 
-tokenizer = AutoTokenizer.from_pretrained(f"{path}/{emotion}")
-model = AutoModelForSequenceClassification.from_pretrained(f"{path}/{emotion}")
+# Load constants
+MODEL_DATA_FOLDER_PATH = os.getenv("MODEL_DATA_FOLDER_PATH")
+EMOTIONS_MODEL_PATH = os.getenv("EMOTIONS_MODEL_PATH")
+
+# Load tokenizer and model
+tokenizer = AutoTokenizer.from_pretrained(f"{MODEL_DATA_FOLDER_PATH}/{EMOTIONS_MODEL_PATH}")
+model = AutoModelForSequenceClassification.from_pretrained(f"{MODEL_DATA_FOLDER_PATH}/{EMOTIONS_MODEL_PATH}")
 
 
 def classify_emotions(text: str) -> str:
@@ -17,7 +25,7 @@ def classify_emotions(text: str) -> str:
     Returns:
         str: Label of the given input text.
     """
-    # classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+
     classifier = pipeline("zero-shot-classification", tokenizer=tokenizer, model=model)
 
     results = classifier(text, candidate_labels=["anger", "joy", "fear", "sadness"])

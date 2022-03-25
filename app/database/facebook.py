@@ -5,7 +5,7 @@ from datetime import datetime
 
 import pandas as pd
 
-pd.options.mode.chained_assignment = None
+pd.options.mode.chained_assignment = None  # to hide warning error
 from dotenv import load_dotenv
 from loguru import logger
 from tqdm.auto import tqdm
@@ -108,23 +108,22 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     # logger.info(f"NER took: {time.process_time() - start}\n")
 
     # # Classify Emotions on df_posts and df_comments
-    print("now classifying emotions..")
     start3 = time.process_time()
     df_posts["emotions_label"] = df_posts["message"].progress_apply(lambda x: classify_emotions(x))
     # df_comments["emotions_label"] = df_comments["message"].progress_apply(lambda x: classify_emotions(x))
-    logger.info(f"Emotions classification took: {time.process_time() - start}\n")
+    logger.info(f"Emotions classification took: {time.process_time() - start3}\n")
 
     # # Classify Intention on df_posts and df_comments
     # start4 = time.process_time()
     # df_posts["intent"] = df_posts["cleantext"].progress_apply(classify_intent)
     # # df_comments["intent"] = df_comments["cleantext"].progress_apply(classify_intent)
-    # logger.info(f"Intent classification took: {time.process_time() - start}\n")
+    # logger.info(f"Intent classification took: {time.process_time() - start4}\n")
 
     # # Classify Sentiment on df_posts and df_comments
     # start2 = time.process_time()
     # df_posts = classify_sentiment(df_posts)
     # # df_comments = classify_sentiment(df_comments)
-    # logger.info(f"Sentiment classification took: {time.process_time() - start}\n")
+    # logger.info(f"Sentiment classification took: {time.process_time() - start2}\n")
 
     # Convert dataframe to dict
     posts = df_posts.to_dict(orient="index")
