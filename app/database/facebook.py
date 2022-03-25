@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from loguru import logger
 from tqdm.auto import tqdm
 
-from ..constants.etl import FACEBOOK_FIELDS, FACEBOOK_RENAME_COL_DICT
+from ..constants.etl import FACEBOOK_FIELDS, FACEBOOK_RENAME_COL_DICT, get_time
 from ..constants.social_media import FACEBOOK_GROUPS
 from ..ml.models.emotions_classification import *
 from ..ml.models.intent_classification import *
@@ -27,8 +27,8 @@ FACEBOOK_HISTORICAL_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_DATA_PATH")
 FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH")
 
 # Select MongoDB collection to work with
-fb_posts = client.smt483.fb_posts_test
-fb_comments = client.smt483.fb_comments_test
+fb_posts = client.smt483.fb_posts_ml
+fb_comments = client.smt483.fb_comments_ml
 
 for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     file_name = file[:-4]
@@ -77,34 +77,44 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     logger.info(f"Now classifying {file_name}\n")
 
     ####################  KEYWORD ANALYSIS ####################
-    start = time.process_time()
+    start1 = time.process_time()
     df_posts["entities"] = df_posts["cleantext"].progress_apply(extract_entities)
-    # df_comments["entities"] = df_comments["cleantext"].progress_apply(extract_entities)
-    logger.info(f"NER took: {time.process_time() - start}\n")
+    df_comments["entities"] = df_comments["cleantext"].progress_apply(extract_entities)
+
+    hours, mins, seconds = get_time(time.process_time() - start1)
+    logger.info(f"KEYWORD ANALYSIS took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     ####################  EMOTIONS CLASSIFICATION ####################
-    start3 = time.process_time()
+    start = time.process_time()
     df_posts["emotions_label"] = df_posts["message"].progress_apply(lambda x: classify_emotions(x))
-    # df_comments["emotions_label"] = df_comments["message"].progress_apply(lambda x: classify_emotions(x))
-    logger.info(f"Emotions classification took: {time.process_time() - start3}\n")
+    df_comments["emotions_label"] = df_comments["message"].progress_apply(lambda x: classify_emotions(x))
+
+    hours, mins, seconds = get_time(time.process_time() - start)
+    logger.info(f"EMOTIONS CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### TOPIC CLASSIFICATION ####################
-    start4 = time.process_time()
+    start = time.process_time()
     df_posts["topic"] = df_posts["cleantext"].progress_apply(classify_topics)
-    # df_comments["topic"] = df_comments["cleantext"].progress_apply(classify_topics)
-    logger.info(f"Topic classification took: {time.process_time() - start4}\n")
+    df_comments["topic"] = df_comments["cleantext"].progress_apply(classify_topics)
+
+    hours, mins, seconds = get_time(time.process_time() - start)
+    logger.info(f"TOPIC CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### INTENT CLASSIFICATION ####################
     start5 = time.process_time()
     df_posts["intent"] = df_posts["cleantext"].progress_apply(classify_intent)
-    # df_comments["intent"] = df_comments["cleantext"].progress_apply(classify_intent)
-    logger.info(f"Intent classification took: {time.process_time() - start4}\n")
+    df_comments["intent"] = df_comments["cleantext"].progress_apply(classify_intent)
+
+    hours, mins, seconds = get_time(time.process_time() - start)
+    logger.info(f"INTENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### SENTIMENT CLASSIFICATION ####################
     start2 = time.process_time()
     df_posts = classify_sentiment(df_posts)
-    # df_comments = classify_sentiment(df_comments)
-    logger.info(f"Sentiment classification took: {time.process_time() - start2}\n")
+    df_comments = classify_sentiment(df_comments)
+
+    hours, mins, seconds = get_time(time.process_time() - start)
+    logger.info(f"SENTIMENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     ###########################################################
     ################ END OF ML CLASSIFICATION #################
@@ -112,13 +122,13 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     # Convert dataframe to dict
     posts = df_posts.to_dict(orient="index")
-    # comments = df_comments.to_dict(orient="index")
+    comments = df_comments.to_dict(orient="index")
 
     # Insert data into MongoDB
     num_posts = len(posts)
-    # num_comments = len(comments)
+    num_comments = len(comments)
     fb_posts.insert_many([posts[i] for i in range(num_posts)])
-    # fb_comments.insert_many([comments[i] for i in range(num_comments)])
+    fb_comments.insert_many([comments[i] for i in range(num_comments)])
 
-    logger.info(f">>>> {file_name} done.\n")
-    break
+    hours, mins, seconds = get_time(time.process_time() - start1)
+    logger.info(f">>>> {file_name} done.\n{file_name} took {hours} hours, {mins} mins, {seconds} seconds in total.")
