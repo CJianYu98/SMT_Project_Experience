@@ -18,6 +18,7 @@ from ..ml.models.intent_classification import *
 from ..ml.models.keyword_analysis import *
 from ..ml.models.preprocessing import *
 from ..ml.models.sentiment_classification import *
+from ..ml.models.topic_classification import *
 from .connect import client
 
 # Load environment variables
@@ -113,8 +114,14 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     # df_comments["emotions_label"] = df_comments["message"].progress_apply(lambda x: classify_emotions(x))
     logger.info(f"Emotions classification took: {time.process_time() - start3}\n")
 
-    # Classify Intention on df_posts and df_comments
+    # Classify Topic on df_posts and df_comments
     start4 = time.process_time()
+    df_posts["topic"] = df_posts["cleantext"].progress_apply(classify_topic)
+    # df_comments["topic"] = df_comments["cleantext"].progress_apply(classify_topic)
+    logger.info(f"Topic classification took: {time.process_time() - start4}\n")
+
+    # Classify Intention on df_posts and df_comments
+    start5 = time.process_time()
     df_posts["intent"] = df_posts["cleantext"].progress_apply(classify_intent)
     # df_comments["intent"] = df_comments["cleantext"].progress_apply(classify_intent)
     logger.info(f"Intent classification took: {time.process_time() - start4}\n")
