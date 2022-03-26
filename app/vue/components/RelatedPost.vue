@@ -1,5 +1,9 @@
 <template>
-  <v-card :key="media" class="mx-4 mb-4" :href="link" target="_blank">
+  <v-card 
+    :key="media" 
+    class="mx-4 mb-4" 
+    :style="`border: 1px primary solid;`"
+    >
     <v-list-item-subtitle
         class="px-3 primary--text" 
       >
@@ -21,10 +25,40 @@
         </p>
         &nbsp;
       </v-row>
-      <p class="text-wrap mt-1">
+      <!-- :href="link" target="_blank" -->
+      <p class="text-wrap mt-1" >
         {{comment}}
       </p>
       <v-chip-group column>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-img
+              max-height="30"
+              max-width="30"
+              :src="`/${sentiment}_sentiment.png`"
+              :alt="`${sentiment} icon`"
+              class="mt-1 mr-2"
+              v-bind="attrs"
+              v-on="on"
+            ></v-img>
+          </template>
+          <span>{{sentiment}} sentiment</span>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-img
+              max-height="30"
+              max-width="30"
+              :src="`/${emotion}.png`"
+              :alt="`${emotion} icon`"
+              class="mt-1 mr-2"
+              v-bind="attrs"
+              v-on="on"
+            ></v-img>
+          </template>
+          <span>{{emotion}} </span>
+        </v-tooltip>
         <v-chip 
           class="mb-2 primary trending-category mr-1"
           v-for="indvTopic in topic"
@@ -32,6 +66,7 @@
         >
           {{indvTopic}}
         </v-chip>
+          <!-- class="mx-auto" -->
       </v-chip-group>
     </v-list-item-subtitle>
   </v-card>
@@ -60,10 +95,18 @@ export default {
       type: Array,
       required: true
     },
-    link: {
+    // link: {
+    //   type: String,
+    //   required: true
+    // },
+    sentiment: {
       type: String,
       required: true
-    }
+    },
+    emotion: {
+      type: String,
+      required: true
+    },
   },
   data: () => ({
 

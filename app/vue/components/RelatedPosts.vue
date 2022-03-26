@@ -1,5 +1,9 @@
 <template>
-  <v-container style="max-height: 450px" class="overflow-y-auto">
+  <v-container 
+    style="max-height: 450px" 
+    class="overflow-y-auto"
+  >
+  <!-- v-bind:style= "[condition ? {styleA} : {styleB}]" -->
     <RelatedComment
       v-for="(complaint, index) in relatedComments"
       :key="index"
@@ -8,8 +12,10 @@
       :date="complaint.date"
       :comment="complaint.comment"
       :topic="complaint.topic"
-      :link="complaint.link"
+      :sentiment="complaint.sentiment"
+      :emotion="complaint.emotion"
     />
+      <!-- :link="complaint.link" -->
   </v-container>
 </template>
 
