@@ -1,11 +1,16 @@
 import pickle
+from dotenv import load_dotenv
 
 # ML libraries
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
 
+from ...constants.ml import FEATURES_LIST
 from .preprocessing import *
 from .ml_features import *
+
+# Load environment variables
+load_dotenv()
 
 # Load saved model for classifying thoughtful comments
 model = pickle.load(open('./finalized_model.sav', 'rb'))
@@ -28,35 +33,33 @@ def create_features(df):
 
     return df
 
-def get_standardized_values(df, features_list):
+def get_standardized_values(df):
     """
     Apply standardisation on features 
 
     Args:
         df (DataFrame): dataframe containing ML features
-        features_list (list): list of ML features 
 
     Returns:
         DataFrame: new dataframe with scales values for features
     """
     scaler = StandardScaler()
-    df_scaled = df[features_list]
-    df_scaled = scaler.fit_transform(df[features_list])
-    df_scaled = pd.DataFrame(df_scaled, columns=features_list)
+    df_scaled = df[FEATURES_LIST]
+    df_scaled = scaler.fit_transform(df[FEATURES_LIST])
+    df_scaled = pd.DataFrame(df_scaled, columns=FEATURES_LIST)
 
     return df_scaled
 
-def predict_thoughtfulness(df, features_list):
+def predict_thoughtfulness(df):
     """
     Use saved model to predict thoughtfulness of text
 
     Args:
         df (DataFrame): dataframe of text to be predicted
-        features_list (list): list of ML features 
 
     Returns:
         list: array of predictions (1 - thoughtful, 0 - not thoughtful)
     """
-    predictions = model.predict(df, features_list)
+    predictions = model.predict(df, FEATURES_LIST)
 
     return predictions

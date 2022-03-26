@@ -67,3 +67,6 @@ TOPIC_LABELS = [
     "transportation",
     "others",
 ]
+
+# Thoughtful Post/Comments Classification Features
+FEATURES_LIST = ['length', 'comment_loglikelihood', 'num_verbs', 'num_discourse','num_pronouns']
