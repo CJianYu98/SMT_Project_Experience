@@ -112,7 +112,7 @@ def get_num_pronouns(text: str) -> int:
     return count
 
 ####### FEATURE 5: Average Loglikelihood #######
-NEWS_UNIGRAM = news_articles_unigram('../data/articles1.csv')
+NEWS_UNIGRAM = news_articles_unigram('../data/articles1.zip')
 
 def get_average_loglikelihood(text):
     cmt_text_counter = comment_unicounter(text)
