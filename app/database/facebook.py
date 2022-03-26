@@ -16,6 +16,9 @@ from ..ml.models.keyword_analysis import *
 from ..ml.models.preprocessing import *
 from ..ml.models.sentiment_classification import *
 from ..ml.models.topic_classification import *
+from ..ml.models.ml_features import *
+from ..ml.models.thoughtful_classification import *
+from ..ml.models.noteworthy_classification import *
 from .connect import client
 
 pd.options.mode.chained_assignment = None  # to hide warning error
@@ -116,6 +119,29 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     hours, mins, seconds = get_time(time.process_time() - start)
     logger.info(f"SENTIMENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+
+    #################### THOUGHTFULNESS CLASSIFICATION ####################
+    start = time.process_time()
+    df_post_features = create_features(df_posts)
+    df_post_features_standardised = get_standardized_values(df_post_features)
+    post_predictions = predict_thoughtfulness(df_post_features_standardised)
+    df_posts["isThoughtful"] = post_predictions
+
+    df_comments_features = create_features(df_comments)
+    df_comments_features_standardised = get_standardized_values(df_comments_features)
+    df_comments_predictions = predict_thoughtfulness(df_comments_features_standardised)
+    df_comments["isThoughtful"] = df_comments_predictions
+
+    hours, mins, seconds = get_time(time.process_time() - start)
+    logger.info(f"THOUGHTFUL CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+
+    #################### NOTEWORTHY CLASSIFICATION ####################
+    start = time.process_time()
+    df_posts["isNoteworthy"] = df_posts.apply(classify_noteworthy, axis=1)
+    df_comments["isNoteworthy"] = df_comments.apply(classify_noteworthy, axis=1)
+
+    hours, mins, seconds = get_time(time.process_time() - start)
+    logger.info(f"NOTEWORTHY CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     ###########################################################
     ################ END OF ML CLASSIFICATION #################
