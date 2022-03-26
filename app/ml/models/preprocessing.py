@@ -1,3 +1,4 @@
+from math import log2
 import string
 import zipfile
 import regex as re
@@ -205,9 +206,9 @@ def news_articles_unigram(file_name: str) -> UnigramModel:
         UnigramModel: An unigram object
     """
     with zipfile.ZipFile(file_name, 'r') as zip_ref:
-        zip_ref.extractall("../data/Thoughtful_comment")
+        zip_ref.extractall("app/ml/data/Thoughtful_comment")
     
-    df = pd.read_csv("../data/Thoughtful_comment/articles1.csv")
+    df = pd.read_csv("app/ml/data/Thoughtful_comment/articles1.csv")
     df = df[['content','id', 'publication']]
 
     corpus = []

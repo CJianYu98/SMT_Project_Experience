@@ -4,6 +4,8 @@ import regex as re
 import pandas as pd
 import contractions
 import nltk
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 from nltk.tokenize import word_tokenize, sent_tokenize, RegexpTokenizer
 
 from .preprocessing import *
@@ -112,7 +114,7 @@ def get_num_pronouns(text: str) -> int:
     return count
 
 ####### FEATURE 5: Average Loglikelihood #######
-NEWS_UNIGRAM = news_articles_unigram('../data/articles1.zip')
+NEWS_UNIGRAM = news_articles_unigram('app/ml/data/articles1.zip')
 
 def get_average_loglikelihood(text):
     cmt_text_counter = comment_unicounter(text)

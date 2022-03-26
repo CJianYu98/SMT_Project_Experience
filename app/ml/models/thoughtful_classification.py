@@ -13,7 +13,7 @@ from .ml_features import *
 load_dotenv()
 
 # Load saved model for classifying thoughtful comments
-model = pickle.load(open('./finalized_model.sav', 'rb'))
+model = pickle.load(open('app/ml/models/model_data/finalized_model.sav', 'rb'))
 
 def create_features(df):
     """"
@@ -62,6 +62,6 @@ def predict_thoughtfulness(df):
     Returns:
         list: array of predictions (1 - thoughtful, 0 - not thoughtful)
     """
-    predictions = model.predict(df, FEATURES_LIST)
+    predictions = model.predict(df[FEATURES_LIST])
 
     return predictions
