@@ -36,7 +36,7 @@ STOP_ENTITIES = [
 ]
 
 # Intent classification
-INTENT_LABELS = ["suggestion", "complaint", "educational", "question", "remark"]
+INTENT_LABELS = ["suggestion", "complaint", "educational", "question", "remark/news/statement", "seeking/giving advice"]
 
 # Emotions classification
 EMOTIONS_LABELS = ["anger", "joy", "fear", "sadness"]
@@ -70,3 +70,6 @@ TOPIC_LABELS = [
 
 # Thoughtful Post/Comments Classification Features
 FEATURES_LIST = ['length', 'comment_loglikelihood', 'num_verbs', 'num_discourse','num_pronouns']
+
+# Noteworthy Intent Labels
+NOTEWORTHY_INTENT_LABELS = ["suggestion", "educational", "seeking/giving advice"]
