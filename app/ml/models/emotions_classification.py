@@ -30,8 +30,10 @@ def classify_emotions(text: str) -> str:
     Returns:
         str: Label of the given input text.
     """
-
-    results = classifier(text, candidate_labels=EMOTIONS_LABELS)
+    try:
+        results = classifier(text, candidate_labels=EMOTIONS_LABELS)
+    except:
+        return None
 
     # Classify as neutral if probability score is too low
     return "neutral" if results["scores"][0] < 0.75 else results["labels"][0]

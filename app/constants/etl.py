@@ -28,8 +28,9 @@ FACEBOOK_RENAME_COL_DICT = {
     "angry.summary.total_count": "angry_cnt",
 }
 
+
 def get_time(time_in_seconds):
     hours = time_in_seconds // 3600
     mins = (time_in_seconds % 3600) // 60
     seconds = (time_in_seconds % 3600) % 60
-    return hours, mins, seconds
+    return int(hours), int(mins), int(seconds)

@@ -31,8 +31,11 @@ def classify_topics(text):
     """
 
     # Apply classification model on text
-    results_dict = classifier(text, TOPIC_LABELS)
-    labels = results_dict["labels"]
+    try:
+        results_dict = classifier(text, TOPIC_LABELS)
+        labels = results_dict["labels"]
 
-    # Return the topic with the highest score as the topic label
-    return labels[0]
+        # Return the topic with the highest score as the topic label
+        return labels[0]
+    except:
+        return None

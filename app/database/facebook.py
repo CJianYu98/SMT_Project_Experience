@@ -1,7 +1,7 @@
 import json
 import os
-import time
 from datetime import datetime
+from time import time
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -13,12 +13,12 @@ from ..constants.social_media import FACEBOOK_GROUPS
 from ..ml.models.emotions_classification import *
 from ..ml.models.intent_classification import *
 from ..ml.models.keyword_analysis import *
+from ..ml.models.ml_features import *
+from ..ml.models.noteworthy_classification import *
 from ..ml.models.preprocessing import *
 from ..ml.models.sentiment_classification import *
-from ..ml.models.topic_classification import *
-from ..ml.models.ml_features import *
 from ..ml.models.thoughtful_classification import *
-from ..ml.models.noteworthy_classification import *
+from ..ml.models.topic_classification import *
 from .connect import client
 
 pd.options.mode.chained_assignment = None  # to hide warning error
@@ -30,10 +30,10 @@ FACEBOOK_HISTORICAL_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_DATA_PATH")
 FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH")
 
 # Select MongoDB collection to work with
-fb_posts = client.smt483.fb_posts_ml
-fb_comments = client.smt483.fb_comments_ml
+fb_posts = client.smt483.fb_posts
+fb_comments = client.smt483.fb_comments
 
-start_main = time.process_time()
+start_main = time()
 for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     file_name = file[:-4]
 
@@ -81,47 +81,47 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     logger.info(f"Now classifying {file_name}\n")
 
     ###################  KEYWORD ANALYSIS ####################
-    start = time.process_time()
+    start1 = time()
     df_posts["entities"] = df_posts["cleantext"].progress_apply(extract_entities)
     df_comments["entities"] = df_comments["cleantext"].progress_apply(extract_entities)
 
-    hours, mins, seconds = get_time(time.process_time() - start)
+    hours, mins, seconds = get_time(time() - start)
     logger.info(f"KEYWORD ANALYSIS took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     ####################  EMOTIONS CLASSIFICATION ####################
-    start = time.process_time()
+    start = time()
     df_posts["emotions_label"] = df_posts["message"].progress_apply(lambda x: classify_emotions(x))
     df_comments["emotions_label"] = df_comments["message"].progress_apply(lambda x: classify_emotions(x))
 
-    hours, mins, seconds = get_time(time.process_time() - start)
+    hours, mins, seconds = get_time(time() - start)
     logger.info(f"EMOTIONS CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### TOPIC CLASSIFICATION ####################
-    start = time.process_time()
+    start = time()
     df_posts["topic"] = df_posts["cleantext"].progress_apply(classify_topics)
     df_comments["topic"] = df_comments["cleantext"].progress_apply(classify_topics)
 
-    hours, mins, seconds = get_time(time.process_time() - start)
+    hours, mins, seconds = get_time(time() - start)
     logger.info(f"TOPIC CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### INTENT CLASSIFICATION ####################
-    start = time.process_time()
+    start = time()
     df_posts["intent"] = df_posts["cleantext"].progress_apply(classify_intent)
     df_comments["intent"] = df_comments["cleantext"].progress_apply(classify_intent)
 
-    hours, mins, seconds = get_time(time.process_time() - start)
+    hours, mins, seconds = get_time(time() - start)
     logger.info(f"INTENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### SENTIMENT CLASSIFICATION ####################
-    start = time.process_time()
+    start = time()
     df_posts = classify_sentiment(df_posts)
-    df_comments = classify_sentiment(df_comments)x
+    df_comments = classify_sentiment(df_comments)
 
-    hours, mins, seconds = get_time(time.process_time() - start)
+    hours, mins, seconds = get_time(time() - start)
     logger.info(f"SENTIMENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### THOUGHTFULNESS CLASSIFICATION ####################
-    start = time.process_time()
+    start = time()
     df_post_features = create_features(df_posts)
     df_post_features_standardised = get_standardized_values(df_post_features)
     post_predictions = predict_thoughtfulness(df_post_features_standardised)
@@ -132,15 +132,15 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     df_comments_predictions = predict_thoughtfulness(df_comments_features_standardised)
     df_comments["isThoughtful"] = df_comments_predictions
 
-    hours, mins, seconds = get_time(time.process_time() - start)
+    hours, mins, seconds = get_time(time() - start)
     logger.info(f"THOUGHTFUL CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### NOTEWORTHY CLASSIFICATION ####################
-    start = time.process_time()
+    start = time()
     df_posts["isNoteworthy"] = df_posts.progress_apply(classify_noteworthy, axis=1)
     df_comments["isNoteworthy"] = df_comments.progress_apply(classify_noteworthy, axis=1)
 
-    hours, mins, seconds = get_time(time.process_time() - start)
+    hours, mins, seconds = get_time(time() - start)
     logger.info(f"NOTEWORTHY CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     ##########################################################
@@ -157,9 +157,9 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     fb_posts.insert_many([posts[i] for i in range(num_posts)])
     fb_comments.insert_many([comments[i] for i in range(num_comments)])
 
-    hours, mins, seconds = get_time(time.process_time() - start)
+    hours, mins, seconds = get_time(time() - start1)
     logger.info(f">>>> {file_name} done.\n{file_name} took {hours} hours, {mins} mins, {seconds} seconds in total.")
 
-hours, mins, seconds = get_time(time.process_time() - start_main)
+hours, mins, seconds = get_time(time() - start_main)
 print("################# FB ML Classification Complete #################")
 print(f"Total time taken is {hours} hours, {mins} mins, {seconds} seconds.")
