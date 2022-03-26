@@ -85,7 +85,7 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     df_posts["entities"] = df_posts["cleantext"].progress_apply(extract_entities)
     df_comments["entities"] = df_comments["cleantext"].progress_apply(extract_entities)
 
-    hours, mins, seconds = get_time(time() - start)
+    hours, mins, seconds = get_time(time() - start1)
     logger.info(f"KEYWORD ANALYSIS took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     ####################  EMOTIONS CLASSIFICATION ####################
