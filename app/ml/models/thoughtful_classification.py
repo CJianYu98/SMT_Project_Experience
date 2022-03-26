@@ -24,14 +24,16 @@ def create_features(df):
     Returns:
         DataFrame: dataframe with new columns for each feature created
     """
-    df["cleantext"] = df["combined_text"].apply(preprocessing)
-    df["length"] = df["cleantext"].apply(get_comment_length)
-    df["num_discourse"] = df["cleantext"].apply(num_discourse)
-    df["num_verbs"] = df["cleantext"].apply(get_num_verbs)
-    df["num_pronouns"] = df["cleantext"].apply(get_num_pronouns)
-    df["comment_loglikelihood"] = df["cleantext"].apply(get_average_loglikelihood)
+    # df["cleantext"] = df["combined_text"].apply(preprocessing)
+    new_df = df.copy()
 
-    return df
+    new_df["length"] = new_df["cleantext"].apply(get_comment_length)
+    new_df["num_discourse"] = new_df["cleantext"].apply(num_discourse)
+    new_df["num_verbs"] = new_df["cleantext"].apply(get_num_verbs)
+    new_df["num_pronouns"] = new_df["cleantext"].apply(get_num_pronouns)
+    new_df["comment_loglikelihood"] = new_df["cleantext"].apply(get_average_loglikelihood)
+
+    return new_df
 
 def get_standardized_values(df):
     """
