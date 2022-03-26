@@ -80,12 +80,12 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     logger.info(f"Now classifying {file_name}\n")
 
-    ####################  KEYWORD ANALYSIS ####################
-    start1 = time.process_time()
+    ###################  KEYWORD ANALYSIS ####################
+    start = time.process_time()
     df_posts["entities"] = df_posts["cleantext"].progress_apply(extract_entities)
     df_comments["entities"] = df_comments["cleantext"].progress_apply(extract_entities)
 
-    hours, mins, seconds = get_time(time.process_time() - start1)
+    hours, mins, seconds = get_time(time.process_time() - start)
     logger.info(f"KEYWORD ANALYSIS took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     ####################  EMOTIONS CLASSIFICATION ####################
@@ -105,7 +105,7 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     logger.info(f"TOPIC CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### INTENT CLASSIFICATION ####################
-    start5 = time.process_time()
+    start = time.process_time()
     df_posts["intent"] = df_posts["cleantext"].progress_apply(classify_intent)
     df_comments["intent"] = df_comments["cleantext"].progress_apply(classify_intent)
 
@@ -113,9 +113,9 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     logger.info(f"INTENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### SENTIMENT CLASSIFICATION ####################
-    start2 = time.process_time()
+    start = time.process_time()
     df_posts = classify_sentiment(df_posts)
-    df_comments = classify_sentiment(df_comments)
+    df_comments = classify_sentiment(df_comments)x
 
     hours, mins, seconds = get_time(time.process_time() - start)
     logger.info(f"SENTIMENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
@@ -137,15 +137,15 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     #################### NOTEWORTHY CLASSIFICATION ####################
     start = time.process_time()
-    df_posts["isNoteworthy"] = df_posts.apply(classify_noteworthy, axis=1)
-    df_comments["isNoteworthy"] = df_comments.apply(classify_noteworthy, axis=1)
+    df_posts["isNoteworthy"] = df_posts.progress_apply(classify_noteworthy, axis=1)
+    df_comments["isNoteworthy"] = df_comments.progress_apply(classify_noteworthy, axis=1)
 
     hours, mins, seconds = get_time(time.process_time() - start)
     logger.info(f"NOTEWORTHY CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
-    ###########################################################
-    ################ END OF ML CLASSIFICATION #################
-    ###########################################################
+    ##########################################################
+    ############### END OF ML CLASSIFICATION #################
+    ##########################################################
 
     # Convert dataframe to dict
     posts = df_posts.to_dict(orient="index")
@@ -157,7 +157,7 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     fb_posts.insert_many([posts[i] for i in range(num_posts)])
     fb_comments.insert_many([comments[i] for i in range(num_comments)])
 
-    hours, mins, seconds = get_time(time.process_time() - start1)
+    hours, mins, seconds = get_time(time.process_time() - start)
     logger.info(f">>>> {file_name} done.\n{file_name} took {hours} hours, {mins} mins, {seconds} seconds in total.")
 
 hours, mins, seconds = get_time(time.process_time() - start_main)
