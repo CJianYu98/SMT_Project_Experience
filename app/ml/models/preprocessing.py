@@ -1,5 +1,7 @@
 import string
+import zipfile
 import regex as re
+import pandas as pd
 from nltk.tokenize import word_tokenize, sent_tokenize, RegexpTokenizer
 
 def replace_characters(text: str) -> str:
@@ -202,7 +204,10 @@ def news_articles_unigram(file_name: str) -> UnigramModel:
     Returns:
         UnigramModel: An unigram object
     """
-    df = pd.read_csv(file_name)
+    with zipfile.ZipFile(file_name, 'r') as zip_ref:
+        zip_ref.extractall("../data/Thoughtful_comment")
+    
+    df = pd.read_csv("../data/Thoughtful_comment/articles1.csv")
     df = df[['content','id', 'publication']]
 
     corpus = []
