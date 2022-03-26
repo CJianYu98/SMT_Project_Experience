@@ -4,22 +4,22 @@
     <SocialMediaFeedAllPlatformMetrics/>
     <v-row>
       <v-spacer></v-spacer>
-      <v-col cols="4">
+      <v-col cols="6">
         <SocialMediaFeedCard :related-comments="complaintsRelatedComments"/>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="4">
+      <v-col cols="6">
         <SocialMediaFeedCard :related-comments="complaintsRelatedComments"/>
       </v-col>
       <v-spacer></v-spacer>
     </v-row>
     <v-row>
       <v-spacer></v-spacer>
-      <v-col cols="4">
+      <v-col cols="6">
         <SocialMediaFeedCard :related-comments="complaintsRelatedComments"/>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="4">
+      <v-col cols="6">
         <SocialMediaFeedCard :related-comments="complaintsRelatedComments"/>
       </v-col>
       <v-spacer></v-spacer>
@@ -45,6 +45,8 @@ export default {
         date: '17 October 2021',
         comment: 'Does anyone has bad experience in this dental clinic? These 3 clinics changed its name to Bliss Dental. I have a bad experience at its Hougang outlet...',
         topic: ['Healthcare'],
+        sentiment: 'negative',
+        emotion: 'sadness',
         link: "https://www.facebook.com/groups/348293689060800/permalink/978840129339483/",
       },
       {
@@ -53,6 +55,8 @@ export default {
         date: '25 December 2021',
         comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
         topic: ['Healthcare'],
+        sentiment: 'neutral',
+        emotion: 'neutral',
         link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
       },
     ],

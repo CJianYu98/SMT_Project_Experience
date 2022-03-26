@@ -1,9 +1,10 @@
 <template>
   <v-card
     elevation="3"
-    class="mx-8 mr-2 mt-8 rounded-lg"
+    class="mx-8 mt-8 rounded-lg"
     height="100%"
   >
+    <!-- :style="{'border': `2px ${$vuetify.theme.themes[light].facebook} solid;`}" -->
     <v-card-title class="pb-4 accent--text text-h6 mx-4">
       <v-img
         max-height="30"
@@ -15,10 +16,14 @@
         <!-- class="mx-auto" -->
         <!-- :src="`/${platform}_icon.png`"
         :alt="`${platform} icon`" -->
+      <!-- <span class="facebook--text"> -->
       Facebook
+      <!-- </span> -->
       <!-- {{ platform.name }} -->
     </v-card-title>
-    <RelatedComments :related-comments="relatedComments"/>
+    <RelatedComments 
+      :related-comments="relatedComments"
+    />
   </v-card>
 </template>
 

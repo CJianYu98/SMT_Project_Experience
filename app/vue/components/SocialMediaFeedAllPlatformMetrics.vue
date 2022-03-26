@@ -10,19 +10,19 @@
     </v-card-title>
     <v-row>
       <v-spacer></v-spacer>
-      <v-col>
+      <v-col cols="2">
         <SocialMediaFeedIndvPlatformMetrics :platform="facebook"/>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col>
+      <v-col cols="2">
         <SocialMediaFeedIndvPlatformMetrics :platform="reddit"/>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col>
+      <v-col cols="2">
         <SocialMediaFeedIndvPlatformMetrics :platform="twitter"/>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col>
+      <v-col cols="2">
         <SocialMediaFeedIndvPlatformMetrics :platform="youtube"/>
       </v-col>
       <v-spacer></v-spacer>
