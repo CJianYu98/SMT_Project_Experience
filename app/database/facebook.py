@@ -30,6 +30,7 @@ FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_OUTPUT_DAT
 fb_posts = client.smt483.fb_posts_ml
 fb_comments = client.smt483.fb_comments_ml
 
+start_main = time.process_time()
 for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     file_name = file[:-4]
 
@@ -132,3 +133,7 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     hours, mins, seconds = get_time(time.process_time() - start1)
     logger.info(f">>>> {file_name} done.\n{file_name} took {hours} hours, {mins} mins, {seconds} seconds in total.")
+
+hours, mins, seconds = get_time(time.process_time() - start_main)
+print("################# FB ML Classification Complete #################")
+print(f"Total time taken is {hours} hours, {mins} mins, {seconds} seconds.")
