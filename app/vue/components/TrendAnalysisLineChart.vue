@@ -3,7 +3,7 @@
   export default {
     extends: Line,
     props:{
-      chartData:{
+      data:{
         required: true
       }
     },
@@ -24,6 +24,7 @@
         //     }
         //   ]
         // },
+        chartData: this.data.chartData,
         options: {
           scales: {
             yAxes: [{

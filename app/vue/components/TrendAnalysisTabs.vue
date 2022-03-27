@@ -28,8 +28,8 @@
             {{ media }}
         </v-tab>
         <v-tab-item
-          v-for="view in mediasMetrics" 
-          :key="view"  
+          v-for="platform in mediasMetrics" 
+          :key="platform.view"
         >
         <!-- <v-card v-if="view === 'all'"> -->
           <v-card flat>
@@ -37,17 +37,25 @@
               <v-row no-gutters align="stretch">
                 <v-col class="d-flex">
                   <v-card-title class="text-h5">
-                    Number of Posts
+                    <!-- {{platform.view}} -->
+                    {{ title }}
                   </v-card-title>
                   <v-spacer></v-spacer>
-                  <DropDownSelect :viewFilter="view.view" :label="label"></DropDownSelect>
+                  <DropDownSelect 
+                  :viewFilter="platform.view" 
+                  @changeView="ChangeV($event)" 
+                  :label="label">
+                  </DropDownSelect>
                 </v-col>
               </v-row>
             </v-container>
           </v-card>
-          <v-card >
-            <line-chart class="chartBox" :chartData="view.chartData"></line-chart>
-          </v-card>  
+          <v-card v-if="title === 'Number of Mentions'">
+            <line-chart class="chartBox" :data="platform.data_mentions"></line-chart>  
+          </v-card>
+          <v-card v-else-if="title === 'Number of Likes'" to="/dashboard">
+            <line-chart class="chartBox" :data="platform.data_likes"></line-chart>  
+          </v-card>   
         <!-- </v-card> -->
         </v-tab-item>
     </v-tabs>
@@ -156,11 +164,11 @@ import LineChart from '@/components/TrendAnalysisLineChart'
   export default {
     props: {
       medias: {
-        type: Object,
+        type: Array,
         required: true
       },
       mediasMetrics: {
-        type: Array,
+        type: Object,
         required: true
       }
     },
@@ -172,6 +180,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       return {
         tabs: null,
         label: 'View',
+        title: 'Number of Mentions'
         // medias: ['all','facebook','reddit','twitter','youtube'],
         // mediaMetrics: { 
         //   all: {
@@ -388,12 +397,18 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         // },
       }
     },
+    methods:{
+      ChangeV(title)
+      {
+        this.title=title;
+      },
+    }
   }
 </script>
 
 <style>
-  /* .chartBox {
+  .chartBox {
     width: 800px;
     height: 360px;
-  } */
+  }
 </style>
