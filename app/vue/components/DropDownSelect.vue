@@ -3,7 +3,7 @@
         <v-select
             d-block
             v-model="selectedView"
-            @change="onChange(selectedView)"
+            @change="onChange()"
             :items="viewFilter"
             item-text="view"
             :label="label"
@@ -23,20 +23,30 @@
       label: {
         required: true
       },
+      viewSelected: {
+        required: true
+      },
       // viewSelected: {
       //   required: true
       // }
     },
-    data: () => ({
-      selectedView: 'Number of Mentions'
-      // items: [],
-      // viewSelected: ["Number of Mentions"],
-    //   viewFilter: [{view: 'Number of Likes'}, {view: 'Number of Comments'}, {view: 'Number of Shares'}]
-    }),
+    data () {
+      return {
+        selectedView: this.$props.viewSelected,
+        // items: [],
+        // viewSelected: ["Number of Mentions"],
+        // viewFilter: [{view: 'Number of Likes'}, {view: 'Number of Comments'}, {view: 'Number of Shares'}]
+      }
+    },
     methods: {
-      onChange:function onChange(event){
+      onChange:function onChange(){
           // console.log(this.selectedView);
           this.$emit('changeView',this.selectedView);
+      }
+    },
+    watch:{
+      viewSelected() {
+        this.selectedView = this.viewSelected;
       }
     }
   }

@@ -4,6 +4,7 @@
     extends: Line,
     props:{
       data:{
+        type: Object,
         required: true
       }
     },
@@ -24,13 +25,13 @@
         //     }
         //   ]
         // },
-        chartData: this.data.chartData,
+        chartData: this.$props.data.chartData,
         options: {
           scales: {
             yAxes: [{
               scaleLabel: {
                 display: true,
-                labelString: 'Number of Posts'
+                labelString: 'Count'
               },
               ticks: {
                 beginAtZero: true
@@ -53,8 +54,23 @@
         }
       }
     },
+    // methods: {
+    //   onChange:function onChange(){
+    //       this.$emit('changeChart',this.chartData);
+    //   }
+    // },
+    // watch:{
+    //   data() {
+    //     this.chartData = this.$props.data.chartData;
+    //   }
+    // },
     mounted () {
       this.renderChart(this.chartData, this.options)
-    }
+    },
+    // watch: {
+    //   chartData () {
+    //     this.$data._chart.update()
+    //   }
+    // },
   }
 </script>

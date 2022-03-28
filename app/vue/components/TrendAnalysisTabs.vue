@@ -21,6 +21,7 @@
         <v-tab
             v-for="media in medias"
             :key="media"
+            @change="reset(media)"
         >
             <v-img v-if="media !== 'all'" :src="`/${media}_icon.png`">
             </v-img>
@@ -38,24 +39,23 @@
                 <v-col class="d-flex">
                   <v-card-title class="text-h5">
                     <!-- {{platform.view}} -->
-                    {{ title }}
+                    {{ selectedViewOption }}
                   </v-card-title>
                   <v-spacer></v-spacer>
                   <DropDownSelect 
-                  :viewFilter="platform.view" 
-                  @changeView="ChangeV($event)" 
+                  :viewFilter="selectedViewList" 
+                  :viewSelected="selectedViewOption"
+                  @changeView="changeViewOption($event)"
                   :label="label">
                   </DropDownSelect>
                 </v-col>
               </v-row>
             </v-container>
           </v-card>
-          <v-card v-if="title === 'Number of Mentions'">
-            <line-chart class="chartBox" :data="platform.data_mentions"></line-chart>  
+          <v-card>
+            <line-chart class="chartBox" :data="selectedChartData"></line-chart>  
           </v-card>
-          <v-card v-else-if="title === 'Number of Likes'" to="/dashboard">
-            <line-chart class="chartBox" :data="platform.data_likes"></line-chart>  
-          </v-card>   
+                
         <!-- </v-card> -->
         </v-tab-item>
     </v-tabs>
@@ -180,7 +180,57 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       return {
         tabs: null,
         label: 'View',
-        title: 'Number of Mentions'
+        // title: 'Number of Mentions',
+        selectedTab: 'all',
+        selectedViewList: ['Number of Mentions','Number of Likes'],
+        selectedViewOption: 'Number of Mentions',
+        selectedChartData: {
+          // chartData:{
+          //   labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+          //   "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+          //   datasets: [
+          //     {
+          //       label: 'Facebook',
+          //       data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+          //       fill: false,
+          //       borderColor: '#3949AB',
+          //       backgroundColor: '#3949AB',
+          //       borderWidth: 1,
+          //       // tension: 0.1
+          //     },
+          //     {
+          //       label: 'Reddit',
+          //       data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+          //       fill: false,
+          //       borderColor: '#EF6C00',
+          //       backgroundColor: '#EF6C00',
+          //       borderWidth: 1,
+          //     },
+          //     {
+          //       label: 'Twitter',
+          //       data: [2300,  150,  4342,  7050,  1522,  3841,  1559,  657,  1445, 3000, 4500, 6641],
+          //       fill: false,
+          //       borderColor: '#42A5F5',
+          //       backgroundColor: '#42A5F5',
+          //       borderWidth: 1
+          //     },
+          //     {
+          //       label: 'Youtube',
+          //       data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+          //       fill: false,
+          //       borderColor: '#C62828',
+          //       backgroundColor: '#C62828',
+          //       borderWidth: 1
+          //     },
+          //   ]
+          // }
+        },
+        // function(){
+        //   const theData= {
+        //     selectedChartData: '',
+        //   }
+        //   return theData;
+        // },
         // medias: ['all','facebook','reddit','twitter','youtube'],
         // mediaMetrics: { 
         //   all: {
@@ -398,11 +448,87 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       }
     },
     methods:{
-      ChangeV(title)
+      reset(media)
       {
-        this.title=title;
+        console.log(this.selectedChartData);
+        this.selectedTab = media;
+        // console.log(this.selectedTab);
+        this.selectedViewOption= 'Number of Mentions';
+        // console.log(this.selectedViewOption);
+        if (this.selectedTab === 'all'){
+          this.selectedViewList = this.$props.mediasMetrics.all.view;
+          this.selectedChartData = this.$props.mediasMetrics.all.data_mentions;
+        }   
+        else if (this.selectedTab === 'facebook'){
+          this.selectedViewList = this.$props.mediasMetrics.facebook.view;
+          this.selectedChartData = this.$props.mediasMetrics.facebook.data_mentions;
+        }
+        else if (this.selectedTab === 'reddit'){
+          this.selectedViewList = this.$props.mediasMetrics.reddit.view;
+          this.selectedChartData = this.$props.mediasMetrics.reddit.data_mentions;
+        }
+        else if (this.selectedTab === 'twitter'){
+          this.selectedViewList = this.$props.mediasMetrics.twitter.view;
+          this.selectedChartData = this.$props.mediasMetrics.twitter.data_mentions;
+        }
+        else if (this.selectedTab === 'youtube'){
+          this.selectedViewList = this.$props.mediasMetrics.youtube.view;
+          this.selectedChartData = this.$props.mediasMetrics.youtube.data_mentions;
+        }            
+        // this.selectedViewList = this.$props.mediasMetrics.media.view;
+        // console.log(this.selectedViewList);
+        
+        // this.selectedChartData = this.$props.mediasMetrics.all.chart_mentions; 
+        // this.changeChart();
       },
-    }
+      changeViewOption(selectedViewOption)
+      {
+        this.selectedViewOption = selectedViewOption;
+        this.changeChart();
+      },
+      changeChart()
+      {
+        // console.log(123);
+        // console.log(this.selectedTab);
+        // console.log(this.$props.mediasMetrics.all.data_likes);
+        // if (this.selectedTab === 'facebook'){
+        //   if (this.selectedViewOption === 'Number of Likes'){
+            
+        //     console.log(this.selectedViewOption);
+            
+        //     console.log(this.selectedChartData.chartData);
+        //     this.selectedChartData = this.$props.mediasMetrics.all.data_likes;
+        //     console.log(this.selectedChartData.chartData);
+        //     console.log(this.selectedChartData === this.$props.mediasMetrics.all.data_likes);
+        //   }
+        // }
+
+        if (this.selectedTab === 'all'){
+          // console.log(123);
+          if (this.selectedViewOption === 'Number of Mentions'){
+            
+            this.selectedChartData = this.$props.mediasMetrics.all.data_mentions;
+            // console.log('mention');
+            // console.log(this.selectedChartData.chartData);
+          } 
+          else if (this.selectedViewOption === 'Number of Likes'){
+            console.log(this.selectedChartData === this.$props.mediasMetrics.all.data_likes);
+            
+            this.selectedChartData = this.$props.mediasMetrics.all.data_likes;
+            // console.log('likes');
+            
+            console.log(this.selectedChartData === this.$props.mediasMetrics.all.data_likes);
+          }
+        }
+      }
+    },
+    // watch:{
+    //   mediasMetrics: {
+    //     handler(){
+    //       this.selectedChartData = this.mediasMetrics.all.chart_mentions;
+    //     }
+    //   }
+    // }
   }
 </script>
 
