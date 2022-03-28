@@ -20,6 +20,21 @@ def replace_characters(text: str) -> str:
         text = text.replace(symbol, replacement)
     return text
 
+def topic_preprocessing(text): 
+    """
+    Process social media text for topic classification (match dictionary of words): Remove punctuations and change to lowercase
+
+    Args:
+        text (str): Raw social media text
+
+    Returns:
+        str: cleaned text
+    """
+    lowercase_text = text.lower()
+    punctuations_removed = re.sub('[^a-z]', ' ', lowercase_text)
+    
+    return punctuations_removed
+
 def preprocessing(text):
     """
     Clean social media text: Removing non-english characters, markdown elements, unnecessary 'news' tags, links
@@ -28,7 +43,7 @@ def preprocessing(text):
         text (str): Raw social media text
 
     Returns:
-        str: description
+        str: preprocessed text
     """
     text = text.encode("ascii", errors="ignore").decode()  # Remove non-english characters
     text = "".join([ch for ch in text if ch in string.printable])  #
