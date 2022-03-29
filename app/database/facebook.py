@@ -18,7 +18,8 @@ from ..ml.models.noteworthy_classification import *
 from ..ml.models.preprocessing import *
 from ..ml.models.sentiment_classification import *
 from ..ml.models.thoughtful_classification import *
-from ..ml.models.topic_classification import *
+# from ..ml.models.topic_classification import *
+from ..ml.models.topic_matching import *
 from .connect import client
 
 pd.options.mode.chained_assignment = None  # to hide warning error
@@ -98,8 +99,11 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     #################### TOPIC CLASSIFICATION ####################
     start = time()
-    df_posts["topic"] = df_posts["cleantext"].apply(classify_topics)
-    df_comments["topic"] = df_comments["cleantext"].apply(classify_topics)
+    # df_posts["topic"] = df_posts["cleantext"].apply(classify_topics)
+    # df_comments["topic"] = df_comments["cleantext"].apply(classify_topics)
+
+    df_posts["topic"] = df_posts["cleantext"].apply(get_topics)
+    df_comments["topic"] = df_comments["cleantext"].apply(get_topics)
 
     hours, mins, seconds = get_time(time() - start)
     logger.info(f"TOPIC CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
