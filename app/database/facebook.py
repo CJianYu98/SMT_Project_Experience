@@ -30,8 +30,8 @@ FACEBOOK_HISTORICAL_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_DATA_PATH")
 FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH = os.getenv("FACEBOOK_HISTORICAL_OUTPUT_DATA_PATH")
 
 # Select MongoDB collection to work with
-fb_posts = client.smt483.fb_posts
-fb_comments = client.smt483.fb_comments
+fb_posts = client.smt483.facebook_posts
+fb_comments = client.smt483.facebook_comments
 
 start_main = time()
 for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
@@ -158,7 +158,7 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     fb_comments.insert_many([comments[i] for i in range(num_comments)])
 
     hours, mins, seconds = get_time(time() - start1)
-    logger.info(f">>>> {file_name} done.\n{file_name} took {hours} hours, {mins} mins, {seconds} seconds in total.")
+    logger.info(f">>>> {file_name} done.\n{file_name} took {hours} hours, {mins} mins, {seconds} seconds in total./n/n")
 
 hours, mins, seconds = get_time(time() - start_main)
 print("################# FB ML Classification Complete #################")
