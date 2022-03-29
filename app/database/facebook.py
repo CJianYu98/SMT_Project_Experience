@@ -22,7 +22,7 @@ from ..ml.models.topic_classification import *
 from .connect import client
 
 pd.options.mode.chained_assignment = None  # to hide warning error
-tqdm.pandas()  # Enable progress bar for dataframe .apply
+# tqdm.pandas()  # Enable progress bar for dataframe .apply using progress_apply
 
 # Load constants
 load_dotenv()
@@ -38,7 +38,7 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
     file_name = file[:-4]
 
     # Read data files
-    df = pd.read_csv(f"{FACEBOOK_HISTORICAL_DATA_PATH}/{file}", header=1)
+    df = pd.read_csv(f"{FACEBOOK_HISTORICAL_DATA_PATH}/{file}", header=1, low_memory=False)
 
     # Drop rows with error or missing data
     df.drop(df[df["query_status"] == "error (400)"].index, inplace=True)
@@ -82,32 +82,32 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     ###################  KEYWORD ANALYSIS ####################
     start1 = time()
-    df_posts["entities"] = df_posts["cleantext"].progress_apply(extract_entities)
-    df_comments["entities"] = df_comments["cleantext"].progress_apply(extract_entities)
+    df_posts["entities"] = df_posts["cleantext"].apply(extract_entities)
+    df_comments["entities"] = df_comments["cleantext"].apply(extract_entities)
 
     hours, mins, seconds = get_time(time() - start1)
     logger.info(f"KEYWORD ANALYSIS took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     ####################  EMOTIONS CLASSIFICATION ####################
     start = time()
-    df_posts["emotions_label"] = df_posts["message"].progress_apply(lambda x: classify_emotions(x))
-    df_comments["emotions_label"] = df_comments["message"].progress_apply(lambda x: classify_emotions(x))
+    df_posts["emotions_label"] = df_posts["message"].apply(lambda x: classify_emotions(x))
+    df_comments["emotions_label"] = df_comments["message"].apply(lambda x: classify_emotions(x))
 
     hours, mins, seconds = get_time(time() - start)
     logger.info(f"EMOTIONS CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### TOPIC CLASSIFICATION ####################
     start = time()
-    df_posts["topic"] = df_posts["cleantext"].progress_apply(classify_topics)
-    df_comments["topic"] = df_comments["cleantext"].progress_apply(classify_topics)
+    df_posts["topic"] = df_posts["cleantext"].apply(classify_topics)
+    df_comments["topic"] = df_comments["cleantext"].apply(classify_topics)
 
     hours, mins, seconds = get_time(time() - start)
     logger.info(f"TOPIC CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
     #################### INTENT CLASSIFICATION ####################
     start = time()
-    df_posts["intent"] = df_posts["cleantext"].progress_apply(classify_intent)
-    df_comments["intent"] = df_comments["cleantext"].progress_apply(classify_intent)
+    df_posts["intent"] = df_posts["cleantext"].apply(classify_intent)
+    df_comments["intent"] = df_comments["cleantext"].apply(classify_intent)
 
     hours, mins, seconds = get_time(time() - start)
     logger.info(f"INTENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
@@ -137,8 +137,8 @@ for file in os.listdir(FACEBOOK_HISTORICAL_DATA_PATH):
 
     #################### NOTEWORTHY CLASSIFICATION ####################
     start = time()
-    df_posts["isNoteworthy"] = df_posts.progress_apply(classify_noteworthy, axis=1)
-    df_comments["isNoteworthy"] = df_comments.progress_apply(classify_noteworthy, axis=1)
+    df_posts["isNoteworthy"] = df_posts.apply(classify_noteworthy, axis=1)
+    df_comments["isNoteworthy"] = df_comments.apply(classify_noteworthy, axis=1)
 
     hours, mins, seconds = get_time(time() - start)
     logger.info(f"NOTEWORTHY CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")

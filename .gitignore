@@ -14,3 +14,9 @@ app/ml/models/model_data/facebook/bart-large-mnli/special_tokens_map.json
 app/ml/models/model_data/facebook/bart-large-mnli/tokenizer.json
 app/ml/models/model_data/facebook/bart-large-mnli/tokenizer_config.json
 app/ml/models/model_data/facebook/bart-large-mnli/vocab.json
+app/ml/models/model_data/typeform/distilbert-base-uncased-mnli/vocab.txt
+app/ml/models/model_data/typeform/distilbert-base-uncased-mnli/tokenizer.json
+app/ml/models/model_data/typeform/distilbert-base-uncased-mnli/special_tokens_map.json
+app/ml/models/model_data/typeform/distilbert-base-uncased-mnli/tokenizer_config.json
+app/ml/models/model_data/typeform/distilbert-base-uncased-mnli/pytorch_model.bin
+app/ml/models/model_data/typeform/distilbert-base-uncased-mnli/config.json
