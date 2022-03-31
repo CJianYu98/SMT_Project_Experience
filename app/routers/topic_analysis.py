@@ -37,7 +37,7 @@ async def get_top5_topic_analysis(filter: Filter):
         end_date="2021-03-01",
         platforms=["Facebook", "Reddit"],
         sentiments=["positive", "negative", "neutral"],
-        emotions=["joy", "sadness", "neutral", "anger", "sadness"],
+        emotions=["joy", "sadness", "neutral", "anger", "fear"],
         query=None,
     )
 
@@ -46,6 +46,8 @@ async def get_top5_topic_analysis(filter: Filter):
 
     # May need to rename the column names for each df, and concat to empty df instead
     all_data = fb_data + fb_data1
+    if len(all_data) == 0:
+        return []
     df = pd.DataFrame(all_data)
 
     # Getting the top 5 topics

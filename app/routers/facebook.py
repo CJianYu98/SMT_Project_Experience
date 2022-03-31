@@ -243,16 +243,30 @@ def get_top5_topics_stats(filter: Filter, project: dict):
         "sentiment_label": {"$in": filter.sentiments},
         "emotions_label": {"$in": filter.emotions},
     }
-    # data = list(db['FB_POSTS'].find(db_query, project))
-    data = list(db.jianyu_play_girls.find(db_query, project))
-
-    df = pd.DataFrame(data)
-
-    if len(df) == 0:
-        return []
-
     if filter.query:
-        df_filtered = df[df["message"].str.contains(filter.query)]
-        return df_filtered.to_dict(orient="records")
+        db_query["message"] = {"$regex": f" {filter.query} "}
 
-    return df.to_dict(orient="records")
+    # data = list(db['FB_POSTS'].find(db_query, project))
+    return list(db.jianyu_play_girls.find(db_query, project))
+
+
+# @router.get("/get-aggregated-stats")
+# def get_aggregated_stats(filter: Filter):
+#     end_date = datetime.strptime(filter.end_date, "%Y-%m-%d")
+#     start_date = end_date - timedelta(days=14)
+
+#     match_query = {
+#         "created_time": {"$gte": start_date, "$lte": end_date},
+#         "sentiment_label": {"$in": filter.sentiments},
+#         "emotions_label": {"$in": filter.emotions},
+#     }
+#     if filter.query:
+#         match_query["message"] = {"$regex": f" {filter.query} "}
+
+#     db_query = [
+#         {"$match": match_query},
+#         {"$group": {"_id": None, "total_likes": {"$sum": "$likes_cnt"}, "count": {"$sum": 1}}},
+#         {"$project": {"total_likes": 1, "count": 1, "_id": False}},
+#     ]
+
+#     return list(db.jianyu_play_girls.aggregate(db_query))
