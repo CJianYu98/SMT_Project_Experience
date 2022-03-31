@@ -21,3 +21,13 @@ class FbStatsRes(BaseModel):
 
 class FbTrendRes(BaseModel):
     perc_change: float
+
+class FbTopicStats(BaseModel):
+    entities: List[str]
+    emotions_label: str
+    topic: str
+    sentiment_lab: str
+    message: str
+
+class FbTop5TopicStatsRes(BaseModel):
+    data: List[FbTopicStats]

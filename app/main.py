@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import facebook
+from .routers import facebook, topic_analysis
 
 app = FastAPI()
 
@@ -12,3 +12,4 @@ app.add_middleware(
 )
 
 app.include_router(facebook.router)
+app.include_router(topic_analysis.router)
