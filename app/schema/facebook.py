@@ -35,3 +35,12 @@ class FbTopicStats(BaseModel):
 
 class FbTop5TopicStatsRes(BaseModel):
     data: List[FbTopicStats]
+
+
+class FbIndivAggregatedStats(BaseModel):
+    total_likes: int
+    count: int
+
+
+class FbAggregatedStatsRes(BaseModel):
+    __root__: List[FbIndivAggregatedStats]

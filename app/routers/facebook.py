@@ -5,7 +5,13 @@ import pandas as pd
 from fastapi import APIRouter, HTTPException, Path, Query
 
 from ..database.connect import db
-from ..schema.facebook import FbPostRes, FbStatsRes, FbTop5TopicStatsRes, FbTrendRes
+from ..schema.facebook import (
+    FbAggregatedStatsRes,
+    FbPostRes,
+    FbStatsRes,
+    FbTop5TopicStatsRes,
+    FbTrendRes,
+)
 from ..schema.user_filter import Filter
 
 router = APIRouter(prefix="/facebook", tags=["facebook"])
@@ -250,23 +256,32 @@ def get_top5_topics_stats(filter: Filter, project: dict):
     return list(db.jianyu_play_girls.find(db_query, project))
 
 
-# @router.get("/get-aggregated-stats")
-# def get_aggregated_stats(filter: Filter):
-#     end_date = datetime.strptime(filter.end_date, "%Y-%m-%d")
-#     start_date = end_date - timedelta(days=14)
+@router.get("/get-aggregated-stats", response_model=FbAggregatedStatsRes)
+def get_aggregated_stats(filter: Filter):
+    """
+    _summary_
 
-#     match_query = {
-#         "created_time": {"$gte": start_date, "$lte": end_date},
-#         "sentiment_label": {"$in": filter.sentiments},
-#         "emotions_label": {"$in": filter.emotions},
-#     }
-#     if filter.query:
-#         match_query["message"] = {"$regex": f" {filter.query} "}
+    Args:
+        filter (Filter): _description_
 
-#     db_query = [
-#         {"$match": match_query},
-#         {"$group": {"_id": None, "total_likes": {"$sum": "$likes_cnt"}, "count": {"$sum": 1}}},
-#         {"$project": {"total_likes": 1, "count": 1, "_id": False}},
-#     ]
+    Returns:
+        _type_: _description_
+    """
+    end_date = datetime.strptime(filter.end_date, "%Y-%m-%d")
+    start_date = end_date - timedelta(days=14)
 
-#     return list(db.jianyu_play_girls.aggregate(db_query))
+    match_query = {
+        "created_time": {"$gte": start_date, "$lte": end_date},
+        "sentiment_label": {"$in": filter.sentiments},
+        "emotions_label": {"$in": filter.emotions},
+    }
+    if filter.query:
+        match_query["message"] = {"$regex": f" {filter.query} "}
+
+    db_query = [
+        {"$match": match_query},
+        {"$group": {"_id": None, "total_likes": {"$sum": "$likes_cnt"}, "count": {"$sum": 1}}},
+        {"$project": {"total_likes": 1, "count": 1, "_id": False}},
+    ]
+
+    return list(db.jianyu_play_girls.aggregate(db_query))
