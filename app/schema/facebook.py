@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
-from typing import List
 from datetime import datetime
+from typing import List
+
+from pydantic import BaseModel, Field
 
 
 class FbPostRes(BaseModel):
@@ -19,8 +20,10 @@ class FbStatsRes(BaseModel):
     total_likes: int
     count: int
 
+
 class FbTrendRes(BaseModel):
     perc_change: float
+
 
 class FbTopicStats(BaseModel):
     entities: List[str]
@@ -28,6 +31,7 @@ class FbTopicStats(BaseModel):
     topic: str
     sentiment_lab: str
     message: str
+
 
 class FbTop5TopicStatsRes(BaseModel):
     data: List[FbTopicStats]
