@@ -1,15 +1,9 @@
-from datetime import datetime, timedelta
-from typing import List
-
-from fastapi import APIRouter, HTTPException, Path, Query
+from fastapi import APIRouter, HTTPException
 
 from ..database.connect import db
 from ..schema.facebook import (
     FbAggregatedStatsRes,
-    FbPostRes,
-    FbStatsRes,
     FbTop5TopicStatsRes,
-    FbTrendRes,
 )
 from ..schema.user_filter import Filter
 from .user_filter import db_filter_query_from_user_filter
