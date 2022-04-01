@@ -20,5 +20,6 @@ class FbIndivAggregatedStats(BaseModel):
     count: int
 
 
-class FbAggregatedStatsRes(BaseModel):
-    __root__: List[FbIndivAggregatedStats]
+class FbKeywordAnalysisRes(BaseModel):
+    entities: List[str]
+    sentiment_label: str

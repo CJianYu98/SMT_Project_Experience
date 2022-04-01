@@ -23,8 +23,8 @@ def get_all_aggregated_stats(filter: Filter):
         Pydantic Model: JSON response object
     """
     filter1 = Filter(
-        start_date="2019-02-01",
-        end_date="2019-03-01",
+        endDate="2019-03-01",
+        numDays=14,
         platforms=["Facebook", "Reddit"],
         sentiments=["positive", "negative", "neutral"],
         emotions=["joy", "sadness", "neutral", "anger", "fear"],
@@ -59,8 +59,8 @@ def get_all_trend_stats(filter: Filter):
         Pydantic Model: JSON response object
     """
     filter1 = Filter(
-        start_date="2019-02-01",
-        end_date="2019-03-01",
+        endDate="2019-03-01",
+        numDays=14,
         platforms=["Facebook", "Reddit"],
         sentiments=["positive", "negative", "neutral"],
         emotions=["joy", "sadness", "neutral", "anger", "fear"],
