@@ -11,7 +11,7 @@ from .facebook import get_fb_top5_topics_stats
 router = APIRouter(prefix="/topic-analysis", tags=["topic_analysis"])
 
 
-@router.get("/get-top5-topic-analysis", response_model=List[IndiTopicStatsRes])
+@router.post("/get-top5-topic-analysis", response_model=List[IndiTopicStatsRes])
 async def get_top5_topic_analysis(filter: Filter):
     """
     Generate top 5 topics and their respective statistics (sentiments, emotions, top mentions, counts)
@@ -34,8 +34,8 @@ async def get_top5_topic_analysis(filter: Filter):
     }
 
     filter1 = Filter(
-        start_date="2021-02-01",
-        end_date="2021-03-01",
+        endDate="2019-03-01",
+        numDays=14,
         platforms=["Facebook", "Reddit"],
         sentiments=["positive", "negative", "neutral"],
         emotions=["joy", "sadness", "neutral", "anger", "fear"],
@@ -49,9 +49,9 @@ async def get_top5_topic_analysis(filter: Filter):
     all_data = fb_data + fb_data1
     if not all_data:
         raise HTTPException(
-            status_code=404,
-            detail=f"No data found within date period {filter.start_date} to {filter.end_date}",
+            status_code=404, detail="No data found within date period given"
         )
+
     df = pd.DataFrame(all_data)
 
     # Getting the top 5 topics
