@@ -4,11 +4,11 @@ from ..schema.user_filter import Filter
 
 
 def db_filter_query_from_user_filter(filter: Filter) -> dict:
-    endDate = datetime.strptime(filter.endDate, "%Y-%m-%d")
-    start_date = endDate - timedelta(days=filter.numDays)
+    end_date = datetime.strptime(filter.end_date, "%Y-%m-%d")
+    start_date = end_date - timedelta(days=filter.numDays)
 
     db_query = {
-        "created_time": {"$gte": start_date, "$lte": endDate},
+        "created_time": {"$gte": start_date, "$lte": end_date},
         "sentiment_label": {"$in": filter.sentiments},
         "emotions_label": {"$in": filter.emotions},
     }

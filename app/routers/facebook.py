@@ -81,6 +81,16 @@ def get_fb_trend_stats(filter: Filter):
 
 @router.post("/get-top-keywords", response_model=List[FbKeywordAnalysisRes])
 def get_top_keywords(filter: Filter, project: dict):
+    """
+    Query the db based on user filter and get entities and sentiments
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+        project (dict): MongoDB project field for query statement
+
+    Returns:
+        list: List of records
+    """
     db_query = db_filter_query_from_user_filter(filter)
 
     return list(db.jianyu_play_girls.find(db_query, project))
