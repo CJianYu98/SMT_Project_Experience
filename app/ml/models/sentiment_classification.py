@@ -39,7 +39,8 @@ def classify_sentiment(df: pd.DataFrame) -> pd.DataFrame:
 
     labels = [
         SENTIMENT_LABELS_DICT[output["label"]]
-        for output in tqdm(classifier(KeyDataset(Dataset.from_pandas(df), TEXT_COLUMN)))
+        # for output in tqdm(classifier(KeyDataset(Dataset.from_pandas(df), TEXT_COLUMN)))
+        for output in classifier(KeyDataset(Dataset.from_pandas(df), TEXT_COLUMN))
     ]
 
     df["sentiment_label"] = labels

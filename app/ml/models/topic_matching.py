@@ -58,8 +58,10 @@ def get_topics(text):
 
         topic_match = {'art':0, 'covid19':0, 'education':0, 'environment':0, 'fashion':0, 'food':0, 'health':0, 'politics':0, 'technology':0, 'sports':0, 'science and medicine':0, 'law and crime':0}
 
+        processed_text = topic_preprocessing(text)
+
         for i in range(len(topic_dicts)):
-            match_text = topic_dicts[i][1].intersection(set(text.split()))
+            match_text = topic_dicts[i][1].intersection(set(processed_text.split()))
 
             for k in topic_match:
                 if k == topic_dicts[i][0]:
