@@ -230,7 +230,7 @@ def get_trend(
 
 
 @router.get("/get-top5-topics-stats", response_model=FbTop5TopicStatsRes)
-def get_top5_topics_stats(filter: Filter, project: dict):
+def get_fb_top5_topics_stats(filter: Filter, project: dict):
     """
     Query the db based on user filter and select only relevant fields for top 5 topic analysis.
 
@@ -248,7 +248,7 @@ def get_top5_topics_stats(filter: Filter, project: dict):
 
 
 @router.get("/get-aggregated-stats", response_model=FbAggregatedStatsRes)
-def get_aggregated_stats(filter: Filter):
+def get_fb_aggregated_stats(filter: Filter):
     """
     Query the db based on user filter and select only relevant fields for trend analysis (aggregated stats).
 
@@ -270,7 +270,7 @@ def get_aggregated_stats(filter: Filter):
 
 
 @router.get("/get-trend-stats", response_model=int)
-def get_trend_stats(filter: Filter):
+def get_fb_trend_stats(filter: Filter):
     """
     Query the db based on user filter and get number of records.
 

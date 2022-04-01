@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException
 
 from ..schema.topic_analysis import IndiTopicStatsRes
 from ..schema.user_filter import Filter
-from .facebook import get_top5_topics_stats
+from .facebook import get_fb_top5_topics_stats
 
 router = APIRouter(prefix="/topic-analysis", tags=["topic_analysis"])
 
@@ -42,8 +42,8 @@ async def get_top5_topic_analysis(filter: Filter):
         query=None,
     )
 
-    fb_data = get_top5_topics_stats(filter, project)
-    fb_data1 = get_top5_topics_stats(filter1, project)
+    fb_data = get_fb_top5_topics_stats(filter, project)
+    fb_data1 = get_fb_top5_topics_stats(filter1, project)
 
     # May need to rename the column names for each df, and concat to empty df instead
     all_data = fb_data + fb_data1

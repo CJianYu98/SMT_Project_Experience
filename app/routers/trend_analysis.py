@@ -6,7 +6,7 @@ from ..schema.trend_analysis import (
     TrendStatsRes,
 )
 from ..schema.user_filter import Filter
-from .facebook import get_aggregated_stats, get_trend_stats
+from .facebook import get_fb_aggregated_stats, get_fb_trend_stats
 
 router = APIRouter(prefix="/trend-analysis", tags=["trend_analysis"])
 
@@ -31,8 +31,8 @@ def get_all_aggregated_stats(filter: Filter):
         query=None,
     )
 
-    fb_data = get_aggregated_stats(filter)
-    fb_data1 = get_aggregated_stats(filter1)
+    fb_data = get_fb_aggregated_stats(filter)
+    fb_data1 = get_fb_aggregated_stats(filter1)
 
     all_data = [fb_data, fb_data1]
 
@@ -67,8 +67,8 @@ def get_all_trend_stats(filter: Filter):
         query=None,
     )
 
-    fb_data = get_trend_stats(filter)
-    fb_data1 = get_trend_stats(filter1)
+    fb_data = get_fb_trend_stats(filter)
+    fb_data1 = get_fb_trend_stats(filter1)
 
     return {"trend": round(fb_data / fb_data1, 2)}
 
@@ -93,8 +93,8 @@ def get_indiv_trend_stats(filter: Filter):
         query=None,
     )
 
-    fb_data = get_trend_stats(filter)
-    fb_data1 = get_trend_stats(filter1)
+    fb_data = get_fb_trend_stats(filter)
+    fb_data1 = get_fb_trend_stats(filter1)
 
     return {
         "Facebook": {"trend": round(fb_data / fb_data1, 2)},
