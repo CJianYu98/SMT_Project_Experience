@@ -1,20 +1,15 @@
+import nltk
 import pandas as pd
 import spacy
-ner = spacy.load('en_core_web_sm')
+from nltk.stem import WordNetLemmatizer
 
-import nltk
-nltk.download('wordnet') # NLTK Package WordNet for WordNetLemmatizer
-nltk.download('omw-1.4') # Open Multilingual Wordnet
-from nltk.stem import PorterStemmer
-from nltk.stem import WordNetLemmatizer 
-
-stemmer = PorterStemmer()
-wnl = WordNetLemmatizer()
-
+from ...constants.ml import ENTITY_TYPES, STOP_ENTITIES
 from .preprocessing import *
 
-# List of entities we want to extract
-ENTITIES = ["PERSON", "NORP", "FAC", "ORG", "GPE", "LOC", "PRODUCT", "EVENT", "WORK_OF_ART"]
+nltk.download("wordnet")  # NLTK Package WordNet for WordNetLemmatizer
+nltk.download("omw-1.4")  # Open Multilingual Wordnet
+ner = spacy.load("en_core_web_sm")
+wnl = WordNetLemmatizer()
 
 
 def extract_entities(text):
@@ -27,22 +22,21 @@ def extract_entities(text):
     Returns:
         dict: Dictionary with key as entity tag and value as the word itself
     """
+
     entity_list = []
-    entities = ENTITIES
 
     ner_text = ner(text)
     for word in ner_text.ents:
         word, label = word.text, word.label_
 
-        if label in entities:
+        if label in ENTITY_TYPES:
             word = word.lower()
-            stemmed_word = stemmer.stem(word)
-            lemma = wnl.lemmatize(stemmed_word)
+            lemma = wnl.lemmatize(word)
 
-            if len(lemma)>1:
+            if len(lemma) > 1 and lemma not in STOP_ENTITIES:
                 entity_list.append(lemma)
 
     entity_list += extract_hashtags(text)
     entity_list += extract_mentions(text)
-                
+
     return entity_list

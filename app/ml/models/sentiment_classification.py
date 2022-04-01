@@ -7,6 +7,8 @@ from tqdm.auto import tqdm
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 from transformers.pipelines.pt_utils import KeyDataset
 
+from ...constants.ml import SENTIMENT_LABELS_DICT, TEXT_COLUMN
+
 # Load environment variables
 load_dotenv()
 
@@ -20,6 +22,7 @@ model = AutoModelForSequenceClassification.from_pretrained(f"{MODEL_DATA_FOLDER_
 
 # Load sentiment analysis pipeline
 classifier = pipeline("sentiment-analysis", tokenizer=tokenizer, model=model, max_length=512, truncation=True)
+text_column = "cleantext"  # To change accordingly, possible to add it as a argument
 
 
 def classify_sentiment(df: pd.DataFrame) -> pd.DataFrame:
@@ -34,14 +37,11 @@ def classify_sentiment(df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: Output df containing sentiment label.
     """
 
-    text_column = "cleantext"  # To change accordingly, possible to add it as a argument
-
-    labels_dict = {"LABEL_0": "negative", "LABEL_1": "neutral", "LABEL_2": "positive"}
-    labels = []
-
-    for output in tqdm(classifier(KeyDataset(Dataset.from_pandas(df), text_column))):
-        current_label = output["label"]
-        labels.append(labels_dict[current_label])
+    labels = [
+        SENTIMENT_LABELS_DICT[output["label"]]
+        # for output in tqdm(classifier(KeyDataset(Dataset.from_pandas(df), TEXT_COLUMN)))
+        for output in classifier(KeyDataset(Dataset.from_pandas(df), TEXT_COLUMN))
+    ]
 
     df["sentiment_label"] = labels
 
