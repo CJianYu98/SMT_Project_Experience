@@ -250,13 +250,13 @@ def get_top5_topics_stats(filter: Filter, project: dict):
 @router.get("/get-aggregated-stats", response_model=FbAggregatedStatsRes)
 def get_aggregated_stats(filter: Filter):
     """
-    _summary_
+    Query the db based on user filter and select only relevant fields for trend analysis (aggregated stats).
 
     Args:
-        filter (Filter): _description_
+        filter (Filter): JSON request body (user's filter options)
 
     Returns:
-        _type_: _description_
+        list: List of records
     """
     filter_query = db_filter_query_from_user_filter(filter)
 
@@ -267,3 +267,19 @@ def get_aggregated_stats(filter: Filter):
     ]
 
     return list(db.jianyu_play_girls.aggregate(db_query))
+
+
+@router.get("/get-trend-stats", response_model=int)
+def get_trend_stats(filter: Filter):
+    """
+    Query the db based on user filter and get number of records.
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+
+    Returns:
+        int: Number of documents/records
+    """
+    db_query = db_filter_query_from_user_filter(filter)
+
+    return db.jianyu_play_girls.count_documents(db_query)
