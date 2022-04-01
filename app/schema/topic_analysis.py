@@ -13,13 +13,10 @@ class EmotionStats(BaseModel):
     count: int
 
 
-class IndiTopicStats(BaseModel):
+class IndiTopicStatsRes(BaseModel):
     name: str
     topThreeMentions: List[str] = []
     mentions: int
     sentiment: List[SentimentStats]
     emotions: List[EmotionStats]
 
-
-class Top5TopicStatsRes(BaseModel):
-    __root__: List[IndiTopicStats]

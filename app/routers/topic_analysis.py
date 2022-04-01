@@ -1,16 +1,17 @@
 from collections import Counter
 
 import pandas as pd
+from typing import List
 from fastapi import APIRouter
 
-from ..schema.topic_analysis import Top5TopicStatsRes
+from ..schema.topic_analysis import IndiTopicStatsRes
 from ..schema.user_filter import Filter
 from .facebook import get_top5_topics_stats
 
 router = APIRouter(prefix="/topic-analysis", tags=["topic_analysis"])
 
 
-@router.get("/get-top5-topic-analysis", response_model=Top5TopicStatsRes)
+@router.get("/get-top5-topic-analysis", response_model=List[IndiTopicStatsRes])
 async def get_top5_topic_analysis(filter: Filter):
     """
     Generate top 5 topics and their respective statistics (sentiments, emotions, top mentions, counts)
