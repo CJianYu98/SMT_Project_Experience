@@ -12,13 +12,13 @@ router = APIRouter(prefix="/trend-analysis", tags=["trend_analysis"])
 @router.get("/get-all-aggregated-stats", response_model=AggregatedStatsRes)
 def get_all_aggregated_stats(filter: Filter):
     """
-    _summary_
+    To get aggregated statistics (total posts, total comments, total likes, percentage of posts per platform).
 
     Args:
-        filter (Filter): _description_
+        filter (Filter): JSON request body (user's filter options)
 
     Returns:
-        _type_: _description_
+        Pydantic Model: JSON response object
     """
     filter1 = Filter(
         start_date="2019-02-01",
@@ -34,11 +34,7 @@ def get_all_aggregated_stats(filter: Filter):
 
     all_data = [fb_data, fb_data1]
 
-    print(fb_data[0]['count'])
-    print(fb_data1[0]['count'])
-
     total_posts = sum(data[0]["count"] for data in all_data)
-    print(total_posts)
     total_likes = sum(data[0]["total_likes"] for data in all_data)
 
     platform_metrics = {

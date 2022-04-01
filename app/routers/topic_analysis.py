@@ -2,7 +2,7 @@ from collections import Counter
 
 import pandas as pd
 from typing import List
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from ..schema.topic_analysis import IndiTopicStatsRes
 from ..schema.user_filter import Filter
@@ -47,8 +47,11 @@ async def get_top5_topic_analysis(filter: Filter):
 
     # May need to rename the column names for each df, and concat to empty df instead
     all_data = fb_data + fb_data1
-    if len(all_data) == 0:
-        return []
+    if not all_data:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No data found within date period {filter.start_date} to {filter.end_date}",
+        )
     df = pd.DataFrame(all_data)
 
     # Getting the top 5 topics
