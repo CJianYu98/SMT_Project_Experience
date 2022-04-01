@@ -93,8 +93,7 @@ def twitter_preprocessing(text):
     markdown_removed = re.sub("\*+\W+", "", text)
     link_removed = re.sub("\(?https?://[A-Za-z0-9./_\-!@#$%^&*+={}[\]<>:;?]*\)?", "", markdown_removed)
     usernames_removed = re.sub("@[\w]+", "", link_removed)
-    hashtags_removed = re.sub("#[\w]+", "", usernames_removed)
-    return hashtags_removed
+    return usernames_removed
 
 
 def extract_hashtags(text):
