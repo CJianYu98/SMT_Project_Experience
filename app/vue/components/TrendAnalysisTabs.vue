@@ -181,15 +181,19 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         LineChart,
         DropDownSelect,
     },
-    data: () => {
+    data: (instance) => {
       return {
         tabs: null,
         label: 'View',
         // title: 'Number of Mentions',
-        selectedTab: 'all',
-        selectedViewList: ['Number of Mentions','Number of Likes'],
-        selectedViewOption: 'Number of Mentions',
-        selectedChartData: {
+        // selectedTab: 'all',
+        // selectedViewList: ['Number of Mentions','Number of Likes'],
+        // selectedViewOption: 'Number of Mentions',
+        selectedTab: instance.medias[0],
+        selectedViewList: instance.mediasMetrics.all.view,
+        selectedViewOption: instance.mediasMetrics.all.view[0],
+        selectedChartData: instance.mediasMetrics.all.data_mentions,
+        //  {
           // chartData:{
           //   labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
           //   "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
@@ -229,7 +233,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           //     },
           //   ]
           // }
-        },
+        // },
         // function(){
         //   const theData= {
         //     selectedChartData: '',
