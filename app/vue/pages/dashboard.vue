@@ -2130,115 +2130,292 @@ export default {
     medias: ['all','facebook','reddit','twitter','youtube'],
     mediasMetrics: { 
       all: {
-        view: ['Number of Likes'],
-        chartData: {
-          labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
-          "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-          datasets: [
-            {
-              label: 'Facebook',
-              data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
-              fill: false,
-              borderColor: '#3949AB',
-              backgroundColor: '#3949AB',
-              borderWidth: 1,
-              // tension: 0.1
-            },
-            {
-              label: 'Reddit',
-              data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
-              fill: false,
-              borderColor: '#EF6C00',
-              backgroundColor: '#EF6C00',
-              borderWidth: 1,
-            },
-            {
-              label: 'Twitter',
-              data: [2300,  150,  4342,  7050,  1522,  3841,  1559,  657,  1445, 3000, 4500, 6641],
-              fill: false,
-              borderColor: '#42A5F5',
-              backgroundColor: '#42A5F5',
-              borderWidth: 1
-            },
-            {
-              label: 'Youtube',
-              data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
-              fill: false,
-              borderColor: '#C62828',
-              backgroundColor: '#C62828',
-              borderWidth: 1
-            },
-          ]
+        view: ['Number of Mentions','Number of Likes'],
+        data_mentions: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Facebook',
+                data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+                fill: false,
+                borderColor: '#3949AB',
+                backgroundColor: '#3949AB',
+                borderWidth: 1,
+                // tension: 0.1
+              },
+              {
+                label: 'Reddit',
+                data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                fill: false,
+                borderColor: '#EF6C00',
+                backgroundColor: '#EF6C00',
+                borderWidth: 1,
+              },
+              {
+                label: 'Twitter',
+                data: [2300,  150,  4342,  7050,  1522,  3841,  1559,  657,  1445, 3000, 4500, 6641],
+                fill: false,
+                borderColor: '#42A5F5',
+                backgroundColor: '#42A5F5',
+                borderWidth: 1
+              },
+              {
+                label: 'Youtube',
+                data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                fill: false,
+                borderColor: '#C62828',
+                backgroundColor: '#C62828',
+                borderWidth: 1
+              },
+            ]
+          },
         },
+        data_likes: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Facebook',
+                data: [4440,  7850,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+                fill: false,
+                borderColor: '#3949AB',
+                backgroundColor: '#3949AB',
+                borderWidth: 1,
+                // tension: 0.1
+              },
+              {
+                label: 'Reddit',
+                data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                fill: false,
+                borderColor: '#EF6C00',
+                backgroundColor: '#EF6C00',
+                borderWidth: 1,
+              },
+              {
+                label: 'Twitter',
+                data: [2300,  150,  4342,  7050,  1522,  3841,  1559,  657,  1445, 3000, 4500, 6641],
+                fill: false,
+                borderColor: '#42A5F5',
+                backgroundColor: '#42A5F5',
+                borderWidth: 1
+              },
+              {
+                label: 'Youtube',
+                data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                fill: false,
+                borderColor: '#C62828',
+                backgroundColor: '#C62828',
+                borderWidth: 1
+              },
+            ]
+          },
+        },
+        // chartData: {
+        //   labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+        //   "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+        //   datasets: [
+        //     {
+        //       label: 'Facebook',
+        //       data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+        //       fill: false,
+        //       borderColor: '#3949AB',
+        //       backgroundColor: '#3949AB',
+        //       borderWidth: 1,
+        //       // tension: 0.1
+        //     },
+        //     {
+        //       label: 'Reddit',
+        //       data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+        //       fill: false,
+        //       borderColor: '#EF6C00',
+        //       backgroundColor: '#EF6C00',
+        //       borderWidth: 1,
+        //     },
+        //     {
+        //       label: 'Twitter',
+        //       data: [2300,  150,  4342,  7050,  1522,  3841,  1559,  657,  1445, 3000, 4500, 6641],
+        //       fill: false,
+        //       borderColor: '#42A5F5',
+        //       backgroundColor: '#42A5F5',
+        //       borderWidth: 1
+        //     },
+        //     {
+        //       label: 'Youtube',
+        //       data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+        //       fill: false,
+        //       borderColor: '#C62828',
+        //       backgroundColor: '#C62828',
+        //       borderWidth: 1
+        //     },
+        //   ]
+        // },
       }, 
       facebook: {
-        view: ['Number of Likes', 'Number of Comments', 'Number of Shares'],
-        chartData: {
-          labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
-          "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-          datasets: [
-            {
-              label: 'Facebook',
-              data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
-              fill: false,
-              borderColor: '#3949AB',
-              backgroundColor: '#3949AB',
-              borderWidth: 1,
-            }
-          ]
-        }
+        view: ['Number of Mentions', 'Number of Likes', 'Number of Shares', 'Sentiment'],
+        data_mentions: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Facebook',
+                data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+                fill: false,
+                borderColor: '#3949AB',
+                backgroundColor: '#3949AB',
+                borderWidth: 1,
+              }
+            ]
+          }
+        },
+        data_likes: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Facebook',
+                data: [4440,  7850,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+                fill: false,
+                borderColor: '#3949AB',
+                backgroundColor: '#3949AB',
+                borderWidth: 1,
+              }
+            ]
+          }
+        },
+        data_shares: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Facebook',
+                data: [4440,  7850,  3342,  500,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+                fill: false,
+                borderColor: '#3949AB',
+                backgroundColor: '#3949AB',
+                borderWidth: 1,
+              }
+            ]
+          }
+        },
+        // chartData: {
+        //   labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+        //   "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+        //   datasets: [
+        //     {
+        //       label: 'Facebook',
+        //       data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+        //       fill: false,
+        //       borderColor: '#3949AB',
+        //       backgroundColor: '#3949AB',
+        //       borderWidth: 1,
+        //     }
+        //   ]
+        // }
       }, 
       reddit: {
-        view: ['Number of Net Votes', 'Number of Comments', 'Number of Awards'],
-        chartData: {
-          labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
-          "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-          datasets: [
-            {
-              label: 'Reddit',
-              data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
-              fill: false,
-              borderColor: '#EF6C00',
-              backgroundColor: '#EF6C00',
-              borderWidth: 1
-            }
-          ]
+        view: ['Number of Mentions', 'Number of Net Votes', 'Number of Awards', 'Sentiment'],
+        data_mentions: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Reddit',
+                data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                fill: false,
+                borderColor: '#EF6C00',
+                backgroundColor: '#EF6C00',
+                borderWidth: 1
+              }
+            ]
+          }
         }
+        // chartData: {
+        //   labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+        //   "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+        //   datasets: [
+        //     {
+        //       label: 'Reddit',
+        //       data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+        //       fill: false,
+        //       borderColor: '#EF6C00',
+        //       backgroundColor: '#EF6C00',
+        //       borderWidth: 1
+        //     }
+        //   ]
+        // }
       },         
       twitter: {
-        view: ['Number of Likes','Number of Retweets','Number of Replies'],
-        chartData: {
-          labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
-          "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-          datasets: [
-            {
-              label: 'Twitter',
-              data: [2300,  150,  4342,  7050,  1522,  3841,  1559,  657,  1445, 3000, 4500, 6641],
-              fill: false,
-              borderColor: '#42A5F5',
-              backgroundColor: '#42A5F5',
-              borderWidth: 1
-            }
-          ]
+        view: ['Number of Mentions', 'Number of Likes', 'Number of Replies', 'Sentiment'],
+        data_mentions: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Twitter',
+                data: [2300,  150,  4342,  7050,  1522,  3841,  1559,  657,  1445, 3000, 4500, 6641],
+                fill: false,
+                borderColor: '#42A5F5',
+                backgroundColor: '#42A5F5',
+                borderWidth: 1
+              }
+            ]
+          }
         }
+        // chartData: {
+        //   labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+        //   "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+        //   datasets: [
+        //     {
+        //       label: 'Twitter',
+        //       data: [2300,  150,  4342,  7050,  1522,  3841,  1559,  657,  1445, 3000, 4500, 6641],
+        //       fill: false,
+        //       borderColor: '#42A5F5',
+        //       backgroundColor: '#42A5F5',
+        //       borderWidth: 1
+        //     }
+        //   ]
+        // }
       }, 
       youtube: {
-        view: ['Number of Likes', 'Number of Views', 'Number of Comments'],
-        chartData: {
-
-          labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
-          "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-          datasets: [
-            {
-              label: 'Youtube',
-              data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
-              fill: false,
-              borderColor: '#C62828',
-              backgroundColor: '#C62828',
-              borderWidth: 1
-            }
-          ]
+        view: ['Number of Mentions', 'Number of Likes', 'Number of Views', 'Sentiment'],
+        data_mentions: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Youtube',
+                data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                fill: false,
+                borderColor: '#C62828',
+                backgroundColor: '#C62828',
+                borderWidth: 1
+              }
+            ]
+          }
         }
+        // chartData: {
+        //   labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+        //   "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+        //   datasets: [
+        //     {
+        //       label: 'Youtube',
+        //       data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+        //       fill: false,
+        //       borderColor: '#C62828',
+        //       backgroundColor: '#C62828',
+        //       borderWidth: 1
+        //     }
+        //   ]
+        // }
       }
     },
   

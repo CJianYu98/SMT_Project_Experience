@@ -44,11 +44,11 @@ export default {
       required: true
     },
     medias: {
-      type: Object,
+      type: Array,
       required: true
     },
     mediasMetrics: {
-      type: Array,
+      type: Object,
       required: true
     }
   },
