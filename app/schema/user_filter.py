@@ -3,20 +3,26 @@ from typing import List, Optional
 import re
 
 class Filter(BaseModel):
-    start_date: str
-    end_date: str
+    endDate: str
+    numDays: int
     platforms: List[str]
     sentiments: List[str]
     emotions: List[str]
     query: Optional[str] = Field(...)
 
-    @validator('start_date', 'end_date')
+    @validator('endDate')
     def check_datetime_str_format(cls, v):
         pattern = re.compile("\d\d\d\d-\d\d-\d\d")
         if not pattern.fullmatch(v):
             raise ValueError("Datetime string not in the correct format")
         return v
-    
+
+    @validator('numDays')
+    def check_numDays(cls, v):
+        if v <= 0:
+            raise ValueError("Num days should not be negative integer")
+        return v
+
     @validator(('platforms'))
     def check_platforms(cls, v):
         PLATFORMS = ['Facebook', 'Reddit', 'Twitter', 'Youtube']
