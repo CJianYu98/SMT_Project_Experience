@@ -43,7 +43,7 @@
               <v-row no-gutters align="stretch">
                 <v-col class="d-flex">
                   <v-card-title class="text-h5">
-                    <!-- {{platform.view}} -->
+                    <!-- {{platformview.}} -->
                     {{ selectedViewOption }}
                   </v-card-title>
                   <v-spacer></v-spacer>
@@ -527,6 +527,23 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             // console.log('likes');
             
             console.log(this.selectedChartData === this.$props.mediasMetrics.all.data_likes);
+          }
+        }
+        else if (this.selectedTab === 'facebook'){
+          // console.log(123);
+          if (this.selectedViewOption === 'Number of Mentions'){
+            
+            this.selectedChartData = this.$props.mediasMetrics.facebook.data_mentions;
+            // console.log('mention');
+            // console.log(this.selectedChartData.chartData);
+          } 
+          else if (this.selectedViewOption === 'Number of Likes'){
+            console.log(this.selectedChartData === this.$props.mediasMetrics.all.data_likes);
+            
+            this.selectedChartData = this.$props.mediasMetrics.facebook.data_likes;
+            // console.log('likes');
+            
+            // console.log(this.selectedChartData === this.$props.mediasMetrics.all.data_likes);
           }
         }
       }
