@@ -11,7 +11,7 @@ from .facebook import get_fb_aggregated_stats, get_fb_trend_stats
 router = APIRouter(prefix="/trend-analysis", tags=["trend_analysis"])
 
 
-@router.get("/get-all-aggregated-stats", response_model=AggregatedStatsRes)
+@router.post("/get-all-aggregated-stats", response_model=AggregatedStatsRes)
 def get_all_aggregated_stats(filter: Filter):
     """
     To get aggregated statistics (total posts, total comments, total likes, percentage of posts per platform).
@@ -47,7 +47,7 @@ def get_all_aggregated_stats(filter: Filter):
     return {"posts": total_posts, "likes": total_likes, "platformMetrics": platform_metrics}
 
 
-@router.get("/get-all-trend-stats", response_model=TrendStatsRes)
+@router.post("/get-all-trend-stats", response_model=TrendStatsRes)
 def get_all_trend_stats(filter: Filter):
     """
     To get the total trend percentage change between user's selected filter time period and the same period range before the selected time period.
@@ -73,7 +73,7 @@ def get_all_trend_stats(filter: Filter):
     return {"trend": round(fb_data / fb_data1, 2)}
 
 
-@router.get("/get-indiv-trend-stats", response_model=IndivTrendStatsRes)
+@router.post("/get-indiv-trend-stats", response_model=IndivTrendStatsRes)
 def get_indiv_trend_stats(filter: Filter):
     """
     To get the trend percentage change between user's selected filter time period and the same period range before the selected time period for each individual platform.

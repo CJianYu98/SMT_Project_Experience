@@ -11,7 +11,7 @@ from .facebook import get_fb_top5_topics_stats
 router = APIRouter(prefix="/topic-analysis", tags=["topic_analysis"])
 
 
-@router.get("/get-top5-topic-analysis", response_model=List[IndiTopicStatsRes])
+@router.post("/get-top5-topic-analysis", response_model=List[IndiTopicStatsRes])
 async def get_top5_topic_analysis(filter: Filter):
     """
     Generate top 5 topics and their respective statistics (sentiments, emotions, top mentions, counts)
