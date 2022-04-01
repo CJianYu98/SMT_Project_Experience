@@ -23,7 +23,12 @@
             :key="media"
             @change="reset(media)"
         >
-            <v-img v-if="media !== 'all'" :src="`/${media}_icon.png`">
+            <v-img 
+              v-if="media !== 'all'" 
+              :src="`/${media}_icon.png`"
+              max-height="30px"
+              max-width="30px"
+            >
             </v-img>
             &nbsp;
             {{ media }}

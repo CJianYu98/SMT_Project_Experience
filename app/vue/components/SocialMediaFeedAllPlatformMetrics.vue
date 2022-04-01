@@ -1,7 +1,7 @@
 <template>
   <v-card
     elevation="3"
-    class="ml-8 mr-2 mt-8 rounded-lg"
+    class="mx-8 mt-8 rounded-lg"
     height="100%"
   >
     <v-card-title class="pb-4 accent--text text-h6">
@@ -10,22 +10,19 @@
     </v-card-title>
     <v-row>
       <v-spacer></v-spacer>
-      <v-col cols="5">
+      <v-col>
         <SocialMediaFeedIndvPlatformMetrics :platform="facebook"/>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="5">
+      <v-col>
         <SocialMediaFeedIndvPlatformMetrics :platform="reddit"/>
       </v-col>
       <v-spacer></v-spacer>
-    </v-row>
-    <v-row>
-      <v-spacer></v-spacer>
-      <v-col cols="5">
+      <v-col>
         <SocialMediaFeedIndvPlatformMetrics :platform="twitter"/>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="5">
+      <v-col>
         <SocialMediaFeedIndvPlatformMetrics :platform="youtube"/>
       </v-col>
       <v-spacer></v-spacer>

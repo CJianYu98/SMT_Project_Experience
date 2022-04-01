@@ -1,0 +1,6 @@
+topic,cna_search_link,num_pages
+sports,https://www.channelnewsasia.com/topic/sports?sort_by=field_release_date_value&sort_order=ASC&type%5Barticle%5D=article&page=,50
+
+science,https://www.channelnewsasia.com/topic/science?sort_by=field_release_date_value&sort_order=ASC&type%5Barticle%5D=article&page=,6
+
+law,https://www.channelnewsasia.com/topic/law?sort_by=field_release_date_value&sort_order=ASC&page=,10

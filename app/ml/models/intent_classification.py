@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
+from ...constants.ml import INTENT_LABELS
+
 # Load environment variables
 load_dotenv()
 
@@ -29,10 +31,8 @@ def classify_intent(text: str) -> str:
         str: Label of the given input text.
     """
 
-    labels = ["suggestion", "complaint", "educational", "question", "remark"]
-
     try:
-        results_dict = classifier(text, labels)
+        results_dict = classifier(text, INTENT_LABELS)
     except:
         return None
 

@@ -29,7 +29,7 @@
         </v-col>
       </v-row>
       <ComplaintsRelatedComments 
-        :complaints-related-comments="complaintsRelatedComments"
+        :related-comments="relatedComments"
       />
     </v-col>
   </v-row>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import ComplaintsRelatedComments from './ComplaintsRelatedComments.vue'
+import ComplaintsRelatedComments from './RelatedPosts.vue'
 import ComplaintsWordCloud from './ComplaintsWordCloud.vue'
 import DropDownSelect from './DropDownSelect.vue'
 import HelpTextTooltip from './HelpTextTooltip.vue'
@@ -56,7 +56,7 @@ export default {
       type: Array,
       required: true
     },
-    complaintsRelatedComments: {
+    relatedComments: {
       type: Array,
       required: true
     },
