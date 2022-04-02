@@ -13,6 +13,15 @@ router = APIRouter(prefix="/keyword-analysis", tags=["keyword_analysis"])
 
 @router.post("/get-all-top-keywords", response_model=List[Top20KeywordAnalysisRes])
 def get_all_top_keywords(filter: Filter):
+    """
+    To get top 20 keywords (based on counts)
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+
+    Returns:
+        Pydantic Model: JSON response object
+    """
     project = {"sentiment_label": 1, "entities": 1, "_id": False}
 
     filter1 = Filter(

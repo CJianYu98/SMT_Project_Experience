@@ -1,14 +1,16 @@
 <script>
-  import { Line } from 'vue-chartjs'
+  import { Line } from 'vue-chartjs';
+
   export default {
     extends: Line,
+    // mixins: [mixins.reactiveProp],
     props:{
       data:{
         type: Object,
         required: true
       }
     },
-    data () {
+    data: (instance) => {
       return {
         // chartData: {
         //   labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
@@ -25,7 +27,7 @@
         //     }
         //   ]
         // },
-        chartData: this.$props.data.chartData,
+        chartData: instance.data.chartData,
         options: {
           scales: {
             yAxes: [{
@@ -59,18 +61,15 @@
     //       this.$emit('changeChart',this.chartData);
     //   }
     // },
-    // watch:{
-    //   data() {
-    //     this.chartData = this.$props.data.chartData;
-    //   }
-    // },
     mounted () {
-      this.renderChart(this.chartData, this.options)
+      this.renderChart(this.chartData, this.options);
     },
-    // watch: {
-    //   chartData () {
-    //     this.$data._chart.update()
-    //   }
-    // },
+    watch: {
+      data () {
+        // this._chart.destroy();
+        this.renderChart(this.data.chartData, this.options);
+        // this.update();
+      }
+    },
   }
 </script>

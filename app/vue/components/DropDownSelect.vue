@@ -30,9 +30,9 @@
       //   required: true
       // }
     },
-    data () {
+    data: (instance) => {
       return {
-        selectedView: this.$props.viewSelected,
+        selectedView: instance.viewSelected,
         // items: [],
         // viewSelected: ["Number of Mentions"],
         // viewFilter: [{view: 'Number of Likes'}, {view: 'Number of Comments'}, {view: 'Number of Shares'}]

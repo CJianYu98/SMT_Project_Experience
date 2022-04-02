@@ -25,7 +25,7 @@ class Filter(BaseModel):
 
     @validator(('platforms'))
     def check_platforms(cls, v):
-        PLATFORMS = ['Facebook', 'Reddit', 'Twitter', 'Youtube']
+        PLATFORMS = ['facebook', 'reddit', 'twitter', 'youtube']
         if set(v).difference(set(PLATFORMS)):
             raise ValueError("Invalid platform value")
         return v
