@@ -9,7 +9,7 @@ from ..schema.trend_analysis import (
     TrendStatsRes,
 )
 from ..schema.user_filter import Filter
-from .facebook import get_fb_aggregated_stats, get_fb_trend_stats
+from ..dao.facebook import get_fb_aggregated_stats, get_fb_trend_stats
 
 router = APIRouter(prefix="/trend-analysis", tags=["trend_analysis"])
 
@@ -97,7 +97,7 @@ def get_all_trend_stats(filter: Filter):
         fb_posts_count = get_fb_trend_stats(filter, "posts")
         fb_comments_count = get_fb_trend_stats(filter, "comments")
         fb_posts_count_prev = get_fb_trend_stats(prev_date_filter, "posts")
-        fb_comments_count_prev = get_fb_trend_stats(prev_date_gfilter, "comments")
+        fb_comments_count_prev = get_fb_trend_stats(prev_date_filter, "comments")
     else:
         fb_posts_count = fb_comments_count = []
 

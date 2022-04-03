@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException
 
 from ..schema.topic_analysis import IndiTopicStatsRes
 from ..schema.user_filter import Filter
-from .facebook import get_fb_top5_topics_stats
+from ..dao.facebook import get_fb_top5_topics_stats
 
 router = APIRouter(prefix="/topic-analysis", tags=["topic_analysis"])
 

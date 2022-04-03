@@ -9,6 +9,7 @@ class Filter(BaseModel):
     sentiments: List[str]
     emotions: List[str]
     query: Optional[str] = Field(...)
+    metric: Optional[str]
 
     @validator('endDate')
     def check_datetime_str_format(cls, v):
@@ -42,4 +43,11 @@ class Filter(BaseModel):
         EMOTIONS = ['anger', 'fear', 'joy', 'neutral', 'sadness']
         if set(v).difference(set(EMOTIONS)):
             raise ValueError("Invalid emotion value")
+        return v
+    
+    @validator('metric')
+    def check_metric(cls, v):
+        METRICS = ['likes', 'dates']
+        if set(v).difference(set(METRICS)):
+            raise ValueError("Invalid metric value")
         return v

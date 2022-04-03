@@ -6,7 +6,7 @@ from fastapi import APIRouter
 
 from ..schema.keyword_analysis import Top20KeywordAnalysisRes
 from ..schema.user_filter import Filter
-from .facebook import get_top_keywords
+from ..dao.facebook import get_top_keywords
 
 router = APIRouter(prefix="/keyword-analysis", tags=["keyword_analysis"])
 

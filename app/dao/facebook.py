@@ -1,8 +1,5 @@
-import os
-from typing import List
-
 from dotenv import load_dotenv
-from fastapi import APIRouter, HTTPException
+from fastapi import HTTPException
 
 from ..database.connect import db
 from ..schema.facebook import (
@@ -10,11 +7,10 @@ from ..schema.facebook import (
     FbIndivAggregatedStatsRes,
     FbKeywordAnalysisRes,
     FbTop5TopicStatsRes,
+    FbTrendStatsRes,
 )
 from ..schema.user_filter import Filter
 from .user_filter import db_filter_query_from_user_filter
-
-router = APIRouter(prefix="/facebook", tags=["facebook"])
 
 # Load environment variables
 load_dotenv()
@@ -25,7 +21,7 @@ load_dotenv()
 FB_POSTS = "facebook_posts_v1"
 FB_COMMENTS = "facebook_comments_v1"
 
-@router.post("/get-top5-topics-stats", response_model=FbTop5TopicStatsRes)
+
 def get_fb_top5_topics_stats(filter: Filter, project: dict, db_collection: str):
     """
     Query the db based on user filter and select only relevant fields for top 5 topic analysis.
@@ -41,10 +37,16 @@ def get_fb_top5_topics_stats(filter: Filter, project: dict, db_collection: str):
     collection = FB_POSTS if db_collection == "posts" else FB_COMMENTS
     db_query = db_filter_query_from_user_filter(filter)
 
-    return list(db[collection].find(db_query, project))
+    res = list(db[collection].find(db_query, project))
+
+    try:
+        FbTop5TopicStatsRes(data=res)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+    return res
 
 
-@router.post("/get-aggregated-stats", response_model=FbIndivAggregatedStatsRes)
 def get_fb_aggregated_stats(filter: Filter, db_collection: str):
     """
     Query the db based on user filter and select only relevant fields for trend analysis (aggregated stats).
@@ -57,7 +59,6 @@ def get_fb_aggregated_stats(filter: Filter, db_collection: str):
         dict: DB queried result
     """
     collection = FB_POSTS if db_collection == "posts" else FB_COMMENTS
-
     filter_query = db_filter_query_from_user_filter(filter)
 
     db_query = [
@@ -75,16 +76,23 @@ def get_fb_aggregated_stats(filter: Filter, db_collection: str):
 
     if not list(db[collection].aggregate(db_query)):
         return {}
-        
+
     res = list(db[collection].aggregate(db_query))[0]
     res["emotion_counts"] = get_emotions_count(filter_query, collection)
+
+    try:
+        FbIndivAggregatedStatsRes(
+            total_likes=res["total_likes"], count=res["count"], emotion_counts=res["emotion_counts"]
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
     return res
 
 
 def get_emotions_count(filter_query: dict, collection: str) -> list:
     """
-    _summary_
+    Get the counts for each emotion
 
     Args:
         filter_query (dict): _description_
@@ -103,7 +111,6 @@ def get_emotions_count(filter_query: dict, collection: str) -> list:
     return list(db[collection].aggregate(db_query))
 
 
-@router.post("/get-trend-stats", response_model=int)
 def get_fb_trend_stats(filter: Filter, db_collection: str):
     """
     Query the db based on user filter and get number of records.
@@ -116,13 +123,18 @@ def get_fb_trend_stats(filter: Filter, db_collection: str):
         int: Number of documents/records
     """
     collection = FB_POSTS if db_collection == "posts" else FB_COMMENTS
-
     db_query = db_filter_query_from_user_filter(filter)
 
-    return db[collection].count_documents(db_query)
+    res = db[collection].count_documents(db_query)
+
+    try:
+        FbTrendStatsRes(count=res)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+    return res
 
 
-@router.post("/get-top-keywords", response_model=List[FbKeywordAnalysisRes])
 def get_top_keywords(filter: Filter, project: dict, db_collection: str):
     """
     Query the db based on user filter and get entities and sentiments
@@ -136,13 +148,18 @@ def get_top_keywords(filter: Filter, project: dict, db_collection: str):
         list: List of records
     """
     collection = FB_POSTS if db_collection == "posts" else FB_COMMENTS
-
     db_query = db_filter_query_from_user_filter(filter)
 
-    return list(db[collection].find(db_query, project))
+    res = list(db[collection].find(db_query, project))
+
+    try:
+        FbKeywordAnalysisRes(data=res)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+    return res
 
 
-@router.post("/get-top-complaint-keywords", response_model=List[FbComplaintTopKeywordsAnalysisRes])
 def get_top_complaint_keywords(filter: Filter, project: dict, db_collection: str):
     """
     Query the db based on user filter to only get complaint records and their entities
@@ -156,8 +173,14 @@ def get_top_complaint_keywords(filter: Filter, project: dict, db_collection: str
         list: List of records
     """
     collection = FB_POSTS if db_collection == "posts" else FB_COMMENTS
-
     db_query = db_filter_query_from_user_filter(filter)
     db_query["intent"] = {"$regex": "complaint"}
 
-    return list(db[collection].find(db_query, project))
+    res = list(db[collection].find(db_query, project))
+
+    try:
+        FbComplaintTopKeywordsAnalysisRes(data=res)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+    return res

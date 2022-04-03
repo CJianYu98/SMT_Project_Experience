@@ -26,10 +26,22 @@ class FbIndivAggregatedStatsRes(BaseModel):
     emotion_counts: List[FbEmotionCount]
 
 
-class FbKeywordAnalysisRes(BaseModel):
+class FbTrendStatsRes(BaseModel):
+    count: int
+
+
+class FbKeywordAnalysis(BaseModel):
     entities: List[str]
     sentiment_label: str
 
 
-class FbComplaintTopKeywordsAnalysisRes(BaseModel):
+class FbKeywordAnalysisRes(BaseModel):
+    data: List[FbKeywordAnalysis]
+
+
+class FbComplaintTopKeywordsAnalysis(BaseModel):
     entities: List[str]
+
+
+class FbComplaintTopKeywordsAnalysisRes(BaseModel):
+    data: List[FbComplaintTopKeywordsAnalysis]

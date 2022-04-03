@@ -6,7 +6,7 @@ from fastapi import APIRouter
 
 from ..schema.complaint_analysis import Top20ComplaintKeywordAnalysisRes
 from ..schema.user_filter import Filter
-from .facebook import get_top_complaint_keywords
+from ..dao.facebook import get_top_complaint_keywords
 
 router = APIRouter(prefix="/complaint-analysis", tags=["complaint_analysis"])
 
@@ -26,24 +26,22 @@ def get_all_top_complaint_keywords(filter: Filter):
     """
     project = {"entities": 1, "_id": False}
 
-    filter1 = Filter(
-        endDate="2019-03-01",
-        numDays=14,
-        platforms=["facebook", "reddit"],
-        sentiments=["positive", "negative", "neutral"],
-        emotions=["joy", "sadness", "neutral", "anger", "fear"],
-        query=None,
-    )
+    # Query selected social media platform MongoDB collection based on user platform filter options
+    if "facebook" in filter.platforms:
+        fb_posts_data = get_top_complaint_keywords(filter, project, "posts")
+        fb_comments_data = get_top_complaint_keywords(filter, project, "comments")
+    else:
+        fb_posts_data = fb_comments_data = []
 
-    data1 = get_top_complaint_keywords(filter, project)
-    data2 = get_top_complaint_keywords(filter1, project)
+    # Concat data from all social media platforms
+    all_data = sum([fb_posts_data, fb_comments_data], [])
 
-    all_data = data1 + data2
-
+    # Remove records with no entities using pandas
     df = pd.DataFrame(all_data)
     df = df.explode("entities")
     df.dropna(inplace=True)
 
+    # Get the counts for each entity, in descending ordering
     entities = df["entities"].to_list()
     entities_count = Counter(entities).most_common()
 
