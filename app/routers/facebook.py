@@ -33,6 +33,7 @@ def get_fb_top5_topics_stats(filter: Filter, project: dict, db_collection: str):
     Args:
         filter (Filter): JSON request body (user's filter options)
         project (dict): MongoDB project field for query statement
+        db_collection (str): To determine which collection to query from
 
     Returns:
         list: List of records
@@ -50,6 +51,7 @@ def get_fb_aggregated_stats(filter: Filter, db_collection: str):
 
     Args:
         filter (Filter): JSON request body (user's filter options)
+        db_collection (str): To determine which collection to query from
 
     Returns:
         dict: DB queried result
@@ -81,6 +83,16 @@ def get_fb_aggregated_stats(filter: Filter, db_collection: str):
 
 
 def get_emotions_count(filter_query: dict, collection: str) -> list:
+    """
+    _summary_
+
+    Args:
+        filter_query (dict): _description_
+        collection (str): _description_
+
+    Returns:
+        list: _description_
+    """
     db_query = [
         {"$match": filter_query},
         {"$unwind": "$emotions_label"},
@@ -98,6 +110,7 @@ def get_fb_trend_stats(filter: Filter, db_collection: str):
 
     Args:
         filter (Filter): JSON request body (user's filter options)
+        db_collection (str): To determine which collection to query from
 
     Returns:
         int: Number of documents/records
@@ -117,6 +130,7 @@ def get_top_keywords(filter: Filter, project: dict, db_collection: str):
     Args:
         filter (Filter): JSON request body (user's filter options)
         project (dict): MongoDB project field for query statement
+        db_collection (str): To determine which collection to query from
 
     Returns:
         list: List of records
@@ -136,6 +150,7 @@ def get_top_complaint_keywords(filter: Filter, project: dict, db_collection: str
     Args:
         filter (Filter): JSON request body (user's filter options)
         project (dict): MongoDB project field for query statement
+        db_collection (str): To determine which collection to query from
 
     Returns:
         list: List of records

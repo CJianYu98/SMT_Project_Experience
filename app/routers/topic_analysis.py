@@ -1,7 +1,7 @@
 from collections import Counter
+from typing import List
 
 import pandas as pd
-from typing import List
 from fastapi import APIRouter, HTTPException
 
 from ..schema.topic_analysis import IndiTopicStatsRes
@@ -12,7 +12,7 @@ router = APIRouter(prefix="/topic-analysis", tags=["topic_analysis"])
 
 
 @router.post("/get-top5-topic-analysis", response_model=List[IndiTopicStatsRes])
-async def get_top5_topic_analysis(filter: Filter):
+def get_top5_topic_analysis(filter: Filter):
     """
     Generate top 5 topics and their respective statistics (sentiments, emotions, top mentions, counts)
 
@@ -33,15 +33,15 @@ async def get_top5_topic_analysis(filter: Filter):
         "_id": False,
     }
 
-    fb_posts_data = get_fb_top5_topics_stats(filter, project, "posts")
-    fb_comments_data = get_fb_top5_topics_stats(filter, project, "comments")
+    if "facebook" in filter.platforms:
+        fb_posts_data = get_fb_top5_topics_stats(filter, project, "posts")
+        fb_comments_data = get_fb_top5_topics_stats(filter, project, "comments")
+    else:
+        fb_posts_data = fb_comments_data = []
 
-    # May need to rename the column names for each df, and concat to empty df instead
     all_data = fb_posts_data + fb_comments_data
     if not all_data:
-        raise HTTPException(
-            status_code=404, detail="No data found within date period given"
-        )
+        raise HTTPException(status_code=404, detail="No data found within date period given")
 
     df = pd.DataFrame(all_data)
 
