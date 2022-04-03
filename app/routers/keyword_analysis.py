@@ -24,20 +24,17 @@ def get_all_top_keywords(filter: Filter):
     """
     project = {"sentiment_label": 1, "entities": 1, "_id": False}
 
-    filter1 = Filter(
-        endDate="2019-03-01",
-        numDays=14,
-        platforms=["facebook", "reddit"],
-        sentiments=["positive", "negative", "neutral"],
-        emotions=["joy", "sadness", "neutral", "anger", "fear"],
-        query=None,
-    )
+    # Query selected social media platform MongoDB collection based on user platform filter options
+    if "facebook" in filter.platforms:
+        fb_posts_data = get_top_keywords(filter, project, "posts")
+        fb_comments_data = get_top_keywords(filter, project, "comments")
+    else:
+        fb_posts_data = fb_comments_data = []
 
-    data1 = get_top_keywords(filter, project)
-    data2 = get_top_keywords(filter1, project)
+    # Concat data from all social media platforms
+    all_data = sum([fb_posts_data, fb_comments_data], [])
 
-    all_data = data1 + data2
-
+    # Using pandas to group by entities and sentiment_label and get the counts
     df = pd.DataFrame(all_data)
     df = df.explode("entities")
     df.dropna(inplace=True)
@@ -50,24 +47,32 @@ def get_all_top_keywords(filter: Filter):
         .reset_index()
     )
 
+    # Get the counts for each entity, in descending ordering
     entities = df["entities"].to_list()
     entities_count = Counter(entities).most_common()
 
     res = []
     if len(entities_count) >= 20:
-        res.extend({
+        res.extend(
+            {
                 "word": entities_count[i][0],
                 "count": entities_count[i][1],
                 "sentiment": ent_sentiment[ent_sentiment["entities"] == entities_count[i][0]][
                     "sentiment_label"
                 ].values[0],
-            } for i in range(20))
+            }
+            for i in range(20)
+        )
     else:
-        res.extend({
+        res.extend(
+            {
                 "word": entities_count[i][0],
                 "count": entities_count[i][1],
                 "sentiment": ent_sentiment[ent_sentiment["entities"] == entities_count[i][0]][
                     "sentiment_label"
                 ].values[0],
-            } for i in range(len(entities_count)))
+            }
+            for i in range(len(entities_count))
+        )
+
     return res
