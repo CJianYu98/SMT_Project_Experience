@@ -1,6 +1,6 @@
 from typing import List
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class FbTopicStats(BaseModel):
@@ -15,9 +15,15 @@ class FbTop5TopicStatsRes(BaseModel):
     data: List[FbTopicStats]
 
 
-class FbIndivAggregatedStats(BaseModel):
+class FbEmotionCount(BaseModel):
+    emotion: str
+    count: int
+
+
+class FbIndivAggregatedStatsRes(BaseModel):
     total_likes: int
     count: int
+    emotion_counts: List[FbEmotionCount]
 
 
 class FbKeywordAnalysisRes(BaseModel):

@@ -33,20 +33,11 @@ async def get_top5_topic_analysis(filter: Filter):
         "_id": False,
     }
 
-    filter1 = Filter(
-        endDate="2019-03-01",
-        numDays=14,
-        platforms=["Facebook", "Reddit"],
-        sentiments=["positive", "negative", "neutral"],
-        emotions=["joy", "sadness", "neutral", "anger", "fear"],
-        query=None,
-    )
-
-    fb_data = get_fb_top5_topics_stats(filter, project)
-    fb_data1 = get_fb_top5_topics_stats(filter1, project)
+    fb_posts_data = get_fb_top5_topics_stats(filter, project, "posts")
+    fb_comments_data = get_fb_top5_topics_stats(filter, project, "comments")
 
     # May need to rename the column names for each df, and concat to empty df instead
-    all_data = fb_data + fb_data1
+    all_data = fb_posts_data + fb_comments_data
     if not all_data:
         raise HTTPException(
             status_code=404, detail="No data found within date period given"

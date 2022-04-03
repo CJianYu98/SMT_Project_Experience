@@ -42,7 +42,7 @@ REDDIT_COMMENT_FIELDS = [
     "body",
     "created_utc",
     "id",
-    "link_id", 
+    "link_id",
     "parent_id",
     "permalink",
     "score",
@@ -131,15 +131,13 @@ TWITTER_DAILY_COMMENT_FIELDS = [
 
 
 YOUTUBE_VIDEO_FIELDS = [
-    "Title", 
-    "Views", 
+    "Title",
+    "Views",
     "Date Uploaded",
-    "Likes", 
-    "Description", 
-    "URL", 
-    "Thumbnail"
+    "Likes",
+    "Description",
+    "URL",
+    "Thumbnail",
 ]
 
-YOUTUBE_COMMENT_FIELDS = [
-    "Comments"
-]
+YOUTUBE_COMMENT_FIELDS = ["Comments"]

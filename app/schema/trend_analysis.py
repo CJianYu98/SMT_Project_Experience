@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 class AggregatedStatsRes(BaseModel):
     posts: int
+    comments: int
     likes: int
     platformMetrics: dict
 
