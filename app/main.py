@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import facebook, topic_analysis, trend_analysis, keyword_analysis
+from .routers import facebook, topic_analysis, trend_analysis, keyword_analysis, complaint_analysis
 
 app = FastAPI()
 
@@ -16,3 +16,4 @@ app.include_router(facebook.router)
 app.include_router(topic_analysis.router)
 app.include_router(trend_analysis.router)
 app.include_router(keyword_analysis.router)
+app.include_router(complaint_analysis.router)

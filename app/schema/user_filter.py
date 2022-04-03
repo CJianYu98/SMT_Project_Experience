@@ -23,21 +23,21 @@ class Filter(BaseModel):
             raise ValueError("Num days should not be negative integer")
         return v
 
-    @validator(('platforms'))
+    @validator('platforms')
     def check_platforms(cls, v):
         PLATFORMS = ['facebook', 'reddit', 'twitter', 'youtube']
         if set(v).difference(set(PLATFORMS)):
             raise ValueError("Invalid platform value")
         return v
 
-    @validator(('sentiments'))
+    @validator('sentiments')
     def check_sentiments(cls, v):
         SENTIMENTS = ['positive', 'neutral', 'negative']
         if set(v).difference(set(SENTIMENTS)):
             raise ValueError("Invalid sentiment value")
         return v
     
-    @validator(('emotions'))
+    @validator('emotions')
     def check_emotions(cls, v):
         EMOTIONS = ['anger', 'fear', 'joy', 'neutral', 'sadness']
         if set(v).difference(set(EMOTIONS)):

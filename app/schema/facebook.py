@@ -23,3 +23,7 @@ class FbIndivAggregatedStats(BaseModel):
 class FbKeywordAnalysisRes(BaseModel):
     entities: List[str]
     sentiment_label: str
+
+
+class FbComplaintTopKeywordsAnalysisRes(BaseModel):
+    entities: List[str]

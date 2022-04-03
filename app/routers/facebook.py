@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException
 
 from ..database.connect import db
 from ..schema.facebook import (
+    FbComplaintTopKeywordsAnalysisRes,
     FbIndivAggregatedStats,
     FbKeywordAnalysisRes,
     FbTop5TopicStatsRes,
@@ -92,5 +93,23 @@ def get_top_keywords(filter: Filter, project: dict):
         list: List of records
     """
     db_query = db_filter_query_from_user_filter(filter)
+
+    return list(db.jianyu_play_girls.find(db_query, project))
+
+
+@router.post("/get-top-complaint-keywords", response_model=List[FbComplaintTopKeywordsAnalysisRes])
+def get_top_complaint_keywords(filter: Filter, project: dict):
+    """
+    Query the db based on user filter to only get complaint records and their entities
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+        project (dict): MongoDB project field for query statement
+
+    Returns:
+        list: List of records
+    """
+    db_query = db_filter_query_from_user_filter(filter)
+    db_query["intent"] = {"$regex": "complaint"}
 
     return list(db.jianyu_play_girls.find(db_query, project))

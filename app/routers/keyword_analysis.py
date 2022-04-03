@@ -27,7 +27,7 @@ def get_all_top_keywords(filter: Filter):
     filter1 = Filter(
         endDate="2019-03-01",
         numDays=14,
-        platforms=["Facebook", "Reddit"],
+        platforms=["facebook", "reddit"],
         sentiments=["positive", "negative", "neutral"],
         emotions=["joy", "sadness", "neutral", "anger", "fear"],
         query=None,
@@ -54,17 +54,20 @@ def get_all_top_keywords(filter: Filter):
     entities_count = Counter(entities).most_common()
 
     res = []
-    for i, ent in enumerate(entities_count):
-        if i >= 20:
-            break
-
-        res.append(
-            {
-                "word": ent[0],
-                "count": ent[1],
-                "sentiment": ent_sentiment[ent_sentiment["entities"] == ent[0]][
+    if len(entities_count) >= 20:
+        res.extend({
+                "word": entities_count[i][0],
+                "count": entities_count[i][1],
+                "sentiment": ent_sentiment[ent_sentiment["entities"] == entities_count[i][0]][
                     "sentiment_label"
                 ].values[0],
-            }
-        )
+            } for i in range(20))
+    else:
+        res.extend({
+                "word": entities_count[i][0],
+                "count": entities_count[i][1],
+                "sentiment": ent_sentiment[ent_sentiment["entities"] == entities_count[i][0]][
+                    "sentiment_label"
+                ].values[0],
+            } for i in range(len(entities_count)))
     return res
