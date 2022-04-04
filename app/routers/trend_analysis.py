@@ -3,13 +3,13 @@ from datetime import datetime, timedelta
 
 from fastapi import APIRouter, HTTPException
 
+from ..dao.facebook import get_fb_aggregated_stats, get_fb_trend_stats
 from ..schema.trend_analysis import (
     AggregatedStatsRes,
     IndivTrendStatsRes,
     TrendStatsRes,
 )
 from ..schema.user_filter import Filter
-from ..dao.facebook import get_fb_aggregated_stats, get_fb_trend_stats
 
 router = APIRouter(prefix="/trend-analysis", tags=["trend_analysis"])
 
