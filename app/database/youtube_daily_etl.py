@@ -87,9 +87,9 @@ latest_etl_date = datetime.strptime(status_jobj["youtube"]["latest_etl_date"], "
 curr_date = datetime.now(SG_TIMEZONE).date()
 
 if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < latest_collection_date.date()):
-    start = time.time()
+    start = time()
     logger.info(f"Starting daily ETL Youtube {latest_collection_date.date()}.json in GPU server")
-    tele.send(messages=[f"Starting daily ETL Youtube {latest_collection_date.date()}.json in GPU server"])
+    # tele.send(messages=[f"Starting daily ETL Youtube {latest_collection_date.date()}.json in GPU server"])
 
     # Retrieve all youtube video ids and delete all videos within date range
     end_date = latest_collection_date
@@ -136,6 +136,7 @@ if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < la
             df_videos["cleantext"] = df_videos["combined_text"].apply(preprocessing)
             df_comments["cleantext"] = df_comments["comment"].apply(preprocessing)
 
+            print(df_comments.columns)
             ###########################################################
             #################### RUNNING ML MODELS ####################
             ###########################################################
@@ -222,6 +223,6 @@ if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < la
     with open(STATUS_CHECK_FILE, "w") as f:
         json.dump(status_jobj, f, indent=4)
 
-    duration = time.time() - start
+    duration = time() - start
     logger.info(f"Daily ETL for Youtube {latest_collection_date.date()}.json has completed, time taken: {duration}")
-    tele.send(messages=[f"Daily ETL for Youtube {latest_collection_date.date()}.json has completed, time taken: {duration}"])
+    # tele.send(messages=[f"Daily ETL for Youtube {latest_collection_date.date()}.json has completed, time taken: {duration}"])
