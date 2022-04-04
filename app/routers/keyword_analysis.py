@@ -4,7 +4,7 @@ from typing import List
 import pandas as pd
 from fastapi import APIRouter
 
-from ..dao.facebook import get_top_keywords
+from ..dao.facebook import get_fb_top_keywords
 from ..schema.keyword_analysis import Top20KeywordAnalysisRes
 from ..schema.user_filter import Filter
 
@@ -26,8 +26,8 @@ def get_all_top_keywords(filter: Filter):
 
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
-        fb_posts_data = get_top_keywords(filter, project, "posts")
-        fb_comments_data = get_top_keywords(filter, project, "comments")
+        fb_posts_data = get_fb_top_keywords(filter, project, "posts")
+        fb_comments_data = get_fb_top_keywords(filter, project, "comments")
     else:
         fb_posts_data = fb_comments_data = []
 

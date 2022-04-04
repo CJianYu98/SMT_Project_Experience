@@ -16,7 +16,7 @@ router = APIRouter(prefix="/trend-analysis", tags=["trend_analysis"])
 
 @router.post("/get-all-aggregated-stats", response_model=AggregatedStatsRes)
 def get_all_aggregated_stats(filter: Filter):
-    """c
+    """
     To get aggregated statistics (total posts, total comments, total likes, percentage of posts per platform).
 
     Args:
@@ -141,28 +141,28 @@ def get_indiv_trend_stats(filter: Filter):
         fb_posts_count = fb_comments_count = []
 
     return {
-        "Facebook": {
+        "facebook": {
             "trend": round(
                 (fb_posts_count + fb_comments_count)
                 / (fb_posts_count_prev + fb_comments_count_prev),
                 2,
             )
         },
-        "Twitter": {
+        "twitter": {
             "trend": round(
                 (fb_posts_count + fb_comments_count)
                 / (fb_posts_count_prev + fb_comments_count_prev),
                 2,
             )
         },
-        "Reddit": {
+        "reddit": {
             "trend": round(
                 (fb_posts_count + fb_comments_count)
                 / (fb_posts_count_prev + fb_comments_count_prev),
                 2,
             )
         },
-        "Youtube": {
+        "youtube": {
             "trend": round(
                 (fb_posts_count + fb_comments_count)
                 / (fb_posts_count_prev + fb_comments_count_prev),

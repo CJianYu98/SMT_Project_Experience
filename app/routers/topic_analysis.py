@@ -22,20 +22,9 @@ def get_top5_topic_analysis(filter: Filter):
     Returns:
         Pydantic Model: JSON response object
     """
-
-    # Create MongoDB project field in query statement
-    project = {
-        "entities": 1,
-        "emotions_label": 1,
-        "sentiment_label": 1,
-        "topic": 1,
-        "message": 1,
-        "_id": False,
-    }
-
     if "facebook" in filter.platforms:
-        fb_posts_data = get_fb_top5_topics_stats(filter, project, "posts")
-        fb_comments_data = get_fb_top5_topics_stats(filter, project, "comments")
+        fb_posts_data = get_fb_top5_topics_stats(filter, "posts")
+        fb_comments_data = get_fb_top5_topics_stats(filter, "comments")
     else:
         fb_posts_data = fb_comments_data = []
 

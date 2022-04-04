@@ -4,8 +4,11 @@ from typing import List
 import pandas as pd
 from fastapi import APIRouter
 
-from ..dao.facebook import get_top5_complaint_comments, get_top_complaint_keywords
-from ..schema.complaint_analysis import Top20ComplaintKeywordAnalysisRes
+from ..dao.facebook import get_fb_top5_complaint_comments, get_fb_top_complaint_keywords
+from ..schema.complaint_noteworthy_analysis import (
+    Top5ComplaintOrNoteworthyCommentsRes,
+    Top20ComplaintKeywordAnalysisRes,
+)
 from ..schema.user_filter import Filter
 
 router = APIRouter(prefix="/complaint-analysis", tags=["complaint_analysis"])
@@ -28,8 +31,8 @@ def get_all_top_complaint_keywords(filter: Filter):
 
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
-        fb_posts_data = get_top_complaint_keywords(filter, project, "posts")
-        fb_comments_data = get_top_complaint_keywords(filter, project, "comments")
+        fb_posts_data = get_fb_top_complaint_keywords(filter, project, "posts")
+        fb_comments_data = get_fb_top_complaint_keywords(filter, project, "comments")
     else:
         fb_posts_data = fb_comments_data = []
 
@@ -65,12 +68,23 @@ def get_all_top_complaint_keywords(filter: Filter):
     return res
 
 
-@router.post("/get-all-top5-complaint-comments")
+@router.post(
+    "/get-all-top5-complaint-comments", response_model=Top5ComplaintOrNoteworthyCommentsRes
+)
 def get_all_top5_complaint_comments(filter: Filter):
+    """
+    To get top 5 likes comments for complaint related comments
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+
+    Returns:
+        Pydantic Model: JSON response object
+    """
 
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
-        fb_comments_by_likes, fb_comments_by_date = get_top5_complaint_comments(filter)
+        fb_comments_by_likes, fb_comments_by_date = get_fb_top5_complaint_comments(filter)
     else:
         fb_comments_by_likes = fb_comments_by_date = []
 
