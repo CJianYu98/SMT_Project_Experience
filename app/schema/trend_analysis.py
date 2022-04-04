@@ -1,15 +1,18 @@
+from typing import Optional
+
 from pydantic import BaseModel
+
 
 ##### Metrics Card Aggregated Statistics (without trend) API #####
 class IndivPlatformStat(BaseModel):
     mentions: float
-    emotion: str
+    emotion: Optional[str]
 
 
 class PlatformMetrics(BaseModel):
     facebook: IndivPlatformStat
     # reddit: IndivPlatformStat
-    # twitter: IndivPlatformStat
+    twitter: IndivPlatformStat
     # youtube: IndivPlatformStat
 
 

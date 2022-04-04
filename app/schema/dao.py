@@ -3,11 +3,12 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
+
 ##### Top 5 Topics Stats API #####
 class TopicStats(BaseModel):
     entities: List[str]
     emotions_label: str
-    topic: list
+    topic: str
     sentiment_label: str
     text: str
 

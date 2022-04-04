@@ -20,5 +20,5 @@ class ComplaintOrNoteworthyCommentsSorted(BaseModel):
 class Top5ComplaintOrNoteworthyCommentsRes(BaseModel):
     facebook: ComplaintOrNoteworthyCommentsSorted
     # reddit: ComplaintOrNoteworthyCommentsSorted
-    # twitter: ComplaintOrNoteworthyCommentsSorted
+    twitter: ComplaintOrNoteworthyCommentsSorted
     # youtube: ComplaintOrNoteworthyCommentsSorted

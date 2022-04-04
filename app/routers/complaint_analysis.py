@@ -1,10 +1,11 @@
+import os
 from collections import Counter
 from typing import List
 
 import pandas as pd
 from fastapi import APIRouter
 
-from ..dao.facebook import get_fb_top5_complaint_comments, get_fb_top_complaint_keywords
+from ..dao.dao import get_top5_complaint_comments, get_top_complaint_keywords
 from ..schema.complaint_noteworthy_analysis import (
     Top5ComplaintOrNoteworthyCommentsRes,
     Top20ComplaintKeywordAnalysisRes,
@@ -12,6 +13,14 @@ from ..schema.complaint_noteworthy_analysis import (
 from ..schema.user_filter import Filter
 
 router = APIRouter(prefix="/complaint-analysis", tags=["complaint_analysis"])
+
+# Declare MongoDB collection names to interact with
+# FB_POSTS = os.getenv("DB_FACEBOOK_POSTS_COLLECTION")
+# FB_COMMENTS = os.getenv("DB_FACEBOOK_COMMENTS_COLLECTION")
+FB_POSTS = "facebook_posts_v1"
+FB_COMMENTS = "facebook_comments_v1"
+TWITTER_TWEETS = os.getenv("DB_TWIITER_TWEETS_COLLECTION")
+TWITTER_COMMENTS = os.getenv("DB_TWITTER_COMMENTS_COLLECTION")
 
 
 @router.post(
@@ -31,13 +40,18 @@ def get_all_top_complaint_keywords(filter: Filter):
 
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
-        fb_posts_data = get_fb_top_complaint_keywords(filter, project, "posts")
-        fb_comments_data = get_fb_top_complaint_keywords(filter, project, "comments")
+        fb_posts_data = get_top_complaint_keywords(filter, project, FB_POSTS)
+        fb_comments_data = get_top_complaint_keywords(filter, project, FB_COMMENTS)
     else:
         fb_posts_data = fb_comments_data = []
+    if "twitter" in filter.platforms:
+        twit_tweets_data = get_top_complaint_keywords(filter, project, TWITTER_TWEETS)
+        twit_comments_data = get_top_complaint_keywords(filter, project, TWITTER_COMMENTS)
+    else:
+        twit_tweets_data = twit_comments_data = []
 
     # Concat data from all social media platforms
-    all_data = sum([fb_posts_data, fb_comments_data], [])
+    all_data = sum([fb_posts_data, fb_comments_data, twit_tweets_data, twit_comments_data], [])
 
     # Remove records with no entities using pandas
     df = pd.DataFrame(all_data)
@@ -84,8 +98,17 @@ def get_all_top5_complaint_comments(filter: Filter):
 
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
-        fb_comments_by_likes, fb_comments_by_date = get_fb_top5_complaint_comments(filter)
+        fb_comments_by_likes, fb_comments_by_date = get_top5_complaint_comments(filter, FB_POSTS)
     else:
         fb_comments_by_likes = fb_comments_by_date = []
+    if "twitter" in filter.platforms:
+        twit_comments_by_likes, twit_comments_by_date = get_top5_complaint_comments(
+            filter, TWITTER_TWEETS
+        )
+    else:
+        twit_comments_by_likes = twit_comments_by_date = []
 
-    return {"facebook": {"likes": fb_comments_by_likes, "date": fb_comments_by_date}}
+    return {
+        "facebook": {"likes": fb_comments_by_likes, "date": fb_comments_by_date},
+        "twitter": {"likes": twit_comments_by_likes, "date": twit_comments_by_date},
+    }

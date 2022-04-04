@@ -1,10 +1,12 @@
+import os
+
 from dotenv import load_dotenv
 from fastapi import HTTPException
 
 from ..database.connect import db
 from ..schema.dao import (
-    ComplaintTopKeywordsAnalysisRes,
     AggregatedStatsRes,
+    ComplaintTopKeywordsAnalysisRes,
     KeywordAnalysisRes,
     Top5ComplaintOrNoteworthyCommentsRes,
     Top5TopicStatsRes,
@@ -12,6 +14,7 @@ from ..schema.dao import (
 )
 from ..schema.user_filter import Filter
 from .user_filter import db_filter_query_from_user_filter
+from .utils import get_emotions_count
 
 # Load environment variables
 load_dotenv()
@@ -22,8 +25,12 @@ load_dotenv()
 FB_POSTS = "facebook_posts_v1"
 FB_COMMENTS = "facebook_comments_v1"
 
+# DB datetime str
+FB_DATETIME_STR = "created_time"
+TWIT_DATETIME_STR = "created_at"
 
-def get_fb_top5_topics_stats(filter: Filter, db_collection: str):
+
+def get_top5_topics_stats(filter: Filter, db_collection: str):
     """
     Query the db based on user filter and select only relevant fields for top 5 topic analysis.
 
@@ -43,14 +50,17 @@ def get_fb_top5_topics_stats(filter: Filter, db_collection: str):
         "emotions_label": 1,
         "sentiment_label": 1,
         "topic": 1,
-        "text": "$message",
         "_id": False,
     }
 
-    collection = FB_POSTS if db_collection == "posts" else FB_COMMENTS
-    db_query = db_filter_query_from_user_filter(filter)
+    if "facebook" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        project["text"] = "$message"
+    elif "twitter" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        project["text"] = "$tweet"
 
-    res = list(db[collection].find(db_query, project))
+    res = list(db[db_collection].find(db_query, project))
 
     try:
         Top5TopicStatsRes(data=res)
@@ -60,7 +70,7 @@ def get_fb_top5_topics_stats(filter: Filter, db_collection: str):
     return res
 
 
-def get_fb_aggregated_stats(filter: Filter, db_collection: str):
+def get_aggregated_stats(filter: Filter, db_collection: str):
     """
     Query the db based on user filter and select only relevant fields for trend analysis (aggregated stats).
 
@@ -74,15 +84,20 @@ def get_fb_aggregated_stats(filter: Filter, db_collection: str):
     Returns:
         dict: DB queried result
     """
-    collection = FB_POSTS if db_collection == "posts" else FB_COMMENTS
-    filter_query = db_filter_query_from_user_filter(filter)
+
+    if "facebook" in db_collection:
+        filter_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        likes_str = "likes_cnt"
+    elif "twitter" in db_collection:
+        filter_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        likes_str = "likes_count"
 
     db_query = [
         {"$match": filter_query},
         {
             "$group": {
                 "_id": None,
-                "total_likes": {"$sum": "$likes_cnt"},
+                "total_likes": {"$sum": f"${likes_str}"},
                 "count": {"$sum": 1},
                 "top_emotion": {"$first": "$emotions_label"},
             }
@@ -90,11 +105,12 @@ def get_fb_aggregated_stats(filter: Filter, db_collection: str):
         {"$project": {"total_likes": 1, "count": 1, "top_emotion": 1, "_id": False}},
     ]
 
-    if not list(db[collection].aggregate(db_query)):
+    res = list(db[db_collection].aggregate(db_query))
+    if not res:
         return {}
 
-    res = list(db[collection].aggregate(db_query))[0]
-    res["emotion_counts"] = get_emotions_count(filter_query, collection)
+    res = res[0]
+    res["emotion_counts"] = get_emotions_count(filter_query, db_collection)
 
     try:
         AggregatedStatsRes(
@@ -106,31 +122,7 @@ def get_fb_aggregated_stats(filter: Filter, db_collection: str):
     return res
 
 
-def get_emotions_count(filter_query: dict, collection: str) -> list:
-    """
-    Get the counts for each emotion
-
-    Args:
-        filter_query (dict): _description_
-        collection (str): _description_
-
-    Raises:
-        HTTPException: For data type error, using pydantic
-
-    Returns:
-        list: _description_
-    """
-    db_query = [
-        {"$match": filter_query},
-        {"$unwind": "$emotions_label"},
-        {"$group": {"_id": "$emotions_label", "count": {"$sum": 1}}},
-        {"$project": {"emotion": "$_id", "count": 1, "_id": False}},
-    ]
-
-    return list(db[collection].aggregate(db_query))
-
-
-def get_fb_trend_stats(filter: Filter, db_collection: str):
+def get_trend_stats(filter: Filter, db_collection: str):
     """
     Query the db based on user filter and get number of records.
 
@@ -144,10 +136,12 @@ def get_fb_trend_stats(filter: Filter, db_collection: str):
     Returns:
         int: Number of documents/records
     """
-    collection = FB_POSTS if db_collection == "posts" else FB_COMMENTS
-    db_query = db_filter_query_from_user_filter(filter)
+    if "facebook" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+    elif "twitter" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
 
-    res = db[collection].count_documents(db_query)
+    res = db[db_collection].count_documents(db_query)
 
     try:
         TrendStatsRes(count=res)
@@ -157,7 +151,7 @@ def get_fb_trend_stats(filter: Filter, db_collection: str):
     return res
 
 
-def get_fb_top_keywords(filter: Filter, project: dict, db_collection: str):
+def get_top_keywords(filter: Filter, project: dict, db_collection: str):
     """
     Query the db based on user filter and get entities and sentiments
 
@@ -172,10 +166,12 @@ def get_fb_top_keywords(filter: Filter, project: dict, db_collection: str):
     Returns:
         list: List of records
     """
-    collection = FB_POSTS if db_collection == "posts" else FB_COMMENTS
-    db_query = db_filter_query_from_user_filter(filter)
+    if "facebook" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+    elif "twitter" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
 
-    res = list(db[collection].find(db_query, project))
+    res = list(db[db_collection].find(db_query, project))
 
     try:
         KeywordAnalysisRes(data=res)
@@ -185,7 +181,7 @@ def get_fb_top_keywords(filter: Filter, project: dict, db_collection: str):
     return res
 
 
-def get_fb_top_complaint_keywords(filter: Filter, project: dict, db_collection: str):
+def get_top_complaint_keywords(filter: Filter, project: dict, db_collection: str):
     """
     Query the db based on user filter to only get complaint records and their entities
 
@@ -200,11 +196,13 @@ def get_fb_top_complaint_keywords(filter: Filter, project: dict, db_collection: 
     Returns:
         list: List of records
     """
-    collection = FB_POSTS if db_collection == "posts" else FB_COMMENTS
-    db_query = db_filter_query_from_user_filter(filter)
+    if "facebook" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+    elif "twitter" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
     db_query["intent"] = {"$regex": "complaint"}
 
-    res = list(db[collection].find(db_query, project))
+    res = list(db[db_collection].find(db_query, project))
 
     try:
         ComplaintTopKeywordsAnalysisRes(data=res)
@@ -214,7 +212,7 @@ def get_fb_top_complaint_keywords(filter: Filter, project: dict, db_collection: 
     return res
 
 
-def get_fb_top5_complaint_comments(filter: Filter):
+def get_top5_complaint_comments(filter: Filter, db_collection: str):
     """
     Query the db based on user filter to get top 5 complaint related comments based on likes
 
@@ -228,21 +226,30 @@ def get_fb_top5_complaint_comments(filter: Filter):
         list: List of records(sorted by likes and dates)
     """
     project = {
-        "likes": "$likes_cnt",
-        "datetime": "$created_time",
-        "comment": "$message",
         "topic": 1,
         "sentiment": "$sentiment_label",
         "emotion": "$emotions_label",
         "_id": False,
     }
 
-    db_query = db_filter_query_from_user_filter(filter)
+    if "facebook" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        likes_key = "likes_cnt"
+        datetime_key = "created_time"
+        project["comment"] = "$message"
+    elif "twitter" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        likes_key = "likes_count"
+        datetime_key = "created_at"
+        project["comment"] = "$tweet"
+    project["likes"] = f"${likes_key}"
+    project["datetime"] = f"${datetime_key}"
+
     db_query["intent"] = {"$regex": "complaint"}
 
-    res_sort_by_likes = list(db[FB_COMMENTS].find(db_query, project).sort("likes_cnt", -1).limit(5))
+    res_sort_by_likes = list(db[db_collection].find(db_query, project).sort(likes_key, -1).limit(5))
     res_sort_by_date = list(
-        db[FB_COMMENTS].find(db_query, project).sort("created_time", -1).limit(5)
+        db[db_collection].find(db_query, project).sort(datetime_key, -1).limit(5)
     )
 
     try:
@@ -254,7 +261,7 @@ def get_fb_top5_complaint_comments(filter: Filter):
     return res_sort_by_likes, res_sort_by_date
 
 
-def get_top5_noteworthy_comments(filter: Filter):
+def get_top5_noteworthy_comments(filter: Filter, db_collection: str):
     """
     Query the db based on user filter to get top 5 noteworthy related comments based on likes
 
@@ -268,21 +275,30 @@ def get_top5_noteworthy_comments(filter: Filter):
         list: List of records(sorted by likes and dates)
     """
     project = {
-        "likes": "$likes_cnt",
-        "datetime": "$created_time",
-        "comment": "$message",
         "topic": 1,
         "sentiment": "$sentiment_label",
         "emotion": "$emotions_label",
         "_id": False,
     }
 
-    db_query = db_filter_query_from_user_filter(filter)
+    if "facebook" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        likes_key = "likes_cnt"
+        datetime_key = "created_time"
+        project["comment"] = "$message"
+    elif "twitter" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        likes_key = "likes_count"
+        datetime_key = "created_at"
+        project["comment"] = "$tweet"
+    project["likes"] = f"${likes_key}"
+    project["datetime"] = f"${datetime_key}"
+
     db_query["isNoteworthy"] = 1
 
-    res_sort_by_likes = list(db[FB_COMMENTS].find(db_query, project).sort("likes_cnt", -1).limit(5))
+    res_sort_by_likes = list(db[db_collection].find(db_query, project).sort(likes_key, -1).limit(5))
     res_sort_by_date = list(
-        db[FB_COMMENTS].find(db_query, project).sort("created_time", -1).limit(5)
+        db[db_collection].find(db_query, project).sort(datetime_key, -1).limit(5)
     )
 
     try:
