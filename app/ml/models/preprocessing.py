@@ -49,8 +49,7 @@ def preprocessing(text):  # Facebook
     Returns:
         str: preprocessed text
     """
-    if type(text) != str:
-        return text
+    text = str(text)
     text = text.encode("ascii", errors="ignore").decode()  # Remove non-english characters
     text = "".join([ch for ch in text if ch in string.printable])
     text = (
@@ -89,8 +88,7 @@ def twitter_preprocessing(text):
         str: Preprocessed text
     """
 
-    if type(text) != str:
-        return text
+    text = str(text)
     text = text.encode("ascii", errors="ignore").decode()
     text = "".join([ch for ch in text if ch in string.printable])
     text = text.replace("\n", "").replace("\nl", "").replace("[", "").replace("]", "").replace("\\--", "")
