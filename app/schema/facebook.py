@@ -1,4 +1,5 @@
-from typing import List
+from datetime import datetime
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -45,3 +46,18 @@ class FbComplaintTopKeywordsAnalysis(BaseModel):
 
 class FbComplaintTopKeywordsAnalysisRes(BaseModel):
     data: List[FbComplaintTopKeywordsAnalysis]
+
+
+class FbComplaintComments(BaseModel):
+    likes: int
+    datetime: datetime
+    comment: str
+    topic: str
+    sentiment: str
+    emotion: str
+    link: Optional[str]
+    img: Optional[str]
+
+
+class FbTop5ComplaintCommentsRes(BaseModel):
+    data: List[FbComplaintComments]

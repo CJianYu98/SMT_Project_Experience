@@ -4,9 +4,9 @@ from typing import List
 import pandas as pd
 from fastapi import APIRouter
 
+from ..dao.facebook import get_top_keywords
 from ..schema.keyword_analysis import Top20KeywordAnalysisRes
 from ..schema.user_filter import Filter
-from ..dao.facebook import get_top_keywords
 
 router = APIRouter(prefix="/keyword-analysis", tags=["keyword_analysis"])
 

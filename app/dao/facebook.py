@@ -6,6 +6,7 @@ from ..schema.facebook import (
     FbComplaintTopKeywordsAnalysisRes,
     FbIndivAggregatedStatsRes,
     FbKeywordAnalysisRes,
+    FbTop5ComplaintCommentsRes,
     FbTop5TopicStatsRes,
     FbTrendStatsRes,
 )
@@ -184,3 +185,30 @@ def get_top_complaint_keywords(filter: Filter, project: dict, db_collection: str
         raise HTTPException(status_code=500, detail=str(e)) from e
 
     return res
+
+
+def get_top5_complaint_comments(filter: Filter):
+    project = {
+        "likes": "$likes_cnt",
+        "datetime": "$created_time",
+        "comment": "$message",
+        "topic": 1,
+        "sentiment": "$sentiment_label",
+        "emotion": "$emotions_label",
+        "_id": False,
+    }
+
+    db_query = db_filter_query_from_user_filter(filter)
+
+    res_sort_by_likes = list(db[FB_COMMENTS].find(db_query, project).sort("likes_cnt", -1).limit(5))
+    res_sort_by_date = list(
+        db[FB_COMMENTS].find(db_query, project).sort("created_time", -1).limit(5)
+    )
+
+    try:
+        FbTop5ComplaintCommentsRes(data=res_sort_by_likes)
+        FbTop5ComplaintCommentsRes(data=res_sort_by_date)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+    return res_sort_by_likes, res_sort_by_date

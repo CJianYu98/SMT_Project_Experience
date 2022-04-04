@@ -4,9 +4,9 @@ from typing import List
 import pandas as pd
 from fastapi import APIRouter, HTTPException
 
+from ..dao.facebook import get_fb_top5_topics_stats
 from ..schema.topic_analysis import IndiTopicStatsRes
 from ..schema.user_filter import Filter
-from ..dao.facebook import get_fb_top5_topics_stats
 
 router = APIRouter(prefix="/topic-analysis", tags=["topic_analysis"])
 

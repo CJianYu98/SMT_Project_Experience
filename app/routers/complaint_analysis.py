@@ -4,9 +4,9 @@ from typing import List
 import pandas as pd
 from fastapi import APIRouter
 
+from ..dao.facebook import get_top5_complaint_comments, get_top_complaint_keywords
 from ..schema.complaint_analysis import Top20ComplaintKeywordAnalysisRes
 from ..schema.user_filter import Filter
-from ..dao.facebook import get_top_complaint_keywords
 
 router = APIRouter(prefix="/complaint-analysis", tags=["complaint_analysis"])
 
@@ -63,3 +63,15 @@ def get_all_top_complaint_keywords(filter: Filter):
             for i in range(len(entities_count))
         )
     return res
+
+
+@router.post("/get-all-top5-complaint-comments")
+def get_all_top5_complaint_comments(filter: Filter):
+
+    # Query selected social media platform MongoDB collection based on user platform filter options
+    if "facebook" in filter.platforms:
+        fb_comments_by_likes, fb_comments_by_date = get_top5_complaint_comments(filter)
+    else:
+        fb_comments_by_likes = fb_comments_by_date = []
+
+    return {"facebook": {"likes": fb_comments_by_likes, "date": fb_comments_by_date}}
