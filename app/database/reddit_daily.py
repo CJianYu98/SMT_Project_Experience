@@ -206,7 +206,7 @@ for i, file in enumerate(files):
     # print(comments_data)
 
     reddit_submissions.insert_many(sub_data[i] for i in range(len(sub_data)))    
-    reddit_comments.insert_many(comments_data)
+    reddit_comments.insert_many(comments_data[i] for i in range(len(comments_data)))
 
     logger.info(f"Num submissions: {len(sub_data)}, Num comments: {len(comments_data)}")
 

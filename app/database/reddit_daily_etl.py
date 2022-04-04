@@ -225,7 +225,7 @@ if (latest_collection_date.date() == curr_date) and (
 
     sub_data = df_sub.to_dict("index")
     reddit_submissions.insert_many(sub_data[i] for i in range(len(sub_data)))
-    reddit_comments.insert_many(comments_data)
+    reddit_comments.insert_many(comments_data[i] for i in range(len(comments_data)))
 
     logger.info(f"Num submissions: {len(sub_data)}, Num comments: {len(comments_data)}")
 
