@@ -2,6 +2,7 @@ import json
 import os
 import time
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 import pandas as pd
 import pytz
@@ -243,15 +244,49 @@ def getDescription(container):
 def getComments(container):
     global videoDetails
 
-    comments = []
+    commentList = []
+
+    comment = ''
+    date = ''
+    likes = '0'
 
     for thread in container:
-        anchorTag = thread.find_elements(
-            By.XPATH,
-            ".//yt-formatted-string[@id='content-text'and @class='style-scope ytd-comment-renderer']",
-        )
-        comments.extend(comment.text for comment in anchorTag)
-    videoDetails.loc[len(videoDetails) - 1, VID_COMMENTS] = comments
+        # retrieve comment
+        commentsInView = thread.find_element(By.XPATH,".//div[@id='content' and @class='style-scope ytd-expander']")
+        commentsTag = commentsInView.find_elements(By.XPATH,".//yt-formatted-string[@id='content-text'and @class='style-scope ytd-comment-renderer']")
+        for c in commentsTag:
+            comment = c.text
+
+        # retrieve date posted for comment
+        dateTag = thread.find_element(By.XPATH,".//yt-formatted-string[@class='published-time-text above-comment style-scope ytd-comment-renderer']/a")
+        date = dateTag.text
+        splitDate = date.split(" ")
+        num= splitDate[0]
+        newDate = datetime.now()
+
+        if 'minutes' in date:
+            newDate = (datetime.now() - timedelta(minutes=int(num))).date()
+        elif 'hours' in date:
+            newDate = (datetime.now() - timedelta(hours=int(num))).date()
+        elif 'days' in date:
+            newDate = (datetime.now() - timedelta(days=int(num))).date()
+        elif 'months' in date:
+            newDate = datetime.now() - relativedelta(months=int(num))
+        
+        date = newDate.strftime("%b %d, %Y")
+
+        # retrieve num of likes for comment
+        likesInView = thread.find_element(By.XPATH,".//div[@id='toolbar' and @class='style-scope ytd-comment-action-buttons-renderer']")
+        likesTag = likesInView.find_element(By.XPATH,".//span[@id='vote-count-middle' and @class='style-scope ytd-comment-action-buttons-renderer']")
+        likes = likesTag.text
+        if likes == '':
+            likes = '0'
+
+        commentList.append({'Comment':comment,
+                                'Date':date,
+                                'Likes':likes})
+    
+    videoDetails.loc[len(videoDetails) - 1, VID_COMMENTS] = commentList
 
 def clickMoreComments(container):
     for readMore in container:
@@ -388,13 +423,16 @@ def fullVideo(video):
         try:
             clickMoreComments(readMoreInView)
 
-            commentsInView = commentContainer.find_elements(
-                    By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']"
+            # commentsInView = commentContainer.find_elements(
+            #         By.XPATH, "//div[@id='content' and @class='style-scope ytd-expander']"
+            # )
+            readMoreInView = commentContainer.find_elements(
+                By.XPATH,"//div[@id='main' and @class='style-scope ytd-comment-renderer']"
             )
         except Exception as e:
             logger.exception(f"Error: Unable to expand comments {e}")
-        if len(commentsInView) > 0:
-            getComments(commentsInView)
+        if len(readMoreInView) > 0:
+            getComments(readMoreInView)
         else:
             videoDetails.loc[len(videoDetails) - 1, VID_COMMENTS] = []
     except Exception as e:

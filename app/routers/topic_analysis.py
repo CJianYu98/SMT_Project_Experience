@@ -4,7 +4,7 @@ from typing import List
 import pandas as pd
 from fastapi import APIRouter, HTTPException
 
-from ..dao.facebook import get_fb_top5_topics_stats
+from ..dao.dao import get_top5_topics_stats
 from ..schema.topic_analysis import IndiTopicStatsRes
 from ..schema.user_filter import Filter
 
@@ -22,24 +22,19 @@ def get_top5_topic_analysis(filter: Filter):
     Returns:
         Pydantic Model: JSON response object
     """
-
-    # Create MongoDB project field in query statement
-    project = {
-        "entities": 1,
-        "emotions_label": 1,
-        "sentiment_label": 1,
-        "topic": 1,
-        "message": 1,
-        "_id": False,
-    }
-
     if "facebook" in filter.platforms:
-        fb_posts_data = get_fb_top5_topics_stats(filter, project, "posts")
-        fb_comments_data = get_fb_top5_topics_stats(filter, project, "comments")
+        fb_posts_data = get_top5_topics_stats(filter, "posts")
+        fb_comments_data = get_top5_topics_stats(filter, "comments")
     else:
         fb_posts_data = fb_comments_data = []
+    if "twitter" in filter.platforms:
+        twit_posts_data = get_top5_topics_stats(filter, "tweets")
+        twit_comments_data = get_top5_topics_stats(filter, "comments")
+    else:
+        twit_posts_data = twit_comments_data = []
 
-    all_data = fb_posts_data + fb_comments_data
+    all_data = sum([fb_posts_data, fb_comments_data, twit_posts_data, twit_comments_data], [])
+    print(len(all_data))
     if not all_data:
         raise HTTPException(status_code=404, detail="No data found within date period given")
 
