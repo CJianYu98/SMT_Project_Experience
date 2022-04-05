@@ -1,9 +1,9 @@
 import json
 import os
-import time
 import uuid
 from datetime import datetime, timedelta
 from pprint import pprint
+from time import time
 
 import pandas as pd
 import pytz
@@ -11,9 +11,21 @@ import telegram_send as tele
 from dotenv import load_dotenv
 from loguru import logger
 
+from ..constants.etl import get_time
 from ..constants.social_media import YOUTUBE_COMMENT_FIELDS, YOUTUBE_VIDEO_FIELDS
+from ..ml.models.emotions_classification import *
+from ..ml.models.intent_classification import *
+from ..ml.models.keyword_analysis import *
+from ..ml.models.ml_features import *
+from ..ml.models.noteworthy_classification import *
+from ..ml.models.preprocessing import *
+from ..ml.models.sentiment_classification import *
+from ..ml.models.thoughtful_classification import *
+from ..ml.models.topic_matching import *
 from .connect import db
 from .status_check import check_status
+
+pd.options.mode.chained_assignment = None  # to hide warning error
 
 # Load environment variables
 load_dotenv()
@@ -74,14 +86,10 @@ latest_collection_date = datetime.strptime(crawled_date_str, "%Y-%m-%d")
 latest_etl_date = datetime.strptime(status_jobj["youtube"]["latest_etl_date"], "%Y-%m-%d")
 curr_date = datetime.now(SG_TIMEZONE).date()
 
-if (latest_collection_date.date() == curr_date) and (
-    latest_etl_date.date() < latest_collection_date.date()
-):
-    start = time.time()
+if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < latest_collection_date.date()):
+    start = time()
     logger.info(f"Starting daily ETL Youtube {latest_collection_date.date()}.json in GPU server")
-    tele.send(
-        messages=[f"Starting daily ETL Youtube {latest_collection_date.date()}.json in GPU server"]
-    )
+    # tele.send(messages=[f"Starting daily ETL Youtube {latest_collection_date.date()}.json in GPU server"])
 
     # Retrieve all youtube video ids and delete all videos within date range
     end_date = latest_collection_date
@@ -116,33 +124,105 @@ if (latest_collection_date.date() == curr_date) and (
             df["views"] = df["views"].apply(views_str_to_int)
             df["likes"] = df["likes"].apply(likes_str_to_int)
 
-            yt_videos = df.drop("comments", axis=1)
+            df_videos = df.drop("comments", axis=1)
+            df_videos["combined_text"] = df["title"] + " " + df["description"]
+
+            df_exploded = df.explode("comments").reset_index(drop=True)
+            df_exploded["cid"] = df_exploded.apply(lambda x: uuid.uuid4().hex, axis=1)
+            df_comments = df_exploded[["cid", "id", "comments"]]
+            df_comments.rename(columns={"id": "vid_id", "cid": "id", "comments": "comment"}, inplace=True)
+
+            # Apply preprocessing on text to clean data
+            df_videos["cleantext"] = df_videos["combined_text"].apply(preprocessing)
+            df_comments["cleantext"] = df_comments["comment"].apply(preprocessing)
+
+            print(df_comments.columns)
+            ###########################################################
+            #################### RUNNING ML MODELS ####################
+            ###########################################################
+
+            logger.info(f"Now classifying {channel}\n")
+
+            ###################  KEYWORD ANALYSIS ####################
+            start1 = time()
+            df_videos["entities"] = df_videos["cleantext"].apply(extract_entities)
+            df_comments["entities"] = df_comments["cleantext"].apply(extract_entities)
+
+            hours, mins, seconds = get_time(time() - start1)
+            logger.info(f"KEYWORD ANALYSIS took: {hours} hours, {mins} mins, {seconds} seconds\n")
+
+            ####################  EMOTIONS CLASSIFICATION ####################
+            start = time()
+            df_videos["emotions_label"] = df_videos["cleantext"].apply(lambda x: classify_emotions(x))
+            df_comments["emotions_label"] = df_comments["cleantext"].apply(lambda x: classify_emotions(x))
+
+            hours, mins, seconds = get_time(time() - start)
+            logger.info(f"EMOTIONS CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+
+            #################### TOPIC CLASSIFICATION ####################
+            start = time()
+            df_videos["topic"] = df_videos["cleantext"].apply(get_topics)
+            df_comments["topic"] = df_comments["cleantext"].apply(get_topics)
+
+            hours, mins, seconds = get_time(time() - start)
+            logger.info(f"TOPIC CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+
+            #################### INTENT CLASSIFICATION ####################
+            start = time()
+            df_videos["intent"] = df_videos["cleantext"].apply(classify_intent)
+            df_comments["intent"] = df_comments["cleantext"].apply(classify_intent)
+
+            hours, mins, seconds = get_time(time() - start)
+            logger.info(f"INTENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+
+            #################### SENTIMENT CLASSIFICATION ####################
+            start = time()
+            df_videos = classify_sentiment(df_videos)
+            df_comments = classify_sentiment(df_comments)
+
+            hours, mins, seconds = get_time(time() - start)
+            logger.info(f"SENTIMENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+
+            #################### THOUGHTFULNESS CLASSIFICATION ####################
+            start = time()
+            df_post_features = create_features(df_videos)
+            df_post_features_standardised = get_standardized_values(df_post_features)
+            post_predictions = predict_thoughtfulness(df_post_features_standardised)
+            df_videos["isThoughtful"] = post_predictions
+
+            df_comments_features = create_features(df_comments)
+            df_comments_features_standardised = get_standardized_values(df_comments_features)
+            df_comments_predictions = predict_thoughtfulness(df_comments_features_standardised)
+            df_comments["isThoughtful"] = df_comments_predictions
+
+            hours, mins, seconds = get_time(time() - start)
+            logger.info(f"THOUGHTFUL CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+
+            #################### NOTEWORTHY CLASSIFICATION ####################
+            start = time()
+            df_videos["isNoteworthy"] = df_videos.apply(classify_noteworthy, axis=1)
+            df_comments["isNoteworthy"] = df_comments.apply(classify_noteworthy, axis=1)
+
+            hours, mins, seconds = get_time(time() - start)
+            logger.info(f"NOTEWORTHY CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+
+            ##########################################################
+            ############### END OF ML CLASSIFICATION #################
+            ##########################################################
 
             # Inserting youtube videos data
-            yt_vid_data = yt_videos.to_dict(orient="index")
-            youtube_videos.insert_many([yt_vid_data[i] for i in range(len(yt_vid_data))])
+            yt_vid_data = df_videos.to_dict(orient="index")
+            yt_comments_data = df_comments.to_dict(orient="index")
 
-            # Retrieving youtube comments data for each video
-            for i in range(len(df)):
-                if df.iloc[i]["comments"] != None and df.iloc[i]["comments"] != []:
-                    for cmt in df.iloc[i]["comments"]:
-                        comments.append(
-                            {"id": uuid.uuid4().hex, "vid_id": df.iloc[i]["id"], "text": cmt}
-                        )
-    # Inserting youtube videos data
-    youtube_comments.insert_many(comments)
+            # Inserting youtube videos data
+            youtube_videos.insert_many([yt_vid_data[i] for i in range(len(yt_vid_data))])
+            youtube_comments.insert_many([yt_comments_data[i] for i in range(len(yt_comments_data))])
 
     # Update status file
     status_jobj["youtube"]["latest_etl_date"] = datetime.now().date().strftime("%Y-%m-%d")
     with open(STATUS_CHECK_FILE, "w") as f:
         json.dump(status_jobj, f, indent=4)
 
-    duration = time.time() - start
-    logger.info(
-        f"Daily ETL for Youtube {latest_collection_date.date()}.json has completed, time taken: {duration}"
-    )
-    tele.send(
-        messages=[
-            f"Daily ETL for Youtube {latest_collection_date.date()}.json has completed, time taken: {duration}"
-        ]
-    )
+    duration = time() - start
+    logger.info(f"Daily ETL for Youtube {latest_collection_date.date()}.json has completed, time taken: {duration}")
+    # tele.send(messages=[f"Daily ETL for Youtube {latest_collection_date.date()}.json has completed, time taken: {duration}"])

@@ -49,8 +49,9 @@ def preprocessing(text):  # Facebook
     Returns:
         str: preprocessed text
     """
+    text = str(text)
     text = text.encode("ascii", errors="ignore").decode()  # Remove non-english characters
-    text = "".join([ch for ch in text if ch in string.printable])  #
+    text = "".join([ch for ch in text if ch in string.printable])
     text = (
         text.replace("\n", "")
         .replace("\nl", "")
@@ -87,13 +88,13 @@ def twitter_preprocessing(text):
         str: Preprocessed text
     """
 
+    text = str(text)
     text = text.encode("ascii", errors="ignore").decode()
     text = "".join([ch for ch in text if ch in string.printable])
     text = text.replace("\n", "").replace("\nl", "").replace("[", "").replace("]", "").replace("\\--", "")
     markdown_removed = re.sub("\*+\W+", "", text)
     link_removed = re.sub("\(?https?://[A-Za-z0-9./_\-!@#$%^&*+={}[\]<>:;?]*\)?", "", markdown_removed)
-    usernames_removed = re.sub("@[\w]+", "", link_removed)
-    return usernames_removed
+    return re.sub("@[\w]+", "", link_removed)
 
 
 def extract_hashtags(text):
