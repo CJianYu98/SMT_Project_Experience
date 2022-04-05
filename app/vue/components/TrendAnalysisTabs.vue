@@ -1,18 +1,4 @@
 <template>
-  <!-- <v-card>
-    <v-tabs
-      background-color="deep-purple"
-      center-active
-      dark
-    >
-      <v-tab><v-img src="facebook_icon.png"></v-img>Facebook</v-tab>
-      <v-tab><v-img src="instagram_icon.png"></v-img>Instagram</v-tab>
-      <v-tab><v-img src="reddit_icon.png"></v-img>Reddit</v-tab>
-      <v-tab><v-img src="twitter_icon.png"></v-img>Twitter</v-tab>
-      <v-tab><v-img src="youtube_icon.png"></v-img>Youtube</v-tab>
-    </v-tabs>
-  </v-card> -->
-
   <v-card>
     <v-tabs
         v-model="tabs"
@@ -37,13 +23,11 @@
           v-for="platform in mediasMetrics" 
           :key="platform.view"
         >
-        <!-- <v-card v-if="view === 'all'"> -->
           <v-card flat>
             <v-container fluid class="px-4 mt-n4 pb-0">
               <v-row no-gutters align="stretch">
                 <v-col class="d-flex">
                   <v-card-title class="text-h5">
-                    <!-- {{platformview.}} -->
                     {{ selectedViewOption }}
                   </v-card-title>
                   <v-spacer></v-spacer>
@@ -59,107 +43,10 @@
           </v-card>
           <v-card>
             <line-chart class="chartBox" :data="selectedChartData"></line-chart>  
-          </v-card>
-                
-        <!-- </v-card> -->
+          </v-card>   
         </v-tab-item>
     </v-tabs>
-    
-    <!-- <v-tabs-items v-model="tabs">
-      <v-tab-item>
-        <v-card flat>
-          <v-container fluid class="px-4 mt-n4 pb-0">
-            <v-row no-gutters align="stretch">
-              <v-col class="d-flex">
-                <v-card-title class="text-h5">
-                  Number of Posts
-                </v-card-title>
-                <v-spacer></v-spacer>
-                <DropDownSelect :viewFilter="allView" :label="label"></DropDownSelect>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
-        <v-card>
-          <line-chart class="chartBox" :chartData="allChartData"></line-chart>
-        </v-card>
-      </v-tab-item>
-
-      <v-tab-item>
-        <v-card flat>
-          <v-container fluid class="px-4 mt-n4 pb-0">
-            <v-row no-gutters align="stretch">
-              <v-col class="d-flex">
-                <v-card-title class="text-h5">
-                  Number of Posts
-                </v-card-title>
-                <v-spacer></v-spacer>
-                <DropDownSelect :viewFilter="facebookView" :label="label"></DropDownSelect>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
-        <v-card>
-          <line-chart class="chartBox" :chartData="facebookChartData"></line-chart>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card flat>
-          <v-container fluid class="px-4 mt-n4 pb-0">
-            <v-row no-gutters align="stretch">
-              <v-col class="d-flex">
-                <v-card-title class="text-h5">
-                  Number of Posts
-                </v-card-title>
-                <v-spacer></v-spacer>
-                <DropDownSelect :viewFilter="redditView" :label="label"></DropDownSelect>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
-        <v-card>
-          <line-chart class="chartBox" :chartData="redditChartData"></line-chart>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card flat>
-          <v-container fluid class="px-4 mt-n4 pb-0">
-            <v-row no-gutters align="stretch">
-              <v-col class="d-flex">
-                <v-card-title class="text-h5">
-                  Number of Posts
-                </v-card-title>
-                <v-spacer></v-spacer>
-                <DropDownSelect :viewFilter="twitterView" :label="label"></DropDownSelect>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
-        <v-card>
-          <line-chart class="chartBox" :chartData="twitterChartData"></line-chart>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card flat>
-          <v-container fluid class="px-4 mt-n4 pb-0">
-            <v-row no-gutters align="stretch">
-              <v-col class="d-flex">
-                <v-card-title class="text-h5">
-                  Number of Posts
-                </v-card-title>
-                <v-spacer></v-spacer>
-                <DropDownSelect :viewFilter="youtubeView" :label="label"></DropDownSelect>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
-        <v-card>
-          <line-chart class="chartBox" :chartData="youtubeChartData"></line-chart>
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items> -->
   </v-card>
-
 </template>
 
 <script>
@@ -185,285 +72,21 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       return {
         tabs: null,
         label: 'View',
-        // title: 'Number of Mentions',
-        // selectedTab: 'all',
-        // selectedViewList: ['Number of Mentions','Number of Likes'],
-        // selectedViewOption: 'Number of Mentions',
         selectedTab: instance.medias[0],
         selectedViewList: instance.mediasMetrics.all.view,
         selectedViewOption: instance.mediasMetrics.all.view[0],
         selectedChartData: instance.mediasMetrics.all.data_mentions,
-        //  {
-          // chartData:{
-          //   labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
-          //   "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-          //   datasets: [
-          //     {
-          //       label: 'Facebook',
-          //       data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
-          //       fill: false,
-          //       borderColor: '#3949AB',
-          //       backgroundColor: '#3949AB',
-          //       borderWidth: 1,
-          //       // tension: 0.1
-          //     },
-          //     {
-          //       label: 'Reddit',
-          //       data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
-          //       fill: false,
-          //       borderColor: '#EF6C00',
-          //       backgroundColor: '#EF6C00',
-          //       borderWidth: 1,
-          //     },
-          //     {
-          //       label: 'Twitter',
-          //       data: [2300,  150,  4342,  7050,  1522,  3841,  1559,  657,  1445, 3000, 4500, 6641],
-          //       fill: false,
-          //       borderColor: '#42A5F5',
-          //       backgroundColor: '#42A5F5',
-          //       borderWidth: 1
-          //     },
-          //     {
-          //       label: 'Youtube',
-          //       data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
-          //       fill: false,
-          //       borderColor: '#C62828',
-          //       backgroundColor: '#C62828',
-          //       borderWidth: 1
-          //     },
-          //   ]
-          // }
-        // },
-        // function(){
-        //   const theData= {
-        //     selectedChartData: '',
-        //   }
-        //   return theData;
-        // },
-        // medias: ['all','facebook','reddit','twitter','youtube'],
-        // mediaMetrics: { 
-        //   all: {
-        //     view: ['Number of Likes'],
-        //     chartData: {
-        //       labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
-        //       "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-        //       datasets: [
-        //         {
-        //           label: 'Facebook',
-        //           data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1545, 5000, 8500, 9841],
-        //           fill: false,
-        //           borderColor: '#3949AB',
-        //           backgroundColor: '#3949AB',
-        //           borderWidth: 1,
-        //           // tension: 0.1
-        //         },
-        //         {
-        //           label: 'Reddit',
-        //           data: [7700,	1150,	342,	7050,	5522,	341,	259,	1577,	2345, 6000, 8000, 9041],
-        //           fill: false,
-        //           borderColor: '#EF6C00',
-        //           backgroundColor: '#EF6C00',
-        //           borderWidth: 1,
-        //         },
-        //         {
-        //           label: 'Twitter',
-        //           data: [2300,	150,	4342,	7050,	1522,	3841,	1559,	657,	1445, 3000, 4500, 6641],
-        //           fill: false,
-        //           borderColor: '#42A5F5',
-        //           backgroundColor: '#42A5F5',
-        //           borderWidth: 1
-        //         },
-        //         {
-        //           label: 'Youtube',
-        //           data: [6880,	550,	2342,	6070,	522,	2241,	1259,	3157,	1545, 6000, 8500, 9841],
-        //           fill: false,
-        //           borderColor: '#C62828',
-        //           backgroundColor: '#C62828',
-        //           borderWidth: 1
-        //         },
-        //       ]
-        //     },
-        //   }, 
-        //   facebook: {
-        //     view: ['Number of Likes', 'Number of Comments', 'Number of Shares'],
-        //     chartData: {
-        //        labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
-        //       "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-        //       datasets: [
-        //         {
-        //           label: 'Facebook',
-        //           data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1545, 5000, 8500, 9841],
-        //           fill: false,
-        //           borderColor: '#3949AB',
-        //           backgroundColor: '#3949AB',
-        //           borderWidth: 1,
-        //         }
-        //       ]
-        //     }
-        //   }, 
-        //   reddit: {
-        //     view: ['Number of Net Votes', 'Number of Comments', 'Number of Awards'],
-        //     chartData: {
-        //       labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
-        //       "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-        //       datasets: [
-        //         {
-        //           label: 'Reddit',
-        //           data: [7700,	1150,	342,	7050,	5522,	341,	259,	1577,	2345, 6000, 8000, 9041],
-        //           fill: false,
-        //           borderColor: '#EF6C00',
-        //           backgroundColor: '#EF6C00',
-        //           borderWidth: 1
-        //         }
-        //       ]
-        //     }
-        //   },         
-        //   twitter: {
-        //     view: ['Number of Likes','Number of Retweets','Number of Replies'],
-        //     chartData: {
-        //       labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
-        //       "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-        //       datasets: [
-        //         {
-        //           label: 'Twitter',
-        //           data: [2300,	150,	4342,	7050,	1522,	3841,	1559,	657,	1445, 3000, 4500, 6641],
-        //           fill: false,
-        //           borderColor: '#42A5F5',
-        //           backgroundColor: '#42A5F5',
-        //           borderWidth: 1
-        //         }
-        //       ]
-        //     }
-        //   }, 
-        //   youtube: {
-        //     view: ['Number of Likes', 'Number of Views', 'Number of Comments'],
-        //     chartData: {
-        //       labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
-        //       "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-        //       datasets: [
-        //         {
-        //           label: 'Youtube',
-        //           data: [6880,	550,	2342,	6070,	522,	2241,	1259,	3157,	1545, 6000, 8500, 9841],
-        //           fill: false,
-        //           borderColor: '#C62828',
-        //           backgroundColor: '#C62828',
-        //           borderWidth: 1
-        //         }
-        //       ]
-        //     }
-        //   }
-        // },
-        // allView: [{view: 'Number of Likes'}],
-        // facebookView: [{view: 'Number of Likes'}, {view: 'Number of Comments'}, {view: 'Number of Shares'}],
-        // redditView: [{view: 'Number of Net Votes'}, {view: 'Number of Comments'}, {view: 'Number of Awards'}],        
-        // twitterView: [{view: 'Number of Likes'}, {view: 'Number of Retweets'}, {view: 'Number of Replies'}],
-        // youtubeView: [{view: 'Number of Likes'}, {view: 'Number of Views'}, {view: 'Number of Comments'}],
-        // allChartData: {
-        //   labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
-        //   "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-        //   datasets: [
-        //     {
-        //       label: 'Facebook',
-        //       data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1545, 5000, 8500, 9841],
-        //       fill: false,
-        //       borderColor: '#3949AB',
-        //       backgroundColor: '#3949AB',
-        //       borderWidth: 1,
-        //       // tension: 0.1
-        //     },
-        //     {
-        //       label: 'Reddit',
-        //       data: [7700,	1150,	342,	7050,	5522,	341,	259,	1577,	2345, 6000, 8000, 9041],
-        //       fill: false,
-        //       borderColor: '#EF6C00',
-        //       backgroundColor: '#EF6C00',
-        //       borderWidth: 1,
-        //     },
-        //     {
-        //       label: 'Twitter',
-        //       data: [2300,	150,	4342,	7050,	1522,	3841,	1559,	657,	1445, 3000, 4500, 6641],
-        //       fill: false,
-        //       borderColor: '#42A5F5',
-        //       backgroundColor: '#42A5F5',
-        //       borderWidth: 1
-        //     },
-        //     {
-        //       label: 'Youtube',
-        //       data: [6880,	550,	2342,	6070,	522,	2241,	1259,	3157,	1545, 6000, 8500, 9841],
-        //       fill: false,
-        //       borderColor: '#C62828',
-        //       backgroundColor: '#C62828',
-        //       borderWidth: 1
-        //     },
-        //   ]
-        // },
-        // facebookChartData: {
-        //   labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
-        //   "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-        //   datasets: [
-        //     {
-        //       label: 'Facebook',
-        //       data: [600,	1150,	342,	6050,	2522,	3241,	1259,	157,	1545, 5000, 8500, 9841],
-        //       fill: false,
-        //       borderColor: '#3949AB',
-        //       backgroundColor: '#3949AB',
-        //       borderWidth: 1,
-        //       // tension: 0.1
-        //     }
-        //   ]
-        // },
-        // redditChartData: {
-        //   labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
-        //   "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-        //   datasets: [
-        //     {
-        //       label: 'Reddit',
-        //       data: [7700,	1150,	342,	7050,	5522,	341,	259,	1577,	2345, 6000, 8000, 9041],
-        //       fill: false,
-        //       borderColor: '#EF6C00',
-        //       backgroundColor: '#EF6C00',
-        //       borderWidth: 1
-        //     }
-        //   ]
-        // },
-        // twitterChartData: {
-        //   labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
-        //   "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-        //   datasets: [
-        //     {
-        //       label: 'Twitter',
-        //       data: [2300,	150,	4342,	7050,	1522,	3841,	1559,	657,	1445, 3000, 4500, 6641],
-        //       fill: false,
-        //       borderColor: '#42A5F5',
-        //       backgroundColor: '#42A5F5',
-        //       borderWidth: 1
-        //     }
-        //   ]
-        // },
-        // youtubeChartData: {
-        //   labels: ["Feb 2021",	"Mar 2021",	"Apr 2021",	"May 2021",	"Jun 2021",	
-        //   "Jul 2021",	"Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
-        //   datasets: [
-        //     {
-        //       label: 'Youtube',
-        //       data: [6880,	550,	2342,	6070,	522,	2241,	1259,	3157,	1545, 6000, 8500, 9841],
-        //       fill: false,
-        //       borderColor: '#C62828',
-        //       backgroundColor: '#C62828',
-        //       borderWidth: 1
-        //     }
-        //   ]
-        // },
       }
     },
     methods:{
       reset(media)
       {
-        console.log(this.selectedChartData);
         this.selectedTab = media;
-        // console.log(this.selectedTab);
+        
+        // 'number of mentions' is the default selection for all tabs 
         this.selectedViewOption= 'Number of Mentions';
-        // console.log(this.selectedViewOption);
+
+        // change view options and chart data
         if (this.selectedTab === 'all'){
           this.selectedViewList = this.$props.mediasMetrics.all.view;
           this.selectedChartData = this.$props.mediasMetrics.all.data_mentions;
@@ -484,11 +107,6 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           this.selectedViewList = this.$props.mediasMetrics.youtube.view;
           this.selectedChartData = this.$props.mediasMetrics.youtube.data_mentions;
         }            
-        // this.selectedViewList = this.$props.mediasMetrics.media.view;
-        // console.log(this.selectedViewList);
-        
-        // this.selectedChartData = this.$props.mediasMetrics.all.chart_mentions; 
-        // this.changeChart();
       },
       changeViewOption(selectedViewOption)
       {
@@ -497,64 +115,77 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       },
       changeChart()
       {
-        // console.log(123);
-        // console.log(this.selectedTab);
-        // console.log(this.$props.mediasMetrics.all.data_likes);
-        // if (this.selectedTab === 'facebook'){
-        //   if (this.selectedViewOption === 'Number of Likes'){
-            
-        //     console.log(this.selectedViewOption);
-            
-        //     console.log(this.selectedChartData.chartData);
-        //     this.selectedChartData = this.$props.mediasMetrics.all.data_likes;
-        //     console.log(this.selectedChartData.chartData);
-        //     console.log(this.selectedChartData === this.$props.mediasMetrics.all.data_likes);
-        //   }
-        // }
-
+        // All tab
         if (this.selectedTab === 'all'){
-          // console.log(123);
           if (this.selectedViewOption === 'Number of Mentions'){
-            
             this.selectedChartData = this.$props.mediasMetrics.all.data_mentions;
-            // console.log('mention');
-            // console.log(this.selectedChartData.chartData);
           } 
-          else if (this.selectedViewOption === 'Number of Likes'){
-            console.log(this.selectedChartData === this.$props.mediasMetrics.all.data_likes);
-            
+          else if (this.selectedViewOption === 'Number of Likes'){            
             this.selectedChartData = this.$props.mediasMetrics.all.data_likes;
-            // console.log('likes');
-            
-            console.log(this.selectedChartData === this.$props.mediasMetrics.all.data_likes);
           }
         }
+        // Facebook tab
         else if (this.selectedTab === 'facebook'){
-          // console.log(123);
           if (this.selectedViewOption === 'Number of Mentions'){
-            
             this.selectedChartData = this.$props.mediasMetrics.facebook.data_mentions;
-            // console.log('mention');
-            // console.log(this.selectedChartData.chartData);
           } 
-          else if (this.selectedViewOption === 'Number of Likes'){
-            console.log(this.selectedChartData === this.$props.mediasMetrics.all.data_likes);
-            
+          else if (this.selectedViewOption === 'Number of Likes'){            
             this.selectedChartData = this.$props.mediasMetrics.facebook.data_likes;
-            // console.log('likes');
-            
-            // console.log(this.selectedChartData === this.$props.mediasMetrics.all.data_likes);
+          }
+          else if (this.selectedViewOption === 'Number of Shares'){            
+            this.selectedChartData = this.$props.mediasMetrics.facebook.data_shares;
+          }
+          else if (this.selectedViewOption === 'Sentiments'){            
+            this.selectedChartData = this.$props.mediasMetrics.facebook.data_sentiments;
+          }
+        }
+        // Reddit tab
+        else if (this.selectedTab === 'reddit'){
+          if (this.selectedViewOption === 'Number of Mentions'){
+            this.selectedChartData = this.$props.mediasMetrics.reddit.data_mentions;
+          } 
+          else if (this.selectedViewOption === 'Number of Net Votes'){            
+            this.selectedChartData = this.$props.mediasMetrics.reddit.data_net_votes;
+          }
+          else if (this.selectedViewOption === 'Number of Awards'){            
+            this.selectedChartData = this.$props.mediasMetrics.reddit.data_awards;
+          }
+          else if (this.selectedViewOption === 'Sentiments'){            
+            this.selectedChartData = this.$props.mediasMetrics.reddit.data_sentiments;
+          }
+        }
+        // Twitter tab
+        else if (this.selectedTab === 'twitter'){
+          if (this.selectedViewOption === 'Number of Mentions'){
+            this.selectedChartData = this.$props.mediasMetrics.twitter.data_mentions;
+          } 
+          else if (this.selectedViewOption === 'Number of Likes'){            
+            this.selectedChartData = this.$props.mediasMetrics.twitter.data_likes;
+          }
+          else if (this.selectedViewOption === 'Number of Replies'){            
+            this.selectedChartData = this.$props.mediasMetrics.twitter.data_replies;
+          }
+          else if (this.selectedViewOption === 'Sentiments'){            
+            this.selectedChartData = this.$props.mediasMetrics.twitter.data_sentiments;
+          }
+        }
+        // Youtube tab
+        else if (this.selectedTab === 'youtube'){
+          if (this.selectedViewOption === 'Number of Mentions'){
+            this.selectedChartData = this.$props.mediasMetrics.youtube.data_mentions;
+          } 
+          else if (this.selectedViewOption === 'Number of Likes'){            
+            this.selectedChartData = this.$props.mediasMetrics.youtube.data_likes;
+          }
+          else if (this.selectedViewOption === 'Number of Views'){            
+            this.selectedChartData = this.$props.mediasMetrics.youtube.data_views;
+          }
+          else if (this.selectedViewOption === 'Sentiments'){            
+            this.selectedChartData = this.$props.mediasMetrics.youtube.data_sentiments;
           }
         }
       }
     },
-    // watch:{
-    //   mediasMetrics: {
-    //     handler(){
-    //       this.selectedChartData = this.mediasMetrics.all.chart_mentions;
-    //     }
-    //   }
-    // }
   }
 </script>
 
