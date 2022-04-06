@@ -156,7 +156,6 @@ def checkDate(video):
         result = 0 if STOPDATE > date else 1
         driver.switch_to.window(driver.window_handles[0])
     except Exception as e:
-        telegram_send.send(messages=[f"YOUTUBE DAILY --> Error: {e}"])
         logger.exception(e)
         driver.switch_to.window(driver.window_handles[0])
     finally:
@@ -444,7 +443,6 @@ def fullVideo(video):
         else:
             videoDetails.loc[len(videoDetails) - 1, VID_COMMENTS] = []
     except Exception as e:
-        telegram_send.send(messages=[f"YOUTUBE DAILY --> Error occurred: {e}"])
         logger.exception(f"Error: Unable to scrape video {e}")
 
 
