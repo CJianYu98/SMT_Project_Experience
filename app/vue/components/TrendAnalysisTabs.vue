@@ -162,8 +162,8 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           else if (this.selectedViewOption === 'Number of Likes'){            
             this.selectedChartData = this.$props.mediasMetrics.twitter.data_likes;
           }
-          else if (this.selectedViewOption === 'Number of Replies'){            
-            this.selectedChartData = this.$props.mediasMetrics.twitter.data_replies;
+          else if (this.selectedViewOption === 'Number of Retweets'){            
+            this.selectedChartData = this.$props.mediasMetrics.twitter.data_retweets;
           }
           else if (this.selectedViewOption === 'Sentiments'){            
             this.selectedChartData = this.$props.mediasMetrics.twitter.data_sentiments;
