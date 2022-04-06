@@ -94,7 +94,14 @@ def getTitleAndURL(videos):
         title = anchorTag.get_attribute("title")
         href = anchorTag.get_attribute("href")
 
-        if checkDate(href) == 0:
+        if len(href) == 0 or href.isspace():
+            continue
+        
+        dateValid = checkDate(href)
+
+        if dateValid == 2: # faced error checking the date 
+            continue
+        elif dateValid == 0: # date is past STOPDATE
             break
 
         row = {CHNL_TITLE: title, CHNL_URL: href}
@@ -104,6 +111,7 @@ def getTitleAndURL(videos):
 
 # check video is within timeframe
 def checkDate(video):
+    result = 2 # default for error
     try:
         driver.switch_to.window(driver.window_handles[1])
         driver.get(video)
