@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     generateKeywordsWordcloud() {
-      console.log("=== start generateKeywordsWordcloud() ===")
+      // console.log("=== start generateKeywordsWordcloud() ===")
       // console.log("this.keywordsWordCloud", this.keywordsWordCloud)
 
       // set the dimensions and margins of the graph
@@ -58,7 +58,7 @@ export default {
       // const self = this // for getting keywords in tooltip
 
       function draw(words) {
-        console.log("=== start draw() ===")
+        // console.log("=== start draw() ===")
         // console.log("words", words)
 
         const cloudSvg = focus
@@ -88,9 +88,9 @@ export default {
               })
               // .attr("transform", "translate(" + cloud.size()[0] / 2 + "," + cloud.size()[1] / 2 + ")")
               .text(function(d) { return d.text; })
-              // .on('mouseover', handleMouseOver)
+              .on('mouseover', handleMouseOver)
               // .on("mousemove", handleMouseMove)
-              // .on('mouseout', handleMouseOut);
+              .on('mouseout', handleMouseOut);
 
             // console.log("this.cloudSvg 4", this.cloudSvg)
 
@@ -109,114 +109,67 @@ export default {
             
       }
 
+      function handleMouseOver(d) {
+        // console.log("=== START handleMouseOver() ===")
 
-      // creating tooltip
+        // console.log("d inside mouseover", d)
+        // console.log("d.srcElement.__data__.frequency", d.srcElement.__data__.frequency)
 
-      // const tooltip = d3.select("#keywordWordcloud")
-      //   .append("div")
-      //   .style("display", "inline")
-      //   .style("opacity", 0)
-      //   .attr("class", "tooltip")
-      //   .style("background-color", "white")
-      //   .style("border", "solid")
-      //   .style("border-width", "1px")
-      //   .style("border-radius", "5px")
-      //   .style("padding", "10px")
 
-      // function handleMouseOver(d) {
-      //   console.log("=== START handleMouseOver() ===")
-      //   // const subgroupName = d3.select(this.parentNode).datum().key;
-      //   // const subgroupValue = d.data[subgroupName];
-      //   // tooltip
-      //   //     .html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
-      //   //     .style("opacity", 1)
+        // const group = focus.append('g')
+        //             .attr('id', d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''));
+        const group = focus.append('g')
+        // eslint-disable-next-line
+                    .attr('id', 'id' + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''));
+        // console.log("group", group)
+        // const base = d.y - d.size;
+        // const base = d.y - d.screenY;
 
-      //   const wordCount = self.keywordsWordCloud.find(x => x.word === d.target.__data__.text).hover
-      //   console.log("wordCount", wordCount)
-      //   tooltip
-      //     .html(wordCount)
-      //     .attr('x', d.x)
-      //     .style("opacity", 1)
+        group.selectAll('text')
+            .data(d.srcElement.__data__.frequency)
+            .enter().append('text')
+            .attr('x', d.screenX)
+            .attr('y', d.screenY - 300)
+            // .attr('y', function(title, i) {
+            //   return (base - i*14);
+            // })
+            .attr('text-anchor', 'middle')
+            .attr('fill', '#604AF0')
+            .attr('font-weight', 'bolder')
+            .text(function() { return d.srcElement.__data__.text + ' has ' + d.srcElement.__data__.frequency + ' mentions'; });
 
-      //   d3.select(this)
-      //   .style("stroke", "black")
-      //   .style("opacity", 1)
+        const bbox = group.node().getBBox();
+        const bboxPadding = 5;
 
+        // console.log("group 2", group)
+        // console.log("group.node()", group.node())
+        // console.log("group.node().getBBox()", group.node().getBBox())
+
+        // place a white background to see text more clearly
+        group.insert('rect', ':first-child')
+                      .attr('x', bbox.x)
+                      .attr('y', bbox.y)
+                      .attr('width', bbox.width + bboxPadding)
+                      .attr('height', bbox.height + bboxPadding)
+                      .attr('rx', 10)
+                      .attr('ry', 10)
+                      .attr('class', 'label-background-strong');
         
+        // console.log("=== END handleMouseOver() ===")
+      }
 
-      //   console.log("d", d)
-      //   console.log("d.text", d.target.__data__.text)
-      //   // console.log("this.cloudSvg 3", this.cloudSvg)
-      //   // console.log("focus", focus)
-      //   console.log("self.keywordsWordCloud", self.keywordsWordCloud)
+      function handleMouseOut(d) {
+        // console.log("=== START handleMouseOut() ===")
+        // console.log("d inside mouseout", d)
 
-      //   // const group = focus.append('g')
-      //   //                 .attr('id', 'story-titles');
-      //   // const base = d.y - d.screenY;
-      //   // // console.log("base 1", base)
-        
-      //   // const hoverText = self.keywordsWordCloud.find(o => o.word === d.target.__data__.text).hover
-      //   // // console.log("hoverText", hoverText)
+        // eslint-disable-next-line
+        // console.log("d3 select 4", 'id' + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''))
 
-      //   // group.selectAll('text')
-      //   //     // .data(data['sample_title'][d.key])
-      //   //     .data(hoverText)
-      //   //     .enter().append('text')
-      //   //     .attr('x', d.x)
-      //   //     .attr('y', function(title, i) {
-      //   //       console.log("i", i)
-      //   //       console.log("base 2", this.base)
-      //   //       console.log("base - i*14", base - i*14)
-      //   //       return (base - i*14);
-      //   //     })
-      //   //     .attr('text-anchor', 'middle')
-      //   //     .text(function(title) { return title; });
+        // eslint-disable-next-line
+        d3.select("#id" + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', '')).remove();
 
-      //   // const bbox = group.node().getBBox();
-      //   // const bboxPadding = 5;
-
-      //   // // console.log("bbox", bbox)
-      //   // // console.log("bboxPadding", bboxPadding)
-
-      //   // // place a white background to see text more clearly
-      //   // // var rect = group.insert('rect', ':first-child')
-      //   // group.insert('rect', ':first-child')
-      //   //     .attr('x', bbox.x)
-      //   //     .attr('y', bbox.y)
-      //   //     .attr('width', bbox.width + bboxPadding)
-      //   //     // .attr('height', bbox.height + bboxPadding)
-      //   //     .attr('height', 30)
-      //   //     .attr('rx', 10)
-      //   //     .attr('ry', 10)
-      //   //     .attr('class', 'label-background-strong');
-        
-      //   console.log("=== END handleMouseOver() ===")
-      // }
-
-      // function handleMouseMove(d) {
-      //   // tooltip
-      //     // .style("left", (d3.pointer(this)[0]+90) + "px") // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-      //     // .style("top", (d3.pointer(this)[1]) + "px")
-
-      //     const wordCount = self.keywordsWordCloud.find(x => x.word === d.target.__data__.text).hover
-
-      //     tooltip
-      //       .html("The exact value of<br>this cell is: " + wordCount)
-      //       .style("left", (d3.pointer(this)[0]+20) + "px")
-      //       .style("top", (d3.pointer(this)[1]) + "px")
-      // }
-
-      // function handleMouseOut() {
-      //   console.log("=== START handleMouseOut() ===")
-      //   // console.log("d", d)
-      //   // d3.select('#story-titles').remove();
-      //   tooltip
-      //     .style("opacity", 0)
-      //   d3.select(this)
-      //     .style("stroke", "none")
-      //     .style("opacity", 0.8)
-      //   console.log("=== END handleMouseOut() ===")
-      // }
+        // console.log("=== END handleMouseOut() ===")
+      }
 
         // Use the module pattern to encapsulate the visualisation code. We'll
         // expose only the parts that need to be public.
@@ -228,10 +181,10 @@ export default {
         // of the wordCloud return value.
 
           update(val) {
-            console.log("=== start update() ===")
+            // console.log("=== start update() ===")
             // console.log("words")
 
-            console.log("wordcloud length check", d3.select("#keywordWordcloud")._groups[0][0].childNodes.length)
+            // console.log("wordcloud length check", d3.select("#keywordWordcloud")._groups[0][0].childNodes.length)
 
             if (d3.select("#keywordWordcloud")._groups[0][0].childNodes.length > 1) {
               d3.select("#svgId").remove();
@@ -239,7 +192,7 @@ export default {
 
             layout = cloud()
               .size([width, height])
-              .words(val.map(function(d) { return {text: d.word, size:d.size, sentiment:d.sentiment}; }))
+              .words(val.map(function(d) { return {text: d.word, size:d.size, sentiment:d.sentiment, frequency:d.hover}; }))
               .padding(5)        // space between words
               .rotate(function() { return ~~(Math.random() * 2) * 90; })
               .fontSize(function(d) { return d.size; })      // font size of words

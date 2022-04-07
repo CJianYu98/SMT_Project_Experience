@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     generateKeywordsWordcloud() {
-      console.log("=== start generateKeywordsWordcloud() ===")
+      // console.log("=== start generateKeywordsWordcloud() ===")
       // console.log("this.complaintsWordCloud", this.complaintsWordCloud)
 
       // set the dimensions and margins of the graph
@@ -57,7 +57,7 @@ export default {
       let layout = {} 
 
       function draw(words) {
-        console.log("=== start draw() ===")
+        // console.log("=== start draw() ===")
         // console.log("words", words)
 
         const cloudSvg = focus
@@ -84,8 +84,8 @@ export default {
               })
               // .attr("transform", "translate(" + cloud.size()[0] / 2 + "," + cloud.size()[1] / 2 + ")")
               .text(function(d) { return d.text; })
-              // .on('mouseover', handleMouseOver)
-              // .on('mouseout', handleMouseOut);
+              .on('mouseover', handleMouseOver)
+              .on('mouseout', handleMouseOut);
 
             // console.log("this.cloudSvg 4", this.cloudSvg)
 
@@ -104,51 +104,67 @@ export default {
             
       }
 
-      // function handleMouseOver(d) {
-      //   console.log("=== START handleMouseOver() ===")
-      //   console.log("d", d)
-      //   console.log("d.text", d.target.__data__.text)
-      //   console.log("this.cloudSvg 3", this.cloudSvg)
-      //   const group = this.cloudSvg.append('g')
-      //                   .attr('id', 'story-titles');
-      //   const base = d.y - d.size;
-      //   const hoverText = this.complaintsWordCloud.find(o => o.word === d.target.__data__.text)
-      //   console.log("hoverText", hoverText)
+      function handleMouseOver(d) {
+        // console.log("=== START handleMouseOver() ===")
 
-      //   group.selectAll('text')
-      //       // .data(data['sample_title'][d.key])
-      //       .data(hoverText)
-      //       .enter().append('text')
-      //       .attr('x', d.x)
-      //       .attr('y', function(title, i) {
-      //         return (base - i*14);
-      //       })
-      //       .attr('text-anchor', 'middle')
-      //       .text(function(title) { return title; });
+        // console.log("d inside mouseover", d)
+        // console.log("d.srcElement.__data__.frequency", d.srcElement.__data__.frequency)
 
-      //   const bbox = group.node().getBBox();
-      //   const bboxPadding = 5;
 
-      //   // place a white background to see text more clearly
-      //   // var rect = group.insert('rect', ':first-child')
-      //             group.insert('rect', ':first-child')
-      //                 .attr('x', bbox.x)
-      //                 .attr('y', bbox.y)
-      //                 .attr('width', bbox.width + bboxPadding)
-      //                 .attr('height', bbox.height + bboxPadding)
-      //                 .attr('rx', 10)
-      //                 .attr('ry', 10)
-      //                 .attr('class', 'label-background-strong');
+        // const group = focus.append('g')
+        //             .attr('id', d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''));
+        const group = focus.append('g')
+        // eslint-disable-next-line
+                    .attr('id', 'id' + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''));
+        // console.log("group", group)
+        // const base = d.y - d.size;
+        // const base = d.y - d.screenY;
+
+        group.selectAll('text')
+            .data(d.srcElement.__data__.frequency)
+            .enter().append('text')
+            .attr('x', d.screenX - 420)
+            .attr('y', d.screenY - 300)
+            // .attr('y', function(title, i) {
+            //   return (base - i*14);
+            // })
+            .attr('text-anchor', 'middle')
+            .attr('fill', '#604AF0')
+            .attr('font-weight', 'bolder')
+            .text(function() { return d.srcElement.__data__.text + ' has ' + d.srcElement.__data__.frequency + ' mentions'; });
+
+        const bbox = group.node().getBBox();
+        const bboxPadding = 5;
+
+        // console.log("group 2", group)
+        // console.log("group.node()", group.node())
+        // console.log("group.node().getBBox()", group.node().getBBox())
+
+        // place a white background to see text more clearly
+        group.insert('rect', ':first-child')
+                      .attr('x', bbox.x)
+                      .attr('y', bbox.y)
+                      .attr('width', bbox.width + bboxPadding)
+                      .attr('height', bbox.height + bboxPadding)
+                      .attr('rx', 10)
+                      .attr('ry', 10)
+                      .attr('class', 'label-background-strong');
         
-      //   console.log("=== END handleMouseOver() ===")
-      // }
+        // console.log("=== END handleMouseOver() ===")
+      }
 
-      // function handleMouseOut(d) {
-      //   console.log("=== START handleMouseOut() ===")
-      //   console.log("d", d)
-      //   d3.select('#story-titles').remove();
-      //   console.log("=== END handleMouseOut() ===")
-      // }
+      function handleMouseOut(d) {
+        // console.log("=== START handleMouseOut() ===")
+        // console.log("d inside mouseout", d)
+
+        // eslint-disable-next-line
+        // console.log("d3 select 4", 'id' + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''))
+
+        // eslint-disable-next-line
+        d3.select("#id" + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', '')).remove();
+
+        // console.log("=== END handleMouseOut() ===")
+      }
 
         // Use the module pattern to encapsulate the visualisation code. We'll
         // expose only the parts that need to be public.
@@ -160,7 +176,7 @@ export default {
         // of the wordCloud return value.
 
           update(val) {
-            console.log("=== start update() ===")
+            // console.log("=== start update() ===")
             // console.log("words")
 
             if (d3.select("#complaintWordcloud")._groups[0][0].childNodes.length > 1) {
@@ -169,7 +185,7 @@ export default {
 
             layout = cloud()
               .size([width, height])
-              .words(val.map(function(d) { return {text: d.word, size:d.size, sentiment:d.sentiment}; }))
+              .words(val.map(function(d) { return {text: d.word, size:d.size, sentiment:d.sentiment, frequency:d.size}; }))
               .padding(5)        // space between words
               .rotate(function() { return ~~(Math.random() * 2) * 90; })
               .fontSize(function(d) { return d.size; })      // font size of words
@@ -184,6 +200,9 @@ export default {
 
 
 <style>
-
+.label-background-strong {
+  fill: white;
+  fill-opacity: .8;
+}
 </style>
 
