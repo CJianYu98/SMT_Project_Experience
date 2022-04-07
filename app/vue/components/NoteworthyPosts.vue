@@ -1,27 +1,44 @@
 <template>
   <v-card
     elevation="3"
-    class="mx-8 mt-8 rounded-lg"
+    class="mr-8 mt-11 rounded-lg"
     height="100%"
   >
-    <v-card-title class="pb-4 accent--text text-h6">
-      Noteworthy Comment
-      <HelpTextTooltip :help-text="noteworthyCommentHelpText"/>
-    </v-card-title>
-    <RelatedComment />
+    <v-row>
+      <v-col cols="8" class="pt-0">
+        <v-card-title class="pb-4 accent--text text-h6">
+          Noteworthy Comments
+          <HelpTextTooltip :help-text="noteworthyCommentHelpText"/>
+        </v-card-title>
+      </v-col>
+      <v-col class="pt-0">
+        <DropDownSelect 
+          :viewFilter="sortView" 
+          :label="label">
+        </DropDownSelect>
+      </v-col>
+    </v-row>
+    <RelatedPosts
+      :related-comments="relatedComments"
+    />
   </v-card>
 </template>
 
 
 <script>
-import RelatedComment from './RelatedPost.vue'
+import RelatedPosts from './RelatedPosts.vue'
 export default {
   components: { 
-    RelatedComment 
+    RelatedPosts
   },
-  
+  props: {
+    relatedComments: {
+      type: Object,
+      required: true
+    }
+  },
   data: () => ({
-    noteworthyCommentHelpText: "Observe the insightful comments made by users across multiple platforms. These are determined based on (...)",
+    noteworthyCommentHelpText: "Observe the insightful comments made by users across multiple platforms. These are determined based on three classified intents: seeking/giving advice, educational or insightful.",
   }),
 }
 </script>

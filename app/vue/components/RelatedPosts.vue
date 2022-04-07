@@ -4,18 +4,23 @@
     class="overflow-y-auto"
   >
   <!-- v-bind:style= "[condition ? {styleA} : {styleB}]" -->
+  <template
+    v-for="(commentsObj, index) in relatedComments"
+  >
     <RelatedComment
-      v-for="(complaint, index) in relatedComments"
-      :key="index"
-      :media="complaint.media"
-      :likes="complaint.likes"
-      :date="complaint.date"
-      :comment="complaint.comment"
-      :topic="complaint.topic"
-      :sentiment="complaint.sentiment"
-      :emotion="complaint.emotion"
+      v-for="comment in commentsObj.likes"
+      :key="comment"
+      :media="index"
+      :likes="comment.likes"
+      :date="comment.date"
+      :comment="comment.comment"
+      :topic="comment.topic"
+      :sentiment="comment.sentiment"
+      :emotion="comment.emotion"
+      :link="comment.link"
+      :img="comment.img"
     />
-      <!-- :link="complaint.link" -->
+  </template>
   </v-container>
 </template>
 
@@ -31,6 +36,10 @@ export default {
       type: Object,
       required: true
     },
+    // selectedView: {
+    //   type: String,
+    //   required: true
+    // }
   },
   data: () => ({
 

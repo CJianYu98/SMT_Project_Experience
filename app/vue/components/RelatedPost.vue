@@ -1,5 +1,6 @@
 <template>
   <v-card 
+    :href="link" target="_blank"
     :key="media" 
     class="mx-4 mb-4" 
     :style="`border: 1px primary solid;`"
@@ -95,10 +96,6 @@ export default {
       type: Array,
       required: true
     },
-    // link: {
-    //   type: String,
-    //   required: true
-    // },
     sentiment: {
       type: String,
       required: true
@@ -106,6 +103,18 @@ export default {
     emotion: {
       type: String,
       required: true
+    },
+    link: {
+      type: String,
+      required: true
+    },
+    img: {
+      type: String,
+      required: false
+    },
+    intent: {
+      type: String,
+      required: false
     },
   },
   data: () => ({
