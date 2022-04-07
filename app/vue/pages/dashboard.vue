@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-10">
+  <div class="mb-15">
     <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
     <!--  align="stretch" in v-row works with d-flex in v-col -->
     <!-- <p>{{testData}}</p> -->
@@ -30,18 +30,20 @@
         />
       </v-col>
       <v-col cols="8">
-        <ComplaintsCard 
-          :complaints-word-cloud="complaintsKeywords"
-          :related-comments="complaintsRelatedComments"
+        <NoteworthyComments 
+          :related-comments="noteworthyComments"
         />
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="5">
-        <!-- <NoteworthyComments /> -->
+      <v-col cols="4">
+        <PlaceholderCard/>
       </v-col>
-      <v-col cols="7">
-        <!-- <KeywordAnalysis /> -->
+      <v-col cols="8">
+        <ComplaintsCard 
+          :complaints-word-cloud="complaintsKeywords"
+          :related-comments="complaintsRelatedComments"
+        />
       </v-col>      
     </v-row>
   </div>
@@ -51,10 +53,11 @@
 import TrendAnalysis from '../components/TrendAnalysis.vue'
 import KeywordCard from '../components/KeywordWordCloudCard.vue'
 // import KeywordAnalysis from '../components/KeywordAnalysisCard.vue'
-// import NoteworthyComments from '../components/NoteworthyComments.vue'
+import NoteworthyComments from '../components/NoteworthyPosts.vue'
 import ComplaintsCard from '../components/ComplaintsCard.vue'
 import TrendingTopics from '@/components/TrendingTopicsCard.vue'
 import SearchFilters from '@/components/SearchFilters'
+import PlaceholderCard from '@/components/PlaceholderCard'
 export default {
   name: 'DashBoard',
   components: { 
@@ -63,8 +66,9 @@ export default {
     TrendAnalysis,
     KeywordCard,
     // KeywordAnalysis,,
-    ComplaintsCard
-    // NoteworthyComments,
+    ComplaintsCard,
+    NoteworthyComments,
+    PlaceholderCard,
   },
   // created() {
   //   // Simple POST request with a JSON body using fetch
@@ -2111,48 +2115,220 @@ export default {
       {word: "Scam Call", size: "60", hover: "60"}, 
       {word: "Chicken Hotpot", size: "60", hover: "60"}, 
     ],
-    complaintsRelatedComments: [
-      {
-        media: 'facebook',
-        likes: '24',
-        date: '28 February 2022',
-        comment: 'Here to share awareness. I was shocked to see I’ve so many foodpanda transaction which were not done by me. Please do check your bank transaction regularly to monitor for any potential fraud transaction. I don’t even maintain my debit card in my foodpan...',
-        topic: ['Food', 'Lifestyle'],
-        sentiment: 'negative',
-        emotion: 'fear',
-        link: "https://www.facebook.com/groups/complaintsingapore/posts/1373797533067137/",
+    complaintsRelatedComments: {
+      reddit: {
+        likes: [
+          {
+            likes: '300',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '290',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '280',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '270',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '260',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+        ],
+        date: [
+          {
+            likes: '20',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '290',
+            date: '24 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '80',
+            date: '23 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '20',
+            date: '22 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '26',
+            date: '21 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+        ]
       },
-      {
-        media: 'facebook',
-        likes: '51',
-        date: '28 February 2022',
-        comment: 'Was tested positive and a doctor called me today about 5 minutes ago. He was wearing glasses and we did a tele call. He was so impatient and when I asked more details on the symptoms he started shouting and when I asked for his name again, he hanged up ...',
-        topic: ['Healthcare'],
-        sentiment: 'positive',
-        emotion: 'joy',
-        link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
-      },
-      {
-        media: 'reddit',
-        likes: '0',
-        date: '1 March 2022',
-        comment: 'Possibly unpopular opinion: Stop letting people test themselves for Covid: The only reason clinics and hospitals are overwhelmed is because kiasu people who are only mildly sick go to see doctor, when it"s not necessary at all. The Covid scare is more of...',
-        topic: ['Healthcare'],
-        sentiment: 'neutral',
-        emotion: 'neutral',
-        link: "https://www.reddit.com/r/singapore/comments/t1vsu5/possibly_unpopular_opinion_stop_letting_people/",
-      },
-      {
-        media: 'reddit',
-        likes: '410',
-        date: '24 February 2022',
-        comment: 'Inflation: I have began to notice that food prices in Singapore have been going up since the start of the year. At the hawker centre I frequent, several stalls have adjusted their prices by at least $0.20 and reduced their portions. Prices in super marke...',
-        topic: ['Healthcare'],
-        sentiment: 'negative',
-        emotion: 'sadness',
-        link: "https://www.reddit.com/r/singapore/comments/sxl2k7/inflation/",
-      },
-    ],
+      facebook: {
+        likes: [
+          {
+            likes: '300',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '290',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '280',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '270',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '260',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+        ],
+        date: [
+          {
+            likes: '20',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '290',
+            date: '24 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '80',
+            date: '23 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '20',
+            date: '22 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+          {
+            likes: '26',
+            date: '21 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+          },
+        ]
+      }
+    },
     keywordsWordCloudLegend: {
       negative: "#EB8159",
       neutral: "#EFB727",
@@ -2589,6 +2765,125 @@ export default {
     },
     dateFilter: 'Past 7 Days',
     testData: {},
+    noteworthyComments: {
+      reddit: {
+        likes: [
+          {
+            likes: '300',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+            intent: "seeking/giving advice"
+          },
+          {
+            likes: '290',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+            intent: "seeking/giving advice"
+          },
+          {
+            likes: '280',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+            intent: "seeking/giving advice"
+          },
+          {
+            likes: '270',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+            intent: "seeking/giving advice"
+          },
+          {
+            likes: '260',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+            intent: "seeking/giving advice"
+          },
+        ],
+        date: [
+          {
+            likes: '20',
+            date: '25 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+            intent: "seeking/giving advice"
+          },
+          {
+            likes: '290',
+            date: '24 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+            intent: "seeking/giving advice"
+          },
+          {
+            likes: '80',
+            date: '23 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+            intent: "seeking/giving advice"
+          },
+          {
+            likes: '20',
+            date: '22 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+            intent: "seeking/giving advice"
+          },
+          {
+            likes: '26',
+            date: '21 December 2021',
+            comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
+            topic: ['Healthcare'],
+            sentiment: 'negative',
+            emotion: 'fear',
+            link: "https://www.facebook.com/groups/complaintsingapore/posts/1372131596567064/",
+            img: "(if there is one)",
+            intent: "seeking/giving advice"
+          },
+        ]
+      }
+    },
+
   
   }),
 
