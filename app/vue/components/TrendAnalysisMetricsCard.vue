@@ -1,10 +1,16 @@
 <template>
   <v-container class="px-4 ml-2 pt-0">
-    <TrendAnalysisMetricsCardOverallTrend 
-      :overall-stats="overallStats"/>
+    <TrendAnalysisMetricsCardOverallTrend
+      :selected-date-filter="selectedDateFilter"
+      :overall-stats="overallStats"
+      :get-combined-string-from-indv-platform="combinedString"
+      />
+      <!-- :selected-date-filter="selectedDateFilter" -->
     <TrendAnalysisMetricsCardIndvPlatform 
+      @passCombinedStringToOverallTrend="getCombinedStringFromIndvPlatform"
       :overall-stats="overallStats" 
-      :platform-data="platformData"/>
+      :platform-data="platformData"
+      :selected-date-filter="selectedDateFilter"/>
   </v-container>
 </template>
 
@@ -17,6 +23,10 @@ export default {
     TrendAnalysisMetricsCardIndvPlatform 
   },
   props: {
+    selectedDateFilter: {
+      type: String,
+      required: true
+    },
     overallStats: {
       type: Object,
       required: true
@@ -26,8 +36,15 @@ export default {
       required: true
     },
   },
+  methods: {
+    getCombinedStringFromIndvPlatform(combinedString) {
+      console.log("=== start getCombinedStringFromIndvPlatform() ===")
+      console.log("combinedString", combinedString)
+      this.combinedString = combinedString
+    }
+  },
   data: () => ({
-
+    combinedString: '',
   }),
 }
 </script>

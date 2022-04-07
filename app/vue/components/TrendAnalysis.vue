@@ -11,7 +11,10 @@
 
     <v-row>
       <v-col cols="4" >
-        <TrendAnalysisMetricsCard :overall-stats="overallStats" :platform-data="platformData"/>
+        <TrendAnalysisMetricsCard
+          :selected-date-filter="selectedDateFilter" 
+          :overall-stats="overallStats" 
+          :platform-data="platformData"/>
       </v-col>
       <v-col cols="" class="py-0">
         <TrendAnalysisTabs
@@ -35,6 +38,10 @@ export default {
     TrendAnalysisTabs,
   },
   props: {
+    selectedDateFilter: {
+      type: String,
+      required: true
+    },
     overallStats: {
       type: Object,
       required: true

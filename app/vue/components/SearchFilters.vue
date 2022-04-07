@@ -59,11 +59,11 @@
             label="Select a date period"
             outlined
             dense
-            @change="openDialogueIfCustomSelected(dateSelected); emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected);"
+            @change="openDialogueIfCustomSelected(dateSelected);"
           >
             <template slot="selection" slot-scope="data">
               <span v-if="data.item.date === 'Custom' && dateRange.length === 1" class="accent--text">{{ dateRange[0] }}</span>
-              <span v-else-if="data.item.date === 'Custom' && dateRange.length > 1" class="accent--text">{{ dateRange.join(" - ") }}</span>
+              <span v-else-if="data.item.date === 'Custom' && dateRange.length > 1" class="accent--text">{{ computedCustomDateFormatted }}</span>
               <span v-else class="accent--text">{{ data.item.date }}</span>
             </template>
           </v-select>
@@ -79,7 +79,8 @@
               d-block 
               no-title 
               range 
-              scrollable 
+              scrollable
+              @change="updateDatesToPassToDashboard()" 
             >
               <v-spacer></v-spacer>
             </v-date-picker>
@@ -271,7 +272,7 @@
       date: null,
       dateRange: ['2021-02-01', '2022-01-31'],
       dateSelected: "Past 7 Days",
-      dateFilter: [{date: 'All'}, {date: 'Yesterday'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom'}],
+      dateFilter: [{date: 'All'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom'}],
       emotionsSelected: ["Anger", "Fear", "Joy", "Neutral", "Sadness"],
       emotionsFilter: ["Anger", "Fear", "Joy", "Neutral", "Sadness"],
       dialog: false,
@@ -282,6 +283,9 @@
     }),
 
     computed: {
+      computedCustomDateFormatted() {
+        return this.formatDate(this.dateRange[0], this.dateRange[1])
+      },
       allPlatformsSelected () {
         return this.platformsSelected.length === this.platformsFilter.length
       },
@@ -370,6 +374,28 @@
     //       }
     //     })
     //   }
+      formatDate(startDate, endDate) {
+        // console.log("=== start formatDate() ===")
+        // console.log("startDate", startDate)
+        // console.log("endDate", endDate)
+        if (!startDate && !endDate) return null
+
+        const [startYear, startMonth, startDay] = startDate.split('-')
+        const [endYear, endMonth, endDay] = endDate.split('-')
+        const combinedDates = `${startDay}/${startMonth}/${startYear}-${endDay}/${endMonth}/${endYear}`
+        // console.log("combinedDates", combinedDates
+
+        return combinedDates
+      },
+      updateDatesToPassToDashboard() {
+        console.log("=== start updateDates() ===")
+
+        console.log("computedCustomDateFormatted", this.computedCustomDateFormatted)
+
+        this.emitFilterSelectionToDashboard(this.autocompleteModel, this.computedCustomDateFormatted, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected)
+
+        console.log("=== end updateDates() ===")
+      },
       emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected) {
         console.log("=== START emitFilterSelectionToDashboard() ===")
         this.$emit('changeFilter', [autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected])
@@ -397,8 +423,10 @@
       openDialogueIfCustomSelected(dateSelected) {
         if (dateSelected === 'Custom') {
           this.dialog = true
+          this.emitFilterSelectionToDashboard(this.autocompleteModel, this.computedCustomDateFormatted, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
+        } else {
+          this.emitFilterSelectionToDashboard(this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
         }
-        this.emitFilterSelectionToDashboard(this.autocompleteModel, dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
       }
     },
 
@@ -415,7 +443,7 @@
   ::v-deep .custom-dialog-datepicker {
     position: absolute;
     top: 10%;
-    left: 0%;
+    left: 19%;
   }
 
 </style>

@@ -2,6 +2,7 @@
   <div class="mb-10">
     <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
     <!--  align="stretch" in v-row works with d-flex in v-col -->
+    <!-- <p>{{testData}}</p> -->
     <v-row>
       <v-col cols="4">
         <TrendingTopics 
@@ -17,6 +18,7 @@
           :platform-data="platformMetricsData"
           :medias="medias"
           :mediasMetrics="mediasMetrics"
+          :selected-date-filter="dateFilter"
         />
       </v-col>
     </v-row>
@@ -64,6 +66,44 @@ export default {
     ComplaintsCard
     // NoteworthyComments,
   },
+  // created() {
+  //   // Simple POST request with a JSON body using fetch
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(
+  //       { 
+  //         "start_date": "2021-02-02",
+  //         "end_date": "2021-02-02",
+  //         "platforms": [
+  //           "Facebook"
+  //         ],
+  //         "sentiments": [
+  //           "neutral"
+  //         ],
+  //         "emotions": [
+  //           "neutral"
+  //         ],
+  //         "query": null
+  //       }
+  //     )
+  //   };
+  //   // fetch("http://127.0.0.1:8000/topic-analysis/get-top5-topic-analysis", requestOptions)
+  //   fetch("http://127.0.0.1:8000/trend-analysis/get-all-aggregated-stats", requestOptions)
+  //   // fetch("http://127.0.0.1:8000/trend-analysis/get-all-trend-stats", requestOptions)
+  //   // fetch("http://127.0.0.1:8000/trend-analysis/get-indiv-trend-stats", requestOptions)
+  //     .then(response => 
+  //       response.json()
+  //     )
+  //     .then(data => 
+  //       // console.log("data", data)
+  //       // this.postId = data.id
+  //       {this.testData = data}
+  //     )
+  //     .catch((error) => {
+  //       console.error(error);
+  //     })
+  // },
   data: () => ({
     fakeData: {
         defaultFilters: {
@@ -2547,6 +2587,8 @@ export default {
         },
       }
     },
+    dateFilter: 'Past 7 Days',
+    testData: {},
   
   }),
 
@@ -2566,6 +2608,9 @@ export default {
       // code to rerender dashboard when the filters are selected, by passing them to the api
       console.log("=== START rerenderDashboard ===")
       console.log("rerenderDashboard updatedSentiments", updatedSentiments)
+
+      this.dateFilter = updatedSentiments[1]
+      console.log("dateFilter", this.dateFilter)
 
       let filterCheck = this.checkFilterSelectionToReturnFakeData(updatedSentiments)
 
@@ -2664,7 +2709,7 @@ export default {
         return "customDateNegativeNeutralFbReddit"
       }
 
-    }
+    },
   }
   
 }
