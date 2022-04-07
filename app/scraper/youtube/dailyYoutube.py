@@ -94,7 +94,14 @@ def getTitleAndURL(videos):
         title = anchorTag.get_attribute("title")
         href = anchorTag.get_attribute("href")
 
-        if checkDate(href) == 0:
+        if len(href) == 0 or href.isspace():
+            continue
+        
+        dateValid = checkDate(href)
+
+        if dateValid == 2: # faced error checking the date 
+            continue
+        elif dateValid == 0: # date is past STOPDATE
             break
 
         row = {CHNL_TITLE: title, CHNL_URL: href}
@@ -104,6 +111,7 @@ def getTitleAndURL(videos):
 
 # check video is within timeframe
 def checkDate(video):
+    result = 2 # default for error
     try:
         driver.switch_to.window(driver.window_handles[1])
         driver.get(video)
@@ -148,7 +156,6 @@ def checkDate(video):
         result = 0 if STOPDATE > date else 1
         driver.switch_to.window(driver.window_handles[0])
     except Exception as e:
-        telegram_send.send(messages=[f"YOUTUBE DAILY --> Error: {e}"])
         logger.exception(e)
         driver.switch_to.window(driver.window_handles[0])
     finally:
@@ -436,7 +443,6 @@ def fullVideo(video):
         else:
             videoDetails.loc[len(videoDetails) - 1, VID_COMMENTS] = []
     except Exception as e:
-        telegram_send.send(messages=[f"YOUTUBE DAILY --> Error occurred: {e}"])
         logger.exception(f"Error: Unable to scrape video {e}")
 
 
