@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     generateSentimentGraph(data) {
-      console.log("=== START generateSentimentGraph() === ")
+      // console.log("=== START generateSentimentGraph() === ")
 
       // console.log("test 0", this.sentimentGraphId)
       // console.log('test 1', d3.select(`#${this.sentimentGraphId}`))
@@ -59,8 +59,8 @@ export default {
       // console.log("formatPercent", formatPercent)
 
       function generateStack(data) {
-        console.log("=== START generateStack() ===")
-        console.log("data", data)
+        // console.log("=== START generateStack() ===")
+        // console.log("data", data)
         // console.log("sentiment object?", data.some(obj => Object.prototype.hasOwnProperty.call(obj, "sentiment")))
         // console.log("emotion object?", data.some(obj => Object.prototype.hasOwnProperty.call(obj, "emotion")))
         const isSentiment = data.some(obj => Object.prototype.hasOwnProperty.call(obj, "sentiment"))
@@ -102,7 +102,7 @@ export default {
         .data(stack)
         .join("rect")
         .attr("fill", function(d) { 
-                console.log("d", d)
+                // console.log("d", d)
 
                 if (d.type === "sentiment") {
                   return d.label === "positive" ? "#78D549" : (d.label === "negative" ? "#EB8159" : "#EFB727")
@@ -133,7 +133,7 @@ export default {
 
 
       // return svg.node();
-      console.log("=== END generateSentimentGraph() === ")
+      // console.log("=== END generateSentimentGraph() === ")
     }
   }
 }

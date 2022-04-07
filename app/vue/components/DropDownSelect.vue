@@ -40,13 +40,18 @@
     },
     methods: {
       onChange:function onChange(){
+          console.log("=== start onChange() ===")
           // console.log(this.selectedView);
           this.$emit('changeView',this.selectedView);
+          console.log("=== end onChange() ===")
       }
     },
     watch:{
       viewSelected() {
+        console.log("=== start viewSelected() watch ===")
+        console.log("this.viewSelected", this.viewSelected)
         this.selectedView = this.viewSelected;
+        console.log("=== end viewSelected() watch ===")
       }
     }
   }
