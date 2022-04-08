@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="pt-2 pb-2">
     <v-tabs
         v-model="tabs"
         centered
@@ -24,7 +24,7 @@
           :key="index"
         >
           <v-card flat>
-            <v-container fluid class="px-4 mt-n4 pb-0">
+            <v-container fluid class="px-4 mt-n2 mb-1 pb-0">
               <v-row no-gutters align="stretch">
                 <v-col class="d-flex">
                   <v-card-title class="text-h5">
@@ -41,7 +41,7 @@
               </v-row>
             </v-container>
           </v-card>
-          <v-card>
+          <v-card class="">
             <line-chart class="chartBox" :data="selectedChartData"></line-chart>  
           </v-card>   
         </v-tab-item>
@@ -204,6 +204,6 @@ import LineChart from '@/components/TrendAnalysisLineChart'
 <style>
   .chartBox {
     width: 800px;
-    height: 360px;
+    height: 420px;
   }
 </style>
