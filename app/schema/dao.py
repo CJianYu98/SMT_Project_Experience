@@ -61,7 +61,7 @@ class ComplaintOrNotworthyComment(BaseModel):
     topic: list
     sentiment: str
     emotion: str
-    intent: str
+    intent: Optional[str]
     link: Optional[str]
     img: Optional[str]
 
