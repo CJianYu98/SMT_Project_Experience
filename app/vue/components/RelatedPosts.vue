@@ -18,6 +18,7 @@
       :emotion="comment.emotion"
       :link="comment.link"
       :img="comment.img"
+      :intent="comment.intent"
     />
   </template>
   </v-container>

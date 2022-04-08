@@ -60,8 +60,23 @@
           </template>
           <span>{{emotion}} </span>
         </v-tooltip>
+        <template v-if="intent">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-chip 
+                class="mb-2 mr-1 intent intent--text"
+                outlined
+                v-bind="attrs"
+                v-on="on"
+              >
+                {{intent}}
+              </v-chip>
+            </template>
+            <span> intent tag of comment </span>
+          </v-tooltip>
+        </template>
         <v-chip 
-          class="mb-2 primary trending-category mr-1"
+          class="mb-2 primary mr-1"
           v-for="indvTopic in topic"
           :key="indvTopic"
         >
