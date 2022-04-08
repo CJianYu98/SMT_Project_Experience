@@ -107,10 +107,10 @@ export default {
                 if (d.type === "sentiment") {
                   return d.label === "positive" ? "#78D549" : (d.label === "negative" ? "#EB8159" : "#EFB727")
                   } else if (d.type === "emotion") {
-                    return d.label === "anger" ? "#ff0000" : 
-                      (d.label === "fear" ? "#000000" :
-                      (d.label === "joy" ? "#fff700" : 
-                      (d.label === "neutral" ? "#a1a08d" : "#007bff")))
+                    return d.label === "anger" ? "#FB3412" : 
+                      (d.label === "fear" ? "#8C56AF" :
+                      (d.label === "joy" ? "#F7CF15" : 
+                      (d.label === "neutral" ? "#a1a08d" : "#477BD1")))
                   }
                 }
                 
