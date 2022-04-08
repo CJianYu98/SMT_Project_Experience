@@ -291,6 +291,7 @@ def get_top5_noteworthy_comments(filter: Filter, db_collection: str):
         "topic": 1,
         "sentiment": "$sentiment_label",
         "emotion": "$emotions_label",
+        "intent": 1,
         "_id": False,
     }
 
