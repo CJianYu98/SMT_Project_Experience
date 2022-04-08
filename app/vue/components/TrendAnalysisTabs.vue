@@ -138,6 +138,9 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           else if (this.selectedViewOption === 'Sentiments'){            
             this.selectedChartData = this.$props.mediasMetrics.facebook.data_sentiments;
           }
+          else if (this.selectedViewOption === 'Emotions'){            
+            this.selectedChartData = this.$props.mediasMetrics.facebook.data_emotions;
+          }
         }
         // Reddit tab
         else if (this.selectedTab === 'reddit'){
@@ -152,6 +155,9 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           }
           else if (this.selectedViewOption === 'Sentiments'){            
             this.selectedChartData = this.$props.mediasMetrics.reddit.data_sentiments;
+          }
+          else if (this.selectedViewOption === 'Emotions'){            
+            this.selectedChartData = this.$props.mediasMetrics.reddit.data_emotions;
           }
         }
         // Twitter tab
@@ -168,6 +174,9 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           else if (this.selectedViewOption === 'Sentiments'){            
             this.selectedChartData = this.$props.mediasMetrics.twitter.data_sentiments;
           }
+          else if (this.selectedViewOption === 'Emotions'){            
+            this.selectedChartData = this.$props.mediasMetrics.twitter.data_emotions;
+          }
         }
         // Youtube tab
         else if (this.selectedTab === 'youtube'){
@@ -182,6 +191,9 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           }
           else if (this.selectedViewOption === 'Sentiments'){            
             this.selectedChartData = this.$props.mediasMetrics.youtube.data_sentiments;
+          }
+          else if (this.selectedViewOption === 'Emotions'){            
+            this.selectedChartData = this.$props.mediasMetrics.youtube.data_emotions;
           }
         }
       }
