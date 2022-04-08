@@ -11,7 +11,7 @@
       :key="index"
       :media="objIndex"
       :likes="comment.likes"
-      :date="this.getFormatedDate(comment.datetime)"
+      :date="comment.datetime"
       :comment="comment.comment"
       :topic="comment.topic"
       :sentiment="comment.sentiment"
@@ -45,11 +45,6 @@ export default {
 
   }),
   methods: {
-    getFormatedDate(datetime) {
-      const [year, month, date] = datetime.split('T')[0].split('-')
-      return `${date}/${month}/${year}`
-    }
-    
   },
 }
 </script>
