@@ -2335,11 +2335,11 @@ export default {
       positive: "#78D549",
     },
     trendingTopicsEmotionsLegend: {
-      anger: "#ff0000",
-      fear: "#000000",
-      joy: "#fff700",
+      anger: "#FB3412",
+      fear: "#8C56AF",
+      joy: "#F7CF15",
       neutral: "#a1a08d",
-      sadness: "#007bff",
+      sadness: "#477BD1",
     },
     selectedTrendingQuery: "",
 
