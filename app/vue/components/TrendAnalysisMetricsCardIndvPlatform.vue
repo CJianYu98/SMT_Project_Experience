@@ -17,19 +17,17 @@
             </template>
             <span>{{ getCombinedString }}</span>
             <template>{{ passCombinedStringToOverallTrend()  }}</template>
-            <!-- <span>{{ getTrendDatesAtHeader }}</span> -->
           </v-tooltip>
           <th class="white--text text-center">Emotion</th>
         </tr>
       </thead>
       <tbody>
         <tr
-          v-for="(data, platform) in platformData"
+          v-for="(data, platform) in platformMetrics"
           :key="platform"
           class="my-2"
         >
           <td>
-            <!-- {{ platform }} -->
             <v-img
               max-height="30"
               max-width="30"
@@ -48,12 +46,22 @@
             >
               -
             </div>
-            <TrendAnalysisUpwardTrend v-else-if="data.trend > 0" :percentage-increase="data.trend"/>
-            <TrendAnalysisDownwardTrend v-else-if="data.trend < 0" :percentage-decrease="data.trend"/>
+            <TrendAnalysisUpwardTrend v-else-if="platformTrend[platform]['trend'] > 0" :percentage-increase="platformTrend[platform]['trend']"/>
+            <TrendAnalysisDownwardTrend v-else-if="platformTrend[platform]['trend'] < 0" :percentage-decrease="platformTrend[platform]['trend']"/>
             <TrendAnalysisNoTrend v-else/>
           </td>
           <td>
-            <v-tooltip bottom>
+            <v-tooltip bottom v-if="data.emotion === null">
+              <template v-slot:activator="{ on, attrs }">
+                <span
+                    v-bind="attrs"
+                    v-on="on"
+                  >━</span>
+              </template>
+              <span>no emotion data</span>
+            </v-tooltip>
+
+            <v-tooltip bottom v-else>
               <template v-slot:activator="{ on, attrs }">
                 <v-img
                   max-height="30"
@@ -89,11 +97,11 @@ export default {
       type: String,
       required: true
     },
-    overallStats: {
+    platformTrend: {
       type: Object,
       required: true
     },
-    platformData: {
+    platformMetrics: {
       type: Object,
       required: true
     },

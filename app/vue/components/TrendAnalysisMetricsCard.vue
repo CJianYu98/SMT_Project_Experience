@@ -3,13 +3,14 @@
     <TrendAnalysisMetricsCardOverallTrend
       :selected-date-filter="selectedDateFilter"
       :overall-stats="overallStats"
+      :all-trend="allTrend"
       :get-combined-string-from-indv-platform="combinedString"
       />
       <!-- :selected-date-filter="selectedDateFilter" -->
     <TrendAnalysisMetricsCardIndvPlatform 
       @passCombinedStringToOverallTrend="getCombinedStringFromIndvPlatform"
-      :overall-stats="overallStats" 
-      :platform-data="platformData"
+      :platform-metrics="platformMetrics"
+      :platform-trend="platformTrend"
       :selected-date-filter="selectedDateFilter"/>
   </v-container>
 </template>
@@ -31,7 +32,15 @@ export default {
       type: Object,
       required: true
     },
-    platformData: {
+    platformMetrics: {
+      type: Object,
+      required: true
+    },
+    allTrend: {
+      type: Number,
+      required: true
+    },
+    platformTrend: {
       type: Object,
       required: true
     },

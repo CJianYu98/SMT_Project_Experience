@@ -13,8 +13,10 @@
       <v-col cols="4" >
         <TrendAnalysisMetricsCard
           :selected-date-filter="selectedDateFilter" 
-          :overall-stats="overallStats" 
-          :platform-data="platformData"/>
+          :overall-stats="overallStats"
+          :all-trend="allTrend"
+          :platform-metrics="platformMetrics"
+          :platform-trend="platformTrend"/>
       </v-col>
       <v-col cols="" class="py-0">
         <TrendAnalysisTabs
@@ -46,7 +48,15 @@ export default {
       type: Object,
       required: true
     },
-    platformData: {
+    platformMetrics: {
+      type: Object,
+      required: true
+    },
+    allTrend: {
+      type: Number,
+      required: true
+    },
+    platformTrend: {
       type: Object,
       required: true
     },

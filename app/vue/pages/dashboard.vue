@@ -14,8 +14,10 @@
       </v-col>
       <v-col cols="8">
         <TrendAnalysis 
-          :overall-stats="overallStatsData" 
-          :platform-data="platformMetricsData"
+          :overall-stats="overallStatsData"
+          :platform-metrics="platformMetrics"
+          :all-trend="allTrend"
+          :platform-trend="platformTrend"
           :medias="medias"
           :mediasMetrics="mediasMetrics"
           :selected-date-filter="dateFilter"
@@ -70,44 +72,66 @@ export default {
     NoteworthyComments,
     PlaceholderCard,
   },
-  // created() {
-  //   // Simple POST request with a JSON body using fetch
-  //   const requestOptions = {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(
-  //       { 
-  //         "start_date": "2021-02-02",
-  //         "end_date": "2021-02-02",
-  //         "platforms": [
-  //           "Facebook"
-  //         ],
-  //         "sentiments": [
-  //           "neutral"
-  //         ],
-  //         "emotions": [
-  //           "neutral"
-  //         ],
-  //         "query": null
-  //       }
-  //     )
-  //   };
-  //   // fetch("http://127.0.0.1:8000/topic-analysis/get-top5-topic-analysis", requestOptions)
-  //   fetch("http://127.0.0.1:8000/trend-analysis/get-all-aggregated-stats", requestOptions)
-  //   // fetch("http://127.0.0.1:8000/trend-analysis/get-all-trend-stats", requestOptions)
-  //   // fetch("http://127.0.0.1:8000/trend-analysis/get-indiv-trend-stats", requestOptions)
-  //     .then(response => 
-  //       response.json()
-  //     )
-  //     .then(data => 
-  //       // console.log("data", data)
-  //       // this.postId = data.id
-  //       {this.testData = data}
-  //     )
-  //     .catch((error) => {
-  //       console.error(error);
-  //     })
-  // },
+  created() {
+    // Simple POST request with a JSON body using fetch
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        { 
+          "endDate": "2021-04-08",
+          "numDays": 7,
+          "platforms": [
+            "facebook", "youtube", "reddit", "twitter"
+          ],
+          "sentiments": [
+            "neutral", "negative", "positive"
+          ],
+          "emotions": [
+            "neutral", "anger", "fear", "sadness", "joy"
+          ],
+          "query": null
+        }
+      )
+    };
+    // fetch("http://127.0.0.1:8000/topic-analysis/get-top5-topic-analysis", requestOptions)
+    fetch("http://127.0.0.1:8000/trend-analysis/get-all-aggregated-stats", requestOptions)
+      .then(response => response.json())
+      .then(data => 
+        {
+          // { "posts": 166, "comments": 5863, "likes": 47456, "platformMetrics": { "facebook": { "mentions": 1, "emotion": "neutral" }, "twitter": { "mentions": 0, "emotion": null } } }
+          this.platformMetrics = data.platformMetrics
+          delete data.platformMetrics
+          this.overallStatsData = data
+          console.log("this.platformMetrics", this.platformMetrics)
+        }
+      )
+      .catch((error) => {
+        console.error(error);
+      })
+    fetch("http://127.0.0.1:8000/trend-analysis/get-all-trend-stats", requestOptions)
+      .then(response => response.json())
+      .then(data => 
+        {
+          this.allTrend = data
+          console.log("this.allTrend", this.allTrend)
+        }
+      )
+      .catch((error) => {
+        console.error(error);
+      })
+    fetch("http://127.0.0.1:8000/trend-analysis/get-indiv-trend-stats", requestOptions)
+      .then(response => response.json())
+      .then(data => 
+        { 
+          // { "facebook": { "trend": 0.62 }, "reddit": { "trend": 0.62 }, "twitter": { "trend": 0 }, "youtube": { "trend": 0.62 } }
+          this.platformTrend = data
+        }
+      )
+      .catch((error) => {
+        console.error(error);
+      })
+  },
   data: () => ({
     fakeData: {
         defaultFilters: {
@@ -2050,37 +2074,50 @@ export default {
       },
     ],
     overallStatsData: {
-      posts: 90857,
-      trend: 0.6,
-      comments: 7894,
-      likes: 100394,
-      shares: 3097,
-      filters: {
-        date: ["", "All"],
-      }
+      posts: 1000,
+      // trend: 0.6,
+      comments: 100,
+      likes: 10,
+      // shares: 3097,
+      // filters: {
+      //   date: ["", "All"],
+      // }
     },
-    platformMetricsData: {
-      Facebook: {
-        mentions: 0.24,
-        trend: -0.18,
-        emotion: 'anger',
-      },
-      Reddit: {
-        mentions: 0.14,
-        trend: 0.39,
-        emotion: 'joy',
-      },
-      Twitter: {
-        mentions: 0.08,
-        trend: 0.05,
-        emotion: 'fear',
-      },
-      Youtube: {
-        mentions: 0.54,
-        trend: -0.32,
-        emotion: 'neutral',
-      }
+    allTrend: 0,
+    platformMetrics: {
+      facebook: { mentions: 0.2, emotion: "anger" }, 
+      twitter: { mentions: 0.2, emotion: "sadness" },
+      reddit: { mentions: 0.3, emotion: "joy" },
+      youtube: { mentions: 0.3, emotion: "fear" },
     },
+    platformTrend: { 
+      facebook: { trend: 0.62 }, 
+      reddit: { trend: 0.62 }, 
+      twitter: { trend: 0 }, 
+      youtube: { trend: 0.62 } 
+    },
+    // platformMetricsData: {
+    //   Facebook: {
+    //     mentions: 0.24,
+    //     trend: -0.18,
+    //     emotion: 'anger',
+    //   },
+    //   Reddit: {
+    //     mentions: 0.14,
+    //     trend: 0.39,
+    //     emotion: 'joy',
+    //   },
+    //   Twitter: {
+    //     mentions: 0.08,
+    //     trend: 0.05,
+    //     emotion: 'fear',
+    //   },
+    //   Youtube: {
+    //     mentions: 0.54,
+    //     trend: -0.32,
+    //     emotion: 'neutral',
+    //   }
+    // },
     keywords: [
       {word: "GST Hike", size: "60", sentiment: "neutral", hover: "60"}, 
       {word: "Dormitory Workers", size: "20", sentiment: "neutral", hover: "20"}, 
@@ -2888,15 +2925,8 @@ export default {
   }),
 
   computed: {
-    // get top 5 topics
-    // getTopGiveTopics(){
-    //     return 
-    // }
-  },
 
-  // mounted(): {
-  //   this.checkFilterSelectionToReturnFakeData(updatedSentiments)
-  // },
+  },
 
   methods: {
     rerenderDashboard(updatedSentiments) {
