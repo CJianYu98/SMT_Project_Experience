@@ -54,7 +54,7 @@ class ComplaintTopKeywordsAnalysisRes(BaseModel):
 
 
 ##### Top 5 Complaint Comments API & Top 5 Noteworthy Comments API #####
-class ComplaintOrNotworthyComment(BaseModel):
+class ComplaintOrNotworthyPost(BaseModel):
     likes: int
     datetime: datetime
     comment: str
@@ -68,5 +68,5 @@ class ComplaintOrNotworthyComment(BaseModel):
     img: Optional[str]
 
 
-class Top5ComplaintOrNoteworthyCommentsRes(BaseModel):
-    data: List[ComplaintOrNotworthyComment]
+class Top5ComplaintOrNoteworthyPostsRes(BaseModel):
+    data: List[ComplaintOrNotworthyPost]

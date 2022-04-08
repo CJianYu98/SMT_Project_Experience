@@ -7,7 +7,7 @@ from fastapi import APIRouter
 
 from ..dao.dao import get_top5_complaint_posts, get_top_complaint_keywords
 from ..schema.complaint_noteworthy_analysis import (
-    Top5ComplaintOrNoteworthyCommentsRes,
+    Top5ComplaintOrNoteworthyPostsRes,
     Top20ComplaintKeywordAnalysisRes,
 )
 from ..schema.user_filter import Filter
@@ -104,7 +104,7 @@ def get_all_top_complaint_keywords(filter: Filter):
 
 
 @router.post(
-    "/get-all-top5-complaint-posts", response_model=Top5ComplaintOrNoteworthyCommentsRes
+    "/get-all-top5-complaint-posts", response_model=Top5ComplaintOrNoteworthyPostsRes
 )
 def get_all_top5_complaint_posts(filter: Filter):
     """

@@ -3,7 +3,7 @@ import os
 from fastapi import APIRouter
 
 from ..dao.dao import get_top5_noteworthy_posts
-from ..schema.complaint_noteworthy_analysis import Top5ComplaintOrNoteworthyCommentsRes
+from ..schema.complaint_noteworthy_analysis import Top5ComplaintOrNoteworthyPostsRes
 from ..schema.user_filter import Filter
 
 router = APIRouter(prefix="/noteworthy-analysis", tags=["noteworthy_analysis"])
@@ -22,7 +22,7 @@ YOUTUBE_COMMENTS = os.getenv("DB_YOUTUBE_COMMENTS_COLLECTION")
 
 
 @router.post(
-    "/get-all-top5-noteworthy-posts", response_model=Top5ComplaintOrNoteworthyCommentsRes
+    "/get-all-top5-noteworthy-posts", response_model=Top5ComplaintOrNoteworthyPostsRes
 )
 def get_all_top5_noteworthy_posts(filter: Filter):
     """
