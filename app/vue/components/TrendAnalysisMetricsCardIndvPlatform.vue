@@ -44,7 +44,14 @@
               class="font-weight-medium"
               v-if="selectedDateFilter === 'All'"
             >
-              -
+              <v-img
+                  max-height="20"
+                  max-width="20"
+                  :src="`/dash.png`"
+                  class="mx-auto"
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-img>
             </div>
             <TrendAnalysisUpwardTrend v-else-if="platformTrend[platform]['trend'] > 0" :percentage-increase="platformTrend[platform]['trend']"/>
             <TrendAnalysisDownwardTrend v-else-if="platformTrend[platform]['trend'] < 0" :percentage-decrease="platformTrend[platform]['trend']"/>
@@ -54,11 +61,14 @@
             <template v-if="data.emotion == null">
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
-                <span
-                  class="primary--text"
+                  <v-img
+                  max-height="20"
+                  max-width="20"
+                  :src="`/dash.png`"
+                  class="mx-auto"
                   v-bind="attrs"
                   v-on="on"
-                  >-</span>
+                ></v-img>
               </template>
               <span>no emotion data</span>
             </v-tooltip>
@@ -121,6 +131,7 @@ export default {
       ],
     customStartDate: null,
     customEndDate: null,
+    nullData: '-'
   }),
   methods: {
     passCombinedStringToOverallTrend() {

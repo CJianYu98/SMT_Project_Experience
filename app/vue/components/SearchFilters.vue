@@ -23,8 +23,6 @@
             dense
             @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
-            <!-- @update:search-input="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)" -->
-            <!-- return-object -->
           </v-combobox>
 
           <v-combobox
@@ -44,7 +42,6 @@
             dense
             @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           > 
-            <!-- return-object -->
           </v-combobox>
         </v-col>
         <v-spacer></v-spacer> 
@@ -101,8 +98,8 @@
           >
 
             <template #selection="{ item }">
-              <span v-if="sentimentsFilter.indexOf(item) === 0" class="accent--text">{{item}}</span>
-              <span v-else class="accent--text">, {{item}}</span>
+              <span v-if="sentimentsSelected.indexOf(item) != 0" class="accent--text">, {{item}} </span>
+              <span v-else class="accent--text"> {{item}} </span>
               <span> </span>
             </template>
 
@@ -154,8 +151,8 @@
             @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
             <template #selection="{ item }">
-              <span v-if="platformsFilter.indexOf(item) === 0" class="accent--text">{{item}}</span>
-              <span v-else class="accent--text">, {{item}}</span>
+              <span v-if="platformsSelected.indexOf(item) != 0" class="accent--text">, {{item}}</span>
+              <span v-else class="accent--text">{{item}}</span>
               <span> </span>
             </template>
 
@@ -207,8 +204,8 @@
             @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
             <template #selection="{ item }">
-              <span v-if="emotionsFilter.indexOf(item) === 0" class="accent--text">{{item}}</span>
-              <span v-else class="accent--text">, {{item}}</span>
+              <span v-if="emotionsSelected.indexOf(item) != 0" class="accent--text">, {{item}}</span>
+              <span v-else class="accent--text">{{item}}</span>
               <span> </span>
             </template>
 

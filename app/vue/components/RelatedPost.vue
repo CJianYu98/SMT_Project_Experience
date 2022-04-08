@@ -22,7 +22,7 @@
         </p>
         <v-spacer></v-spacer>
         <p class="mt-1">
-          {{date}}
+          {{formatedDate}}
         </p>
         &nbsp;
       </v-row>
@@ -135,6 +135,13 @@ export default {
   data: () => ({
 
   }),
+  computed: {
+    formatedDate() {
+      console.log("=== start formatedDate() ===")
+      const [year, month, date] = String(this.date).split('T')[0].split('-')
+      return `${date}/${month}/${year}`
+    }
+  }
 }
 </script>
 

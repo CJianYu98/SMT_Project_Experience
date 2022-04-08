@@ -34,7 +34,16 @@
         <tr class="primary--text">
           <td>
             <div class="font-weight-medium"
-              v-if="selectedDateFilter === 'All'">-</div>
+              v-if="selectedDateFilter === 'All'">
+                <v-img
+                  max-height="20"
+                  max-width="20"
+                  :src="`/dash.png`"
+                  class="mx-auto"
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-img>
+              </div>
             <TrendAnalysisUpwardTrend v-else-if="allTrend.trend > 0" :percentage-increase="allTrend.trend"/>
             <TrendAnalysisDownwardTrend v-else-if="allTrend.trend < 0" :percentage-decrease="allTrend.trend"/>
             <TrendAnalysisNoTrend v-else/>
