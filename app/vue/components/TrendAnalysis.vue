@@ -10,7 +10,7 @@
     </v-card-title>
 
     <v-row>
-      <v-col cols="4" >
+      <v-col cols="3.5" >
         <TrendAnalysisMetricsCard
           :selected-date-filter="selectedDateFilter" 
           :overall-stats="overallStats"
@@ -18,7 +18,7 @@
           :platform-metrics="platformMetrics"
           :platform-trend="platformTrend"/>
       </v-col>
-      <v-col cols="" class="py-0">
+      <v-col cols="" class="mr-7">
         <TrendAnalysisTabs
           :medias="medias"
           :mediasMetrics="mediasMetrics"
