@@ -2,8 +2,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from .dao import ComplaintOrNotworthyComment
-
+from .dao import ComplaintOrNotworthyPost
 
 ##### Top 20 Complaint API #####
 class Top20ComplaintKeywordAnalysisRes(BaseModel):
@@ -12,13 +11,13 @@ class Top20ComplaintKeywordAnalysisRes(BaseModel):
 
 
 ##### Top 5 Complaint Comments API & Top 5 Noteworthy Comments API #####
-class ComplaintOrNoteworthyCommentsSorted(BaseModel):
-    likes: List[ComplaintOrNotworthyComment]
-    date: List[ComplaintOrNotworthyComment]
+class ComplaintOrNoteworthyPostsSorted(BaseModel):
+    likes: List[ComplaintOrNotworthyPost]
+    date: List[ComplaintOrNotworthyPost]
 
 
-class Top5ComplaintOrNoteworthyCommentsRes(BaseModel):
-    facebook: ComplaintOrNoteworthyCommentsSorted
-    reddit: ComplaintOrNoteworthyCommentsSorted
-    twitter: ComplaintOrNoteworthyCommentsSorted
+class Top5ComplaintOrNoteworthyPostsRes(BaseModel):
+    facebook: ComplaintOrNoteworthyPostsSorted
+    reddit: ComplaintOrNoteworthyPostsSorted
+    twitter: ComplaintOrNoteworthyPostsSorted
     # youtube: ComplaintOrNoteworthyCommentsSorted

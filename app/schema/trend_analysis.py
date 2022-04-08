@@ -11,7 +11,7 @@ class IndivPlatformStat(BaseModel):
 
 class PlatformMetrics(BaseModel):
     facebook: IndivPlatformStat
-    # reddit: IndivPlatformStat
+    reddit: IndivPlatformStat
     twitter: IndivPlatformStat
     # youtube: IndivPlatformStat
 
