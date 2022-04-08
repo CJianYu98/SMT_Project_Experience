@@ -58,7 +58,7 @@ class ComplaintOrNotworthyPost(BaseModel):
     likes: int
     datetime: datetime
     comment: str
-    topic: list
+    topic: str
     sentiment: str
     emotion: str
     link: Optional[str]

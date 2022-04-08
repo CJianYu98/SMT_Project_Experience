@@ -33,4 +33,4 @@ class IndivTrendStatsRes(BaseModel):
     facebook: TrendStatsRes
     reddit: TrendStatsRes
     twitter: TrendStatsRes
-    youtube: TrendStatsRes
+    # youtube: TrendStatsRes

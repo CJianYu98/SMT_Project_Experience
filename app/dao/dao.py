@@ -119,6 +119,7 @@ def get_aggregated_stats(filter: Filter, db_collection: str):
 
     res = res[0]
     res["emotion_counts"] = get_emotions_count(filter_query, db_collection)
+    
 
     try:
         AggregatedStatsRes(
@@ -286,6 +287,7 @@ def get_top5_complaint_posts(filter: Filter, db_collection: str):
     res_sort_by_date = list(
         db[db_collection].find(db_query, project).sort(datetime_key, -1).limit(5)
     )
+    print(db_collection, res_sort_by_likes)
 
     try:
         Top5ComplaintOrNoteworthyPostsRes(data=res_sort_by_likes)

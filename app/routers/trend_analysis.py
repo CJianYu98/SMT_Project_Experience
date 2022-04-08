@@ -99,6 +99,14 @@ def get_all_aggregated_stats(filter: Filter):
             ),
             "emotion": get_top_emotion(twit_tweets_data, twit_comments_data),
         },
+        "reddit": {
+            "mentions": round(
+                (reddit_submissions_data.get("count", 0) + reddit_comments_data.get("count", 0))
+                / total_records,
+                2,
+            ),
+            "emotion": get_top_emotion(reddit_submissions_data, reddit_comments_data),
+        },
     }
 
     return {
@@ -120,7 +128,7 @@ def get_top_emotion(posts_data, comments_data) -> str:
     Returns:
         str: emotion label
     """
-    emotions_ls = posts_data.get("emotion_count", []) + comments_data.get("emotion_counts", [])
+    emotions_ls = posts_data.get("emotion_counts", []) + comments_data.get("emotion_counts", [])
 
     emotion_total_counts = {}
     for d in emotions_ls:
@@ -170,6 +178,7 @@ def get_all_trend_stats(filter: Filter):
         reddit_comments_count = get_trend_stats(filter, REDDIT_COMMENTS)
         reddit_submissions_count_prev = get_trend_stats(prev_date_filter, REDDIT_SUBMISSIONS)
         reddit_comments_count_prev = get_trend_stats(prev_date_filter, REDDIT_COMMENTS)
+        print(reddit_submissions_count)
     else:
         reddit_submissions_count = reddit_comments_count = 0
         reddit_submissions_count_prev = reddit_comments_count_prev = 0
