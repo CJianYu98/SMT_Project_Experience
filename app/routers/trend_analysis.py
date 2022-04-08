@@ -21,6 +21,8 @@ FB_POSTS = "facebook_posts_v1"
 FB_COMMENTS = "facebook_comments_v1"
 TWITTER_TWEETS = os.getenv("DB_TWIITER_TWEETS_COLLECTION")
 TWITTER_COMMENTS = os.getenv("DB_TWITTER_COMMENTS_COLLECTION")
+REDDIT_SUBMISSIONS = os.getenv("DB_REDDIT_SUBMISSIONS_COLLECTION")
+REDDIT_COMMENTS = os.getenv("DB_REDDIT_COMMENTS_COLLECTION")
 
 
 @router.post("/get-all-aggregated-stats", response_model=AggregatedStatsRes)
@@ -46,10 +48,15 @@ def get_all_aggregated_stats(filter: Filter):
         twit_comments_data = get_aggregated_stats(filter, TWITTER_COMMENTS)
     else:
         twit_tweets_data = twit_comments_data = {}
+    if "reddit" in filter.platforms:
+        reddit_submissions_data = get_aggregated_stats(filter, REDDIT_SUBMISSIONS)
+        reddit_comments_data = get_aggregated_stats(filter, REDDIT_COMMENTS)
+    else:
+        reddit_submissions_data = reddit_comments_data = {}
 
     # Create list of records from all social media platforms for posts and comments,
-    all_posts = [fb_posts_data, twit_tweets_data]
-    all_comments = [fb_comments_data, twit_comments_data]
+    all_posts = [fb_posts_data, twit_tweets_data, reddit_submissions_data]
+    all_comments = [fb_comments_data, twit_comments_data, reddit_comments_data]
 
     # Calc required statistics and metrics
     total_posts = sum(data.get("count", 0) for data in all_posts)
@@ -141,10 +148,26 @@ def get_all_trend_stats(filter: Filter):
     else:
         twit_tweets_count = twit_comments_count = 0
         twit_tweets_count_prev = twit_comments_count_prev = 0
+    if "reddit" in filter.platforms:
+        reddit_submissions_count = get_trend_stats(filter, REDDIT_SUBMISSIONS)
+        reddit_comments_count = get_trend_stats(filter, REDDIT_COMMENTS)
+        reddit_submissions_count_prev = get_trend_stats(prev_date_filter, REDDIT_SUBMISSIONS)
+        reddit_comments_count_prev = get_trend_stats(prev_date_filter, REDDIT_COMMENTS)
+    else:
+        reddit_submissions_count = reddit_comments_count = 0
+        reddit_submissions_count_prev = reddit_comments_count_prev = 0
 
     # Calc total records for selected and previous date range
     selected_date_range_counts = sum(
-        [fb_posts_count, fb_comments_count, twit_tweets_count, twit_comments_count], 0
+        [
+            fb_posts_count,
+            fb_comments_count,
+            twit_tweets_count,
+            twit_comments_count,
+            reddit_submissions_count,
+            reddit_comments_count,
+        ],
+        0,
     )
     prev_date_range_counts = sum(
         [
@@ -152,6 +175,8 @@ def get_all_trend_stats(filter: Filter):
             fb_comments_count_prev,
             twit_tweets_count_prev,
             twit_comments_count_prev,
+            reddit_submissions_count_prev,
+            reddit_comments_count_prev,
         ],
         0,
     )
@@ -196,6 +221,14 @@ def get_indiv_trend_stats(filter: Filter):
     else:
         twit_tweets_count = twit_comments_count = 0
         twit_tweets_count_prev = twit_comments_count_prev = 0
+    if "reddit" in filter.platforms:
+        reddit_submissions_count = get_trend_stats(filter, REDDIT_SUBMISSIONS)
+        reddit_comments_count = get_trend_stats(filter, REDDIT_COMMENTS)
+        reddit_submissions_count_prev = get_trend_stats(prev_date_filter, REDDIT_SUBMISSIONS)
+        reddit_comments_count_prev = get_trend_stats(prev_date_filter, REDDIT_COMMENTS)
+    else:
+        reddit_submissions_count = reddit_comments_count = 0
+        reddit_submissions_count_prev = reddit_comments_count_prev = 0
 
     return {
         "facebook": {
@@ -213,7 +246,10 @@ def get_indiv_trend_stats(filter: Filter):
         },
         "reddit": {
             "trend": get_trend_change(
-                fb_posts_count, fb_comments_count, fb_posts_count_prev, fb_comments_count_prev
+                reddit_submissions_count,
+                reddit_comments_count,
+                reddit_submissions_count_prev,
+                reddit_comments_count_prev,
             )
         },
         "youtube": {

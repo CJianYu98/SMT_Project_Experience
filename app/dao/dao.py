@@ -19,15 +19,11 @@ from .utils import get_emotions_count
 # Load environment variables
 load_dotenv()
 
-# Declare MongoDB collection names to interact with
-# FB_POSTS = os.getenv("DB_FACEBOOK_POSTS_COLLECTION")
-# FB_COMMENTS = os.getenv("DB_FACEBOOK_COMMENTS_COLLECTION")
-FB_POSTS = "facebook_posts_v1"
-FB_COMMENTS = "facebook_comments_v1"
-
 # DB datetime str
 FB_DATETIME_STR = "created_time"
 TWIT_DATETIME_STR = "created_at"
+REDDIT_DATETIME_STR = "created_datetime"
+YT_DATETIME_STR = "date_uploaded"
 
 
 def get_top5_topics_stats(filter: Filter, db_collection: str):
@@ -59,6 +55,9 @@ def get_top5_topics_stats(filter: Filter, db_collection: str):
     elif "twitter" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
         project["text"] = "$tweet"
+    elif "reddit" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        project["text"] = "$title" if "submissions" in db_collection else "$body"
 
     res = list(db[db_collection].find(db_query, project))
 
@@ -91,6 +90,9 @@ def get_aggregated_stats(filter: Filter, db_collection: str):
     elif "twitter" in db_collection:
         filter_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
         likes_str = "likes_count"
+    elif "reddit" in db_collection:
+        filter_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        likes_str = "score"
 
     db_query = [
         {"$match": filter_query},
@@ -140,6 +142,8 @@ def get_trend_stats(filter: Filter, db_collection: str):
         db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
     elif "twitter" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+    elif "reddit" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
 
     res = db[db_collection].count_documents(db_query)
 
@@ -170,6 +174,8 @@ def get_top_keywords(filter: Filter, project: dict, db_collection: str):
         db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
     elif "twitter" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+    elif "reddit" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
 
     res = list(db[db_collection].find(db_query, project))
 
@@ -200,6 +206,8 @@ def get_top_complaint_keywords(filter: Filter, project: dict, db_collection: str
         db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
     elif "twitter" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+    elif "reddit" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
     db_query["intent"] = {"$regex": "complaint"}
 
     res = list(db[db_collection].find(db_query, project))
@@ -235,13 +243,18 @@ def get_top5_complaint_comments(filter: Filter, db_collection: str):
     if "facebook" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
         likes_key = "likes_cnt"
-        datetime_key = "created_time"
+        datetime_key = FB_DATETIME_STR
         project["comment"] = "$message"
     elif "twitter" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
         likes_key = "likes_count"
-        datetime_key = "created_at"
+        datetime_key = TWIT_DATETIME_STR
         project["comment"] = "$tweet"
+    elif "reddit" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        likes_key = "score"
+        datetime_key = REDDIT_DATETIME_STR
+        project["comment"] = "$title" if "submissions" in db_collection else "$body"
     project["likes"] = f"${likes_key}"
     project["datetime"] = f"${datetime_key}"
 
@@ -291,6 +304,11 @@ def get_top5_noteworthy_comments(filter: Filter, db_collection: str):
         likes_key = "likes_count"
         datetime_key = "created_at"
         project["comment"] = "$tweet"
+    elif "reddit" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        likes_key = "score"
+        datetime_key = REDDIT_DATETIME_STR
+        project["comment"] = "$title" if "submissions" in db_collection else "$body"
     project["likes"] = f"${likes_key}"
     project["datetime"] = f"${datetime_key}"
 
