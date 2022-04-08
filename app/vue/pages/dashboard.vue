@@ -123,7 +123,7 @@ export default {
       .then(data => 
         {
           // { "trend": 0.62 }
-          this.testData = data
+          // this.testData = data
           this.allTrend = data
           console.log("this.allTrend", this.allTrend)
         }
@@ -159,6 +159,28 @@ export default {
       .then(data => 
         {
           this.complaintsKeywords = data
+        }
+      )
+      .catch((error) => {
+        console.error(error);
+      })
+    fetch("http://127.0.0.1:8000/complaint-analysis/get-all-top5-complaint-comments", requestOptions)
+    .then(response => response.json())
+      .then(data => 
+        {
+          // this.testData = data
+          this.complaintsRelatedComments = data
+        }
+      )
+      .catch((error) => {
+        console.error(error);
+      })
+    fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-comments", requestOptions)
+    .then(response => response.json())
+      .then(data => 
+        {
+          // this.testData = data
+          this.noteworthyComments = data
         }
       )
       .catch((error) => {
@@ -2119,7 +2141,7 @@ export default {
     allTrend: {trend: 0},
     platformMetrics: {
       facebook: { mentions: 0.2, emotion: "anger" }, 
-      twitter: { mentions: 0.2, emotion: "-" },
+      twitter: { mentions: 0.2, emotion: "sadness" },
     },
     platformTrend: { 
       facebook: { trend: 0.62 }, 
