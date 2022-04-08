@@ -23,6 +23,8 @@ TWITTER_TWEETS = os.getenv("DB_TWIITER_TWEETS_COLLECTION")
 TWITTER_COMMENTS = os.getenv("DB_TWITTER_COMMENTS_COLLECTION")
 REDDIT_SUBMISSIONS = os.getenv("DB_REDDIT_SUBMISSIONS_COLLECTION")
 REDDIT_COMMENTS = os.getenv("DB_REDDIT_COMMENTS_COLLECTION")
+YOUTUBE_VIDEOS = os.getenv("DB_YOUTUBE_VIDEOS_COLLECTION")
+YOUTUBE_COMMENTS = os.getenv("DB_YOUTUBE_COMMENTS_COLLECTION")
 
 
 @router.post("/get-all-aggregated-stats", response_model=AggregatedStatsRes)
@@ -53,10 +55,25 @@ def get_all_aggregated_stats(filter: Filter):
         reddit_comments_data = get_aggregated_stats(filter, REDDIT_COMMENTS)
     else:
         reddit_submissions_data = reddit_comments_data = {}
+    # if "youtube" in filter.platforms:
+    #     youtube_videos_data = get_aggregated_stats(filter, YOUTUBE_VIDEOS)
+    #     youtube_comments_data = get_aggregated_stats(filter, YOUTUBE_COMMENTS)
+    # else:
+    #     youtube_videos_data = youtube_comments_data = {}
 
     # Create list of records from all social media platforms for posts and comments,
-    all_posts = [fb_posts_data, twit_tweets_data, reddit_submissions_data]
-    all_comments = [fb_comments_data, twit_comments_data, reddit_comments_data]
+    all_posts = [
+        fb_posts_data,
+        twit_tweets_data,
+        reddit_submissions_data,
+        # youtube_videos_data
+    ]
+    all_comments = [
+        fb_comments_data,
+        twit_comments_data,
+        reddit_comments_data,
+        # youtube_comments_data,
+    ]
 
     # Calc required statistics and metrics
     total_posts = sum(data.get("count", 0) for data in all_posts)
@@ -156,6 +173,14 @@ def get_all_trend_stats(filter: Filter):
     else:
         reddit_submissions_count = reddit_comments_count = 0
         reddit_submissions_count_prev = reddit_comments_count_prev = 0
+    # if "youtube" in filter.platforms:
+    #     youtube_videos_count = get_trend_stats(filter, YOUTUBE_VIDEOS)
+    #     youtube_comments_count = get_trend_stats(filter, YOUTUBE_COMMENTS)
+    #     youtube_videos_count_prev = get_trend_stats(prev_date_filter, YOUTUBE_VIDEOS)
+    #     youtube_comments_count_prev = get_trend_stats(prev_date_filter, YOUTUBE_COMMENTS)
+    # else:
+    #     youtube_videos_count = youtube_comments_count = 0
+    #     youtube_videos_count_prev = youtube_comments_count_prev = 0
 
     # Calc total records for selected and previous date range
     selected_date_range_counts = sum(
@@ -166,6 +191,8 @@ def get_all_trend_stats(filter: Filter):
             twit_comments_count,
             reddit_submissions_count,
             reddit_comments_count,
+            # youtube_videos_count,
+            # youtube_comments_count,
         ],
         0,
     )
@@ -177,6 +204,8 @@ def get_all_trend_stats(filter: Filter):
             twit_comments_count_prev,
             reddit_submissions_count_prev,
             reddit_comments_count_prev,
+            # youtube_videos_count_prev,
+            # youtube_comments_count_prev,
         ],
         0,
     )
@@ -229,6 +258,14 @@ def get_indiv_trend_stats(filter: Filter):
     else:
         reddit_submissions_count = reddit_comments_count = 0
         reddit_submissions_count_prev = reddit_comments_count_prev = 0
+    # if "youtube" in filter.platforms:
+    #     youtube_videos_count = get_trend_stats(filter, YOUTUBE_VIDEOS)
+    #     youtube_comments_count = get_trend_stats(filter, YOUTUBE_COMMENTS)
+    #     youtube_videos_count_prev = get_trend_stats(prev_date_filter, YOUTUBE_VIDEOS)
+    #     youtube_comments_count_prev = get_trend_stats(prev_date_filter, YOUTUBE_COMMENTS)
+    # else:
+    #     youtube_videos_count = youtube_comments_count = 0
+    #     youtube_videos_count_prev = youtube_comments_count_prev = 0
 
     return {
         "facebook": {
@@ -252,11 +289,14 @@ def get_indiv_trend_stats(filter: Filter):
                 reddit_comments_count_prev,
             )
         },
-        "youtube": {
-            "trend": get_trend_change(
-                fb_posts_count, fb_comments_count, fb_posts_count_prev, fb_comments_count_prev
-            )
-        },
+        # "youtube": {
+        #     "trend": get_trend_change(
+        #         youtube_videos_count,
+        #         youtube_comments_count,
+        #         youtube_videos_count_prev,
+        #         youtube_comments_count_prev,
+        #     )
+        # },
     }
 
 

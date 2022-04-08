@@ -5,9 +5,9 @@ from typing import List
 import pandas as pd
 from fastapi import APIRouter
 
-from ..dao.dao import get_top5_complaint_comments, get_top_complaint_keywords
+from ..dao.dao import get_top5_complaint_posts, get_top_complaint_keywords
 from ..schema.complaint_noteworthy_analysis import (
-    Top5ComplaintOrNoteworthyCommentsRes,
+    Top5ComplaintOrNoteworthyPostsRes,
     Top20ComplaintKeywordAnalysisRes,
 )
 from ..schema.user_filter import Filter
@@ -23,6 +23,8 @@ TWITTER_TWEETS = os.getenv("DB_TWIITER_TWEETS_COLLECTION")
 TWITTER_COMMENTS = os.getenv("DB_TWITTER_COMMENTS_COLLECTION")
 REDDIT_SUBMISSIONS = os.getenv("DB_REDDIT_SUBMISSIONS_COLLECTION")
 REDDIT_COMMENTS = os.getenv("DB_REDDIT_COMMENTS_COLLECTION")
+YOUTUBE_VIDEOS = os.getenv("DB_YOUTUBE_VIDEOS_COLLECTION")
+YOUTUBE_COMMENTS = os.getenv("DB_YOUTUBE_COMMENTS_COLLECTION")
 
 
 @router.post(
@@ -56,6 +58,11 @@ def get_all_top_complaint_keywords(filter: Filter):
         reddit_comments_data = get_top_complaint_keywords(filter, project, REDDIT_COMMENTS)
     else:
         reddit_submissions_data = reddit_comments_data = []
+    # if "youtube" in filter.platforms:
+    #     youtube_vidoes_data = get_top_complaint_keywords(filter, project, YOUTUBE_VIDEOS)
+    #     youtube_comments_data = get_top_complaint_keywords(filter, project, YOUTUBE_COMMENTS)
+    # else:
+    #     youtube_vidoes_data = youtube_comments_data = []
 
     # Concat data from all social media platforms
     all_data = sum(
@@ -66,6 +73,8 @@ def get_all_top_complaint_keywords(filter: Filter):
             twit_comments_data,
             reddit_submissions_data,
             reddit_comments_data,
+            # youtube_vidoes_data,
+            # youtube_comments_data
         ],
         [],
     )
@@ -94,10 +103,8 @@ def get_all_top_complaint_keywords(filter: Filter):
     return res
 
 
-@router.post(
-    "/get-all-top5-complaint-comments", response_model=Top5ComplaintOrNoteworthyCommentsRes
-)
-def get_all_top5_complaint_comments(filter: Filter):
+@router.post("/get-all-top5-complaint-posts", response_model=Top5ComplaintOrNoteworthyPostsRes)
+def get_all_top5_complaint_posts(filter: Filter):
     """
     To get top 5 likes comments for complaint related comments
 
@@ -110,24 +117,31 @@ def get_all_top5_complaint_comments(filter: Filter):
 
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
-        fb_comments_by_likes, fb_comments_by_date = get_top5_complaint_comments(filter, FB_COMMENTS)
+        fb_comments_by_likes, fb_comments_by_date = get_top5_complaint_posts(filter, FB_POSTS)
     else:
         fb_comments_by_likes = fb_comments_by_date = []
     if "twitter" in filter.platforms:
-        twit_comments_by_likes, twit_comments_by_date = get_top5_complaint_comments(
-            filter, TWITTER_COMMENTS
+        twit_comments_by_likes, twit_comments_by_date = get_top5_complaint_posts(
+            filter, TWITTER_TWEETS
         )
     else:
         twit_comments_by_likes = twit_comments_by_date = []
     if "reddit" in filter.platforms:
-        reddit_comments_by_likes, reddit_comments_by_date = get_top5_complaint_comments(
-            filter, REDDIT_COMMENTS
+        reddit_comments_by_likes, reddit_comments_by_date = get_top5_complaint_posts(
+            filter, REDDIT_SUBMISSIONS
         )
     else:
         reddit_comments_by_likes = reddit_comments_by_date = []
+    # if "youtube" in filter.platforms:
+    #     youtube_comments_by_likes, youtube_comments_by_date = get_top5_complaint_posts(
+    #         filter, YOUTUBE_VIDEOS
+    #     )
+    # else:
+    #     youtube_comments_by_likes = youtube_comments_by_date = []
 
     return {
         "facebook": {"likes": fb_comments_by_likes, "date": fb_comments_by_date},
         "twitter": {"likes": twit_comments_by_likes, "date": twit_comments_by_date},
         "reddit": {"likes": reddit_comments_by_likes, "date": reddit_comments_by_date},
+        # "youtube": {"likes": youtube_comments_by_likes, "date": youtube_comments_by_date}
     }

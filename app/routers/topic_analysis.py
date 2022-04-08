@@ -20,6 +20,8 @@ TWITTER_TWEETS = os.getenv("DB_TWIITER_TWEETS_COLLECTION")
 TWITTER_COMMENTS = os.getenv("DB_TWITTER_COMMENTS_COLLECTION")
 REDDIT_SUBMISSIONS = os.getenv("DB_REDDIT_SUBMISSIONS_COLLECTION")
 REDDIT_COMMENTS = os.getenv("DB_REDDIT_COMMENTS_COLLECTION")
+YOUTUBE_VIDEOS = os.getenv("DB_YOUTUBE_VIDEOS_COLLECTION")
+YOUTUBE_COMMENTS = os.getenv("DB_YOUTUBE_COMMENTS_COLLECTION")
 
 
 @router.post("/get-top5-topic-analysis", response_model=List[IndiTopicStatsRes])
@@ -48,6 +50,11 @@ def get_top5_topic_analysis(filter: Filter):
         reddit_comments_data = get_top5_topics_stats(filter, REDDIT_COMMENTS)
     else:
         reddit_posts_data = reddit_comments_data = []
+    # if "youtube" in filter.platforms:
+    #     youtube_videos_data = get_top5_topics_stats(filter, YOUTUBE_VIDEOS)
+    #     youtube_comments_data = get_top5_topics_stats(filter, YOUTUBE_COMMENTS)
+    # else:
+    #     youtube_videos_data = youtube_comments_data = []
 
     all_data = sum(
         [
@@ -57,6 +64,8 @@ def get_top5_topic_analysis(filter: Filter):
             twit_comments_data,
             reddit_posts_data,
             reddit_comments_data,
+            # youtube_videos_data,
+            # youtube_comments_data,
         ],
         [],
     )
