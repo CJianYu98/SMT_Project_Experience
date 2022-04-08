@@ -51,17 +51,20 @@
             <TrendAnalysisNoTrend v-else/>
           </td>
           <td>
-            <v-tooltip bottom v-if="data.emotion === null">
+            <template v-if="data.emotion == null">
+            <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <span
-                    v-bind="attrs"
-                    v-on="on"
-                  >━</span>
+                  class="primary--text"
+                  v-bind="attrs"
+                  v-on="on"
+                  >-</span>
               </template>
               <span>no emotion data</span>
             </v-tooltip>
-
-            <v-tooltip bottom v-else>
+            </template>
+            <template v-else>
+            <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-img
                   max-height="30"
@@ -75,6 +78,7 @@
               </template>
               <span>{{data.emotion}}</span>
             </v-tooltip>
+            </template>
           </td>
         </tr> 
       </tbody>
