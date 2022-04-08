@@ -37,7 +37,7 @@ export default {
       required: true
     },
     allTrend: {
-      type: Number,
+      type: Object,
       required: true
     },
     platformTrend: {

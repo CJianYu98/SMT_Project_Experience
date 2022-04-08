@@ -95,6 +95,15 @@ export default {
       )
     };
     // fetch("http://127.0.0.1:8000/topic-analysis/get-top5-topic-analysis", requestOptions)
+    // .then(response => response.json())
+    //   .then(data => 
+    //     {
+    //       this.testData = data
+    //     }
+    //   )
+    //   .catch((error) => {
+    //     console.error(error);
+    //   })
     fetch("http://127.0.0.1:8000/trend-analysis/get-all-aggregated-stats", requestOptions)
       .then(response => response.json())
       .then(data => 
@@ -113,6 +122,8 @@ export default {
       .then(response => response.json())
       .then(data => 
         {
+          // { "trend": 0.62 }
+          this.testData = data
           this.allTrend = data
           console.log("this.allTrend", this.allTrend)
         }
@@ -126,6 +137,28 @@ export default {
         { 
           // { "facebook": { "trend": 0.62 }, "reddit": { "trend": 0.62 }, "twitter": { "trend": 0 }, "youtube": { "trend": 0.62 } }
           this.platformTrend = data
+        }
+      )
+      .catch((error) => {
+        console.error(error);
+      })
+    fetch("http://127.0.0.1:8000/keyword-analysis/get-all-top-keywords", requestOptions)
+    // [ { "word": "rip", "count": 58, "sentiment": "neutral" }, { "word": "china", "count": 52, "sentiment": "negative" } ]
+    .then(response => response.json())
+      .then(data => 
+        {
+          this.keywords = data
+        }
+      )
+      .catch((error) => {
+        console.error(error);
+      })
+    fetch("http://127.0.0.1:8000/complaint-analysis/get-all-top-complaint-keywords", requestOptions)
+    // [ { "word": "rip", "count": 58, "sentiment": "neutral" }, { "word": "china", "count": 52, "sentiment": "negative" } ]
+    .then(response => response.json())
+      .then(data => 
+        {
+          this.complaintsKeywords = data
         }
       )
       .catch((error) => {
@@ -2083,12 +2116,10 @@ export default {
       //   date: ["", "All"],
       // }
     },
-    allTrend: 0,
+    allTrend: {trend: 0},
     platformMetrics: {
       facebook: { mentions: 0.2, emotion: "anger" }, 
-      twitter: { mentions: 0.2, emotion: "sadness" },
-      reddit: { mentions: 0.3, emotion: "joy" },
-      youtube: { mentions: 0.3, emotion: "fear" },
+      twitter: { mentions: 0.2, emotion: "-" },
     },
     platformTrend: { 
       facebook: { trend: 0.62 }, 

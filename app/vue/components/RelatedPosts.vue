@@ -4,12 +4,12 @@
     class="overflow-y-auto"
   >
   <template
-    v-for="(commentsObj, index) in relatedComments"
+    v-for="(commentsObj, objIndex) in relatedComments"
   >
     <RelatedComment
-      v-for="comment in commentsObj[viewSelected]"
-      :key="comment"
-      :media="index"
+      v-for="(comment, index) in commentsObj[viewSelected]"
+      :key="index"
+      :media="objIndex"
       :likes="comment.likes"
       :date="comment.date"
       :comment="comment.comment"

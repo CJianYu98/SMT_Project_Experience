@@ -35,8 +35,8 @@
           <td>
             <div class="font-weight-medium"
               v-if="selectedDateFilter === 'All'">-</div>
-            <TrendAnalysisUpwardTrend v-else-if="overallStats.trend > 0" :percentage-increase="overallStats.trend"/>
-            <TrendAnalysisDownwardTrend v-else-if="overallStats.trend < 0" :percentage-decrease="overallStats.trend"/>
+            <TrendAnalysisUpwardTrend v-else-if="allTrend.trend > 0" :percentage-increase="allTrend.trend"/>
+            <TrendAnalysisDownwardTrend v-else-if="allTrend.trend < 0" :percentage-decrease="allTrend.trend"/>
             <TrendAnalysisNoTrend v-else/>
           </td>
           <td>{{ overallStats.likes.toLocaleString() }}</td>              
@@ -69,6 +69,10 @@ export default {
     overallStats: {
       type: Object,
       required: true,
+    },
+    allTrend: {
+      type: Object,
+      required: true
     },
   },
 }
