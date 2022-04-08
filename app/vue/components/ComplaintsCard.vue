@@ -60,7 +60,7 @@ export default {
       required: true
     },
     relatedComments: {
-      type: Array,
+      type: Object,
       required: true
     },
   },
