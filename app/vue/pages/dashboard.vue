@@ -2521,7 +2521,7 @@ export default {
         },
       }, 
       facebook: {
-        view: ['Number of Mentions', 'Number of Likes', 'Number of Shares', 'Sentiments'],
+        view: ['Number of Mentions', 'Number of Likes', 'Number of Shares', 'Sentiments', 'Emotions'],
         data_mentions: {
           chartData: {
             labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
@@ -2602,9 +2602,57 @@ export default {
             ]
           },
         },
+        data_emotions: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Anger',
+                data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                fill: false,
+                borderColor: '#FB3412',
+                backgroundColor: '#FB3412',
+                borderWidth: 1
+              },
+              {
+                label: 'Fear',
+                data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                fill: false,
+                borderColor: '#8C56AF',
+                backgroundColor: '#8C56AF',
+                borderWidth: 1,
+              },
+              {
+                label: 'Joy',
+                data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+                fill: false,
+                borderColor: '#F7CF15',
+                backgroundColor: '#F7CF15',
+                borderWidth: 1,
+              },
+              {
+                label: 'Neutral',
+                data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                fill: false,
+                borderColor: '#A1A08D',
+                backgroundColor: '#A1A08D',
+                borderWidth: 1
+              },
+              {
+                label: 'Sadness',
+                data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                fill: false,
+                borderColor: '#477BD1',
+                backgroundColor: '#477BD1',
+                borderWidth: 1,
+              },
+            ]
+          },
+        },
       }, 
       reddit: {
-        view: ['Number of Mentions', 'Number of Net Votes', 'Number of Awards', 'Sentiments'],
+        view: ['Number of Mentions', 'Number of Net Votes', 'Number of Awards', 'Sentiments', 'Emotions'],
         data_mentions: {
           chartData: {
             labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
@@ -2685,9 +2733,57 @@ export default {
             ]
           },
         },
+        data_emotions: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Anger',
+                data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                fill: false,
+                borderColor: '#FB3412',
+                backgroundColor: '#FB3412',
+                borderWidth: 1
+              },
+              {
+                label: 'Fear',
+                data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                fill: false,
+                borderColor: '#8C56AF',
+                backgroundColor: '#8C56AF',
+                borderWidth: 1,
+              },
+              {
+                label: 'Joy',
+                data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+                fill: false,
+                borderColor: '#F7CF15',
+                backgroundColor: '#F7CF15',
+                borderWidth: 1,
+              },
+              {
+                label: 'Neutral',
+                data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                fill: false,
+                borderColor: '#A1A08D',
+                backgroundColor: '#A1A08D',
+                borderWidth: 1
+              },
+              {
+                label: 'Sadness',
+                data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                fill: false,
+                borderColor: '#477BD1',
+                backgroundColor: '#477BD1',
+                borderWidth: 1,
+              },
+            ]
+          },
+        },
       },         
       twitter: {
-        view: ['Number of Mentions', 'Number of Likes', 'Number of Retweets', 'Sentiments'],
+        view: ['Number of Mentions', 'Number of Likes', 'Number of Retweets', 'Sentiments', 'Emotions'],
         data_mentions: {
           chartData: {
             labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
@@ -2768,9 +2864,57 @@ export default {
             ]
           },
         },
+        data_emotions: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Anger',
+                data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                fill: false,
+                borderColor: '#FB3412',
+                backgroundColor: '#FB3412',
+                borderWidth: 1
+              },
+              {
+                label: 'Fear',
+                data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                fill: false,
+                borderColor: '#8C56AF',
+                backgroundColor: '#8C56AF',
+                borderWidth: 1,
+              },
+              {
+                label: 'Joy',
+                data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+                fill: false,
+                borderColor: '#F7CF15',
+                backgroundColor: '#F7CF15',
+                borderWidth: 1,
+              },
+              {
+                label: 'Neutral',
+                data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                fill: false,
+                borderColor: '#A1A08D',
+                backgroundColor: '#A1A08D',
+                borderWidth: 1
+              },
+              {
+                label: 'Sadness',
+                data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                fill: false,
+                borderColor: '#477BD1',
+                backgroundColor: '#477BD1',
+                borderWidth: 1,
+              },
+            ]
+          },
+        },
       }, 
       youtube: {
-        view: ['Number of Mentions', 'Number of Likes', 'Number of Views', 'Sentiments'],
+        view: ['Number of Mentions', 'Number of Likes', 'Number of Views', 'Sentiments', 'Emotions'],
         data_mentions: {
           chartData: {
             labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
@@ -2846,6 +2990,54 @@ export default {
                 fill: false,
                 borderColor: '#78D549',
                 backgroundColor: '#78D549',
+                borderWidth: 1,
+              },
+            ]
+          },
+        },
+        data_emotions: {
+          chartData: {
+            labels: ["Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
+            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+            datasets: [
+              {
+                label: 'Anger',
+                data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                fill: false,
+                borderColor: '#FB3412',
+                backgroundColor: '#FB3412',
+                borderWidth: 1
+              },
+              {
+                label: 'Fear',
+                data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                fill: false,
+                borderColor: '#8C56AF',
+                backgroundColor: '#8C56AF',
+                borderWidth: 1,
+              },
+              {
+                label: 'Joy',
+                data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
+                fill: false,
+                borderColor: '#F7CF15',
+                backgroundColor: '#F7CF15',
+                borderWidth: 1,
+              },
+              {
+                label: 'Neutral',
+                data: [6880,  550,  2342,  6070,  522,  2241,  1259,  3157,  1545, 6000, 8500, 9841],
+                fill: false,
+                borderColor: '#A1A08D',
+                backgroundColor: '#A1A08D',
+                borderWidth: 1
+              },
+              {
+                label: 'Sadness',
+                data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
+                fill: false,
+                borderColor: '#477BD1',
+                backgroundColor: '#477BD1',
                 borderWidth: 1,
               },
             ]
