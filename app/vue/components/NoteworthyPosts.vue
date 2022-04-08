@@ -7,7 +7,7 @@
     <v-row>
       <v-col cols="8" class="pt-0">
         <v-card-title class="pb-4 accent--text text-h6">
-          Noteworthy Comments
+          Noteworthy Posts
           <HelpTextTooltip :help-text="noteworthyCommentHelpText"/>
         </v-card-title>
       </v-col>

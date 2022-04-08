@@ -17,7 +17,7 @@
       <v-row>
         <v-col cols="8">
           <v-card-title class="pb-4 accent--text text-h6">
-            Related Comments
+            Related Posts
             <HelpTextTooltip :help-text="complaintsCommentsHelpText"/>
           </v-card-title>
         </v-col>

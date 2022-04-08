@@ -168,7 +168,7 @@ export default {
     .then(response => response.json())
       .then(data => 
         {
-          // this.testData = data
+          this.testData = data
           this.complaintsRelatedComments = data
         }
       )
@@ -179,7 +179,7 @@ export default {
     .then(response => response.json())
       .then(data => 
         {
-          // this.testData = data
+          this.testData = data
           this.noteworthyComments = data
         }
       )
@@ -969,7 +969,7 @@ export default {
             {
               media: 'Reddit',
               likes: '7',
-              date: '25 December 2021',
+              date: '2021-04-03T14:24:24',
               comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
               topic: ['Healthcare'],
               sentiment: 'negative',
@@ -1389,7 +1389,7 @@ export default {
             {
               media: 'Reddit',
               likes: '7',
-              date: '25 December 2021',
+              date: '2021-04-03T14:24:24',
               comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
               topic: ['Healthcare'],
               sentiment: 'negative',
@@ -1799,7 +1799,7 @@ export default {
             {
               media: 'Reddit',
               likes: '7',
-              date: '25 December 2021',
+              date: '2021-04-03T14:24:24',
               comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
               topic: ['Healthcare'],
               sentiment: 'negative',
@@ -2210,7 +2210,7 @@ export default {
         likes: [
           {
             likes: '300',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2220,7 +2220,7 @@ export default {
           },
           {
             likes: '290',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2230,7 +2230,7 @@ export default {
           },
           {
             likes: '280',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2240,7 +2240,7 @@ export default {
           },
           {
             likes: '270',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2250,7 +2250,7 @@ export default {
           },
           {
             likes: '260',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2262,7 +2262,7 @@ export default {
         date: [
           {
             likes: '20',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2272,7 +2272,7 @@ export default {
           },
           {
             likes: '290',
-            date: '24 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2282,7 +2282,7 @@ export default {
           },
           {
             likes: '80',
-            date: '23 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2292,7 +2292,7 @@ export default {
           },
           {
             likes: '20',
-            date: '22 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2302,7 +2302,7 @@ export default {
           },
           {
             likes: '26',
-            date: '21 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2316,7 +2316,7 @@ export default {
         likes: [
           {
             likes: '300',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2326,7 +2326,7 @@ export default {
           },
           {
             likes: '290',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2336,7 +2336,7 @@ export default {
           },
           {
             likes: '280',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2346,7 +2346,7 @@ export default {
           },
           {
             likes: '270',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2356,7 +2356,7 @@ export default {
           },
           {
             likes: '260',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2368,7 +2368,7 @@ export default {
         date: [
           {
             likes: '20',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2378,7 +2378,7 @@ export default {
           },
           {
             likes: '290',
-            date: '24 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2388,7 +2388,7 @@ export default {
           },
           {
             likes: '80',
-            date: '23 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2398,7 +2398,7 @@ export default {
           },
           {
             likes: '20',
-            date: '22 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2408,7 +2408,7 @@ export default {
           },
           {
             likes: '26',
-            date: '21 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2860,7 +2860,7 @@ export default {
         likes: [
           {
             likes: '300',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2871,7 +2871,7 @@ export default {
           },
           {
             likes: '290',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2882,7 +2882,7 @@ export default {
           },
           {
             likes: '280',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2893,7 +2893,7 @@ export default {
           },
           {
             likes: '270',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2904,7 +2904,7 @@ export default {
           },
           {
             likes: '260',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2917,7 +2917,7 @@ export default {
         date: [
           {
             likes: '20',
-            date: '25 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2928,7 +2928,7 @@ export default {
           },
           {
             likes: '290',
-            date: '24 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2939,7 +2939,7 @@ export default {
           },
           {
             likes: '80',
-            date: '23 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2950,7 +2950,7 @@ export default {
           },
           {
             likes: '20',
-            date: '22 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2961,7 +2961,7 @@ export default {
           },
           {
             likes: '26',
-            date: '21 December 2021',
+            date: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2973,12 +2973,21 @@ export default {
         ]
       }
     },
-
-  
+    numDaysFromDateFilter: [
+      {date: 'Yesterday', numDays: 1}, 
+      {date: 'Past 7 Days', numDays: 7}, 
+      {date: 'Past 14 Days', numDays: 14}, 
+      {date: 'Past 30 Days', numDays: 30}, 
+      {date: 'Past 6 Months', numDays: 180}, 
+      {date: 'Past Year', numDays: 365}
+    ], 
   }),
 
   computed: {
-
+    // lowercasePlatforms() {
+    //   return 
+    // }, 
+  
   },
 
   methods: {
@@ -2987,8 +2996,47 @@ export default {
       console.log("=== START rerenderDashboard ===")
       console.log("rerenderDashboard updatedSentiments", updatedSentiments)
 
-      this.dateFilter = updatedSentiments[1]
-      console.log("dateFilter", this.dateFilter)
+      const newQuery = this.updatedSentiments[0]
+
+      // const newNumDays = this.numDaysFromDateFilter.find(obj => obj.date === updatedSentiments[1]).numDays
+      // console.log("numDays", newNumDays)
+
+      const newPlatforms = this.updatedSentiments[2]
+      const newSentiments = this.updatedSentiments[3]
+      const newEmotions = this.updatedSentiments[4]
+
+      // .forEach(element => element.toLowerCase())
+
+      console.log("newQuery", newQuery)
+      // console.log("numDays", newNumDays)
+      console.log("newPlatforms", newPlatforms)
+      console.log("newSentiments", newSentiments)
+      console.log("newEmotions", newEmotions)
+
+      // const requestOptions = {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(
+      //     { 
+      //       "endDate": "2021-04-08",
+      //       "numDays": numDays,
+      //       "platforms": [
+      //         "facebook", "youtube", "reddit", "twitter"
+      //       ],
+      //       "sentiments": [
+      //         "neutral", "negative", "positive"
+      //       ],
+      //       "emotions": [
+      //         "neutral", "anger", "fear", "sadness", "joy"
+      //       ],
+      //       "query": null
+      //     }
+      //   )
+      // };
+      
+
+      // this.dateFilter = updatedSentiments[1]
+      // console.log("dateFilter", this.dateFilter)
 
       let filterCheck = this.checkFilterSelectionToReturnFakeData(updatedSentiments)
 

@@ -23,8 +23,6 @@
             dense
             @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
-            <!-- @update:search-input="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)" -->
-            <!-- return-object -->
           </v-combobox>
 
           <v-combobox
@@ -44,7 +42,6 @@
             dense
             @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           > 
-            <!-- return-object -->
           </v-combobox>
         </v-col>
         <v-spacer></v-spacer> 
