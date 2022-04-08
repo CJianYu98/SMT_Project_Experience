@@ -82,7 +82,7 @@ for file in files:
     crawled_date_str = file[:-5]
     end_date = datetime.strptime(crawled_date_str, "%Y-%m-%d")
     start_date = end_date - timedelta(days=13)
-    db_query = {"date_uploaded": {"$gte": start_date, "$lte": end_date}}
+    db_query = {"datetime": {"$gte": start_date, "$lte": end_date}}
     videos = list(youtube_videos.find(db_query))
     vid_ids = [vid["id"] for vid in videos]
     youtube_videos.delete_many(db_query)
@@ -96,10 +96,10 @@ for file in files:
             if data:
                 df = pd.DataFrame(data)
                 col_names = {col: col.lower() for col in df.columns}
-                col_names["Date Uploaded"] = "date_uploaded"
+                col_names["Date Uploaded"] = "datetime"
                 df.rename(columns=col_names, inplace=True)
 
-                df["date_uploaded"] = df["date_uploaded"].apply(date_str_to_dt)
+                df["datetime"] = df["datetime"].apply(date_str_to_dt)
                 df["id"] = df.apply(lambda x: uuid.uuid4().hex, axis=1)
                 df["channel"] = channel
                 df["views"] = df["views"].apply(views_str_to_int)
