@@ -72,10 +72,7 @@ def likes_str_to_int(likes: str) -> int:
 
 
 def views_str_to_int(views: str) -> int:
-    if "waiting" in views:
-        return 0
-    else:
-        return int(views[:-6].replace(",", ""))
+    return 0 if "waiting" in views else int(views[:-6].replace(",", ""))
 
 
 # Check status for reddit daily collection
@@ -103,8 +100,6 @@ if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < la
     for v_id in vid_ids:
         youtube_comments.delete_many({"vid_id": v_id})
 
-    # Store all the comments
-    comments = []
 
     with open(f"{YOUTUBE_DAILY_DATA_PATH}/{latest_collection_date.date()}.json") as f:
         jobj = json.load(f)
@@ -124,19 +119,24 @@ if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < la
             df["views"] = df["views"].apply(views_str_to_int)
             df["likes"] = df["likes"].apply(likes_str_to_int)
 
+            # Getting videos data
             df_videos = df.drop("comments", axis=1)
             df_videos["combined_text"] = df["title"] + " " + df["description"]
 
+            # Getting comments data
             df_exploded = df.explode("comments").reset_index(drop=True)
+            df_exploded.dropna(subset=['comments'], inplace=True)
             df_exploded["cid"] = df_exploded.apply(lambda x: uuid.uuid4().hex, axis=1)
-            df_comments = df_exploded[["cid", "id", "comments"]]
-            df_comments.rename(columns={"id": "vid_id", "cid": "id", "comments": "comment"}, inplace=True)
+            df_exploded['comment'] = df_exploded['comments'].apply(lambda x: x['Comment'])
+            df_exploded['datetime'] = df_exploded['comments'].apply(lambda x: date_str_to_dt(x['Date']))
+            df_exploded['likes'] = df_exploded['comments'].apply(lambda x: x['Likes'])
+            df_comments = df_exploded[["cid", "id", "comment", "datetime", "likes"]]
+            df_comments.rename(columns={"id": "vid_id", "cid": "id"}, inplace=True)
 
             # Apply preprocessing on text to clean data
             df_videos["cleantext"] = df_videos["combined_text"].apply(preprocessing)
             df_comments["cleantext"] = df_comments["comment"].apply(preprocessing)
 
-            print(df_comments.columns)
             ###########################################################
             #################### RUNNING ML MODELS ####################
             ###########################################################
@@ -210,11 +210,11 @@ if (latest_collection_date.date() == curr_date) and (latest_etl_date.date() < la
             ############### END OF ML CLASSIFICATION #################
             ##########################################################
 
-            # Inserting youtube videos data
+            # Inserting youtube videos and comments data
             yt_vid_data = df_videos.to_dict(orient="index")
             yt_comments_data = df_comments.to_dict(orient="index")
 
-            # Inserting youtube videos data
+            # Inserting youtube videos and comments data
             youtube_videos.insert_many([yt_vid_data[i] for i in range(len(yt_vid_data))])
             youtube_comments.insert_many([yt_comments_data[i] for i in range(len(yt_comments_data))])
 
