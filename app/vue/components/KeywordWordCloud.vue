@@ -110,10 +110,11 @@ export default {
       }
 
       function handleMouseOver(d) {
-        // console.log("=== START handleMouseOver() ===")
+        console.log("=== START handleMouseOver() ===")
 
-        // console.log("d inside mouseover", d)
-        // console.log("d.srcElement.__data__.frequency", d.srcElement.__data__.frequency)
+        console.log("d inside mouseover", d)
+        console.log("d.srcElement.__data__.frequency", d.srcElement.__data__.frequency)
+        console.log("d.srcElement.__data__.text", d.srcElement.__data__.text)
 
 
         // const group = focus.append('g')
@@ -124,11 +125,14 @@ export default {
         // console.log("group", group)
         // const base = d.y - d.size;
         // const base = d.y - d.screenY;
+        
+        // eslint-disable-next-line
+        console.log("id test", d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''))
 
         group.selectAll('text')
             .data(d.srcElement.__data__.frequency)
             .enter().append('text')
-            .attr('x', d.screenX)
+            .attr('x', d.screenX )
             .attr('y', d.screenY - 300)
             // .attr('y', function(title, i) {
             //   return (base - i*14);
@@ -192,7 +196,7 @@ export default {
 
             layout = cloud()
               .size([width, height])
-              .words(val.map(function(d) { return {text: d.word, size:d.size, sentiment:d.sentiment, frequency:d.hover}; }))
+              .words(val.map(function(d) { return {text: d.word, size:d.count*1.5, sentiment:d.sentiment, frequency: d.count}; }))
               .padding(5)        // space between words
               .rotate(function() { return ~~(Math.random() * 2) * 90; })
               .fontSize(function(d) { return d.size; })      // font size of words
