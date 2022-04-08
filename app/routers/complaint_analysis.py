@@ -21,6 +21,8 @@ FB_POSTS = "facebook_posts_v1"
 FB_COMMENTS = "facebook_comments_v1"
 TWITTER_TWEETS = os.getenv("DB_TWIITER_TWEETS_COLLECTION")
 TWITTER_COMMENTS = os.getenv("DB_TWITTER_COMMENTS_COLLECTION")
+REDDIT_SUBMISSIONS = os.getenv("DB_REDDIT_SUBMISSIONS_COLLECTION")
+REDDIT_COMMENTS = os.getenv("DB_REDDIT_COMMENTS_COLLECTION")
 
 
 @router.post(
@@ -49,9 +51,24 @@ def get_all_top_complaint_keywords(filter: Filter):
         twit_comments_data = get_top_complaint_keywords(filter, project, TWITTER_COMMENTS)
     else:
         twit_tweets_data = twit_comments_data = []
+    if "reddit" in filter.platforms:
+        reddit_submissions_data = get_top_complaint_keywords(filter, project, REDDIT_SUBMISSIONS)
+        reddit_comments_data = get_top_complaint_keywords(filter, project, REDDIT_COMMENTS)
+    else:
+        reddit_submissions_data = reddit_comments_data = []
 
     # Concat data from all social media platforms
-    all_data = sum([fb_posts_data, fb_comments_data, twit_tweets_data, twit_comments_data], [])
+    all_data = sum(
+        [
+            fb_posts_data,
+            fb_comments_data,
+            twit_tweets_data,
+            twit_comments_data,
+            reddit_submissions_data,
+            reddit_comments_data,
+        ],
+        [],
+    )
 
     # Remove records with no entities using pandas
     df = pd.DataFrame(all_data)
@@ -63,22 +80,17 @@ def get_all_top_complaint_keywords(filter: Filter):
     entities_count = Counter(entities).most_common()
 
     res = []
-    if len(entities_count) >= 20:
-        res.extend(
+    for i in range(len(entities_count)):
+        if i >= 20:
+            break
+
+        res.append(
             {
                 "word": entities_count[i][0],
                 "count": entities_count[i][1],
             }
-            for i in range(20)
         )
-    else:
-        res.extend(
-            {
-                "word": entities_count[i][0],
-                "count": entities_count[i][1],
-            }
-            for i in range(len(entities_count))
-        )
+
     return res
 
 
@@ -98,17 +110,24 @@ def get_all_top5_complaint_comments(filter: Filter):
 
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
-        fb_comments_by_likes, fb_comments_by_date = get_top5_complaint_comments(filter, FB_POSTS)
+        fb_comments_by_likes, fb_comments_by_date = get_top5_complaint_comments(filter, FB_COMMENTS)
     else:
         fb_comments_by_likes = fb_comments_by_date = []
     if "twitter" in filter.platforms:
         twit_comments_by_likes, twit_comments_by_date = get_top5_complaint_comments(
-            filter, TWITTER_TWEETS
+            filter, TWITTER_COMMENTS
         )
     else:
         twit_comments_by_likes = twit_comments_by_date = []
+    if "reddit" in filter.platforms:
+        reddit_comments_by_likes, reddit_comments_by_date = get_top5_complaint_comments(
+            filter, REDDIT_COMMENTS
+        )
+    else:
+        reddit_comments_by_likes = reddit_comments_by_date = []
 
     return {
         "facebook": {"likes": fb_comments_by_likes, "date": fb_comments_by_date},
         "twitter": {"likes": twit_comments_by_likes, "date": twit_comments_by_date},
+        "reddit": {"likes": reddit_comments_by_likes, "date": reddit_comments_by_date},
     }

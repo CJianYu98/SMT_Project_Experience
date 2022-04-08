@@ -544,6 +544,6 @@ with open(STATUS_CHECK_FILE, 'w') as f:
     json.dump(jobj, f, indent=4)
 
 telegram_send.send(
-    messages=[f"YOUTUBE DAILY --> Daily crawling completed.\nTOTAL TIME TAKEN: {end} - {start}"]
+    messages=[f"YOUTUBE DAILY --> Daily crawling completed.\nTOTAL TIME TAKEN: {end - start}"]
 )
-logger.info(f"Daily crawling completed.\nTOTAL TIME TAKEN: {end} - {start}")
+logger.info(f"Daily crawling completed.\nTOTAL TIME TAKEN: {end - start}")

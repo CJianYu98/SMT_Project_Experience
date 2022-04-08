@@ -18,6 +18,8 @@ FB_POSTS = "facebook_posts_v1"
 FB_COMMENTS = "facebook_comments_v1"
 TWITTER_TWEETS = os.getenv("DB_TWIITER_TWEETS_COLLECTION")
 TWITTER_COMMENTS = os.getenv("DB_TWITTER_COMMENTS_COLLECTION")
+REDDIT_SUBMISSIONS = os.getenv("DB_REDDIT_SUBMISSIONS_COLLECTION")
+REDDIT_COMMENTS = os.getenv("DB_REDDIT_COMMENTS_COLLECTION")
 
 
 @router.post("/get-all-top-keywords", response_model=List[Top20KeywordAnalysisRes])
@@ -44,9 +46,24 @@ def get_all_top_keywords(filter: Filter):
         twit_comments_data = get_top_keywords(filter, project, TWITTER_COMMENTS)
     else:
         twit_tweets_data = twit_comments_data = []
+    if "reddit" in filter.platforms:
+        reddit_submissions_data = get_top_keywords(filter, project, REDDIT_SUBMISSIONS)
+        reddit_comments_data = get_top_keywords(filter, project, REDDIT_COMMENTS)
+    else:
+        reddit_submissions_data = reddit_comments_data = []
 
     # Concat data from all social media platforms
-    all_data = sum([fb_posts_data, fb_comments_data, twit_tweets_data, twit_comments_data], [])
+    all_data = sum(
+        [
+            fb_posts_data,
+            fb_comments_data,
+            twit_tweets_data,
+            twit_comments_data,
+            reddit_submissions_data,
+            reddit_comments_data,
+        ],
+        [],
+    )
 
     # Using pandas to group by entities and sentiment_label and get the counts
     df = pd.DataFrame(all_data)
@@ -66,8 +83,11 @@ def get_all_top_keywords(filter: Filter):
     entities_count = Counter(entities).most_common()
 
     res = []
-    if len(entities_count) >= 20:
-        res.extend(
+    for i in range(len(entities_count)):
+        if i >= 20:
+            break
+
+        res.append(
             {
                 "word": entities_count[i][0],
                 "count": entities_count[i][1],
@@ -75,18 +95,6 @@ def get_all_top_keywords(filter: Filter):
                     "sentiment_label"
                 ].values[0],
             }
-            for i in range(20)
-        )
-    else:
-        res.extend(
-            {
-                "word": entities_count[i][0],
-                "count": entities_count[i][1],
-                "sentiment": ent_sentiment[ent_sentiment["entities"] == entities_count[i][0]][
-                    "sentiment_label"
-                ].values[0],
-            }
-            for i in range(len(entities_count))
         )
 
     return res

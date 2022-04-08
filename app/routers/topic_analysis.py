@@ -1,3 +1,4 @@
+import os
 from collections import Counter
 from typing import List
 
@@ -9,6 +10,16 @@ from ..schema.topic_analysis import IndiTopicStatsRes
 from ..schema.user_filter import Filter
 
 router = APIRouter(prefix="/topic-analysis", tags=["topic_analysis"])
+
+# Declare MongoDB collection names to interact with
+# FB_POSTS = os.getenv("DB_FACEBOOK_POSTS_COLLECTION")
+# FB_COMMENTS = os.getenv("DB_FACEBOOK_COMMENTS_COLLECTION")
+FB_POSTS = "facebook_posts_v1"
+FB_COMMENTS = "facebook_comments_v1"
+TWITTER_TWEETS = os.getenv("DB_TWIITER_TWEETS_COLLECTION")
+TWITTER_COMMENTS = os.getenv("DB_TWITTER_COMMENTS_COLLECTION")
+REDDIT_SUBMISSIONS = os.getenv("DB_REDDIT_SUBMISSIONS_COLLECTION")
+REDDIT_COMMENTS = os.getenv("DB_REDDIT_COMMENTS_COLLECTION")
 
 
 @router.post("/get-top5-topic-analysis", response_model=List[IndiTopicStatsRes])
@@ -23,18 +34,32 @@ def get_top5_topic_analysis(filter: Filter):
         Pydantic Model: JSON response object
     """
     if "facebook" in filter.platforms:
-        fb_posts_data = get_top5_topics_stats(filter, "posts")
-        fb_comments_data = get_top5_topics_stats(filter, "comments")
+        fb_posts_data = get_top5_topics_stats(filter, FB_POSTS)
+        fb_comments_data = get_top5_topics_stats(filter, FB_COMMENTS)
     else:
         fb_posts_data = fb_comments_data = []
     if "twitter" in filter.platforms:
-        twit_posts_data = get_top5_topics_stats(filter, "tweets")
-        twit_comments_data = get_top5_topics_stats(filter, "comments")
+        twit_posts_data = get_top5_topics_stats(filter, TWITTER_TWEETS)
+        twit_comments_data = get_top5_topics_stats(filter, TWITTER_COMMENTS)
     else:
         twit_posts_data = twit_comments_data = []
+    if "reddit" in filter.platforms:
+        reddit_posts_data = get_top5_topics_stats(filter, REDDIT_SUBMISSIONS)
+        reddit_comments_data = get_top5_topics_stats(filter, REDDIT_COMMENTS)
+    else:
+        reddit_posts_data = reddit_comments_data = []
 
-    all_data = sum([fb_posts_data, fb_comments_data, twit_posts_data, twit_comments_data], [])
-    print(len(all_data))
+    all_data = sum(
+        [
+            fb_posts_data,
+            fb_comments_data,
+            twit_posts_data,
+            twit_comments_data,
+            reddit_posts_data,
+            reddit_comments_data,
+        ],
+        [],
+    )
     if not all_data:
         raise HTTPException(status_code=404, detail="No data found within date period given")
 
