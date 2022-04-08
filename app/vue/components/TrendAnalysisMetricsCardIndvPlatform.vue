@@ -112,12 +112,12 @@ export default {
   }),
   methods: {
     passCombinedStringToOverallTrend() {
-      console.log("=== start passCombinedStringToOverallTrend() ===")
-      console.log("this.getCombinedString", this.getCombinedString)
+      // console.log("=== start passCombinedStringToOverallTrend() ===")
+      // console.log("this.getCombinedString", this.getCombinedString)
       this.$emit('passCombinedStringToOverallTrend', this.getCombinedString)
     },
     getNumDaysFromDateFilter() {
-      console.log("=== start getNumDaysFromDateFilter() ===")
+      // console.log("=== start getNumDaysFromDateFilter() ===")
 
       if (!this.isCustomDate) {
         return this.numDaysBetweenCustomDate(this.selectedDateFilter)
@@ -126,7 +126,7 @@ export default {
       }
     },
     numDaysBetweenCustomDate(dateString) {
-      console.log("=== start numDaysBetweenCustomDate() ===")
+      // console.log("=== start numDaysBetweenCustomDate() ===")
       // console.log("dateString", dateString)
 
       const startDateStr = dateString.split("-")[0]
@@ -157,7 +157,7 @@ export default {
       return this.getNumDaysFromDateFilter()
     },
     getCombinedString() {
-      console.log("=== start getCombinedString() ===")
+      // console.log("=== start getCombinedString() ===")
 
       if (this.selectedDateFilter !== 'All') {
         const combinedStr = "Percentage change in number of mentions from " + this.getCurrDatePeriod + " against " + this.getPrevDatePeriod
@@ -170,12 +170,12 @@ export default {
       }      
     },
     isCustomDate() {
-      console.log("=== start isCustomDate() ===")
+      // console.log("=== start isCustomDate() ===")
       const result = this.numDaysFromDateFilter.find(obj => obj.date === this.selectedDateFilter)
       return result
     },
     getCurrDatePeriod() {
-      console.log("=== start getCurrDatePeriod() ===")
+      // console.log("=== start getCurrDatePeriod() ===")
 
       const triggerNumDays = this.numDays // so that custom start and end dates are set prior
         // if not assigned, this.customEndDate will be null when called later on
@@ -218,7 +218,7 @@ export default {
     },
 
     getPrevDatePeriod() {
-      console.log("=== start getPrevDatePeriod() ===")
+      // console.log("=== start getPrevDatePeriod() ===")
 
       const triggerNumDays = this.numDays
 

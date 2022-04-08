@@ -20,8 +20,8 @@
             {{ media }}
         </v-tab>
         <v-tab-item
-          v-for="platform in mediasMetrics" 
-          :key="platform.view"
+          v-for="(platform, index) in mediasMetrics" 
+          :key="index"
         >
           <v-card flat>
             <v-container fluid class="px-4 mt-n4 pb-0">
