@@ -23,7 +23,7 @@ load_dotenv()
 FB_DATETIME_STR = "created_time"
 TWIT_DATETIME_STR = "created_at"
 REDDIT_DATETIME_STR = "created_datetime"
-YT_DATETIME_STR = "date_uploaded"
+YT_DATETIME_STR = "datetime"
 
 
 def get_top5_topics_stats(filter: Filter, db_collection: str):
@@ -58,6 +58,9 @@ def get_top5_topics_stats(filter: Filter, db_collection: str):
     elif "reddit" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
         project["text"] = "$title" if "submissions" in db_collection else "$body"
+    # elif "youtube" in db_collection:
+    #     db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+    #     project["text"] = "$combined_text" if "videos" in db_collection else "$comment"
 
     res = list(db[db_collection].find(db_query, project))
 
@@ -93,6 +96,9 @@ def get_aggregated_stats(filter: Filter, db_collection: str):
     elif "reddit" in db_collection:
         filter_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
         likes_str = "score"
+    # elif "youtube" in db_collection:
+    #     filter_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+    #     likes_str = "likes"
 
     db_query = [
         {"$match": filter_query},
@@ -144,6 +150,8 @@ def get_trend_stats(filter: Filter, db_collection: str):
         db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
     elif "reddit" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+    # elif "youtube" in db_collection:
+    #     db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
 
     res = db[db_collection].count_documents(db_query)
 
@@ -176,6 +184,8 @@ def get_top_keywords(filter: Filter, project: dict, db_collection: str):
         db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
     elif "reddit" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+    # elif "youtube" in db_collection:
+    #     db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
 
     res = list(db[db_collection].find(db_query, project))
 
@@ -208,6 +218,8 @@ def get_top_complaint_keywords(filter: Filter, project: dict, db_collection: str
         db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
     elif "reddit" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+    # elif "youtube" in db_collection:
+    #     db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
     db_query["intent"] = {"$regex": "complaint"}
 
     res = list(db[db_collection].find(db_query, project))
@@ -220,7 +232,7 @@ def get_top_complaint_keywords(filter: Filter, project: dict, db_collection: str
     return res
 
 
-def get_top5_complaint_comments(filter: Filter, db_collection: str):
+def get_top5_complaint_posts(filter: Filter, db_collection: str):
     """
     Query the db based on user filter to get top 5 complaint related comments based on likes
 
@@ -250,11 +262,21 @@ def get_top5_complaint_comments(filter: Filter, db_collection: str):
         likes_key = "likes_count"
         datetime_key = TWIT_DATETIME_STR
         project["comment"] = "$tweet"
+        project['link'] = "$link"
     elif "reddit" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
         likes_key = "score"
         datetime_key = REDDIT_DATETIME_STR
-        project["comment"] = "$title" if "submissions" in db_collection else "$body"
+        project["comment"] = "$title"
+        project['link'] = "$url"
+    # elif "youtube" in db_collection:
+    #     db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+    #     likes_key = "likes"
+    #     datetime_key = YT_DATETIME_STR
+    #     project["comment"] = "$combined_text"
+    #     project['link'] = "$url"
+    if "facebook" not in db_collection:
+        project['thumbnail'] = "$thumbnail"
     project["likes"] = f"${likes_key}"
     project["datetime"] = f"${datetime_key}"
 
@@ -274,7 +296,7 @@ def get_top5_complaint_comments(filter: Filter, db_collection: str):
     return res_sort_by_likes, res_sort_by_date
 
 
-def get_top5_noteworthy_comments(filter: Filter, db_collection: str):
+def get_top5_noteworthy_posts(filter: Filter, db_collection: str):
     """
     Query the db based on user filter to get top 5 noteworthy related comments based on likes
 
@@ -309,7 +331,12 @@ def get_top5_noteworthy_comments(filter: Filter, db_collection: str):
         db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
         likes_key = "score"
         datetime_key = REDDIT_DATETIME_STR
-        project["comment"] = "$title" if "submissions" in db_collection else "$body"
+        project["comment"] = "$title"
+    # elif "youtube" in db_collection:
+    #     db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+    #     likes_key = "likes"
+    #     datetime_key = YT_DATETIME_STR
+    #     project["comment"] = "$combined_text"
     project["likes"] = f"${likes_key}"
     project["datetime"] = f"${datetime_key}"
 
