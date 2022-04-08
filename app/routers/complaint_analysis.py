@@ -104,9 +104,9 @@ def get_all_top_complaint_keywords(filter: Filter):
 
 
 @router.post(
-    "/get-all-top5-complaint-comments", response_model=Top5ComplaintOrNoteworthyCommentsRes
+    "/get-all-top5-complaint-posts", response_model=Top5ComplaintOrNoteworthyCommentsRes
 )
-def get_all_top5_complaint_comments(filter: Filter):
+def get_all_top5_complaint_posts(filter: Filter):
     """
     To get top 5 likes comments for complaint related comments
 

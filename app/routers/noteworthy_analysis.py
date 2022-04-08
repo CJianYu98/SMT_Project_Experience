@@ -22,9 +22,9 @@ YOUTUBE_COMMENTS = os.getenv("DB_YOUTUBE_COMMENTS_COLLECTION")
 
 
 @router.post(
-    "/get-all-top5-noteworthy-comments", response_model=Top5ComplaintOrNoteworthyCommentsRes
+    "/get-all-top5-noteworthy-posts", response_model=Top5ComplaintOrNoteworthyCommentsRes
 )
-def get_all_top5_noteworthy_comments(filter: Filter):
+def get_all_top5_noteworthy_posts(filter: Filter):
     """
     To get top 5 likes comments for noteworthy related comments
 
