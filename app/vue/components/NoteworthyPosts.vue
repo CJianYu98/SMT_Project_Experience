@@ -13,13 +13,16 @@
       </v-col>
       <v-col class="pt-0">
         <DropDownSelect 
-          :viewFilter="sortView" 
-          :label="label">
+          :view-filter="sortView" 
+          :label="label"
+          :view-selected="viewSelected"
+          @changeView="passViewToComments($event)">
         </DropDownSelect>
       </v-col>
     </v-row>
     <RelatedPosts
       :related-comments="relatedComments"
+      :view-selected="viewSelected.toLowerCase()"
     />
   </v-card>
 </template>
@@ -39,7 +42,17 @@ export default {
   },
   data: () => ({
     noteworthyCommentHelpText: "Observe the insightful comments made by users across multiple platforms. These are determined based on three classified intents: seeking/giving advice, educational or insightful.",
+    sortView: ['Likes', 'Date'],
+    label: 'Sort By',
+    viewSelected: 'Likes'
   }),
+  methods: {
+    passViewToComments(changedView) {
+      console.log("=== start passViewToComments() ===")
+      console.log("selectedView", changedView)
+      this.viewSelected = changedView
+    }
+  },
 }
 </script>
 

@@ -3,12 +3,11 @@
     style="max-height: 450px" 
     class="overflow-y-auto"
   >
-  <!-- v-bind:style= "[condition ? {styleA} : {styleB}]" -->
   <template
     v-for="(commentsObj, index) in relatedComments"
   >
     <RelatedComment
-      v-for="comment in commentsObj.likes"
+      v-for="comment in commentsObj[viewSelected]"
       :key="comment"
       :media="index"
       :likes="comment.likes"
@@ -36,10 +35,10 @@ export default {
       type: Object,
       required: true
     },
-    // selectedView: {
-    //   type: String,
-    //   required: true
-    // }
+    viewSelected: {
+      type: String,
+      required: true
+    }
   },
   data: () => ({
 

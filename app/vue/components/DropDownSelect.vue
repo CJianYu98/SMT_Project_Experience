@@ -10,6 +10,9 @@
             outlined
             dense
         >
+          <template #selection="{ item }">
+            <span class="accent--text">{{ item }}</span>
+          </template>
         </v-select>
     </div>
 </template>
@@ -26,9 +29,6 @@
       viewSelected: {
         required: true
       },
-      // viewSelected: {
-      //   required: true
-      // }
     },
     data: (instance) => {
       return {

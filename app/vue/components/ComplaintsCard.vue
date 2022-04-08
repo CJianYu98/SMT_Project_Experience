@@ -23,13 +23,16 @@
         </v-col>
         <v-col>
           <DropDownSelect 
-            :viewFilter="sortView" 
-            :label="label">
+            :view-filter="sortView" 
+            :label="label"
+            :view-selected="viewSelected"
+            @changeView="passViewToComments($event)">
           </DropDownSelect>
         </v-col>
       </v-row>
       <ComplaintsRelatedComments 
         :related-comments="relatedComments"
+        :view-selected="viewSelected.toLowerCase()"
       />
     </v-col>
   </v-row>
@@ -65,10 +68,17 @@ export default {
   data: () => ({
     complaintsWordCloudHelpText: "Observe the most common keywords related to complaints mentioned across the selected time period and platform(s).",
     complaintsCommentsHelpText: "Study the most common complaints, or, if a complaint keyword has been selected, the comments related to that complaint. Words highlighted in red are indicative of the negative sentiment.",
-    sortView: [{view: 'Likes'}, {view: 'Date'}],
-      label: 'Sort By',
-      // viewSelected: 'Likes',
-    }),
+    sortView: ['Likes', 'Date'],
+    label: 'Sort By',
+    viewSelected: 'Likes'
+  }),
+  methods: {
+    passViewToComments(changedView) {
+      console.log("=== start passViewToComments() ===")
+      console.log("selectedView", changedView)
+      this.viewSelected = changedView
+    }
+  },
   
 }
 </script>
