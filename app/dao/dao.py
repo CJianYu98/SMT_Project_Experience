@@ -8,7 +8,7 @@ from ..schema.dao import (
     AggregatedStatsRes,
     ComplaintTopKeywordsAnalysisRes,
     KeywordAnalysisRes,
-    Top5ComplaintOrNoteworthyCommentsRes,
+    Top5ComplaintOrNoteworthyPostsRes,
     Top5TopicStatsRes,
     TrendStatsRes,
 )
@@ -288,8 +288,8 @@ def get_top5_complaint_posts(filter: Filter, db_collection: str):
     )
 
     try:
-        Top5ComplaintOrNoteworthyCommentsRes(data=res_sort_by_likes)
-        Top5ComplaintOrNoteworthyCommentsRes(data=res_sort_by_date)
+        Top5ComplaintOrNoteworthyPostsRes(data=res_sort_by_likes)
+        Top5ComplaintOrNoteworthyPostsRes(data=res_sort_by_date)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
 
@@ -348,8 +348,8 @@ def get_top5_noteworthy_posts(filter: Filter, db_collection: str):
     )
 
     try:
-        Top5ComplaintOrNoteworthyCommentsRes(data=res_sort_by_likes)
-        Top5ComplaintOrNoteworthyCommentsRes(data=res_sort_by_date)
+        Top5ComplaintOrNoteworthyPostsRes(data=res_sort_by_likes)
+        Top5ComplaintOrNoteworthyPostsRes(data=res_sort_by_date)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
 
