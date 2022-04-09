@@ -11,6 +11,7 @@ from ..schema.dao import (
     Top5ComplaintOrNoteworthyPostsRes,
     Top5TopicStatsRes,
     TrendStatsRes,
+    TrendPlotDataRes
 )
 from ..schema.user_filter import Filter
 from .user_filter import db_filter_query_from_user_filter
@@ -119,7 +120,6 @@ def get_aggregated_stats(filter: Filter, db_collection: str):
 
     res = res[0]
     res["emotion_counts"] = get_emotions_count(filter_query, db_collection)
-    
 
     try:
         AggregatedStatsRes(
@@ -162,6 +162,111 @@ def get_trend_stats(filter: Filter, db_collection: str):
         raise HTTPException(status_code=500, detail=str(e)) from e
 
     return res
+
+
+def get_trend_plot_data(filter: Filter, db_collection: str):
+    """
+    Query db based on user filter and aggregate various stats based on interval date range. Eg. Given the selected range, aggregate stats by per week/month.
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+        db_collection (str): To determine which collection to query from
+
+    Raises:
+        HTTPException: For data type error, using pydantic
+
+    Returns:
+        list: List of records
+    """
+    # Set the interval data unit for MongoDb query
+    if filter.interval == "3hours":
+        date_trunc_unit = "hour"
+    elif filter.interval == "daily":
+        date_trunc_unit = "day"
+    elif filter.interval == "montly":
+        date_trunc_unit = "month"
+    elif filter.interval == "weekly":
+        date_trunc_unit = "week"
+    elif filter.interval == "yearly":
+        date_trunc_unit = "year"
+
+    # Set the bin size for MongoDB query
+    bin_size = 3 if filter.interval == "3hours" else 1
+
+    # Initialize group_query and project subquery statements for MongoDB query
+    group_query = {}
+    project = {"_id": False, "date": "$_id", "likes": 1, "mentions": 1}
+
+    # Add on standard query fields to group_qeury statement
+    for sentiment_val in ["positive", "negative", "neutral"]:
+        group_query[f"{sentiment_val}_sentiment"] = create_sentiment_emotion_aggregate_subquery(
+            "sentiment_label", sentiment_val
+        )
+        project[f"{sentiment_val}_sentiment"] = 1
+    for emotion_val in ["anger", "fear", "joy", "sadness", "neutral"]:
+        group_query[f"{emotion_val}_emotion"] = create_sentiment_emotion_aggregate_subquery(
+            "emotions_label", emotion_val
+        )
+        project[f"{emotion_val}_emotion"] = 1
+
+    # Create query field variables based on social media platform
+    if "facebook" in db_collection:
+        datetime_str = FB_DATETIME_STR
+        likes_str = "likes_cnt"
+    elif "twitter" in db_collection:
+        datetime_str = TWIT_DATETIME_STR
+        likes_str = "likes_count"
+        group_query["retweets"] = {"$sum": "retweets_count"}
+        project["retweets"] = 1
+    elif "reddit" in db_collection:
+        datetime_str = REDDIT_DATETIME_STR
+        likes_str = "score"
+        group_query["awards"] = {"$sum": "total_awards_received"}
+        project["awards"] = 1
+    elif "youtube" in db_collection:
+        datetime_str = YT_DATETIME_STR
+        likes_str = "likes"
+        if "videos" in db_collection:
+            group_query["views"] = {"$sum": "views"}
+            project["views"] = 1
+
+    # Create match query statement for MongoDB query
+    match_query = db_filter_query_from_user_filter(filter, datetime_str=datetime_str)
+
+    # Add on to group query statement
+    group_query["_id"] = {
+        "$dateTrunc": {"date": f"${datetime_str}", "unit": date_trunc_unit, "binSize": bin_size}
+    }
+    group_query["mentions"] = {"$sum": 1}
+    group_query["likes"] = {"$sum": f"${likes_str}"}
+
+    # Create the db based on above created subquery statements
+    res = list(
+        db[db_collection].aggregate(
+            [{"$match": match_query}, {"$group": group_query}, {"$project": project}]
+        )
+    )
+
+    try:
+        TrendPlotDataRes(data=res)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+    return sorted(res, key=lambda x: x['date'])
+
+
+def create_sentiment_emotion_aggregate_subquery(field: str, value: str):
+    """
+    Aggregate number of each sentiment/emotion type
+
+    Args:
+        field (str): emotion/sentiment MongoDB field
+        value (str): the type of emotion/sentiment
+
+    Returns:
+        dict: subquery statement for MongoDB query
+    """
+    return {"$sum": {"$cond": [{"$regexMatch": {"input": f"${field}", "regex": value}}, 1, 0]}}
 
 
 def get_top_keywords(filter: Filter, project: dict, db_collection: str):
@@ -263,13 +368,13 @@ def get_top5_complaint_posts(filter: Filter, db_collection: str):
         likes_key = "likes_count"
         datetime_key = TWIT_DATETIME_STR
         project["comment"] = "$tweet"
-        project['link'] = "$link"
+        project["link"] = "$link"
     elif "reddit" in db_collection:
         db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
         likes_key = "score"
         datetime_key = REDDIT_DATETIME_STR
         project["comment"] = "$title"
-        project['link'] = "$url"
+        project["link"] = "$url"
     # elif "youtube" in db_collection:
     #     db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
     #     likes_key = "likes"
@@ -277,7 +382,7 @@ def get_top5_complaint_posts(filter: Filter, db_collection: str):
     #     project["comment"] = "$combined_text"
     #     project['link'] = "$url"
     if "facebook" not in db_collection:
-        project['thumbnail'] = "$thumbnail"
+        project["thumbnail"] = "$thumbnail"
     project["likes"] = f"${likes_key}"
     project["datetime"] = f"${datetime_key}"
 

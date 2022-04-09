@@ -1,14 +1,16 @@
 import copy
+import itertools
 import os
 from datetime import datetime, timedelta
 
 from fastapi import APIRouter, HTTPException
 
-from ..dao.dao import get_aggregated_stats, get_trend_stats
+from ..dao.dao import get_aggregated_stats, get_trend_plot_data, get_trend_stats
 from ..schema.trend_analysis import (
     AggregatedStatsRes,
     IndivTrendStatsRes,
     TrendStatsRes,
+    TrendPlotDataRes
 )
 from ..schema.user_filter import Filter
 
@@ -327,3 +329,134 @@ def get_trend_change(posts_count, comments_count, posts_count_prev, comments_cou
     if (posts_count + comments_count) == 0:
         return 0
     return round((posts_count + comments_count) / (posts_count_prev + comments_count_prev), 2)
+
+
+@router.post("/get-all-trend-plot-data", response_model=TrendPlotDataRes)
+def get_all_trend_plot_data(filter: Filter):
+    """
+    To get trend plot data based on user's selected filter time period
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+
+    Returns:
+        Pydantic Model: JSON response object
+    """
+
+    # Retrive and aggregate facebook trend plot data
+    fb_posts_data = get_trend_plot_data(filter, FB_POSTS)
+    fb_comments_data = get_trend_plot_data(filter, FB_COMMENTS)
+    facebook_res = aggregate_platform_trend_data("facebook", fb_posts_data, fb_comments_data)
+
+    # Retrive and aggregate reddit trend plot data
+    reddit_submission_data = get_trend_plot_data(filter, REDDIT_SUBMISSIONS)
+    reddit_comments_data = get_trend_plot_data(filter, REDDIT_COMMENTS)
+    reddit_res = aggregate_platform_trend_data(
+        "reddit", reddit_submission_data, reddit_comments_data
+    )
+
+    # Retrive and aggregate twiiter trend plot data
+    twitter_tweets_data = get_trend_plot_data(filter, TWITTER_TWEETS)
+    twitter_comments_data = get_trend_plot_data(filter, TWITTER_COMMENTS)
+    twitter_res = aggregate_platform_trend_data(
+        "twitter", twitter_tweets_data, twitter_comments_data
+    )
+
+    # Retrive and aggregate youtube trend plot data
+    youtube_vidoes_data = get_trend_plot_data(filter, YOUTUBE_VIDEOS)
+    youtube_comments_data = get_trend_plot_data(filter, YOUTUBE_COMMENTS)
+    youtube_res = aggregate_platform_trend_data(
+        "youtube", youtube_vidoes_data, youtube_comments_data
+    )
+
+    return {
+        "facebook": facebook_res,
+        "reddit": reddit_res,
+        "twitter": twitter_res,
+        "youtube": youtube_res,
+    }
+
+
+def aggregate_platform_trend_data(platform: str, posts_data: dict, comments_data: dict) -> dict:
+    """
+    Util func to aggregate trend plot data for a social media platform
+
+    Args:
+        platform (str): social media platform
+        posts_data (dict): posts data (post refers to posts, tweets, submissions, videos)
+        comments_data (dict): comments data
+
+    Returns:
+        dict: aggregated trend plot data
+    """
+
+    # Initialize res output variable
+    res = {
+        "mentions": [],
+        "likes": [],
+        "sentiments": {"positive": [], "neutral": [], "negative": []},
+        "emotions": {"anger": [], "fear": [], "joy": [], "sadness": [], "neutral": []},
+    }
+    if platform == "reddit":
+        res["awards"] = []
+    elif platform == "twitter":
+        res["retweets"] = []
+    elif platform == "youtube":
+        res["views"] = []
+
+    # return if no posts/comments data
+    if posts_data == [] and comments_data == []:
+        return res
+
+    # fields to aggregate
+    output_fields = ["mentions", "likes", "sentiments", "emotions"]
+    sentiments = ["positive", "neutral", "negative"]
+    emotions = ["anger", "fear", "joy", "sadness", "neutral"]
+
+    # Aggregate data, if no comments, then only aggregate posts data
+    if posts_data and comments_data:
+        for i, field in itertools.product(range(len(posts_data)), output_fields):
+            if field == "sentiments":
+                for sentiment in sentiments:
+                    res[field][sentiment].append(
+                        posts_data[i].get(f"{sentiment}_sentiment", 0)
+                        + comments_data[i].get(f"{sentiment}_sentiment", 0)
+                    )
+            elif field == "emotions":
+                for emotion in emotions:
+                    res[field][emotion].append(
+                        posts_data[i].get(f"{emotion}_emotion", 0)
+                        + comments_data[i].get(f"{emotion}_emotion", 0)
+                    )
+            else:
+                res[field].append(posts_data[i].get(field, 0) + comments_data[i].get(field, 0))
+
+            if platform == "reddit":
+                res["awards"].append(
+                    posts_data[i].get("awards", 0) + comments_data[i].get("awards", 0)
+                )
+            elif platform == "twitter":
+                res["retweets"].append(
+                    posts_data[i].get("retweets", 0) + comments_data[i].get("retweets", 0)
+                )
+            elif platform == "youtube":
+                res["views"].append(posts_data[i].get("views", 0))
+    elif posts_data:
+        for i, field in itertools.product(range(len(posts_data)), output_fields):
+            if field == "sentiments":
+                for sentiment in sentiments:
+                    res[field][sentiment].append(posts_data[i].get(f"{sentiment}_sentiment", 0))
+            elif field == "emotions":
+                for emotion in emotions:
+                    res[field][emotion].append(posts_data[i].get(f"{emotion}_emotion", 0))
+            else:
+                res[field].append(posts_data[i].get(field, 0))
+
+            if platform == "reddit":
+                res["awards"].append(posts_data[i].get("awards", 0))
+            elif platform == "twitter":
+                res["retweets"].append(posts_data[i].get("retweets", 0))
+            elif platform == "youtube":
+                res["views"].append(posts_data[i].get("views", 0))
+
+    return res

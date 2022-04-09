@@ -34,6 +34,28 @@ class TrendStatsRes(BaseModel):
     count: int
 
 
+##### Trend Data Plot API #####
+class TrendPlotData(BaseModel):
+    date: datetime
+    mentions: int
+    likes: int
+    positive_sentiment: int
+    negative_sentiment: int
+    neutral_sentiment: int
+    anger_emotion: int
+    fear_emotion: int
+    joy_emotion: int
+    sadness_emotion: int
+    neutral_emotion: int
+    awards: Optional[int]
+    retweets: Optional[int]
+    views: Optional[int]
+
+
+class TrendPlotDataRes(BaseModel):
+    data: List[TrendPlotData]
+
+
 ##### Top 20 Keywords API #####
 class KeywordStats(BaseModel):
     entities: List[str]

@@ -11,6 +11,7 @@ class Filter(BaseModel):
     sentiments: List[str]
     emotions: List[str]
     query: Optional[str] = Field(...)
+    interval: Optional[str]
 
     @validator("endDate")
     def check_datetime_str_format(cls, v):
@@ -44,4 +45,11 @@ class Filter(BaseModel):
         EMOTIONS = ["anger", "fear", "joy", "neutral", "sadness"]
         if set(v).difference(set(EMOTIONS)):
             raise ValueError("Invalid emotion value")
+        return v
+
+    @validator("interval")
+    def check_interval(cls, v):
+        INTERVALS = ["3hours", "daily", "weekly", "monthly", "yearly"]
+        if v not in INTERVALS:
+            raise ValueError("Invalid interval string value")
         return v

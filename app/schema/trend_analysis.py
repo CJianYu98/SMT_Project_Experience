@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 
@@ -34,3 +34,44 @@ class IndivTrendStatsRes(BaseModel):
     reddit: TrendStatsRes
     twitter: TrendStatsRes
     # youtube: TrendStatsRes
+
+
+##### Trend Data Plot API #####
+class SentimentTrendPlotData(BaseModel):
+    positive: List[int]
+    neutral: List[int]
+    negative: List[int]
+
+
+class EmotionTrendPlotData(BaseModel):
+    anger: List[int]
+    fear: List[int]
+    joy: List[int]
+    anger: List[int]
+    neutral: List[int]
+
+
+class StandardTrendPlotData(BaseModel):
+    mentions: List[int]
+    likes: List[int]
+    sentiments: SentimentTrendPlotData
+    emotions: EmotionTrendPlotData
+
+
+class RedditTrendPlotData(StandardTrendPlotData):
+    awards: List[int]
+
+
+class TwitterTrendPlotData(StandardTrendPlotData):
+    retweets: List[int]
+
+
+class YoutubeTrendPlotData(StandardTrendPlotData):
+    views: List[int]
+
+
+class TrendPlotDataRes(BaseModel):
+    facebook: StandardTrendPlotData
+    reddit: RedditTrendPlotData
+    twitter: TwitterTrendPlotData
+    youtube: YoutubeTrendPlotData
