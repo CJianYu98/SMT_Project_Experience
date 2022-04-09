@@ -21,3 +21,11 @@ class Top5ComplaintPostsRes(BaseModel):
     reddit: ComplaintPostsSorted
     twitter: ComplaintPostsSorted
     # youtube: ComplaintPostsSorted
+
+
+##### Complaint Percentage API #####
+class ComplaintPercentageRes(BaseModel):
+    facebook: float
+    reddit: float
+    twitter: float
+    youtube: float

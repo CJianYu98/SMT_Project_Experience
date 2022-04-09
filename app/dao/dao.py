@@ -497,3 +497,50 @@ def get_top5_noteworthy_topics(filter: Filter, project: dict, db_collection: str
         raise HTTPException(status_code=500, detail=str(e)) from e
 
     return res
+
+
+def get_complaint_mentions_count(filter: Filter, db_collection: str):
+    """
+    Query db based on user filter to get number of complaint mentions count
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+        db_collection (str): To determine which collection to query from
+
+    Returns:
+        int: Number of complaint mentions count
+    """
+    if "facebook" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+    elif "twitter" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+    elif "reddit" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+    elif "youtube" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+    db_query["intent"] = {"$regex": "complaint"}
+
+    return len(list(db[db_collection].find(db_query)))
+
+
+def get_mentions_count(filter: Filter, db_collection: str):
+    """
+    Query db based on user filter to get number of mentions count
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+        db_collection (str): To determine which collection to query from
+
+    Returns:
+        int: Number of mentions count
+    """
+    if "facebook" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+    elif "twitter" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+    elif "reddit" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+    elif "youtube" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+
+    return len(list(db[db_collection].find(db_query)))
