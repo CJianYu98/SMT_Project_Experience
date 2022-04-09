@@ -92,3 +92,12 @@ class ComplaintOrNotworthyPost(BaseModel):
 
 class Top5ComplaintOrNoteworthyPostsRes(BaseModel):
     data: List[ComplaintOrNotworthyPost]
+
+
+##### Top 5 Noteworthy Topics #####
+class NoteworthyMentionTopic(BaseModel):
+    topic: str
+
+
+class Top5NoteworthyTopicsRes(BaseModel):
+    data: List[NoteworthyMentionTopic]

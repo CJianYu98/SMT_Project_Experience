@@ -6,8 +6,8 @@ import pandas as pd
 from fastapi import APIRouter
 
 from ..dao.dao import get_top5_complaint_posts, get_top_complaint_keywords
-from ..schema.complaint_noteworthy_analysis import (
-    Top5ComplaintOrNoteworthyPostsRes,
+from ..schema.complaint_analysis import (
+    Top5ComplaintPostsRes,
     Top20ComplaintKeywordAnalysisRes,
 )
 from ..schema.user_filter import Filter
@@ -103,7 +103,7 @@ def get_all_top_complaint_keywords(filter: Filter):
     return res
 
 
-@router.post("/get-all-top5-complaint-posts", response_model=Top5ComplaintOrNoteworthyPostsRes)
+@router.post("/get-all-top5-complaint-posts", response_model=Top5ComplaintPostsRes)
 def get_all_top5_complaint_posts(filter: Filter):
     """
     To get top 5 likes comments for complaint related comments

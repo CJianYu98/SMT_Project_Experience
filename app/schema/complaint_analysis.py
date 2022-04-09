@@ -11,13 +11,13 @@ class Top20ComplaintKeywordAnalysisRes(BaseModel):
 
 
 ##### Top 5 Complaint Comments API & Top 5 Noteworthy Comments API #####
-class ComplaintOrNoteworthyPostsSorted(BaseModel):
+class ComplaintPostsSorted(BaseModel):
     likes: List[ComplaintOrNotworthyPost]
     date: List[ComplaintOrNotworthyPost]
 
 
-class Top5ComplaintOrNoteworthyPostsRes(BaseModel):
-    facebook: ComplaintOrNoteworthyPostsSorted
-    reddit: ComplaintOrNoteworthyPostsSorted
-    twitter: ComplaintOrNoteworthyPostsSorted
-    # youtube: ComplaintOrNoteworthyCommentsSorted
+class Top5ComplaintPostsRes(BaseModel):
+    facebook: ComplaintPostsSorted
+    reddit: ComplaintPostsSorted
+    twitter: ComplaintPostsSorted
+    # youtube: ComplaintPostsSorted

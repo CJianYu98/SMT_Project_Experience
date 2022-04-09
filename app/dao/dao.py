@@ -9,9 +9,10 @@ from ..schema.dao import (
     ComplaintTopKeywordsAnalysisRes,
     KeywordAnalysisRes,
     Top5ComplaintOrNoteworthyPostsRes,
+    Top5NoteworthyTopicsRes,
     Top5TopicStatsRes,
+    TrendPlotDataRes,
     TrendStatsRes,
-    TrendPlotDataRes
 )
 from ..schema.user_filter import Filter
 from .user_filter import db_filter_query_from_user_filter
@@ -252,7 +253,7 @@ def get_trend_plot_data(filter: Filter, db_collection: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
 
-    return sorted(res, key=lambda x: x['date'])
+    return sorted(res, key=lambda x: x["date"])
 
 
 def create_sentiment_emotion_aggregate_subquery(field: str, value: str):
@@ -461,3 +462,37 @@ def get_top5_noteworthy_posts(filter: Filter, db_collection: str):
         raise HTTPException(status_code=500, detail=str(e)) from e
 
     return res_sort_by_likes, res_sort_by_date
+
+
+def get_top5_noteworthy_topics(filter: Filter, project: dict, db_collection: str):
+    """
+    Query the db based on user filter to get top 5 topics for noteworthy related mentions based on likes
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+        project (dict): MongoDB project field for query statement
+        db_collection (str): To determine which collection to query from
+
+    Raises:
+        HTTPException: For data type error, using pydantic
+
+    Returns:
+        list: List of records
+    """
+    if "facebook" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+    elif "twitter" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+    elif "reddit" in db_collection:
+        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+    # elif "youtube" in db_collection:
+    #     db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+
+    res = list(db[db_collection].find(db_query, project))
+
+    try:
+        Top5NoteworthyTopicsRes(data=res)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+    return res
