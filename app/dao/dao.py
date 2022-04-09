@@ -487,6 +487,7 @@ def get_top5_noteworthy_topics(filter: Filter, project: dict, db_collection: str
         db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
     # elif "youtube" in db_collection:
     #     db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+    db_query["isNoteworthy"] = 1
 
     res = list(db[db_collection].find(db_query, project))
 
