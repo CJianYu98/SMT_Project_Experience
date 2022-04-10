@@ -79,7 +79,7 @@ for file in files:
     comments = []
 
     # Retrieve all youtube video ids and delete all videos within date range
-    crawled_date_str = file[:-5]
+    crawled_date_str = file[:-5].split("_")[0]
     end_date = datetime.strptime(crawled_date_str, "%Y-%m-%d")
     start_date = end_date - timedelta(days=13)
     db_query = {"datetime": {"$gte": start_date, "$lte": end_date}}
@@ -95,109 +95,116 @@ for file in files:
         for channel, data in jobj.items():
             if data:
                 df = pd.DataFrame(data)
-                col_names = {col: col.lower() for col in df.columns}
-                col_names["Date Uploaded"] = "datetime"
-                df.rename(columns=col_names, inplace=True)
 
-                df["datetime"] = df["datetime"].apply(date_str_to_dt)
-                df["id"] = df.apply(lambda x: uuid.uuid4().hex, axis=1)
-                df["channel"] = channel
-                df["views"] = df["views"].apply(views_str_to_int)
-                df["likes"] = df["likes"].apply(likes_str_to_int)
+                # Skip the file if there is no data inside (due to scraping issues)
+                if df["Views"].isnull().all():
+                    pass
+                else:
+                    col_names = {col: col.lower() for col in df.columns}
+                    col_names["Date Uploaded"] = "datetime"
+                    df.rename(columns=col_names, inplace=True)
 
-                # Getting videos data
-                df_videos = df.drop("comments", axis=1)
-                df_videos["combined_text"] = df["title"] + " " + df["description"]
+                    df["datetime"] = df["datetime"].apply(date_str_to_dt)
+                    df["id"] = df.apply(lambda x: uuid.uuid4().hex, axis=1)
+                    df["channel"] = channel
+                    df["views"] = df["views"].apply(views_str_to_int)
+                    df["likes"] = df["likes"].apply(likes_str_to_int)
 
-                # Getting comments data
-                df_exploded = df.explode("comments").reset_index(drop=True)
-                df_exploded.dropna(subset=['comments'], inplace=True)
-                df_exploded["cid"] = df_exploded.apply(lambda x: uuid.uuid4().hex, axis=1)
-                df_exploded['comment'] = df_exploded['comments'].apply(lambda x: x['Comment'])
-                df_exploded['datetime'] = df_exploded['comments'].apply(lambda x: date_str_to_dt(x['Date']))
-                df_exploded['likes'] = df_exploded['comments'].apply(lambda x: x['Likes'])
-                df_comments = df_exploded[["cid", "id", "comment", "datetime", "likes"]]
-                df_comments.rename(columns={"id": "vid_id", "cid": "id"}, inplace=True)
+                    # Getting videos data
+                    df_videos = df.drop("comments", axis=1)
+                    df_videos["combined_text"] = df["title"] + " " + df["description"]
 
-                # Apply preprocessing on text to clean data
-                df_videos["cleantext"] = df_videos["combined_text"].apply(preprocessing)
-                df_comments["cleantext"] = df_comments["comment"].apply(preprocessing)
+                    # Getting comments data
+                    df_exploded = df.explode("comments").reset_index(drop=True)
+                    df_exploded.dropna(subset=['comments'], inplace=True)
+                    df_exploded["cid"] = df_exploded.apply(lambda x: uuid.uuid4().hex, axis=1)
+                    df_exploded['comment'] = df_exploded['comments'].apply(lambda x: x['Comment'])
+                    df_exploded['datetime'] = df_exploded['comments'].apply(lambda x: date_str_to_dt(x['Date']))
+                    df_exploded['likes'] = df_exploded['comments'].apply(lambda x: x['Likes'])
+                    df_comments = df_exploded[["cid", "id", "comment", "datetime", "likes"]]
+                    df_comments.rename(columns={"id": "vid_id", "cid": "id"}, inplace=True)
 
-                ###########################################################
-                #################### RUNNING ML MODELS ####################
-                ###########################################################
+                    # Apply preprocessing on text to clean data
+                    df_videos["cleantext"] = df_videos["combined_text"].apply(preprocessing)
+                    df_comments["cleantext"] = df_comments["comment"].apply(preprocessing)
 
-                logger.info(f"Now classifying {channel}\n")
+                    ###########################################################
+                    #################### RUNNING ML MODELS ####################
+                    ###########################################################
 
-                ###################  KEYWORD ANALYSIS ####################
-                start1 = time()
-                df_videos["entities"] = df_videos["cleantext"].apply(extract_entities)
-                df_comments["entities"] = df_comments["cleantext"].apply(extract_entities)
+                    logger.info(f"Now classifying {channel}\n")
 
-                hours, mins, seconds = get_time(time() - start1)
-                logger.info(f"KEYWORD ANALYSIS took: {hours} hours, {mins} mins, {seconds} seconds\n")
+                    ###################  KEYWORD ANALYSIS ####################
+                    start1 = time()
+                    df_videos["entities"] = df_videos["cleantext"].apply(extract_entities)
+                    df_comments["entities"] = df_comments["cleantext"].apply(extract_entities)
 
-                ####################  EMOTIONS CLASSIFICATION ####################
-                start = time()
-                df_videos["emotions_label"] = df_videos["cleantext"].apply(lambda x: classify_emotions(x))
-                df_comments["emotions_label"] = df_comments["cleantext"].apply(lambda x: classify_emotions(x))
+                    hours, mins, seconds = get_time(time() - start1)
+                    logger.info(f"KEYWORD ANALYSIS took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
-                hours, mins, seconds = get_time(time() - start)
-                logger.info(f"EMOTIONS CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+                    ####################  EMOTIONS CLASSIFICATION ####################
+                    start = time()
+                    df_videos["emotions_label"] = df_videos["cleantext"].apply(lambda x: classify_emotions(x))
+                    df_comments["emotions_label"] = df_comments["cleantext"].apply(lambda x: classify_emotions(x))
 
-                #################### TOPIC CLASSIFICATION ####################
-                start = time()
-                df_videos["topic"] = df_videos["cleantext"].apply(get_topics)
-                df_comments["topic"] = df_comments["cleantext"].apply(get_topics)
+                    hours, mins, seconds = get_time(time() - start)
+                    logger.info(f"EMOTIONS CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
-                hours, mins, seconds = get_time(time() - start)
-                logger.info(f"TOPIC CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+                    #################### TOPIC CLASSIFICATION ####################
+                    start = time()
+                    df_videos["topic"] = df_videos["cleantext"].apply(get_topics)
+                    df_comments["topic"] = df_comments["cleantext"].apply(get_topics)
 
-                #################### INTENT CLASSIFICATION ####################
-                start = time()
-                df_videos["intent"] = df_videos["cleantext"].apply(classify_intent)
-                df_comments["intent"] = df_comments["cleantext"].apply(classify_intent)
+                    hours, mins, seconds = get_time(time() - start)
+                    logger.info(f"TOPIC CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
-                hours, mins, seconds = get_time(time() - start)
-                logger.info(f"INTENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+                    #################### INTENT CLASSIFICATION ####################
+                    start = time()
+                    df_videos["intent"] = df_videos["cleantext"].apply(classify_intent)
+                    df_comments["intent"] = df_comments["cleantext"].apply(classify_intent)
 
-                #################### SENTIMENT CLASSIFICATION ####################
-                start = time()
-                df_videos = classify_sentiment(df_videos)
-                df_comments = classify_sentiment(df_comments)
+                    hours, mins, seconds = get_time(time() - start)
+                    logger.info(f"INTENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
-                hours, mins, seconds = get_time(time() - start)
-                logger.info(f"SENTIMENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+                    #################### SENTIMENT CLASSIFICATION ####################
+                    start = time()
+                    df_videos = classify_sentiment(df_videos)
+                    df_comments = classify_sentiment(df_comments)
 
-                #################### THOUGHTFULNESS CLASSIFICATION ####################
-                start = time()
-                df_post_features = create_features(df_videos)
-                df_post_features_standardised = get_standardized_values(df_post_features)
-                post_predictions = predict_thoughtfulness(df_post_features_standardised)
-                df_videos["isThoughtful"] = post_predictions
+                    hours, mins, seconds = get_time(time() - start)
+                    logger.info(f"SENTIMENT CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
-                df_comments_features = create_features(df_comments)
-                df_comments_features_standardised = get_standardized_values(df_comments_features)
-                df_comments_predictions = predict_thoughtfulness(df_comments_features_standardised)
-                df_comments["isThoughtful"] = df_comments_predictions
+                    #################### THOUGHTFULNESS CLASSIFICATION ####################
+                    start = time()
+                    df_post_features = create_features(df_videos)
+                    df_post_features_standardised = get_standardized_values(df_post_features)
+                    post_predictions = predict_thoughtfulness(df_post_features_standardised)
+                    df_videos["isThoughtful"] = post_predictions
 
-                hours, mins, seconds = get_time(time() - start)
-                logger.info(f"THOUGHTFUL CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+                    df_comments_features = create_features(df_comments)
+                    df_comments_features_standardised = get_standardized_values(df_comments_features)
+                    df_comments_predictions = predict_thoughtfulness(df_comments_features_standardised)
+                    df_comments["isThoughtful"] = df_comments_predictions
 
-                #################### NOTEWORTHY CLASSIFICATION ####################
-                start = time()
-                df_videos["isNoteworthy"] = df_videos.apply(classify_noteworthy, axis=1)
-                df_comments["isNoteworthy"] = df_comments.apply(classify_noteworthy, axis=1)
+                    hours, mins, seconds = get_time(time() - start)
+                    logger.info(f"THOUGHTFUL CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
-                hours, mins, seconds = get_time(time() - start)
-                logger.info(f"NOTEWORTHY CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
+                    #################### NOTEWORTHY CLASSIFICATION ####################
+                    start = time()
+                    df_videos["isNoteworthy"] = df_videos.apply(classify_noteworthy, axis=1)
+                    df_comments["isNoteworthy"] = df_comments.apply(classify_noteworthy, axis=1)
 
-                ##########################################################
-                ############### END OF ML CLASSIFICATION #################
-                ##########################################################
+                    hours, mins, seconds = get_time(time() - start)
+                    logger.info(f"NOTEWORTHY CLASSIFICATION took: {hours} hours, {mins} mins, {seconds} seconds\n")
 
-                yt_vid_data = df_videos.to_dict(orient="index")
-                yt_comments_data = df_comments.to_dict(orient="index")
+                    ##########################################################
+                    ############### END OF ML CLASSIFICATION #################
+                    ##########################################################
+                    df_videos.reset_index(inplace=True, drop=True)
+                    df_comments.reset_index(inplace=True, drop=True)
 
-                youtube_videos.insert_many([yt_vid_data[i] for i in range(len(yt_vid_data))])
-                youtube_comments.insert_many([yt_comments_data[i] for i in range(len(yt_comments_data))])
+                    yt_vid_data = df_videos.to_dict(orient="index")
+                    yt_comments_data = df_comments.to_dict(orient="index")
+
+                    youtube_videos.insert_many([yt_vid_data[i] for i in range(len(yt_vid_data))])
+                    youtube_comments.insert_many([yt_comments_data[i] for i in range(len(yt_comments_data))])
