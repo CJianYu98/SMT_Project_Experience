@@ -83,36 +83,28 @@ def get_all_top5_noteworthy_topics(filter: Filter):
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
         fb_posts_data = get_top5_noteworthy_topics(filter, project, FB_POSTS)
-        fb_comments_data = get_top5_noteworthy_topics(filter, project, FB_COMMENTS)
     else:
-        fb_posts_data = fb_comments_data = []
+        fb_posts_data = []
     if "twitter" in filter.platforms:
         twit_tweets_data = get_top5_noteworthy_topics(filter, project, TWITTER_TWEETS)
-        twit_comments_data = get_top5_noteworthy_topics(filter, project, TWITTER_COMMENTS)
     else:
-        twit_tweets_data = twit_comments_data = []
+        twit_tweets_data = []
     if "reddit" in filter.platforms:
         reddit_submissions_data = get_top5_noteworthy_topics(filter, project, REDDIT_SUBMISSIONS)
-        reddit_comments_data = get_top5_noteworthy_topics(filter, project, REDDIT_COMMENTS)
     else:
-        reddit_submissions_data = reddit_comments_data = []
+        reddit_submissions_data = []
     # if "youtube" in filter.platforms:
     #     youtube_videos_data = get_top5_noteworthy_topics(filter, project, YOUTUBE_VIDEOS)
-    #     youtube_comments_data = get_top5_noteworthy_topics(filter, project, YOUTUBE_COMMENTS)
     # else:
-    #     youtube_videos_data = youtube_comments_data = []
+    #     youtube_videos_data = []
 
     # Concat data from all social media platforms
     all_data = sum(
         [
             fb_posts_data,
-            fb_comments_data,
             twit_tweets_data,
-            twit_comments_data,
             reddit_submissions_data,
-            reddit_comments_data,
-            # youtube_videos_data,
-            # youtube_comments_data
+            # youtube_videos_data
         ],
         [],
     )
