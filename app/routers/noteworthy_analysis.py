@@ -104,7 +104,7 @@ def get_all_top5_noteworthy_topics(filter: Filter):
             fb_posts_data,
             twit_tweets_data,
             reddit_submissions_data,
-            # youtube_videos_data
+            youtube_videos_data
         ],
         [],
     )
