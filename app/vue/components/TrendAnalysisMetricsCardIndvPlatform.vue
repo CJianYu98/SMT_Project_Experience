@@ -3,8 +3,8 @@
     <template v-slot:default>
       <thead class="deep-purple">
         <tr>
-          <th class="white--text text-center"></th>
-          <th class="white--text text-center">Mentions</th>
+          <th class="white--text text-center px-0"></th>
+          <th class="white--text text-center px-0">Mentions</th>
           <!-- <th class="white--text text-center">Trend</th> -->
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">

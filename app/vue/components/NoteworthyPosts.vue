@@ -5,14 +5,14 @@
     height="100%"
   >
     <v-row>
-      <v-col cols="8" class="pt-0">
+      <v-col cols="8" class="py-0">
         <v-card-title class="pb-4 accent--text text-h6">
           Noteworthy Posts
           <HelpTextTooltip :help-text="noteworthyCommentHelpText"/>
         </v-card-title>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="3" class="pt-0">
+      <v-col cols="3" class="py-0">
         <DropDownSelect 
           :view-filter="sortView" 
           :label="label"

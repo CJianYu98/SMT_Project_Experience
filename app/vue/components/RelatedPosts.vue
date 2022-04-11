@@ -1,6 +1,6 @@
 <template>
   <v-container 
-    style="max-height: 450px" 
+    style="max-height: 500px" 
     class="overflow-y-auto"
   >
   <template
