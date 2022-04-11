@@ -20,7 +20,7 @@ class Top5ComplaintPostsRes(BaseModel):
     facebook: ComplaintPostsSorted
     reddit: ComplaintPostsSorted
     twitter: ComplaintPostsSorted
-    # youtube: ComplaintPostsSorted
+    youtube: ComplaintPostsSorted
 
 
 ##### Complaint Percentage API #####

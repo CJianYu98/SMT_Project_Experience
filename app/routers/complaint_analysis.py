@@ -3,7 +3,7 @@ from collections import Counter
 from typing import List
 
 import pandas as pd
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from ..dao.dao import (
     get_complaint_mentions_count,
@@ -64,11 +64,11 @@ def get_all_top_complaint_keywords(filter: Filter):
         reddit_comments_data = get_top_complaint_keywords(filter, project, REDDIT_COMMENTS)
     else:
         reddit_submissions_data = reddit_comments_data = []
-    # if "youtube" in filter.platforms:
-    #     youtube_vidoes_data = get_top_complaint_keywords(filter, project, YOUTUBE_VIDEOS)
-    #     youtube_comments_data = get_top_complaint_keywords(filter, project, YOUTUBE_COMMENTS)
-    # else:
-    #     youtube_vidoes_data = youtube_comments_data = []
+    if "youtube" in filter.platforms:
+        youtube_vidoes_data = get_top_complaint_keywords(filter, project, YOUTUBE_VIDEOS)
+        youtube_comments_data = get_top_complaint_keywords(filter, project, YOUTUBE_COMMENTS)
+    else:
+        youtube_vidoes_data = youtube_comments_data = []
 
     # Concat data from all social media platforms
     all_data = sum(
@@ -84,6 +84,8 @@ def get_all_top_complaint_keywords(filter: Filter):
         ],
         [],
     )
+    if not all_data:
+        raise HTTPException(status_code=404, detail="No data found within date period given")
 
     # Remove records with no entities using pandas
     df = pd.DataFrame(all_data)
@@ -138,12 +140,12 @@ def get_all_top5_complaint_posts(filter: Filter):
         )
     else:
         reddit_comments_by_likes = reddit_comments_by_date = []
-    # if "youtube" in filter.platforms:
-    #     youtube_comments_by_likes, youtube_comments_by_date = get_top5_complaint_posts(
-    #         filter, YOUTUBE_VIDEOS
-    #     )
-    # else:
-    #     youtube_comments_by_likes = youtube_comments_by_date = []
+    if "youtube" in filter.platforms:
+        youtube_comments_by_likes, youtube_comments_by_date = get_top5_complaint_posts(
+            filter, YOUTUBE_VIDEOS
+        )
+    else:
+        youtube_comments_by_likes = youtube_comments_by_date = []
 
     return {
         "facebook": {"likes": fb_comments_by_likes, "date": fb_comments_by_date},

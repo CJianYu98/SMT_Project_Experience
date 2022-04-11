@@ -52,18 +52,18 @@ def get_all_top5_noteworthy_posts(filter: Filter):
         )
     else:
         reddit_comments_by_likes = reddit_comments_by_date = []
-    # if "youtube" in filter.platforms:
-    #     youtube_comments_by_likes, youtube_comments_by_date = get_top5_noteworthy_posts(
-    #         filter, YOUTUBE_VIDEOS
-    #     )
-    # else:
-    #     youtube_comments_by_likes = youtube_comments_by_date = []
+    if "youtube" in filter.platforms:
+        youtube_comments_by_likes, youtube_comments_by_date = get_top5_noteworthy_posts(
+            filter, YOUTUBE_VIDEOS
+        )
+    else:
+        youtube_comments_by_likes = youtube_comments_by_date = []
 
     return {
         "facebook": {"likes": fb_comments_by_likes, "date": fb_comments_by_date},
         "twitter": {"likes": twit_comments_by_likes, "date": twit_comments_by_date},
         "reddit": {"likes": reddit_comments_by_likes, "date": reddit_comments_by_date},
-        # "youtube": {"likes": youtube_comments_by_likes, "date": youtube_comments_by_date}
+        "youtube": {"likes": youtube_comments_by_likes, "date": youtube_comments_by_date}
     }
 
 
@@ -93,10 +93,10 @@ def get_all_top5_noteworthy_topics(filter: Filter):
         reddit_submissions_data = get_top5_noteworthy_topics(filter, project, REDDIT_SUBMISSIONS)
     else:
         reddit_submissions_data = []
-    # if "youtube" in filter.platforms:
-    #     youtube_videos_data = get_top5_noteworthy_topics(filter, project, YOUTUBE_VIDEOS)
-    # else:
-    #     youtube_videos_data = []
+    if "youtube" in filter.platforms:
+        youtube_videos_data = get_top5_noteworthy_topics(filter, project, YOUTUBE_VIDEOS)
+    else:
+        youtube_videos_data = []
 
     # Concat data from all social media platforms
     all_data = sum(

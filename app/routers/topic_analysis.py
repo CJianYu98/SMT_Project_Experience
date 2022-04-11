@@ -50,11 +50,11 @@ def get_top5_topic_analysis(filter: Filter):
         reddit_comments_data = get_top5_topics_stats(filter, REDDIT_COMMENTS)
     else:
         reddit_posts_data = reddit_comments_data = []
-    # if "youtube" in filter.platforms:
-    #     youtube_videos_data = get_top5_topics_stats(filter, YOUTUBE_VIDEOS)
-    #     youtube_comments_data = get_top5_topics_stats(filter, YOUTUBE_COMMENTS)
-    # else:
-    #     youtube_videos_data = youtube_comments_data = []
+    if "youtube" in filter.platforms:
+        youtube_videos_data = get_top5_topics_stats(filter, YOUTUBE_VIDEOS)
+        youtube_comments_data = get_top5_topics_stats(filter, YOUTUBE_COMMENTS)
+    else:
+        youtube_videos_data = youtube_comments_data = []
 
     all_data = sum(
         [
@@ -64,8 +64,8 @@ def get_top5_topic_analysis(filter: Filter):
             twit_comments_data,
             reddit_posts_data,
             reddit_comments_data,
-            # youtube_videos_data,
-            # youtube_comments_data,
+            youtube_videos_data,
+            youtube_comments_data,
         ],
         [],
     )

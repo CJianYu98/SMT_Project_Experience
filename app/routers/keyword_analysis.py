@@ -3,7 +3,7 @@ from collections import Counter
 from typing import List
 
 import pandas as pd
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from ..dao.dao import get_top_keywords
 from ..schema.keyword_analysis import Top20KeywordAnalysisRes
@@ -53,11 +53,11 @@ def get_all_top_keywords(filter: Filter):
         reddit_comments_data = get_top_keywords(filter, project, REDDIT_COMMENTS)
     else:
         reddit_submissions_data = reddit_comments_data = []
-    # if "youtube" in filter.platforms:
-    #     youtube_videos_data = get_top_keywords(filter, project, YOUTUBE_VIDEOS)
-    #     youtube_comments_data = get_top_keywords(filter, project, YOUTUBE_COMMENTS)
-    # else:
-    #     youtube_videos_data = youtube_comments_data = []
+    if "youtube" in filter.platforms:
+        youtube_videos_data = get_top_keywords(filter, project, YOUTUBE_VIDEOS)
+        youtube_comments_data = get_top_keywords(filter, project, YOUTUBE_COMMENTS)
+    else:
+        youtube_videos_data = youtube_comments_data = []
 
     # Concat data from all social media platforms
     all_data = sum(
@@ -68,11 +68,13 @@ def get_all_top_keywords(filter: Filter):
             twit_comments_data,
             reddit_submissions_data,
             reddit_comments_data,
-            # youtube_videos_data,
-            # youtube_comments_data
+            youtube_videos_data,
+            youtube_comments_data
         ],
         [],
     )
+    if not all_data:
+        raise HTTPException(status_code=404, detail="No data found within date period given")
 
     # Using pandas to group by entities and sentiment_label and get the counts
     df = pd.DataFrame(all_data)

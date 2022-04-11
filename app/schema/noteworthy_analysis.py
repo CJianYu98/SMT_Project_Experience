@@ -15,4 +15,4 @@ class Top5NoteworthyPostsRes(BaseModel):
     facebook: NoteworthyPostsSorted
     reddit: NoteworthyPostsSorted
     twitter: NoteworthyPostsSorted
-    # youtube: NoteworthyPostsSorted
+    youtube: NoteworthyPostsSorted

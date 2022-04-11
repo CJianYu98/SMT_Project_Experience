@@ -13,7 +13,7 @@ class PlatformMetrics(BaseModel):
     facebook: IndivPlatformStat
     reddit: IndivPlatformStat
     twitter: IndivPlatformStat
-    # youtube: IndivPlatformStat
+    youtube: IndivPlatformStat
 
 
 class AggregatedStatsRes(BaseModel):
@@ -33,7 +33,7 @@ class IndivTrendStatsRes(BaseModel):
     facebook: TrendStatsRes
     reddit: TrendStatsRes
     twitter: TrendStatsRes
-    # youtube: TrendStatsRes
+    youtube: TrendStatsRes
 
 
 ##### Trend Data Plot API #####
