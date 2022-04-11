@@ -79,8 +79,8 @@ def get_all_top_complaint_keywords(filter: Filter):
             twit_comments_data,
             reddit_submissions_data,
             reddit_comments_data,
-            # youtube_vidoes_data,
-            # youtube_comments_data
+            youtube_vidoes_data,
+            youtube_comments_data
         ],
         [],
     )
@@ -151,7 +151,7 @@ def get_all_top5_complaint_posts(filter: Filter):
         "facebook": {"likes": fb_comments_by_likes, "date": fb_comments_by_date},
         "twitter": {"likes": twit_comments_by_likes, "date": twit_comments_by_date},
         "reddit": {"likes": reddit_comments_by_likes, "date": reddit_comments_by_date},
-        # "youtube": {"likes": youtube_comments_by_likes, "date": youtube_comments_by_date}
+        "youtube": {"likes": youtube_comments_by_likes, "date": youtube_comments_by_date}
     }
 
 
