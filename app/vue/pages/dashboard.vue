@@ -969,7 +969,7 @@ export default {
             {
               media: 'Reddit',
               likes: '7',
-              date: '2021-04-03T14:24:24',
+              datetime: '2021-04-03T14:24:24',
               comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
               topic: ['Healthcare'],
               sentiment: 'negative',
@@ -1389,7 +1389,7 @@ export default {
             {
               media: 'Reddit',
               likes: '7',
-              date: '2021-04-03T14:24:24',
+              datetime: '2021-04-03T14:24:24',
               comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
               topic: ['Healthcare'],
               sentiment: 'negative',
@@ -1799,7 +1799,7 @@ export default {
             {
               media: 'Reddit',
               likes: '7',
-              date: '2021-04-03T14:24:24',
+              datetime: '2021-04-03T14:24:24',
               comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
               topic: ['Healthcare'],
               sentiment: 'negative',
@@ -2172,45 +2172,45 @@ export default {
     //   }
     // },
     keywords: [
-      {word: "GST Hike", size: "60", sentiment: "neutral", hover: "60"}, 
-      {word: "Dormitory Workers", size: "20", sentiment: "neutral", hover: "20"}, 
-      {word: "Russian Embassy", size: "50", sentiment: "negative", hover: "50"}, 
-      {word: "2022 Budget", size: "30", sentiment: "positive", hover: "30"}, 
-      {word: "Valentine's Day", size: "20", sentiment: "positive", hover: "20"}, 
-      {word: "Progressive Wages", size: "20", sentiment: "positive", hover: "60"}, 
-      {word: "Sylvia Lim", size: "18", sentiment: "neutral", hover: "60"}, 
-      {word: "Plastic Bag", size: "15", sentiment: "negative", hover: "60"}, 
-      {word: "Rental Fees", size: "55", sentiment: "neutral", hover: "60"}, 
-      {word: "Phising Scam", size: "60", sentiment: "negative", hover: "60"}, 
-      {word: "BTO Prices", size: "60", sentiment: "negative", hover: "60"}, 
-      {word: "Inflation", size: "60", sentiment: "negative", hover: "60"}, 
-      {word: "Booster Shot", size: "60", sentiment: "positive", hover: "60"}, 
-      {word: "SEA Games", size: "20", sentiment: "neutral", hover: "60"}, 
-      {word: "Iris Koh", size: "33", sentiment: "negative", hover: "60"}, 
+      {word: "GST Hike", count: "60", sentiment: "neutral", hover: "60"}, 
+      {word: "Dormitory Workers", count: "20", sentiment: "neutral", hover: "20"}, 
+      {word: "Russian Embassy", count: "50", sentiment: "negative"}, 
+      {word: "2022 Budget", count: "30", sentiment: "positive"}, 
+      {word: "Valentine's Day", count: "20", sentiment: "positive"}, 
+      {word: "Progressive Wages", count: "20", sentiment: "positive"}, 
+      {word: "Sylvia Lim", count: "18", sentiment: "neutral"}, 
+      {word: "Plastic Bag", count: "15", sentiment: "negative"}, 
+      {word: "Rental Fees", count: "55", sentiment: "neutral"}, 
+      {word: "Phising Scam", count: "60", sentiment: "negative"}, 
+      {word: "BTO Prices", count: "60", sentiment: "negative"}, 
+      {word: "Inflation", count: "60", sentiment: "negative"}, 
+      {word: "Booster Shot", count: "60", sentiment: "positive"}, 
+      {word: "SEA Games", count: "20", sentiment: "neutral"}, 
+      {word: "Iris Koh", count: "33", sentiment: "negative"}, 
     ],
     complaintsKeywords: [
-      {word: "Hot Weather", size: "20", hover: "60"}, 
-      {word: "Long Queue", size: "30", hover: "20"}, 
-      {word: "Russian Embassy", size: "50", hover: "50"}, 
-      {word: "Plastic Bag", size: "18", hover: "60"}, 
-      {word: "Rental Fees", size: "23", hover: "60"}, 
-      {word: "Phising Scam", size: "60", hover: "60"}, 
-      {word: "BTO Prices", size: "60", hover: "60"}, 
-      {word: "GrabFood Delivery", size: "60", hover: "60"},  
-      {word: "COE Prices", size: "30", hover: "30"}, 
-      {word: "Tuition", size: "20", hover: "20"}, 
-      {word: "Fuel Price", size: "60", hover: "60"}, 
-      {word: "Rental Discrimination", size: "60", hover: "60"}, 
-      {word: "Trace Together", size: "60", hover: "60"}, 
-      {word: "Scam Call", size: "60", hover: "60"}, 
-      {word: "Chicken Hotpot", size: "60", hover: "60"}, 
+      {word: "Hot Weather", count: "20"}, 
+      {word: "Long Queue", count: "30"}, 
+      {word: "Russian Embassy", count: "50"}, 
+      {word: "Plastic Bag", count: "18"}, 
+      {word: "Rental Fees", count: "23"}, 
+      {word: "Phising Scam", count: "60"}, 
+      {word: "BTO Prices", count: "60"}, 
+      {word: "GrabFood Delivery", count: "60"},  
+      {word: "COE Prices", count: "30"}, 
+      {word: "Tuition", count: "20"}, 
+      {word: "Fuel Price", count: "60"}, 
+      {word: "Rental Discrimination", count: "60"}, 
+      {word: "Trace Together", count: "60"}, 
+      {word: "Scam Call", count: "60", hover: "60"}, 
+      {word: "Chicken Hotpot", count: "60"}, 
     ],
     complaintsRelatedComments: {
       reddit: {
         likes: [
           {
             likes: '300',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2220,7 +2220,7 @@ export default {
           },
           {
             likes: '290',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2230,7 +2230,7 @@ export default {
           },
           {
             likes: '280',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2240,7 +2240,7 @@ export default {
           },
           {
             likes: '270',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2250,7 +2250,7 @@ export default {
           },
           {
             likes: '260',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2262,7 +2262,7 @@ export default {
         date: [
           {
             likes: '20',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2272,7 +2272,7 @@ export default {
           },
           {
             likes: '290',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2282,7 +2282,7 @@ export default {
           },
           {
             likes: '80',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2292,7 +2292,7 @@ export default {
           },
           {
             likes: '20',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2302,7 +2302,7 @@ export default {
           },
           {
             likes: '26',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2316,7 +2316,7 @@ export default {
         likes: [
           {
             likes: '300',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2326,7 +2326,7 @@ export default {
           },
           {
             likes: '290',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2336,7 +2336,7 @@ export default {
           },
           {
             likes: '280',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2346,7 +2346,7 @@ export default {
           },
           {
             likes: '270',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2356,7 +2356,7 @@ export default {
           },
           {
             likes: '260',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2368,7 +2368,7 @@ export default {
         date: [
           {
             likes: '20',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2378,7 +2378,7 @@ export default {
           },
           {
             likes: '290',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2388,7 +2388,7 @@ export default {
           },
           {
             likes: '80',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2398,7 +2398,7 @@ export default {
           },
           {
             likes: '20',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2408,7 +2408,7 @@ export default {
           },
           {
             likes: '26',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -2421,8 +2421,8 @@ export default {
     },
     keywordsWordCloudLegend: {
       negative: "#EB8159",
-      neutral: "#EFB727",
-      positive: "#78D549",
+      neutral: "#A0D6E8",
+      positive: "#EFB727",
     },
     trendingTopicsEmotionsLegend: {
       anger: "#FB3412",
@@ -2587,16 +2587,16 @@ export default {
                 label: 'Neutral',
                 data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
                 fill: false,
-                borderColor: '#EFB727',
-                backgroundColor: '#EFB727',
+                borderColor: '#A0D6E8',
+                backgroundColor: '#A0D6E8',
                 borderWidth: 1,
               },
               {
                 label: 'Positive',
                 data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
                 fill: false,
-                borderColor: '#78D549',
-                backgroundColor: '#78D549',
+                borderColor: '#EFB727',
+                backgroundColor: '#EFB727',
                 borderWidth: 1,
               },
             ]
@@ -2718,16 +2718,16 @@ export default {
                 label: 'Neutral',
                 data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
                 fill: false,
-                borderColor: '#EFB727',
-                backgroundColor: '#EFB727',
+                borderColor: '#A0D6E8',
+                backgroundColor: '#A0D6E8',
                 borderWidth: 1,
               },
               {
                 label: 'Positive',
                 data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
                 fill: false,
-                borderColor: '#78D549',
-                backgroundColor: '#78D549',
+                borderColor: '#EFB727',
+                backgroundColor: '#EFB727',
                 borderWidth: 1,
               },
             ]
@@ -2849,16 +2849,16 @@ export default {
                 label: 'Neutral',
                 data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
                 fill: false,
-                borderColor: '#EFB727',
-                backgroundColor: '#EFB727',
+                borderColor: '#A0D6E8',
+                backgroundColor: '#A0D6E8',
                 borderWidth: 1,
               },
               {
                 label: 'Positive',
                 data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
                 fill: false,
-                borderColor: '#78D549',
-                backgroundColor: '#78D549',
+                borderColor: '#EFB727',
+                backgroundColor: '#EFB727',
                 borderWidth: 1,
               },
             ]
@@ -2980,16 +2980,16 @@ export default {
                 label: 'Neutral',
                 data: [7700,  1150,  342,  7050,  5522,  341,  259,  1577,  2345, 6000, 8000, 9041],
                 fill: false,
-                borderColor: '#EFB727',
-                backgroundColor: '#EFB727',
+                borderColor: '#A0D6E8',
+                backgroundColor: '#A0D6E8',
                 borderWidth: 1,
               },
               {
                 label: 'Positive',
                 data: [600,  1150,  342,  6050,  2522,  3241,  1259,  157,  1545, 5000, 8500, 9841],
                 fill: false,
-                borderColor: '#78D549',
-                backgroundColor: '#78D549',
+                borderColor: '#EFB727',
+                backgroundColor: '#EFB727',
                 borderWidth: 1,
               },
             ]
@@ -3052,7 +3052,7 @@ export default {
         likes: [
           {
             likes: '300',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -3063,7 +3063,7 @@ export default {
           },
           {
             likes: '290',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -3074,7 +3074,7 @@ export default {
           },
           {
             likes: '280',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -3085,7 +3085,7 @@ export default {
           },
           {
             likes: '270',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -3096,7 +3096,7 @@ export default {
           },
           {
             likes: '260',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -3109,7 +3109,7 @@ export default {
         date: [
           {
             likes: '20',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -3120,7 +3120,7 @@ export default {
           },
           {
             likes: '290',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -3131,7 +3131,7 @@ export default {
           },
           {
             likes: '80',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -3142,7 +3142,7 @@ export default {
           },
           {
             likes: '20',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
@@ -3153,7 +3153,7 @@ export default {
           },
           {
             likes: '26',
-            date: '2021-04-03T14:24:24',
+            datetime: '2021-04-03T14:24:24',
             comment: 'My personal opinion: Covid has won, the pandemic scare is over, and Im ready to live my life again.',
             topic: ['Healthcare'],
             sentiment: 'negative',
