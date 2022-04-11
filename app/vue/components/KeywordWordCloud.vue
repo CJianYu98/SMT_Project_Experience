@@ -78,7 +78,7 @@ export default {
               .style("font-size", function(d) { return d.size; })
               .style("fill", function(d) { 
                 // console.log("d.sentiment", d.sentiment) 
-                return d.sentiment === "positive" ? "#78D549" : (d.sentiment === "negative" ? "#EB8159" : "#EFB727")
+                return d.sentiment === "positive" ? "#EFB727" : (d.sentiment === "negative" ? "#EB8159" : "#A0D6E8")
                 }
               )
               .attr("text-anchor", "middle")
@@ -196,7 +196,7 @@ export default {
 
             layout = cloud()
               .size([width, height])
-              .words(val.map(function(d) { return {text: d.word, size:d.count*1.5, sentiment:d.sentiment, frequency: d.count}; }))
+              .words(val.map(function(d) { return {text: d.word, size:d.count, sentiment:d.sentiment, frequency: d.count}; }))
               .padding(5)        // space between words
               .rotate(function() { return ~~(Math.random() * 2) * 90; })
               .fontSize(function(d) { return d.size; })      // font size of words

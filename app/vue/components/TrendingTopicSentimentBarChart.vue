@@ -105,7 +105,7 @@ export default {
                 // console.log("d", d)
 
                 if (d.type === "sentiment") {
-                  return d.label === "positive" ? "#78D549" : (d.label === "negative" ? "#EB8159" : "#EFB727")
+                  return d.label === "positive" ? "#EFB727" : (d.label === "negative" ? "#EB8159" : "#A0D6E8")
                   } else if (d.type === "emotion") {
                     return d.label === "anger" ? "#FB3412" : 
                       (d.label === "fear" ? "#8C56AF" :

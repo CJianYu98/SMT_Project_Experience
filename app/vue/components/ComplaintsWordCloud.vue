@@ -185,7 +185,7 @@ export default {
 
             layout = cloud()
               .size([width, height])
-              .words(val.map(function(d) { return {text: d.word, size:d.count*5, sentiment:d.sentiment, frequency:d.count}; }))
+              .words(val.map(function(d) { return {text: d.word, size:d.count, sentiment:d.sentiment, frequency:d.count}; }))
               .padding(5)        // space between words
               .rotate(function() { return ~~(Math.random() * 2) * 90; })
               .fontSize(function(d) { return d.size; })      // font size of words
