@@ -15,13 +15,13 @@
     <v-divider vertical></v-divider>
     <v-col cols="6">
       <v-row>
-        <v-col cols="8">
+        <v-col cols="6">
           <v-card-title class="pb-4 accent--text text-h6">
             Related Posts
             <HelpTextTooltip :help-text="complaintsCommentsHelpText"/>
           </v-card-title>
         </v-col>
-        <v-col>
+        <v-col cols="6">
           <DropDownSelect 
             :view-filter="sortView" 
             :label="label"

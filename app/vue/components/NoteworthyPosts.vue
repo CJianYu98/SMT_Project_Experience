@@ -11,7 +11,8 @@
           <HelpTextTooltip :help-text="noteworthyCommentHelpText"/>
         </v-card-title>
       </v-col>
-      <v-col class="pt-0">
+      <v-spacer></v-spacer>
+      <v-col cols="3" class="pt-0">
         <DropDownSelect 
           :view-filter="sortView" 
           :label="label"
