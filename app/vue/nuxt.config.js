@@ -87,7 +87,7 @@ export default {
           reddit: '#FF4500',
           twitter: '#1DA1F2',
           youtube: '#FF0000',
-          intent: '#3498eb',
+          intent: '#155a94',
         },
         // options: { customProperties: true },
       },

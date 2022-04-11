@@ -64,10 +64,11 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-chip 
-                class="mb-2 mr-1 intent intent--text"
+                class="mb-2 mr-1 intent intent--text font-weight-bold"
                 outlined
                 v-bind="attrs"
                 v-on="on"
+                disabled
               >
                 {{intent}}
               </v-chip>
@@ -76,7 +77,7 @@
           </v-tooltip>
         </template>
         <v-chip 
-          class="mb-2 primary mr-1"
+          class="mb-2 primary mr-1 font-weight-bold"
           v-for="indvTopic in topic"
           :key="indvTopic"
         >
@@ -146,7 +147,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 
 </style>
 
