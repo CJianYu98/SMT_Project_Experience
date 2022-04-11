@@ -11,10 +11,8 @@ from ..schema.user_filter import Filter
 router = APIRouter(prefix="/noteworthy-analysis", tags=["noteworthy_analysis"])
 
 # Declare MongoDB collection names to interact with
-# FB_POSTS = os.getenv("DB_FACEBOOK_POSTS_COLLECTION")
-# FB_COMMENTS = os.getenv("DB_FACEBOOK_COMMENTS_COLLECTION")
-FB_POSTS = "facebook_posts_v1"
-FB_COMMENTS = "facebook_comments_v1"
+FB_POSTS = os.getenv("DB_FACEBOOK_POSTS_COLLECTION")
+FB_COMMENTS = os.getenv("DB_FACEBOOK_COMMENTS_COLLECTION")
 TWITTER_TWEETS = os.getenv("DB_TWIITER_TWEETS_COLLECTION")
 TWITTER_COMMENTS = os.getenv("DB_TWITTER_COMMENTS_COLLECTION")
 REDDIT_SUBMISSIONS = os.getenv("DB_REDDIT_SUBMISSIONS_COLLECTION")
