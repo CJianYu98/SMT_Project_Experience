@@ -12,7 +12,7 @@
       :media="objIndex"
       :likes="post.likes"
       :date="post.datetime"
-      :post="post.post"
+      :post="post.comment"
       :topic="post.topic"
       :sentiment="post.sentiment"
       :emotion="post.emotion"

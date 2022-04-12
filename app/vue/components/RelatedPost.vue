@@ -78,12 +78,9 @@
         </template>
         <v-chip 
           class="mb-2 primary mr-1 font-weight-bold"
-          v-for="indvTopic in topic"
-          :key="indvTopic"
         >
-          {{indvTopic}}
+          {{topic}}
         </v-chip>
-          <!-- class="mx-auto" -->
       </v-chip-group>
     </v-list-item-subtitle>
   </v-card>
@@ -109,7 +106,7 @@ export default {
       required: true
     },
     topic: {
-      type: Array,
+      type: String,
       required: true
     },
     sentiment: {
