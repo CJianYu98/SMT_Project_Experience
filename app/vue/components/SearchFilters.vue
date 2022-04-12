@@ -2,10 +2,10 @@
   <!-- <v-app> -->
   <div id="searchFilter" class="mt-2 mb-n3">
     <v-container fluid class="px-8 mt-n2 pb-0">
-      <v-row no-gutters align="stretch">
+      <v-row align="stretch">
         <v-col
-          cols="2"
-          class="d-flex"
+          cols="5"
+          class="d-flex pb-0"
         >
           <v-combobox
             v-if="selectedTrendingQuery"
@@ -44,10 +44,9 @@
           > 
           </v-combobox>
         </v-col>
-        <v-spacer></v-spacer> 
         <v-col
-          class="d-flex"
-          cols="2"
+          class="d-flex pb-0"
+          cols="4"
         >
           <v-select
             v-model="dateSelected"
@@ -83,9 +82,9 @@
             </v-date-picker>
           </v-dialog>
         </v-col>
-        <v-spacer></v-spacer>
         <v-col
-          cols="2"
+          cols="3"
+          class="pb-0"
         >
           <v-select
             v-model="sentimentsSelected"
@@ -137,9 +136,11 @@
             </template> -->
           </v-select>
         </v-col>
-        <v-spacer></v-spacer>
+      </v-row>
+      <v-row class="mt-0">
         <v-col
-          cols="3"
+          cols="5"
+          class="pb-0 pt-1"
         >
           <v-select
             v-model="platformsSelected"
@@ -190,9 +191,9 @@
             </template> -->
           </v-select>
         </v-col>
-        <v-spacer></v-spacer>
         <v-col
-          cols="2"
+          cols="4"
+          class="pb-0 pt-1"
         >
           <v-select
             v-model="emotionsSelected"
@@ -243,6 +244,31 @@
             </template> -->
           </v-select>
         </v-col>
+        <v-spacer></v-spacer>
+        <v-col 
+          cols="1"
+          class="pb-0 pt-1">
+          <v-btn
+            depressed
+            block
+            color="primary"
+          >
+            Search
+          </v-btn>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col 
+          cols="1"
+          class="pb-0 pt-1">
+          <v-btn
+            depressed
+            block
+            color="accent"
+          >
+            Reset
+          </v-btn>
+        </v-col>
+        <v-spacer></v-spacer>
       </v-row>
     </v-container>
   <!-- </v-app> -->
