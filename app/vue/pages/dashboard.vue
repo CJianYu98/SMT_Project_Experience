@@ -2,7 +2,7 @@
   <div class="mb-15">
     <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
     <!--  align="stretch" in v-row works with d-flex in v-col -->
-    <!-- <p>{{testData}}</p> -->
+    <p>{{testData}}</p>
     <v-row>
       <v-col cols="4">
         <TrendingTopics 
@@ -79,10 +79,10 @@ export default {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(
         { 
-          "endDate": "2021-04-08",
-          "numDays": 7,
+          "endDate": "2022-04-06",
+          "numDays": 14,
           "platforms": [
-            "facebook", "youtube", "reddit", "twitter"
+            "facebook"
           ],
           "sentiments": [
             "neutral", "negative", "positive"
@@ -90,29 +90,63 @@ export default {
           "emotions": [
             "neutral", "anger", "fear", "sadness", "joy"
           ],
-          "query": null
+          "query": null,
         }
       )
     };
-    // fetch("http://127.0.0.1:8000/topic-analysis/get-top5-topic-analysis", requestOptions)
-    // .then(response => response.json())
-    //   .then(data => 
-    //     {
-    //       this.testData = data
-    //     }
-    //   )
-    //   .catch((error) => {
-    //     console.error(error);
-    //   })
+    fetch("http://127.0.0.1:8000/topic-analysis/get-top5-topic-analysis", requestOptions)
+    .then(response => response.json())
+      .then(data => 
+        {
+          // { "detail": "No data found within date period given" }
+          // [ 
+              // { 
+              //   "name": "others", 
+              //   "topThreeMentions": [ "russia", "ukraine", "china" ], 
+              //   "mentions": 21231, 
+              //   "sentiment": 
+              //     [ { "sentiment": "neutral", "count": 9343 }, 
+              //     { "sentiment": "negative", "count": 6460 }, 
+              //     { "sentiment": "positive", "count": 5428 } ], 
+              //   "emotions": 
+              //     [ { "emotion": "neutral", "count": 18360 }, 
+              //     { "emotion": "joy", "count": 1716 }, 
+              //     { "emotion": "sadness", "count": 935 }, 
+              //     { "emotion": "fear", "count": 164 }, 
+              //     { "emotion": "anger", "count": 56 } ] 
+              //   }
+              // ]
+
+          // this.testData = data
+          // console.log("data", data)
+
+          if (data.detail === "No data found within date period given") {
+            // console.log("inside if loop, No data found within date period given")
+            this.topFiveTopicsData = []
+          } else {
+            this.topFiveTopicsData = data
+          }
+        }
+      )
+      .catch((error) => {
+        console.error(error);
+      })
     fetch("http://127.0.0.1:8000/trend-analysis/get-all-aggregated-stats", requestOptions)
       .then(response => response.json())
       .then(data => 
         {
-          // { "posts": 166, "comments": 5863, "likes": 47456, "platformMetrics": { "facebook": { "mentions": 1, "emotion": "neutral" }, "twitter": { "mentions": 0, "emotion": null } } }
+          // { "posts": 166, "posts": 5863, "likes": 47456, "platformMetrics": { "facebook": { "mentions": 1, "emotion": "neutral" }, "twitter": { "mentions": 0, "emotion": null } } }
+
+          // when there is no data to show
+          // { "posts": 0, "posts": 0, "likes": 0, "platformMetrics": { "facebook": { "mentions": 0, "emotion": null }, "reddit": { "mentions": 0, "emotion": null }, "twitter": { "mentions": 0, "emotion": null }, "youtube": { "mentions": 0, "emotion": null } } }
+
+          // this.testData = data
+          
           this.platformMetrics = data.platformMetrics
           delete data.platformMetrics
           this.overallStatsData = data
-          console.log("this.platformMetrics", this.platformMetrics)
+
+          // console.log("this.platformMetrics", this.platformMetrics)
         }
       )
       .catch((error) => {
@@ -123,9 +157,15 @@ export default {
       .then(data => 
         {
           // { "trend": 0.62 }
+          // { "detail": "No data found from previous data range to compare trend" }
           // this.testData = data
-          this.allTrend = data
-          console.log("this.allTrend", this.allTrend)
+
+          if (data.detail === "No data found from previous data range to compare trend") {
+            // console.log("inside if loop, No data found from previous data range to compare trend")
+            this.allTrend = { "trend": "-" }
+          } else {
+            this.allTrend = data
+          }
         }
       )
       .catch((error) => {
@@ -136,6 +176,11 @@ export default {
       .then(data => 
         { 
           // { "facebook": { "trend": 0.62 }, "reddit": { "trend": 0.62 }, "twitter": { "trend": 0 }, "youtube": { "trend": 0.62 } }
+
+          // when there is no data to show, to confirm again
+          // { "facebook": { "trend": 0 }, "reddit": { "trend": 0 }, "twitter": { "trend": 0 }, "youtube": { "trend": 0 } }
+
+          // this.testData = data
           this.platformTrend = data
         }
       )
@@ -143,49 +188,125 @@ export default {
         console.error(error);
       })
     fetch("http://127.0.0.1:8000/keyword-analysis/get-all-top-keywords", requestOptions)
-    // [ { "word": "rip", "count": 58, "sentiment": "neutral" }, { "word": "china", "count": 52, "sentiment": "negative" } ]
     .then(response => response.json())
       .then(data => 
         {
-          this.keywords = data
+          // [ { "word": "rip", "count": 58, "sentiment": "neutral" }, { "word": "china", "count": 52, "sentiment": "negative" } ]
+          // { "detail": "No data found within date period given" }
+
+          // this.testData = data
+          // console.log("data", data)
+
+          if (data.detail === "No data found within date period given") {
+            // console.log("inside if loop, No data found within date period given")
+            this.keywords = []
+          } else {
+            this.keywords = data
+          }
         }
       )
       .catch((error) => {
         console.error(error);
       })
     fetch("http://127.0.0.1:8000/complaint-analysis/get-all-top-complaint-keywords", requestOptions)
-    // [ { "word": "rip", "count": 58, "sentiment": "neutral" }, { "word": "china", "count": 52, "sentiment": "negative" } ]
     .then(response => response.json())
       .then(data => 
         {
-          this.complaintsKeywords = data
+          // [ { "word": "rip", "count": 58, "sentiment": "neutral" }, { "word": "china", "count": 52, "sentiment": "negative" } ]
+          // { "detail": "No data found within date period given" }
+            // render image saying there is no data
+
+          // this.testData = data
+          // console.log("data", data)
+
+          if (data.detail === "No data found within date period given") {
+            // console.log("inside if loop, No data found within date period given")
+            this.complaintsKeywords = []
+          } else {
+            this.complaintsKeywords = data
+          }
         }
       )
       .catch((error) => {
         console.error(error);
       })
-    fetch("http://127.0.0.1:8000/complaint-analysis/get-all-top5-complaint-comments", requestOptions)
+    fetch("http://127.0.0.1:8000/complaint-analysis/get-all-top5-complaint-posts", requestOptions)
     .then(response => response.json())
       .then(data => 
         {
+          // { "facebook": { "likes": [], "date": [] }, "reddit": { "likes": [], "date": [] }, "twitter": { "likes": [], "date": [] }, "youtube": { "likes": [], "date": [] } }
+
           this.testData = data
-          this.complaintsRelatedComments = data
-        }
+
+          // getting sum of posts in dictionary
+          const numComplaintPosts = this.getNumPostsTotal(this.numComplaintPostsTotal, data)
+          
+          if (numComplaintPosts === 0) {
+            this.complaintsRelatedPosts = {"platform": []}
+          } else {
+            this.complaintsRelatedPosts = data
+          }
+          
+          this.numComplaintPostsTotal = 0
+
+          // console.log("this.numComplaintPostsTotal", this.numComplaintPostsTotal)
+
+        },
       )
       .catch((error) => {
         console.error(error);
       })
-    fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-comments", requestOptions)
+    //   fetch("http://127.0.0.1:8000/complaint-analysis/get-platform-complaint-percentage", requestOptions)
+    //   .then(response => response.json())
+    //     .then(data => 
+    //       {
+    //         // { "facebook": 0.17, "reddit": 0, "twitter": 0, "youtube": 0 }
+    //         // { "facebook": 0, "reddit": 0, "twitter": 0, "youtube": 0 } if no data
+
+    //         // this.testData = data
+  
+    //       }
+    //     )
+    //   .catch((error) => {
+    //     console.error(error);
+    //   })
+    fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-posts", requestOptions)
     .then(response => response.json())
       .then(data => 
         {
-          this.testData = data
-          this.noteworthyComments = data
+          // { "facebook": { "likes": [], "date": [] }, "reddit": { "likes": [], "date": [] }, "twitter": { "likes": [], "date": [] }, "youtube": { "likes": [], "date": [] } }
+
+          // this.testData = data
+
+          // getting sum of posts in dictionary
+          const numNoteworthyPosts = this.getNumPostsTotal(this.numNoteworthyPostsTotal, data)
+          
+          if (numNoteworthyPosts === 0) {
+            this.noteworthyPosts = {"platform": []}
+          } else {
+            this.noteworthyPosts = data
+          }
+          
+          this.numNoteworthyPostsTotal = 0
         }
       )
       .catch((error) => {
         console.error(error);
       })
+    // fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-topics", requestOptions)
+    //   .then(response => response.json())
+    //     .then(data => 
+    //       {
+    //         // [ "others", "art", "politics", "education", "law and crime" ]
+    //         // [] if no data
+  
+    //         // this.testData = data
+  
+    //       }
+    //     )
+    //   .catch((error) => {
+    //     console.error(error);
+    //   })
   },
   data: () => ({
     fakeData: {
@@ -2149,28 +2270,6 @@ export default {
       twitter: { trend: 0 }, 
       youtube: { trend: 0.62 } 
     },
-    // platformMetricsData: {
-    //   Facebook: {
-    //     mentions: 0.24,
-    //     trend: -0.18,
-    //     emotion: 'anger',
-    //   },
-    //   Reddit: {
-    //     mentions: 0.14,
-    //     trend: 0.39,
-    //     emotion: 'joy',
-    //   },
-    //   Twitter: {
-    //     mentions: 0.08,
-    //     trend: 0.05,
-    //     emotion: 'fear',
-    //   },
-    //   Youtube: {
-    //     mentions: 0.54,
-    //     trend: -0.32,
-    //     emotion: 'neutral',
-    //   }
-    // },
     keywords: [
       {word: "GST Hike", count: "60", sentiment: "neutral", hover: "60"}, 
       {word: "Dormitory Workers", count: "20", sentiment: "neutral", hover: "20"}, 
@@ -3172,17 +3271,29 @@ export default {
       {date: 'Past 30 Days', numDays: 30}, 
       {date: 'Past 6 Months', numDays: 180}, 
       {date: 'Past Year', numDays: 365}
-    ], 
+    ],
+    numComplaintPostsTotal: 0,
+    numNoteworthyPostsTotal: 0,
   }),
 
   computed: {
-    // lowercasePlatforms() {
-    //   return 
-    // }, 
-  
+
   },
 
   methods: {
+    getNumPostsTotal(baseCount, data) {
+      // console.log("baseCount", baseCount)
+      // console.log("data", data)
+      for (const platform in data) {
+        // console.log("platform", platform)
+        for (const metric in data[platform]) {
+          console.log("metric", metric)
+          baseCount += data[platform][metric].length
+          // console.log("this.numComplaintPostsTotal", baseCount)
+        }
+      }
+      return baseCount
+    },
     rerenderDashboard(updatedSentiments) {
       // code to rerender dashboard when the filters are selected, by passing them to the api
       console.log("=== START rerenderDashboard ===")

@@ -8,33 +8,37 @@
       Trending Topics
       <HelpTextTooltip :help-text="trendingTopicsHelpText"/>
     </v-card-title>
-    <v-row class="mx-1">
+    <template v-if="topFiveTopics.length === 0">
+      <PlaceholderNoDataToShow/>
+    </template>
+    <template v-else>
+      <v-row class="mx-1">
       <!-- <v-spacer></v-spacer> -->
-      <v-col cols="6" class="pt-0">
-        <GraphLegend 
-          :graph-legend="keywordsWordCloudLegend"
-          type="sentiment"
-        />
-      </v-col>
-      <!-- <v-spacer></v-spacer> -->
+        <v-col cols="6" class="pt-0">
+          <GraphLegend 
+            :graph-legend="keywordsWordCloudLegend"
+            type="sentiment"
+          />
+        </v-col>
+        <!-- <v-spacer></v-spacer> -->
 
-      <v-col cols="6" class="pt-0">
-        <GraphLegend
-          :graph-legend="trendingTopicsEmotionsLegend"
-          type="emotion"
-        />
-      </v-col>
-      <!-- <v-spacer></v-spacer> -->
-    </v-row>
-    
-    <TrendingTopic 
-      v-for="(topic, i) in topFiveTopics" 
-      :key="i"
-      :index="i" 
-      :topic-assigned="topic" 
-      @selectedTrendingTopicInTopics="passTrendingTopicToTopics"
-    />
-    
+        <v-col cols="6" class="pt-0">
+          <GraphLegend
+            :graph-legend="trendingTopicsEmotionsLegend"
+            type="emotion"
+          />
+        </v-col>
+        <!-- <v-spacer></v-spacer> -->
+      </v-row>
+      
+      <TrendingTopic 
+        v-for="(topic, i) in topFiveTopics" 
+        :key="i"
+        :index="i" 
+        :topic-assigned="topic" 
+        @selectedTrendingTopicInTopics="passTrendingTopicToTopics"
+      />
+    </template>
   </v-card>
 </template>
 
@@ -42,12 +46,14 @@
 import HelpTextTooltip from './HelpTextTooltip.vue'
 import TrendingTopic from './TrendingTopic.vue'
 import GraphLegend from './GraphLegend.vue'
+import PlaceholderNoDataToShow from './PlaceholderNoDataToShow.vue'
 
 export default {
   components: { 
     HelpTextTooltip,
     TrendingTopic,
     GraphLegend,
+    PlaceholderNoDataToShow,
   },
   props: {
     topFiveTopics: {

@@ -10,7 +10,12 @@
         Top Complaints
         <HelpTextTooltip :help-text="complaintsWordCloudHelpText"/>
       </v-card-title>
-      <ComplaintsWordCloud  :complaints-word-cloud="complaintsWordCloud"/>
+      <template v-if="complaintsWordCloud.length > 0">
+        <ComplaintsWordCloud  :complaints-word-cloud="complaintsWordCloud"/>
+      </template>
+      <template v-else>
+        <PlaceholderNoDataToShow />
+      </template>
     </v-col>
     <v-divider vertical></v-divider>
     <v-col cols="6">
@@ -23,6 +28,7 @@
         </v-col>
         <v-col cols="6" class="pb-0">
           <DropDownSelect 
+            v-if="!('platform' in relatedPosts)"
             :view-filter="sortView" 
             :label="label"
             :view-selected="viewSelected"
@@ -30,10 +36,15 @@
           </DropDownSelect>
         </v-col>
       </v-row>
-      <ComplaintsRelatedComments 
-        :related-comments="relatedComments"
-        :view-selected="viewSelected.toLowerCase()"
-      />
+      <template v-if="'platform' in relatedPosts">
+        <PlaceholderNoDataToShow />
+      </template>
+      <template v-else>
+        <ComplaintsRelatedPosts 
+          :related-posts="relatedPosts"
+          :view-selected="viewSelected.toLowerCase()"
+        />
+      </template>
     </v-col>
   </v-row>
     
@@ -46,12 +57,14 @@ import ComplaintsRelatedPosts from './RelatedPosts.vue'
 import ComplaintsWordCloud from './ComplaintsWordCloud.vue'
 import DropDownSelect from './DropDownSelect.vue'
 import HelpTextTooltip from './HelpTextTooltip.vue'
+import PlaceholderNoDataToShow from './PlaceholderNoDataToShow.vue'
 export default {
   components: { 
     ComplaintsWordCloud, 
     ComplaintsRelatedPosts, 
     HelpTextTooltip,
     DropDownSelect,
+    PlaceholderNoDataToShow,
   },
 
   props: {

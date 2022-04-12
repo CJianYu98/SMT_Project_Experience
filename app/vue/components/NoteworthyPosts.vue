@@ -13,7 +13,8 @@
       </v-col>
       <v-spacer></v-spacer>
       <v-col cols="3" class="py-0">
-        <DropDownSelect 
+        <DropDownSelect
+          v-if="!('platform' in relatedPosts)"
           :view-filter="sortView" 
           :label="label"
           :view-selected="viewSelected"
@@ -21,10 +22,15 @@
         </DropDownSelect>
       </v-col>
     </v-row>
-    <RelatedPosts
-      :related-comments="relatedComments"
-      :view-selected="viewSelected.toLowerCase()"
-    />
+    <template v-if="'platform' in relatedPosts">
+      <PlaceholderNoDataToShow />
+    </template>
+    <template v-else>
+      <RelatedPosts
+        :related-posts="relatedPosts"
+        :view-selected="viewSelected.toLowerCase()"
+      />
+    </template>
   </v-card>
 </template>
 

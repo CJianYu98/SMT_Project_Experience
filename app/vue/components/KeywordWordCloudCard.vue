@@ -8,8 +8,13 @@
       Top Keywords
       <HelpTextTooltip :help-text="wordcloudHelpText"/>
     </v-card-title>
-    <GraphLegend :graph-legend="keywordsWordCloudLegend" type="sentiment"/>
-    <KeywordWordCloud :keywords-word-cloud="keywordsWordCloud" :keywords-word-cloud-legend="keywordsWordCloudLegend"/>
+    <template v-if="keywordsWordCloud.length > 0">
+      <GraphLegend :graph-legend="keywordsWordCloudLegend" type="sentiment"/>
+      <KeywordWordCloud :keywords-word-cloud="keywordsWordCloud" :keywords-word-cloud-legend="keywordsWordCloudLegend"/>
+    </template>
+    <template v-else>
+      <PlaceholderNoDataToShow/>
+    </template>
   </v-card>
 </template>
 
@@ -17,11 +22,13 @@
 import HelpTextTooltip from './HelpTextTooltip.vue'
 import KeywordWordCloud from './KeywordWordCloud.vue'
 import GraphLegend from './GraphLegend.vue'
+import PlaceholderNoDataToShow from './PlaceholderNoDataToShow.vue'
 export default {
   components: {
     HelpTextTooltip,
     KeywordWordCloud,
     GraphLegend,
+    PlaceholderNoDataToShow,
   },
   props: {
     keywordsWordCloud: {
