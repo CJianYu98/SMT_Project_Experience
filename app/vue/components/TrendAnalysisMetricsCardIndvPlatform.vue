@@ -45,14 +45,6 @@
               v-if="selectedDateFilter === 'All'"
             >
               <span>━</span>
-              <!-- <v-img
-                  max-height="20"
-                  max-width="20"
-                  :src="`/dash.png`"
-                  class="mx-auto"
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-img> -->
             </div>
             <TrendAnalysisUpwardTrend v-else-if="platformTrend[platform]['trend'] > 0" :percentage-increase="platformTrend[platform]['trend']"/>
             <TrendAnalysisDownwardTrend v-else-if="platformTrend[platform]['trend'] < 0" :percentage-decrease="platformTrend[platform]['trend']"/>
@@ -60,7 +52,7 @@
             <TrendAnalysisNoComparableTrend v-else/>
           </td>
           <td>
-            <template v-if="data[emotion] == null">
+            <template v-if="data.emotion == null">
               <TrendAnalysisNoComparableTrend :tooltipMsg="`no emotion data`"/>
             </template>
             <template v-else>
@@ -99,6 +91,10 @@ export default {
     TrendAnalysisNoComparableTrend,
   },
   props: {
+    // pendingState: {
+    //   type: Boolean,
+    //   required: true
+    // },
     selectedDateFilter: {
       type: String,
       required: true

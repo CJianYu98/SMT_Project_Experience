@@ -8,7 +8,10 @@
       Trending Topics
       <HelpTextTooltip :help-text="trendingTopicsHelpText"/>
     </v-card-title>
-    <template v-if="topFiveTopics.length === 0">
+    <template v-if="pendingState">
+      <PlaceholderNoDataToShow/>
+    </template>
+    <template v-else-if="topFiveTopics.length === 0">
       <PlaceholderNoDataToShow/>
     </template>
     <template v-else>
@@ -65,6 +68,10 @@ export default {
     },
     trendingTopicsEmotionsLegend: {
       type: Object,
+      required: true
+    },
+    pendingState: {
+      type: Boolean,
       required: true
     },
   },
