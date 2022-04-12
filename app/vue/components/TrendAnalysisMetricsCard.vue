@@ -6,7 +6,6 @@
       :all-trend="allTrend"
       :get-combined-string-from-indv-platform="combinedString"
       />
-      <!-- :selected-date-filter="selectedDateFilter" -->
     <TrendAnalysisMetricsCardIndvPlatform 
       @passCombinedStringToOverallTrend="getCombinedStringFromIndvPlatform"
       :platform-metrics="platformMetrics"

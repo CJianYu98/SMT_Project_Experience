@@ -44,34 +44,24 @@
               class="font-weight-medium"
               v-if="selectedDateFilter === 'All'"
             >
-              <v-img
+              <span>━</span>
+              <!-- <v-img
                   max-height="20"
                   max-width="20"
                   :src="`/dash.png`"
                   class="mx-auto"
                   v-bind="attrs"
                   v-on="on"
-                ></v-img>
+                ></v-img> -->
             </div>
             <TrendAnalysisUpwardTrend v-else-if="platformTrend[platform]['trend'] > 0" :percentage-increase="platformTrend[platform]['trend']"/>
             <TrendAnalysisDownwardTrend v-else-if="platformTrend[platform]['trend'] < 0" :percentage-decrease="platformTrend[platform]['trend']"/>
-            <TrendAnalysisNoTrend v-else/>
+            <TrendAnalysisNoTrend v-else-if="platformTrend[platform]['trend'] === 0"/>
+            <TrendAnalysisNoComparableTrend v-else/>
           </td>
           <td>
-            <template v-if="data.emotion == null">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on, attrs }">
-                  <v-img
-                  max-height="20"
-                  max-width="20"
-                  :src="`/dash.png`"
-                  class="mx-auto"
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-img>
-              </template>
-              <span>no emotion data</span>
-            </v-tooltip>
+            <template v-if="data[emotion] == null">
+              <TrendAnalysisNoComparableTrend :tooltipMsg="`no emotion data`"/>
             </template>
             <template v-else>
             <v-tooltip bottom>
@@ -98,6 +88,7 @@
 
 <script>
 import TrendAnalysisDownwardTrend from './TrendAnalysisDownwardTrend.vue'
+import TrendAnalysisNoComparableTrend from './TrendAnalysisNoComparableTrend.vue'
 import TrendAnalysisNoTrend from './TrendAnalysisNoTrend.vue'
 import TrendAnalysisUpwardTrend from './TrendAnalysisUpwardTrend.vue'
 export default {
@@ -105,6 +96,7 @@ export default {
     TrendAnalysisDownwardTrend, 
     TrendAnalysisUpwardTrend,
     TrendAnalysisNoTrend,
+    TrendAnalysisNoComparableTrend,
   },
   props: {
     selectedDateFilter: {

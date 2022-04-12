@@ -4,11 +4,9 @@
           max-height="40"
           contain
           :src="`/${platform.name}_icon.png`"
+          :alt="`${platform.name} icon`"
           class="mx-auto"
         ></v-img>
-          <!-- :src="`/${platform}_icon.png`"
-          :alt="`${platform} icon`" -->
-
         <p class="mb-1 accent--text text-h6 text-center">
           {{ platform.name.toUpperCase() }}
         </p>

@@ -1,7 +1,7 @@
 <template>
   <v-card
     elevation="3"
-    class="ml-8 mr-2 mt-8 rounded-lg  d-flex align-center"
+    class="ml-8 mr-2 mt-8 rounded-lg d-flex align-center"
     height="100%"
   >
     <v-img
