@@ -28,7 +28,7 @@
       </v-row>
       <!-- :href="link" target="_blank" -->
       <p class="text-wrap mt-1" >
-        {{comment}}
+        {{post}}
       </p>
       <v-chip-group column>
         <v-tooltip bottom>
@@ -73,7 +73,7 @@
                 {{intent}}
               </v-chip>
             </template>
-            <span> intent tag of comment </span>
+            <span> intent tag of post </span>
           </v-tooltip>
         </template>
         <v-chip 
@@ -104,7 +104,7 @@ export default {
       type: String,
       required: true
     },
-    comment: {
+    post: {
       type: String,
       required: true
     },

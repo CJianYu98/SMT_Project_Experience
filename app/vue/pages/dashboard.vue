@@ -32,8 +32,8 @@
         />
       </v-col>
       <v-col cols="8">
-        <NoteworthyComments 
-          :related-comments="noteworthyComments"
+        <NoteworthyPosts 
+          :related-posts="noteworthyPosts"
         />
       </v-col>
     </v-row>
@@ -44,7 +44,7 @@
       <v-col cols="8">
         <ComplaintsCard 
           :complaints-word-cloud="complaintsKeywords"
-          :related-comments="complaintsRelatedComments"
+          :related-posts="complaintsRelatedPosts"
         />
       </v-col>      
     </v-row>
@@ -55,7 +55,7 @@
 import TrendAnalysis from '../components/TrendAnalysis.vue'
 import KeywordCard from '../components/KeywordWordCloudCard.vue'
 // import KeywordAnalysis from '../components/KeywordAnalysisCard.vue'
-import NoteworthyComments from '../components/NoteworthyPosts.vue'
+import NoteworthyPosts from '../components/NoteworthyPosts.vue'
 import ComplaintsCard from '../components/ComplaintsCard.vue'
 import TrendingTopics from '@/components/TrendingTopicsCard.vue'
 import SearchFilters from '@/components/SearchFilters'
@@ -69,7 +69,7 @@ export default {
     KeywordCard,
     // KeywordAnalysis,,
     ComplaintsCard,
-    NoteworthyComments,
+    NoteworthyPosts,
     PlaceholderCard,
   },
   created() {
@@ -490,7 +490,7 @@ export default {
             {word: "Scam Call", size: "60", hover: "60"}, 
             {word: "Chicken Hotpot", size: "60", hover: "60"}, 
           ],
-          complaintsRelatedComments: [
+          complaintsRelatedPosts: [
             {
               media: 'facebook',
               likes: '24',
@@ -955,7 +955,7 @@ export default {
             {word: "Racism", size: "60", hover: "60"}, 
             {word: "Ban", size: "60", hover: "60"}, 
           ],
-          complaintsRelatedComments: [
+          complaintsRelatedPosts: [
             {
               media: 'facebook',
               likes: '22',
@@ -1375,7 +1375,7 @@ export default {
             {word: "Racism", size: "60", hover: "60"}, 
             {word: "Ban", size: "60", hover: "60"}, 
           ],
-          complaintsRelatedComments: [
+          complaintsRelatedPosts: [
             {
               media: 'facebook',
               likes: '22',
@@ -1785,7 +1785,7 @@ export default {
             {word: "Racism", size: "60", hover: "60"}, 
             {word: "Ban", size: "60", hover: "60"}, 
           ],
-          complaintsRelatedComments: [
+          complaintsRelatedPosts: [
             {
               media: 'facebook',
               likes: '22',
@@ -2205,7 +2205,7 @@ export default {
       {word: "Scam Call", count: "60", hover: "60"}, 
       {word: "Chicken Hotpot", count: "60"}, 
     ],
-    complaintsRelatedComments: {
+    complaintsRelatedPosts: {
       reddit: {
         likes: [
           {
@@ -3047,7 +3047,7 @@ export default {
     },
     dateFilter: 'Past 7 Days',
     testData: {},
-    noteworthyComments: {
+    noteworthyPosts: {
       reddit: {
         likes: [
           {
@@ -3249,7 +3249,7 @@ export default {
       this.keywordsWordCloudLegend = this.fakeData[filterCheck].keywordsWordCloudLegend
       this.keywords = this.fakeData[filterCheck].keywords
       this.complaintsKeywords = this.fakeData[filterCheck].complaintsKeywords
-      this.complaintsRelatedComments = this.fakeData[filterCheck].complaintsRelatedComments
+      this.complaintsRelatedPosts = this.fakeData[filterCheck].complaintsRelatedPosts
       this.medias = this.fakeData[filterCheck].medias
       this.mediasMetrics = this.fakeData[filterCheck].mediasMetrics
 

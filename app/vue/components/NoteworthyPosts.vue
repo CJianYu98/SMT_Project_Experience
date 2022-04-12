@@ -8,7 +8,7 @@
       <v-col cols="8" class="py-0">
         <v-card-title class="pb-4 accent--text text-h6">
           Noteworthy Posts
-          <HelpTextTooltip :help-text="noteworthyCommentHelpText"/>
+          <HelpTextTooltip :help-text="noteworthyPostHelpText"/>
         </v-card-title>
       </v-col>
       <v-spacer></v-spacer>
@@ -17,7 +17,7 @@
           :view-filter="sortView" 
           :label="label"
           :view-selected="viewSelected"
-          @changeView="passViewToComments($event)">
+          @changeView="passViewToPosts($event)">
         </DropDownSelect>
       </v-col>
     </v-row>
@@ -36,20 +36,20 @@ export default {
     RelatedPosts
   },
   props: {
-    relatedComments: {
+    relatedPosts: {
       type: Object,
       required: true
     }
   },
   data: () => ({
-    noteworthyCommentHelpText: "Observe the insightful comments made by users across multiple platforms. These are determined based on three classified intents: seeking/giving advice, educational or insightful.",
+    noteworthyPostHelpText: "Observe the insightful posts made by users across multiple platforms. These are determined based on three classified intents: seeking/giving advice, educational or insightful.",
     sortView: ['Likes', 'Date'],
     label: 'Sort By',
     viewSelected: 'Likes'
   }),
   methods: {
-    passViewToComments(changedView) {
-      console.log("=== start passViewToComments() ===")
+    passViewToPosts(changedView) {
+      console.log("=== start passViewToPosts() ===")
       console.log("selectedView", changedView)
       this.viewSelected = changedView
     }
