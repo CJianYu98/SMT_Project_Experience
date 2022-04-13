@@ -94,7 +94,7 @@ export default {
       required: true
     },
     likes: {
-      type: String,
+      type: Number,
       required: true
     },
     date: {
@@ -119,7 +119,7 @@ export default {
     },
     link: {
       type: String,
-      required: true
+      required: false
     },
     img: {
       type: String,

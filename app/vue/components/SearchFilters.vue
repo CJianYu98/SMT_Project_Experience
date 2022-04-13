@@ -21,7 +21,6 @@
             item-text="name"
             item-value="symbol"
             dense
-            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
           </v-combobox>
 
@@ -40,7 +39,6 @@
             label="Enter a query!"
             solo
             dense
-            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           > 
           </v-combobox>
         </v-col>
@@ -93,7 +91,6 @@
             multiple
             outlined
             dense
-            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
 
             <template #selection="{ item }">
@@ -149,7 +146,6 @@
             multiple
             outlined
             dense
-            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
             <template #selection="{ item }">
               <span v-if="platformsSelected.indexOf(item) != 0" class="accent--text">, {{item}}</span>
@@ -202,7 +198,6 @@
             multiple
             outlined
             dense
-            @change="emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected)"
           >
             <template #selection="{ item }">
               <span v-if="emotionsSelected.indexOf(item) != 0" class="accent--text">, {{item}}</span>
@@ -252,6 +247,7 @@
             depressed
             block
             color="primary"
+            @click="emitFilterSelectionToDashboard()"
           >
             Search
           </v-btn>
@@ -342,25 +338,25 @@
         else this.tab = null
       },
 
-      search: {
-        handler(val) {
-          if (this.items.length > 0) return
-            this.isLoading = true
+      // search: {
+      //   handler(val) {
+      //     if (this.items.length > 0) return
+      //       this.isLoading = true
 
-          // Lazily load input items
-          fetch('https://api.coingecko.com/api/v3/coins/list')
-            .then(res => res.clone().json())
-            .then(res => {
-              this.items = res
-              console.log("UNDER WATCH this.items", this.items)
-            })
-            .catch(err => {
-              console.log(err)
-            })
-            .finally(() => (this.isLoading = false))
-        },
-        immediate: true
-      },
+      //     // Lazily load input items
+      //     fetch('https://api.coingecko.com/api/v3/coins/list')
+      //       .then(res => res.clone().json())
+      //       .then(res => {
+      //         this.items = res
+      //         console.log("UNDER WATCH this.items", this.items)
+      //       })
+      //       .catch(err => {
+      //         console.log(err)
+      //       })
+      //       .finally(() => (this.isLoading = false))
+      //   },
+      //   immediate: true
+      // },
 
       selectedTrendingQuery (newVal, oldVal) { // watch it
         console.log('Prop changed: ', newVal, ' | was: ', oldVal)
@@ -419,9 +415,14 @@
 
         console.log("=== end updateDates() ===")
       },
-      emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected) {
+      // emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected) {
+      //   console.log("=== START emitFilterSelectionToDashboard() ===")
+      //   this.$emit('changeFilter', [autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected])
+      //   console.log("=== END emitFilterSelectionToDashboard() ===")
+      // },
+      emitFilterSelectionToDashboard() {
         console.log("=== START emitFilterSelectionToDashboard() ===")
-        this.$emit('changeFilter', [autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected])
+        this.$emit('changeFilter', [this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected])
         console.log("=== END emitFilterSelectionToDashboard() ===")
       },
 

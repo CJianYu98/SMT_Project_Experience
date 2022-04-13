@@ -70,6 +70,10 @@ export default {
     TrendAnalysisNoComparableTrend
   },
   props: {
+    // pendingState: {
+    //   type: Boolean,
+    //   required: true
+    // },
     getCombinedStringFromIndvPlatform: {
       type: String,
       required: true

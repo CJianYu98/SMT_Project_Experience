@@ -11,6 +11,7 @@
 
     <v-row>
       <v-col cols="3.5" >
+          <!-- :pending-state="pendingState" -->
         <TrendAnalysisMetricsCard
           :selected-date-filter="selectedDateFilter" 
           :overall-stats="overallStats"
@@ -40,6 +41,10 @@ export default {
     TrendAnalysisTabs,
   },
   props: {
+    // pendingState: {
+    //   type: Boolean,
+    //   required: true
+    // },
     selectedDateFilter: {
       type: String,
       required: true

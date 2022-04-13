@@ -80,18 +80,12 @@ export default {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(
         { 
-          "endDate": "2021-04-06",
-          "numDays": 14,
-          "platforms": [
-            "facebook"
-          ],
-          "sentiments": [
-            "neutral", "negative", "positive"
-          ],
-          "emotions": [
-            "neutral", "anger", "fear", "sadness", "joy"
-          ],
-          "query": null,
+          "endDate": this.fetchEndDate,
+          "numDays": this.fetchNumDays,
+          "platforms": this.fetchPlatforms,
+          "sentiments": this.fetchSentiments,
+          "emotions": this.fetchEmotions,
+          "query": this.fetchQuery,
         }
       )
     };
@@ -976,12 +970,23 @@ export default {
     ],
     numComplaintPostsTotal: 0,
     numNoteworthyPostsTotal: 0,
+    fetchEndDate: "2021-04-06",
+    fetchNumDays: 14,
+    fetchPlatforms: ["facebook"],
+    fetchSentiments: ["neutral", "negative", "positive"],
+    fetchEmotions: ["neutral", "anger", "fear", "sadness", "joy"],
+    fetchQuery: null,
+
   }),
 
   computed: {
 
   },
-
+  // return stuff in the right format in search filters
+    // lowercase strings in array
+    // get num days
+    // get date in right format
+  
   methods: {
     getNumPostsTotal(baseCount, data) {
       // console.log("baseCount", baseCount)
@@ -1001,70 +1006,6 @@ export default {
       console.log("=== START rerenderDashboard ===")
       console.log("rerenderDashboard updatedSentiments", updatedSentiments)
 
-      const newQuery = this.updatedSentiments[0]
-
-      // const newNumDays = this.numDaysFromDateFilter.find(obj => obj.date === updatedSentiments[1]).numDays
-      // console.log("numDays", newNumDays)
-
-      const newPlatforms = this.updatedSentiments[2]
-      const newSentiments = this.updatedSentiments[3]
-      const newEmotions = this.updatedSentiments[4]
-
-      // .forEach(element => element.toLowerCase())
-
-      console.log("newQuery", newQuery)
-      // console.log("numDays", newNumDays)
-      console.log("newPlatforms", newPlatforms)
-      console.log("newSentiments", newSentiments)
-      console.log("newEmotions", newEmotions)
-
-      // const requestOptions = {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(
-      //     { 
-      //       "endDate": "2021-04-08",
-      //       "numDays": numDays,
-      //       "platforms": [
-      //         "facebook", "youtube", "reddit", "twitter"
-      //       ],
-      //       "sentiments": [
-      //         "neutral", "negative", "positive"
-      //       ],
-      //       "emotions": [
-      //         "neutral", "anger", "fear", "sadness", "joy"
-      //       ],
-      //       "query": null
-      //     }
-      //   )
-      // };
-      
-
-      // this.dateFilter = updatedSentiments[1]
-      // console.log("dateFilter", this.dateFilter)
-
-      let filterCheck = this.checkFilterSelectionToReturnFakeData(updatedSentiments)
-
-      if (filterCheck == null) {
-        filterCheck = "defaultFilters"
-      }
-
-      console.log("filterCheck", filterCheck)
-      // console.log("query", query)
-      // console.log("filterSelection", filterSelection)
-      // console.log("this.fakeData", this.fakeData)
-      // console.log("this.fakeData.filterCheck", this.fakeData[filterCheck])
-      console.log("this.fakeData[filterCheck].topFiveTopicsData", this.fakeData[filterCheck].topFiveTopicsData)
-
-      this.topFiveTopicsData = this.fakeData[filterCheck].topFiveTopicsData
-      this.overallStatsData = this.fakeData[filterCheck].overallStatsData
-      this.platformMetricsData = this.fakeData[filterCheck].platformMetricsData
-      this.keywordsWordCloudLegend = this.fakeData[filterCheck].keywordsWordCloudLegend
-      this.keywords = this.fakeData[filterCheck].keywords
-      this.complaintsKeywords = this.fakeData[filterCheck].complaintsKeywords
-      this.complaintsRelatedPosts = this.fakeData[filterCheck].complaintsRelatedPosts
-      this.medias = this.fakeData[filterCheck].medias
-      this.mediasMetrics = this.fakeData[filterCheck].mediasMetrics
 
       console.log("=== END rerenderDashboard ===")
     },
@@ -1083,63 +1024,6 @@ export default {
       this.selectedTrendingQuery = topic
       console.log("this.selectedTrendingQuery", this.selectedTrendingQuery)
       console.log("=== END passTrendingTopicsToDashboard() ===")
-    },
-
-    checkFilterSelectionToReturnFakeData(filters) {
-      console.log("=== START checkFilterSelectionToReturnFakeData ====")
-      console.log("filters", filters)
-
-      const dateSelection = filters[1]
-      const platformSelection = filters[2]
-      const sentSelection =  filters[3]
-      const emotionSelection = filters[4]
-
-      // console.log("query", query)
-      // console.log("dateSelection", dateSelection)
-      // console.log("platformSelection", platformSelection)
-      // console.log("sentSelection", sentSelection)
-      // console.log("emotionSelection", emotionSelection)
-
-      if (
-        dateSelection==="Past 7 Days" && 
-        platformSelection.length===4 && 
-        sentSelection.length===3 && 
-        emotionSelection.length===5
-      ) {
-        // console.log("inside if loop")
-        // console.log("default filters")
-        return "defaultFilters"
-      } else if (
-        dateSelection==="Custom" && 
-        platformSelection.length===4 && 
-        sentSelection.length===3 && 
-        emotionSelection.length===5
-      ) {
-        // console.log("inside else if loop")
-        return "customDate"
-      } else if (
-        dateSelection==="Custom" && 
-        platformSelection.length===4 && 
-        sentSelection.length===2 && 
-        sentSelection.includes("Negative") && 
-        sentSelection.includes("Neutral") && 
-        emotionSelection.length===5
-      ) {
-        // console.log("inside else if loop")
-        return "customDateNegativeNeutral"
-      } else if (
-        dateSelection==="Custom" && 
-        platformSelection.length===2 &&
-        platformSelection.includes("Reddit") && 
-        platformSelection.includes("Facebook") && 
-        sentSelection.length===2 && 
-        sentSelection.includes("Negative") && 
-        sentSelection.includes("Neutral") && 
-        emotionSelection.length===5
-      ) {
-        return "customDateNegativeNeutralFbReddit"
-      }
-
     },
   }
   
