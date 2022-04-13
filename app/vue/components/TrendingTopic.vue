@@ -93,10 +93,10 @@ export default {
 
 
 <style scoped>
-  .chartBox {
-    width: 800px;
-    height: 300px;
-  }
+.chartBox {
+  width: 800px;
+  height: 300px;
+}
 .trending-category {
   cursor: pointer;
 }

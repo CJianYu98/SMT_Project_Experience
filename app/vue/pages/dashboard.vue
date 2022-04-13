@@ -37,6 +37,7 @@
         <NoteworthyPosts
           :pending-state="$fetchState.pending"
           :related-posts="noteworthyPosts"
+          :noteworthy-top-topics="noteworthyTopTopics"
         />
       </v-col>
     </v-row>
@@ -245,7 +246,7 @@ export default {
         {
           // { "facebook": { "likes": [], "date": [] }, "reddit": { "likes": [], "date": [] }, "twitter": { "likes": [], "date": [] }, "youtube": { "likes": [], "date": [] } }
 
-          this.testData = data
+          // this.testData = data
           console.log("get-all-top5-complaint-posts data", data)
 
           // getting sum of posts in dictionary
@@ -308,20 +309,21 @@ export default {
     //     console.error(error);
     //   })
     
-    // await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-topics", requestOptions)
-    //   .then(response => response.json())
-    //     .then(data => 
-    //       {
-    //         // [ "others", "art", "politics", "education", "law and crime" ]
-    //         // [] if no data
+    await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-topics", requestOptions)
+      .then(response => response.json())
+        .then(data => 
+          {
+            // [ "others", "art", "politics", "education", "law and crime" ]
+            // [] if no data
   
-    //         // this.testData = data
-  
-    //       }
-    //     )
-    //   .catch((error) => {
-    //     console.error(error);
-    //   })
+            // this.testData = data
+            console.log("get-all-top5-noteworthy-topics data", data)
+            this.noteworthyTopTopics = data
+          }
+        )
+      .catch((error) => {
+        console.error(error);
+      })
 
   },
   // mounted() {
@@ -336,6 +338,7 @@ export default {
     complaintsKeywords: [],
     complaintsRelatedPosts: {},
     noteworthyPosts: {},
+    noteworthyTopTopics: [],
     keywordsWordCloudLegend: {
       negative: "#EB8159",
       neutral: "#A0D6E8",

@@ -29,6 +29,11 @@
       <PlaceholderNoDataToShow />
     </template>
     <template v-else>
+      <NoteworthyTopTopics
+        v-if="noteworthyTopTopics.length > 0"
+        :noteworthy-top-topics="noteworthyTopTopics"
+      />
+      <v-divider class="mb-2"></v-divider>
       <RelatedPosts
         :related-posts="relatedPosts"
         :view-selected="viewSelected.toLowerCase()"
@@ -40,11 +45,13 @@
 
 <script>
 import LoadingPlaceholder from './LoadingPlaceholder.vue'
+import NoteworthyTopTopics from './NoteworthyTopTopics.vue'
 import RelatedPosts from './RelatedPosts.vue'
 export default {
   components: { 
     RelatedPosts,
-    LoadingPlaceholder
+    LoadingPlaceholder,
+    NoteworthyTopTopics,
   },
   props: {
     relatedPosts: {
@@ -55,6 +62,10 @@ export default {
       type: Boolean,
       required: true
     },
+    noteworthyTopTopics: {
+      type: Array,
+      required: true
+    }
   },
   data: () => ({
     noteworthyPostHelpText: "Observe the insightful posts made by users across multiple platforms. These are determined based on three classified intents: seeking/giving advice, educational or insightful.",
