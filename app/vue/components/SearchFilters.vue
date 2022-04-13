@@ -4,7 +4,7 @@
     <v-container fluid class="px-8 mt-n2 pb-0">
       <v-row align="stretch">
         <v-col
-          cols="5"
+          cols="4"
           class="d-flex pb-0"
         >
           <v-combobox
@@ -81,8 +81,63 @@
           </v-dialog>
         </v-col>
         <v-col
-          cols="3"
+          cols="4"
           class="pb-0"
+        >
+          <v-select
+            v-if="isDashboard"
+            v-model="platformsSelected"
+            :items="platformsFilter"
+            label="Platform Filter"
+            multiple
+            outlined
+            dense
+          >
+            <template #selection="{ item }">
+              <span v-if="platformsSelected.indexOf(item) != 0" class="accent--text">, {{item}}</span>
+              <span v-else class="accent--text">{{item}}</span>
+              <span> </span>
+            </template>
+
+            <!-- small-chips -->
+          <!-- select all functionality -->
+            <!-- <template #prepend-item>
+              <v-list-item
+                ripple
+                @mousedown.prevent
+                @click="toggle"
+              >
+                <v-list-item-action>
+                  <v-icon :color="platformsSelected.length > 0 ? 'indigo darken-4' : ''">
+                    {{ platformIcon }}
+                  </v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    Select All
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider class="mt-2"></v-divider>
+            </template> -->
+
+            <!-- <template #selection="{ item }">
+              <v-chip 
+                color="accent"
+                outlined
+                class="my-1"
+                small
+              >
+                {{item}}
+              </v-chip>
+            </template> -->
+          </v-select>
+        </v-col>
+      </v-row>
+      <v-row class="mt-0">
+        <v-col
+          cols="4"
+          class="pb-0 pt-1"
         >
           <v-select
             v-model="sentimentsSelected"
@@ -121,60 +176,6 @@
               <v-divider class="mt-2"></v-divider>
             </template> -->
             
-            <!-- <template #selection="{ item }">
-              <v-chip 
-                color="accent"
-                outlined
-                class="my-1"
-                small
-              >
-                {{item}}
-              </v-chip>
-            </template> -->
-          </v-select>
-        </v-col>
-      </v-row>
-      <v-row class="mt-0">
-        <v-col
-          cols="5"
-          class="pb-0 pt-1"
-        >
-          <v-select
-            v-model="platformsSelected"
-            :items="platformsFilter"
-            label="Platform Filter"
-            multiple
-            outlined
-            dense
-          >
-            <template #selection="{ item }">
-              <span v-if="platformsSelected.indexOf(item) != 0" class="accent--text">, {{item}}</span>
-              <span v-else class="accent--text">{{item}}</span>
-              <span> </span>
-            </template>
-
-            <!-- small-chips -->
-          <!-- select all functionality -->
-            <!-- <template #prepend-item>
-              <v-list-item
-                ripple
-                @mousedown.prevent
-                @click="toggle"
-              >
-                <v-list-item-action>
-                  <v-icon :color="platformsSelected.length > 0 ? 'indigo darken-4' : ''">
-                    {{ platformIcon }}
-                  </v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>
-                    Select All
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-divider class="mt-2"></v-divider>
-            </template> -->
-
             <!-- <template #selection="{ item }">
               <v-chip 
                 color="accent"
@@ -279,7 +280,9 @@
         default: null,
       }
     },
-
+    mounted() {
+      console.log("this.$route.name", this.$route.name)
+    },
     data: () => ({
       isLoading: false,
       items: [],
@@ -330,6 +333,9 @@
       customDateRangeSelected () {
         return this.dateRange.join()
       },
+      isDashboard() {
+        return this.$route.name === 'dashboard'
+      },
     },
 
     watch: {
@@ -366,10 +372,6 @@
         this.emitFilterSelectionToDashboard(this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected)
       },
     },
-
-    mounted() {
-    },
-
     methods: {
       // select all functionality in filters, to separate according to sentiment and platforms
     //   toggle () {
