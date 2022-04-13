@@ -39,7 +39,7 @@
         :key="i"
         :index="i" 
         :topic-assigned="topic" 
-        @selectedTrendingTopicInTopics="passTrendingTopicToTopics"
+        @selectedTrendingTopicInTopics="passTrendingTopicToDashboard"
       />
     </template>
   </v-card>
@@ -82,11 +82,11 @@ export default {
     selectedTrendingTopic: "",
   }),
   methods: {
-    passTrendingTopicToTopics(topic) {
-      console.log("=== START passTrendingTopicToTopics() ===")
+    passTrendingTopicToDashboard(topic) {
+      console.log("=== START passTrendingTopicToDashboard() ===")
       console.log(topic)
-      this.$emit('selectedTrendingTopicInDashboard', topic)
-      console.log("=== END passTrendingTopicToTopics() ===")
+      this.$emit('clickQuery', topic)
+      console.log("=== END passTrendingTopicToDashboard() ===")
     }
   }
 }

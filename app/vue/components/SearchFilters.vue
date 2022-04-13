@@ -7,40 +7,16 @@
           cols="4"
           class="d-flex pb-0"
         >
-          <v-combobox
-            v-if="selectedTrendingQuery"
+          <v-text-field
             v-model="autocompleteModel"
-            :items="items"
-            :loading="isLoading"
+            outlined
             clearable
-            hide-no-data
-            hide-details
-            hide-selected
-            label="Enter a query!"
-            solo
-            item-text="name"
-            item-value="symbol"
             dense
+            label="Enter a query!"
+            class="accent--text change-query-colour"
           >
-          </v-combobox>
-
-          <v-combobox
-            v-else
-            v-model="autocompleteModel"
-            :items="items"
-            :loading="isLoading"
-            :search-input.sync="search"
-            clearable
-            hide-no-data
-            hide-details
-            hide-selected
-            item-text="name"
-            item-value="symbol"
-            label="Enter a query!"
-            solo
-            dense
-          > 
-          </v-combobox>
+            
+          </v-text-field>
         </v-col>
         <v-col
           class="d-flex pb-0"
@@ -395,12 +371,10 @@
       //   immediate: true
       // },
 
-      selectedTrendingQuery (newVal, oldVal) { // watch it
+      selectedTrendingQuery (newVal, oldVal) { 
         console.log('Prop changed: ', newVal, ' | was: ', oldVal)
         console.log("this.autocompleteModel 1", this.autocompleteModel)
-        this.updateAutoComplete(newVal)
-
-        this.emitFilterSelectionToDashboard(this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected)
+        this.autocompleteModel = newVal
       },
     },
     methods: {
@@ -448,11 +422,7 @@
 
       //   console.log("=== end updateDates() ===")
       // },
-      // emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected) {
-      //   console.log("=== START emitFilterSelectionToDashboard() ===")
-      //   this.$emit('changeFilter', [autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected])
-      //   console.log("=== END emitFilterSelectionToDashboard() ===")
-      // },
+
       emitFilterSelectionToDashboard() {
         console.log("=== START emitFilterSelectionToDashboard() ===")
 
@@ -479,23 +449,23 @@
         console.log("=== END emitFilterSelectionToDashboard() ===")
       },
 
-      updateAutoComplete(val) {
-        console.log("=== START updateAutoComplete() === ")
-        console.log("val", val)
-        // if val is found in items, update autocompletemodel variable
-        console.log("this.items", this.items)
+      // updateAutoComplete(val) {
+      //   console.log("=== START updateAutoComplete() === ")
+      //   console.log("val", val)
+      //   // if val is found in items, update autocompletemodel variable
+      //   console.log("this.items", this.items)
 
-        const checkValInAutoComplete = this.items.find(x => x.name === val)
+      //   const checkValInAutoComplete = this.items.find(x => x.name === val)
         
-        if (checkValInAutoComplete) {
-          console.log("inside if loop")
-          this.autocompleteModel = checkValInAutoComplete
-          console.log("checkValInAutoComplete", checkValInAutoComplete)
-        }
+      //   if (checkValInAutoComplete) {
+      //     console.log("inside if loop")
+      //     this.autocompleteModel = checkValInAutoComplete
+      //     console.log("checkValInAutoComplete", checkValInAutoComplete)
+      //   }
         
-        console.log("this.autocompleteModel 2", this.autocompleteModel)
-        console.log("=== END updateAutoComplete() === ")
-      },
+      //   console.log("this.autocompleteModel 2", this.autocompleteModel)
+      //   console.log("=== END updateAutoComplete() === ")
+      // },
 
       openDialogueIfCustomSelected(dateSelected) {
         if (dateSelected === 'Custom') {
@@ -518,10 +488,12 @@
 </style>
 
 <style scoped>
-  ::v-deep .custom-dialog-datepicker {
-    position: absolute;
-    top: 10%;
-    left: 19%;
-  }
-
+::v-deep .custom-dialog-datepicker {
+  position: absolute;
+  top: 10%;
+  left: 19%;
+}
+::v-deep .change-query-colour input {
+  color: #604AF0 !important;
+}
 </style>

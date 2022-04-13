@@ -9,7 +9,7 @@
           :top-five-topics="topFiveTopicsData" 
           :keywords-word-cloud-legend="keywordsWordCloudLegend"
           :trending-topics-emotions-legend="trendingTopicsEmotionsLegend"
-          @clickQuery="updateDashboardWithQuery" @selectedTrendingTopicInDashboard="passTrendingTopicsToDashboard" 
+          @clickQuery="updateDashboardWithQuery"
         />
       </v-col>
       <v-col cols="8">
@@ -1022,17 +1022,14 @@ export default {
     updateDashboardWithQuery(query) {
       console.log("=== START updateDashboardWithQuery() ===")
       console.log(query)
-      // need to call multiple apis to call with query
-      // should be done from the main dashboard page
-      console.log("=== END updateDashboardWithQuery() ===")
-    },
 
-    passTrendingTopicsToDashboard(topic) {
-      console.log("=== START passTrendingTopicsToDashboard() ===")
-      console.log(topic)
-      this.selectedTrendingQuery = topic
-      console.log("this.selectedTrendingQuery", this.selectedTrendingQuery)
-      console.log("=== END passTrendingTopicsToDashboard() ===")
+      this.fetchQuery = query
+      this.selectedTrendingQuery = query
+      console.log("this.fetchQuery", this.fetchQuery)
+
+      this.$fetch()
+
+      console.log("=== END updateDashboardWithQuery() ===")
     },
   }
   
