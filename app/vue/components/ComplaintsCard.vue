@@ -10,7 +10,10 @@
         Top Complaints
         <HelpTextTooltip :help-text="complaintsWordCloudHelpText"/>
       </v-card-title>
-      <template v-if="complaintsWordCloud.length > 0">
+      <template v-if="pendingState">
+        <LoadingPlaceholder/>
+      </template>
+      <template v-else-if="complaintsWordCloud.length > 0">
         <ComplaintsWordCloud  :complaints-word-cloud="complaintsWordCloud"/>
       </template>
       <template v-else>
@@ -28,7 +31,7 @@
         </v-col>
         <v-col cols="6" class="pb-0">
           <DropDownSelect 
-            v-if="!('platform' in relatedPosts)"
+            v-if="!('platform' in relatedPosts) && !pendingState"
             :view-filter="sortView" 
             :label="label"
             :view-selected="viewSelected"
@@ -36,7 +39,10 @@
           </DropDownSelect>
         </v-col>
       </v-row>
-      <template v-if="'platform' in relatedPosts">
+      <template v-if="pendingState">
+        <LoadingPlaceholder/>
+      </template>
+      <template v-else-if="'platform' in relatedPosts">
         <PlaceholderNoDataToShow />
       </template>
       <template v-else>
@@ -58,6 +64,7 @@ import ComplaintsWordCloud from './ComplaintsWordCloud.vue'
 import DropDownSelect from './DropDownSelect.vue'
 import HelpTextTooltip from './HelpTextTooltip.vue'
 import PlaceholderNoDataToShow from './PlaceholderNoDataToShow.vue'
+import LoadingPlaceholder from './LoadingPlaceholder.vue'
 export default {
   components: { 
     ComplaintsWordCloud, 
@@ -65,6 +72,7 @@ export default {
     HelpTextTooltip,
     DropDownSelect,
     PlaceholderNoDataToShow,
+    LoadingPlaceholder,
   },
 
   props: {
@@ -74,6 +82,10 @@ export default {
     },
     relatedPosts: {
       type: Object,
+      required: true
+    },
+    pendingState: {
+      type: Boolean,
       required: true
     },
   },

@@ -14,7 +14,7 @@
       <v-spacer></v-spacer>
       <v-col cols="3" class="py-0">
         <DropDownSelect
-          v-if="!('platform' in relatedPosts)"
+          v-if="!('platform' in relatedPosts) && !pendingState"
           :view-filter="sortView" 
           :label="label"
           :view-selected="viewSelected"
@@ -22,7 +22,10 @@
         </DropDownSelect>
       </v-col>
     </v-row>
-    <template v-if="'platform' in relatedPosts">
+    <template v-if="pendingState">
+      <LoadingPlaceholder/>
+    </template>
+    <template v-else-if="'platform' in relatedPosts">
       <PlaceholderNoDataToShow />
     </template>
     <template v-else>
@@ -36,16 +39,22 @@
 
 
 <script>
+import LoadingPlaceholder from './LoadingPlaceholder.vue'
 import RelatedPosts from './RelatedPosts.vue'
 export default {
   components: { 
-    RelatedPosts
+    RelatedPosts,
+    LoadingPlaceholder
   },
   props: {
     relatedPosts: {
       type: Object,
       required: true
-    }
+    },
+    pendingState: {
+      type: Boolean,
+      required: true
+    },
   },
   data: () => ({
     noteworthyPostHelpText: "Observe the insightful posts made by users across multiple platforms. These are determined based on three classified intents: seeking/giving advice, educational or insightful.",

@@ -9,7 +9,7 @@
       <HelpTextTooltip :help-text="trendingTopicsHelpText"/>
     </v-card-title>
     <template v-if="pendingState">
-      <PlaceholderNoDataToShow/>
+      <LoadingPlaceholder/>
     </template>
     <template v-else-if="topFiveTopics.length === 0">
       <PlaceholderNoDataToShow/>
@@ -50,6 +50,7 @@ import HelpTextTooltip from './HelpTextTooltip.vue'
 import TrendingTopic from './TrendingTopic.vue'
 import GraphLegend from './GraphLegend.vue'
 import PlaceholderNoDataToShow from './PlaceholderNoDataToShow.vue'
+import LoadingPlaceholder from './LoadingPlaceholder.vue'
 
 export default {
   components: { 
@@ -57,6 +58,7 @@ export default {
     TrendingTopic,
     GraphLegend,
     PlaceholderNoDataToShow,
+    LoadingPlaceholder,
   },
   props: {
     topFiveTopics: {

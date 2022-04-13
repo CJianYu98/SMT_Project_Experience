@@ -1,7 +1,6 @@
 <template>
   <div class="mb-15">
     <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
-    <!--  align="stretch" in v-row works with d-flex in v-col -->
     <!-- <p>{{testData}}</p> -->
     <v-row>
       <v-col cols="4">
@@ -14,8 +13,8 @@
         />
       </v-col>
       <v-col cols="8">
-          <!-- :pending-state="$fetchState.pending" -->
         <TrendAnalysis
+          :pending-state="$fetchState.pending"
           :overall-stats="overallStatsData"
           :platform-metrics="platformMetrics"
           :all-trend="allTrend"
@@ -29,12 +28,14 @@
     <v-row>
       <v-col cols="4">
         <KeywordCard
+          :pending-state="$fetchState.pending"
           :keywords-word-cloud="keywords" 
           :keywords-word-cloud-legend="keywordsWordCloudLegend"
         />
       </v-col>
       <v-col cols="8">
         <NoteworthyPosts
+          :pending-state="$fetchState.pending"
           :related-posts="noteworthyPosts"
         />
       </v-col>
@@ -44,7 +45,8 @@
         <PlaceholderCard/>
       </v-col>
       <v-col cols="8">
-        <ComplaintsCard 
+        <ComplaintsCard
+          :pending-state="$fetchState.pending"
           :complaints-word-cloud="complaintsKeywords"
           :related-posts="complaintsRelatedPosts"
         />
