@@ -1,8 +1,9 @@
 <template>
   <v-app>
+    <!-- <nuxt keep-alive/> -->
     <NavBar/>
     <v-main :style="{background: $vuetify.theme.themes[theme].background}" class="mt-0">
-      <Nuxt/>
+      <Nuxt keep-alive/>
     </v-main>
 
     <!-- <v-navigation-drawer
