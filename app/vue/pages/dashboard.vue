@@ -347,7 +347,6 @@ export default {
       sadness: "#477BD1",
     },
     selectedTrendingQuery: "",
-
     medias: ['all','facebook','reddit','twitter','youtube'],
     mediasMetrics: { 
       all: {
@@ -962,33 +961,21 @@ export default {
     },
     dateFilter: 'Past 7 Days',
     testData: {},
-    numDaysFromDateFilter: [
-      {date: 'Yesterday', numDays: 1}, 
-      {date: 'Past 7 Days', numDays: 7}, 
-      {date: 'Past 14 Days', numDays: 14}, 
-      {date: 'Past 30 Days', numDays: 30}, 
-      {date: 'Past 6 Months', numDays: 180}, 
-      {date: 'Past Year', numDays: 365}
-    ],
     numComplaintPostsTotal: 0,
     numNoteworthyPostsTotal: 0,
+    fetchQuery: null,
     fetchEndDate: "2021-04-06",
     fetchNumDays: 14,
     fetchPlatforms: ["facebook"],
     fetchSentiments: ["neutral", "negative", "positive"],
     fetchEmotions: ["neutral", "anger", "fear", "sadness", "joy"],
-    fetchQuery: null,
 
   }),
 
   computed: {
 
   },
-  // return stuff in the right format in search filters
-    // lowercase strings in array
-    // get num days
-    // get date in right format
-  
+ 
   methods: {
     getNumPostsTotal(baseCount, data) {
       // console.log("baseCount", baseCount)
@@ -1004,12 +991,27 @@ export default {
       return baseCount
     },
     rerenderDashboard(updatedSentiments) {
-      // code to rerender dashboard when the filters are selected, by passing them to the api
-      console.log("=== START rerenderDashboard ===")
-      console.log("rerenderDashboard updatedSentiments", updatedSentiments)
+      // console.log("=== START rerenderDashboard ===")
+      // console.log("rerenderDashboard updatedSentiments", updatedSentiments)
 
+      this.fetchQuery = updatedSentiments[0]
+      this.fetchEndDate = updatedSentiments[1]
+      this.fetchNumDays = updatedSentiments[2]
+      this.fetchPlatforms = updatedSentiments[3]
+      this.fetchSentiments = updatedSentiments[4]
+      this.fetchEmotions = updatedSentiments[5]
+      this.dateFilter = updatedSentiments[6]
 
-      console.log("=== END rerenderDashboard ===")
+      // console.log("this.fetchQuery", this.fetchQuery)
+      // console.log("this.fetchEndDate", this.fetchEndDate)
+      // console.log("this.fetchNumDays", this.fetchNumDays)
+      // console.log("this.fetchPlatforms", this.fetchPlatforms)
+      // console.log("this.fetchSentiments", this.fetchSentiments)
+      // console.log("this.fetchEmotions", this.fetchEmotions)
+
+      this.$fetch()
+
+      // console.log("=== END rerenderDashboard ===")
     },
 
     updateDashboardWithQuery(query) {

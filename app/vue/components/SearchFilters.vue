@@ -74,8 +74,8 @@
               no-title 
               range 
               scrollable
-              @change="updateDatesToPassToDashboard()" 
             >
+              <!-- @change="updateDatesToPassToDashboard()"  -->
               <v-spacer></v-spacer>
             </v-date-picker>
           </v-dialog>
@@ -295,6 +295,14 @@
       dateRange: ['2021-02-01', '2022-01-31'],
       dateSelected: "Past 7 Days",
       dateFilter: [{date: 'All'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom'}],
+      numDaysFromDateFilter: [
+        {date: 'Yesterday', numDays: 1}, 
+        {date: 'Past 7 Days', numDays: 7}, 
+        {date: 'Past 14 Days', numDays: 14}, 
+        {date: 'Past 30 Days', numDays: 30}, 
+        {date: 'Past 6 Months', numDays: 180}, 
+        {date: 'Past Year', numDays: 365}
+      ],
       emotionsSelected: ["Anger", "Fear", "Joy", "Neutral", "Sadness"],
       emotionsFilter: ["Anger", "Fear", "Joy", "Neutral", "Sadness"],
       dialog: false,
@@ -336,6 +344,29 @@
       isDashboard() {
         return this.$route.name === 'dashboard'
       },
+      getDateStringFromNonCustomDate() {
+        let endDate = new Date()
+        const offset = endDate.getTimezoneOffset()
+        endDate = new Date(endDate.getTime() - (offset*60*1000))
+        return endDate.toISOString().split('T')[0]
+      },
+      numDaysBetweenCustomDate() {
+      console.log("=== start numDaysBetweenCustomDate() ===")
+
+      const [startYear, startMonth, startDay] = this.dateRange[0].split("-")
+      const [endYear, endMonth, endDay] = this.dateRange[1].split("-")
+
+      const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+      const customStartDate = new Date(startYear, startMonth-1, startDay);
+      const customEndDate = new Date(endYear, endMonth-1, endDay);
+
+      // console.log("this.customStartDate", this.customStartDate)
+      // console.log("this.customEndDate", this.customEndDate)
+
+      const diffDays = (Math.round(Math.abs((customStartDate - customEndDate) / oneDay))) + 1
+      console.log("diffDays", diffDays)
+      return diffDays
+    }
     },
 
     watch: {
@@ -408,15 +439,15 @@
 
         return combinedDates
       },
-      updateDatesToPassToDashboard() {
-        console.log("=== start updateDates() ===")
+      // updateDatesToPassToDashboard() {
+      //   console.log("=== start updateDates() ===")
 
-        console.log("computedCustomDateFormatted", this.computedCustomDateFormatted)
+      //   console.log("computedCustomDateFormatted", this.computedCustomDateFormatted)
 
-        this.emitFilterSelectionToDashboard(this.autocompleteModel, this.computedCustomDateFormatted, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected)
+      //   this.emitFilterSelectionToDashboard(this.autocompleteModel, this.computedCustomDateFormatted, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected)
 
-        console.log("=== end updateDates() ===")
-      },
+      //   console.log("=== end updateDates() ===")
+      // },
       // emitFilterSelectionToDashboard(autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected) {
       //   console.log("=== START emitFilterSelectionToDashboard() ===")
       //   this.$emit('changeFilter', [autocompleteModel, dateSelected, platformsSelected, sentimentsSelected, emotionsSelected])
@@ -424,7 +455,27 @@
       // },
       emitFilterSelectionToDashboard() {
         console.log("=== START emitFilterSelectionToDashboard() ===")
-        this.$emit('changeFilter', [this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected])
+
+        const formattedPlatformsSelected = this.platformsSelected.map(v => v.toLowerCase())
+        const formattedSentimentsSelected = this.sentimentsSelected.map(v => v.toLowerCase())
+        const formattedEmotionsSelected = this.emotionsSelected.map(v => v.toLowerCase())
+        let formattedDateSelected = ""
+        let numDays = 0
+        let trendHoverDate = ""
+
+        if (this.dateSelected === 'Custom') {
+          console.log("inside if loop, custom date selected")
+          formattedDateSelected = this.dateRange[1]
+          numDays = this.numDaysBetweenCustomDate
+          trendHoverDate = this.dateRange
+        } else {
+          formattedDateSelected = this.getDateStringFromNonCustomDate
+          numDays = this.numDaysFromDateFilter.find(obj => obj.date === this.dateSelected).numDays
+          trendHoverDate = this.dateSelected
+        }
+        console.log("trendHoverDate", trendHoverDate)
+        this.$emit('changeFilter', [this.autocompleteModel, formattedDateSelected, numDays, formattedPlatformsSelected, formattedSentimentsSelected, formattedEmotionsSelected, trendHoverDate])
+        
         console.log("=== END emitFilterSelectionToDashboard() ===")
       },
 
@@ -449,10 +500,11 @@
       openDialogueIfCustomSelected(dateSelected) {
         if (dateSelected === 'Custom') {
           this.dialog = true
-          this.emitFilterSelectionToDashboard(this.autocompleteModel, this.computedCustomDateFormatted, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
-        } else {
-          this.emitFilterSelectionToDashboard(this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
-        }
+          // this.emitFilterSelectionToDashboard(this.autocompleteModel, this.computedCustomDateFormatted, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
+        } 
+        // else {
+        //   this.emitFilterSelectionToDashboard(this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
+        // }
       }
     },
 
