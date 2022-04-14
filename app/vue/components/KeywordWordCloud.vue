@@ -133,14 +133,14 @@ export default {
             .data(d.srcElement.__data__.frequency)
             .enter().append('text')
             .attr('x', d.screenX )
-            .attr('y', d.screenY - 300)
+            .attr('y', d.screenY - 200)
             // .attr('y', function(title, i) {
             //   return (base - i*14);
             // })
             .attr('text-anchor', 'middle')
             .attr('fill', '#604AF0')
             .attr('font-weight', 'bolder')
-            .text(function() { return d.srcElement.__data__.text + ' has ' + d.srcElement.__data__.frequency + ' mentions'; });
+            .text(function() { return 'The keyword "' + d.srcElement.__data__.text + '" has ' + d.srcElement.__data__.frequency + ' mentions'; });
 
         const bbox = group.node().getBBox();
         const bboxPadding = 5;
@@ -196,7 +196,7 @@ export default {
 
             layout = cloud()
               .size([width, height])
-              .words(val.map(function(d) { return {text: d.word, size:d.count, sentiment:d.sentiment, frequency: d.count}; }))
+              .words(val.map(function(d) { return {text: d.word, size:d.count, sentiment:d.sentiment, frequency:d.count.toString()}; }))
               .padding(5)        // space between words
               .rotate(function() { return ~~(Math.random() * 2) * 90; })
               .fontSize(function(d) { return d.size; })      // font size of words

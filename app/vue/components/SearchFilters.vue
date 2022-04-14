@@ -237,6 +237,7 @@
             depressed
             block
             color="accent"
+            @click="resetSelections()"
           >
             Reset
           </v-btn>
@@ -386,6 +387,21 @@
         // console.log("combinedDates", combinedDates
 
         return combinedDates
+      },
+
+      resetSelections() {
+        // console.log("=== START resetSelections() ")
+
+        this.autocompleteModel = null
+        this.dateSelected = "Past 7 Days"
+        this.emotionsSelected = this.emotionsFilter
+        this.sentimentsSelected = this.sentimentsFilter
+
+        if (this.$route.name === "dashboard") {
+          this.platformsSelected = this.platformsFilter
+        }
+
+        // console.log("=== END resetSelections() ")
       },
 
       emitFilterSelectionToDashboard() {

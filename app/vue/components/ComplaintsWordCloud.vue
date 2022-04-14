@@ -14,7 +14,6 @@ export default {
     }
   },
   data: () => ({
-    cloudSvgTest: {hey: "test"}
   }),
   computed: {
     
@@ -68,9 +67,6 @@ export default {
 
             // cloud.attr("transform", "translate(" + cloud.size()[0] / 2 + "," + cloud.size()[1] / 2 + ")")
             // console.log("cloudSvg -1", cloudSvg)
-            // console.log("this.cloudSvg 1", this.cloudSvgTest)
-            // // this.cloudSvgTest = cloudSvg
-            // console.log("this.cloudSvg 2", this.cloudSvgTest)
 
             cloudSvg.enter()
               .append("text")
@@ -91,11 +87,11 @@ export default {
 
             // Exiting words
             cloudSvg.exit()
-            .transition()
-                .duration(200)
-                .style('fill-opacity', 1e-6)
-                .attr('font-size', 1)
-                .remove();
+              .transition()
+              .duration(200)
+              .style('fill-opacity', 1e-6)
+              .attr('font-size', 1)
+              .remove();
 
             // console.log("cloudSvg", cloudSvg)
             // console.log("this.cloudSvg 0", this.cloudSvg)
@@ -108,6 +104,8 @@ export default {
         // console.log("=== START handleMouseOver() ===")
 
         // console.log("d inside mouseover", d)
+        // console.log("d.srcElement.__data__", d.srcElement.__data__)
+        // console.log("d.srcElement.__data__.text", d.srcElement.__data__.text)
         // console.log("d.srcElement.__data__.frequency", d.srcElement.__data__.frequency)
 
 
@@ -123,15 +121,12 @@ export default {
         group.selectAll('text')
             .data(d.srcElement.__data__.frequency)
             .enter().append('text')
-            .attr('x', d.screenX - 420)
-            .attr('y', d.screenY - 300)
-            // .attr('y', function(title, i) {
-            //   return (base - i*14);
-            // })
+            .attr('x', d.screenX - 420) 
+            .attr('y', d.screenY - 300) 
             .attr('text-anchor', 'middle')
             .attr('fill', '#604AF0')
             .attr('font-weight', 'bolder')
-            .text(function() { return d.srcElement.__data__.text + ' has ' + d.srcElement.__data__.frequency + ' mentions'; });
+            .text(function() { return 'The keyword "' + d.srcElement.__data__.text + '" has ' + d.srcElement.__data__.frequency + ' mentions'; });
 
         const bbox = group.node().getBBox();
         const bboxPadding = 5;
@@ -185,7 +180,7 @@ export default {
 
             layout = cloud()
               .size([width, height])
-              .words(val.map(function(d) { return {text: d.word, size:d.count, sentiment:d.sentiment, frequency:d.count}; }))
+              .words(val.map(function(d) { return {text: d.word, size:d.count, sentiment:d.sentiment, frequency:d.count.toString()}; }))
               .padding(5)        // space between words
               .rotate(function() { return ~~(Math.random() * 2) * 90; })
               .fontSize(function(d) { return d.size; })      // font size of words
