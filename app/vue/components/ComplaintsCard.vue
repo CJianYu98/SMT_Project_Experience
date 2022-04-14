@@ -10,30 +10,47 @@
         Top Complaints
         <HelpTextTooltip :help-text="complaintsWordCloudHelpText"/>
       </v-card-title>
-      <ComplaintsWordCloud  :complaints-word-cloud="complaintsWordCloud"/>
+      <template v-if="pendingState">
+        <LoadingPlaceholder/>
+      </template>
+      <template v-else-if="complaintsWordCloud.length > 0">
+        <ComplaintsWordCloud  :complaints-word-cloud="complaintsWordCloud"/>
+      </template>
+      <template v-else>
+        <PlaceholderNoDataToShow />
+      </template>
     </v-col>
     <v-divider vertical></v-divider>
     <v-col cols="6">
       <v-row>
-        <v-col cols="8">
+        <v-col cols="6" class="pb-0">
           <v-card-title class="pb-4 accent--text text-h6">
             Related Posts
-            <HelpTextTooltip :help-text="complaintsCommentsHelpText"/>
+            <HelpTextTooltip :help-text="complaintsPostsHelpText"/>
           </v-card-title>
         </v-col>
-        <v-col>
+        <v-col cols="6" class="pb-0">
           <DropDownSelect 
+            v-if="!('platform' in relatedPosts) && !pendingState"
             :view-filter="sortView" 
             :label="label"
             :view-selected="viewSelected"
-            @changeView="passViewToComments($event)">
+            @changeView="passViewToPosts($event)">
           </DropDownSelect>
         </v-col>
       </v-row>
-      <ComplaintsRelatedComments 
-        :related-comments="relatedComments"
-        :view-selected="viewSelected.toLowerCase()"
-      />
+      <template v-if="pendingState">
+        <LoadingPlaceholder/>
+      </template>
+      <template v-else-if="'platform' in relatedPosts">
+        <PlaceholderNoDataToShow />
+      </template>
+      <template v-else>
+        <ComplaintsRelatedPosts 
+          :related-posts="relatedPosts"
+          :view-selected="viewSelected.toLowerCase()"
+        />
+      </template>
     </v-col>
   </v-row>
     
@@ -42,16 +59,20 @@
 </template>
 
 <script>
-import ComplaintsRelatedComments from './RelatedPosts.vue'
+import ComplaintsRelatedPosts from './RelatedPosts.vue'
 import ComplaintsWordCloud from './ComplaintsWordCloud.vue'
 import DropDownSelect from './DropDownSelect.vue'
 import HelpTextTooltip from './HelpTextTooltip.vue'
+import PlaceholderNoDataToShow from './PlaceholderNoDataToShow.vue'
+import LoadingPlaceholder from './LoadingPlaceholder.vue'
 export default {
   components: { 
     ComplaintsWordCloud, 
-    ComplaintsRelatedComments, 
+    ComplaintsRelatedPosts, 
     HelpTextTooltip,
     DropDownSelect,
+    PlaceholderNoDataToShow,
+    LoadingPlaceholder,
   },
 
   props: {
@@ -59,22 +80,26 @@ export default {
       type: Array,
       required: true
     },
-    relatedComments: {
+    relatedPosts: {
       type: Object,
+      required: true
+    },
+    pendingState: {
+      type: Boolean,
       required: true
     },
   },
 
   data: () => ({
     complaintsWordCloudHelpText: "Observe the most common keywords related to complaints mentioned across the selected time period and platform(s).",
-    complaintsCommentsHelpText: "Study the most common complaints, or, if a complaint keyword has been selected, the comments related to that complaint. Words highlighted in red are indicative of the negative sentiment.",
+    complaintsPostsHelpText: "Study the most common complaints, or, if a complaint keyword has been selected, the posts related to that complaint. Words highlighted in red are indicative of the negative sentiment.",
     sortView: ['Likes', 'Date'],
     label: 'Sort By',
     viewSelected: 'Likes'
   }),
   methods: {
-    passViewToComments(changedView) {
-      console.log("=== start passViewToComments() ===")
+    passViewToPosts(changedView) {
+      console.log("=== start passViewToPosts() ===")
       console.log("selectedView", changedView)
       this.viewSelected = changedView
     }

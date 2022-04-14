@@ -46,7 +46,8 @@
               </div>
             <TrendAnalysisUpwardTrend v-else-if="allTrend.trend > 0" :percentage-increase="allTrend.trend"/>
             <TrendAnalysisDownwardTrend v-else-if="allTrend.trend < 0" :percentage-decrease="allTrend.trend"/>
-            <TrendAnalysisNoTrend v-else/>
+            <TrendAnalysisNoTrend v-else-if="allTrend.trend === 0"/>
+            <TrendAnalysisNoComparableTrend v-else :tooltipMsg="`no data found from previous data range to compare trend`"/>
           </td>
           <td>{{ overallStats.likes.toLocaleString() }}</td>              
         </tr> 
@@ -58,15 +59,21 @@
 
 <script>
 import TrendAnalysisDownwardTrend from './TrendAnalysisDownwardTrend.vue'
+import TrendAnalysisNoComparableTrend from './TrendAnalysisNoComparableTrend.vue'
 import TrendAnalysisNoTrend from './TrendAnalysisNoTrend.vue'
 import TrendAnalysisUpwardTrend from './TrendAnalysisUpwardTrend.vue'
 export default {
   components: { 
     TrendAnalysisDownwardTrend, 
     TrendAnalysisUpwardTrend,
-    TrendAnalysisNoTrend 
+    TrendAnalysisNoTrend,
+    TrendAnalysisNoComparableTrend
   },
   props: {
+    // pendingState: {
+    //   type: Boolean,
+    //   required: true
+    // },
     getCombinedStringFromIndvPlatform: {
       type: String,
       required: true

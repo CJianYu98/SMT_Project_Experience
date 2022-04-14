@@ -8,33 +8,40 @@
       Trending Topics
       <HelpTextTooltip :help-text="trendingTopicsHelpText"/>
     </v-card-title>
-    <v-row class="mx-1">
+    <template v-if="pendingState">
+      <LoadingPlaceholder/>
+    </template>
+    <template v-else-if="topFiveTopics.length === 0">
+      <PlaceholderNoDataToShow/>
+    </template>
+    <template v-else>
+      <v-row class="mx-1">
       <!-- <v-spacer></v-spacer> -->
-      <v-col cols="6" class="pt-0">
-        <GraphLegend 
-          :graph-legend="keywordsWordCloudLegend"
-          type="sentiment"
-        />
-      </v-col>
-      <!-- <v-spacer></v-spacer> -->
+        <v-col cols="6" class="pt-0">
+          <GraphLegend 
+            :graph-legend="keywordsWordCloudLegend"
+            type="sentiment"
+          />
+        </v-col>
+        <!-- <v-spacer></v-spacer> -->
 
-      <v-col cols="6" class="pt-0">
-        <GraphLegend
-          :graph-legend="trendingTopicsEmotionsLegend"
-          type="emotion"
-        />
-      </v-col>
-      <!-- <v-spacer></v-spacer> -->
-    </v-row>
-    
-    <TrendingTopic 
-      v-for="(topic, i) in topFiveTopics" 
-      :key="i"
-      :index="i" 
-      :topic-assigned="topic" 
-      @selectedTrendingTopicInTopics="passTrendingTopicToTopics"
-    />
-    
+        <v-col cols="6" class="pt-0">
+          <GraphLegend
+            :graph-legend="trendingTopicsEmotionsLegend"
+            type="emotion"
+          />
+        </v-col>
+        <!-- <v-spacer></v-spacer> -->
+      </v-row>
+      
+      <TrendingTopic 
+        v-for="(topic, i) in topFiveTopics" 
+        :key="i"
+        :index="i" 
+        :topic-assigned="topic" 
+        @selectedTrendingTopicInTopics="passTrendingTopicToDashboard"
+      />
+    </template>
   </v-card>
 </template>
 
@@ -42,12 +49,16 @@
 import HelpTextTooltip from './HelpTextTooltip.vue'
 import TrendingTopic from './TrendingTopic.vue'
 import GraphLegend from './GraphLegend.vue'
+import PlaceholderNoDataToShow from './PlaceholderNoDataToShow.vue'
+import LoadingPlaceholder from './LoadingPlaceholder.vue'
 
 export default {
   components: { 
     HelpTextTooltip,
     TrendingTopic,
     GraphLegend,
+    PlaceholderNoDataToShow,
+    LoadingPlaceholder,
   },
   props: {
     topFiveTopics: {
@@ -61,17 +72,21 @@ export default {
       type: Object,
       required: true
     },
+    pendingState: {
+      type: Boolean,
+      required: true
+    },
   },
   data: () => ({
     trendingTopicsHelpText: "Study the 5 most popular topics out of 13 topics, associated sentiment and emotion analysis, number of mentions (posts and comments) related to the topic, and top 3 keywords associated with the topic.",
     selectedTrendingTopic: "",
   }),
   methods: {
-    passTrendingTopicToTopics(topic) {
-      console.log("=== START passTrendingTopicToTopics() ===")
+    passTrendingTopicToDashboard(topic) {
+      console.log("=== START passTrendingTopicToDashboard() ===")
       console.log(topic)
-      this.$emit('selectedTrendingTopicInDashboard', topic)
-      console.log("=== END passTrendingTopicToTopics() ===")
+      this.$emit('clickQuery', topic)
+      console.log("=== END passTrendingTopicToDashboard() ===")
     }
   }
 }

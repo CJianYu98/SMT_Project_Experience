@@ -3,8 +3,8 @@
     <template v-slot:default>
       <thead class="deep-purple">
         <tr>
-          <th class="white--text text-center"></th>
-          <th class="white--text text-center">Mentions</th>
+          <th class="white--text text-center px-0"></th>
+          <th class="white--text text-center px-0">Mentions</th>
           <!-- <th class="white--text text-center">Trend</th> -->
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
@@ -44,34 +44,16 @@
               class="font-weight-medium"
               v-if="selectedDateFilter === 'All'"
             >
-              <v-img
-                  max-height="20"
-                  max-width="20"
-                  :src="`/dash.png`"
-                  class="mx-auto"
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-img>
+              <span>━</span>
             </div>
             <TrendAnalysisUpwardTrend v-else-if="platformTrend[platform]['trend'] > 0" :percentage-increase="platformTrend[platform]['trend']"/>
             <TrendAnalysisDownwardTrend v-else-if="platformTrend[platform]['trend'] < 0" :percentage-decrease="platformTrend[platform]['trend']"/>
-            <TrendAnalysisNoTrend v-else/>
+            <TrendAnalysisNoTrend v-else-if="platformTrend[platform]['trend'] === 0"/>
+            <TrendAnalysisNoComparableTrend v-else/>
           </td>
           <td>
             <template v-if="data.emotion == null">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on, attrs }">
-                  <v-img
-                  max-height="20"
-                  max-width="20"
-                  :src="`/dash.png`"
-                  class="mx-auto"
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-img>
-              </template>
-              <span>no emotion data</span>
-            </v-tooltip>
+              <TrendAnalysisNoComparableTrend :tooltipMsg="`no emotion data`"/>
             </template>
             <template v-else>
             <v-tooltip bottom>
@@ -98,6 +80,7 @@
 
 <script>
 import TrendAnalysisDownwardTrend from './TrendAnalysisDownwardTrend.vue'
+import TrendAnalysisNoComparableTrend from './TrendAnalysisNoComparableTrend.vue'
 import TrendAnalysisNoTrend from './TrendAnalysisNoTrend.vue'
 import TrendAnalysisUpwardTrend from './TrendAnalysisUpwardTrend.vue'
 export default {
@@ -105,8 +88,13 @@ export default {
     TrendAnalysisDownwardTrend, 
     TrendAnalysisUpwardTrend,
     TrendAnalysisNoTrend,
+    TrendAnalysisNoComparableTrend,
   },
   props: {
+    // pendingState: {
+    //   type: Boolean,
+    //   required: true
+    // },
     selectedDateFilter: {
       type: String,
       required: true

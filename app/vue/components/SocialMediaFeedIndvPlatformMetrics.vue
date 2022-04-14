@@ -1,23 +1,43 @@
 <template>
   <v-container fluid class="px-0 py-0">
-    <v-img
+    <v-row class="d-flex align-center">
+      <v-col cols="5" class="pr-0 py-0">
+        <v-img
           max-height="40"
           contain
-          :src="`/${platform.name}_icon.png`"
+          :src="`/${platformString}_icon.png`"
+          :alt="`${platformString} icon`"
           class="mx-auto"
         ></v-img>
-          <!-- :src="`/${platform}_icon.png`"
-          :alt="`${platform} icon`" -->
-
-        <p class="mb-1 accent--text text-h6 text-center">
-          {{ platform.name.toUpperCase() }}
+        <p :class="`${platformString}--text mt-2 mb-1 text-h6 text-center`">
+            {{ platformString.toUpperCase() }}
         </p>
-        <p class="mb-0 primary--text text-h5 text-center">
-          {{ platform.statistics.toLocaleString() }}
+      </v-col>
+      <v-col cols="6" class="pl-0 py-0">
+        <p class="mb-0 primary--text text-h5 text-center pt-6">
+          {{ platformAllData.mentions.toLocaleString() }}
         </p>
-        <p class="accent--text text-h7 text-center">
-          {{ platform.description }}
+        <p class="accent--text text-h7 text-center font-weight-medium">
+          mentions
         </p>
+      </v-col>
+    </v-row>
+    <v-row class="mb-2">
+      <v-col cols="11" class="py-0">
+        <TrendingTopicSentimentBarChart
+          :trending-topic-sentiment="platformAllData.sentiment"
+          :sentiment-graph-id="'sentiment'+platformString" 
+        />
+      </v-col>
+    </v-row>
+    <v-row class="mb-1">
+      <v-col cols="11" class="py-0">
+        <TrendingTopicSentimentBarChart 
+          :trending-topic-sentiment="platformAllData.emotions" 
+          :sentiment-graph-id="'emotion'+platformString"
+        />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -25,8 +45,12 @@
 <script>
 export default {
   props: {
-    platform: {
+    platformAllData: {
       type: Object,
+      required: true,
+    },
+    platformString: {
+      type: String,
       required: true,
     },
   },

@@ -9,27 +9,33 @@
       <HelpTextTooltip :help-text="trendingTopicsHelpText"/>
     </v-card-title>
 
-    <v-row>
-      <v-col cols="3.5" >
-        <TrendAnalysisMetricsCard
-          :selected-date-filter="selectedDateFilter" 
-          :overall-stats="overallStats"
-          :all-trend="allTrend"
-          :platform-metrics="platformMetrics"
-          :platform-trend="platformTrend"/>
-      </v-col>
-      <v-col cols="" class="mr-7">
-        <TrendAnalysisTabs
-          :medias="medias"
-          :mediasMetrics="mediasMetrics"
-        />
-      </v-col>
-    </v-row>
+    <template v-if="pendingState">
+      <LoadingPlaceholder />
+    </template>
+    <template v-else>
+      <v-row>
+        <v-col cols="3.5" >
+          <TrendAnalysisMetricsCard
+            :selected-date-filter="selectedDateFilter" 
+            :overall-stats="overallStats"
+            :all-trend="allTrend"
+            :platform-metrics="platformMetrics"
+            :platform-trend="platformTrend"/>
+        </v-col>
+        <v-col cols="" class="mr-7">
+          <TrendAnalysisTabs
+            :medias="medias"
+            :mediasMetrics="mediasMetrics"
+          />
+        </v-col>
+      </v-row>
+    </template>
   </v-card>
 </template>
 
 <script>
 import HelpTextTooltip from './HelpTextTooltip.vue'
+import LoadingPlaceholder from './LoadingPlaceholder.vue'
 import TrendAnalysisMetricsCard from './TrendAnalysisMetricsCard.vue'
 import TrendAnalysisTabs from './TrendAnalysisTabs.vue'
 
@@ -38,8 +44,13 @@ export default {
     HelpTextTooltip,
     TrendAnalysisMetricsCard,
     TrendAnalysisTabs,
+    LoadingPlaceholder,
   },
   props: {
+    pendingState: {
+      type: Boolean,
+      required: true
+    },
     selectedDateFilter: {
       type: String,
       required: true

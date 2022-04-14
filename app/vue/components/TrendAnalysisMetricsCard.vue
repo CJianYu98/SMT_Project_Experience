@@ -1,13 +1,14 @@
 <template>
   <v-container class="px-4 ml-2 pt-0">
+      <!-- :pending-state="pendingState" -->
     <TrendAnalysisMetricsCardOverallTrend
       :selected-date-filter="selectedDateFilter"
       :overall-stats="overallStats"
       :all-trend="allTrend"
       :get-combined-string-from-indv-platform="combinedString"
       />
-      <!-- :selected-date-filter="selectedDateFilter" -->
-    <TrendAnalysisMetricsCardIndvPlatform 
+      <!-- :pending-state="pendingState" -->
+    <TrendAnalysisMetricsCardIndvPlatform
       @passCombinedStringToOverallTrend="getCombinedStringFromIndvPlatform"
       :platform-metrics="platformMetrics"
       :platform-trend="platformTrend"
@@ -24,6 +25,10 @@ export default {
     TrendAnalysisMetricsCardIndvPlatform 
   },
   props: {
+    // pendingState: {
+    //   type: Boolean,
+    //   required: true
+    // },
     selectedDateFilter: {
       type: String,
       required: true

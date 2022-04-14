@@ -23,14 +23,16 @@
           v-for="(platform, index) in mediasMetrics" 
           :key="index"
         >
-          <v-card flat>
-            <v-container fluid class="px-4 mt-n2 mb-1 pb-0">
-              <v-row no-gutters align="stretch">
+          <!-- <v-card flat> -->
+            <!-- <v-container fluid class="px-4 mt-n2 mb-1 pb-0"> -->
+              <v-row no-gutters align="stretch" >
                 <v-col class="d-flex">
                   <v-card-title class="text-h5">
                     {{ selectedViewOption }}
                   </v-card-title>
-                  <v-spacer></v-spacer>
+                </v-col>
+                <v-spacer></v-spacer>
+                <v-col cols="4">
                   <DropDownSelect 
                   :viewFilter="selectedViewList" 
                   :viewSelected="selectedViewOption"
@@ -39,8 +41,8 @@
                   </DropDownSelect>
                 </v-col>
               </v-row>
-            </v-container>
-          </v-card>
+            <!-- </v-container> -->
+          <!-- </v-card> -->
           <v-card class="">
             <line-chart class="chartBox" :data="selectedChartData"></line-chart>  
           </v-card>   

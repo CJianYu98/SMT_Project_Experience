@@ -28,7 +28,7 @@
       </v-row>
       <!-- :href="link" target="_blank" -->
       <p class="text-wrap mt-1" >
-        {{comment}}
+        {{post}}
       </p>
       <v-chip-group column>
         <v-tooltip bottom>
@@ -64,25 +64,23 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-chip 
-                class="mb-2 mr-1 intent intent--text"
+                class="mb-2 mr-1 intent intent--text font-weight-bold"
                 outlined
                 v-bind="attrs"
                 v-on="on"
+                disabled
               >
                 {{intent}}
               </v-chip>
             </template>
-            <span> intent tag of comment </span>
+            <span> intent tag of post </span>
           </v-tooltip>
         </template>
         <v-chip 
-          class="mb-2 primary mr-1"
-          v-for="indvTopic in topic"
-          :key="indvTopic"
+          class="mb-2 primary mr-1 font-weight-bold"
         >
-          {{indvTopic}}
+          {{topic}}
         </v-chip>
-          <!-- class="mx-auto" -->
       </v-chip-group>
     </v-list-item-subtitle>
   </v-card>
@@ -96,19 +94,19 @@ export default {
       required: true
     },
     likes: {
-      type: String,
+      type: Number,
       required: true
     },
     date: {
       type: String,
       required: true
     },
-    comment: {
+    post: {
       type: String,
       required: true
     },
     topic: {
-      type: Array,
+      type: String,
       required: true
     },
     sentiment: {
@@ -121,7 +119,7 @@ export default {
     },
     link: {
       type: String,
-      required: true
+      required: false
     },
     img: {
       type: String,
@@ -146,7 +144,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 
 </style>
 

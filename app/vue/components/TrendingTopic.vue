@@ -39,21 +39,6 @@
             {{ mention }}
           </template>
         </span>
-        <!-- <v-chip-group column>
-          <v-chip
-            class="primary trending-category mr-1"
-            v-for="(mention) in topicAssigned.topThreeMentions"
-            :key="mention"
-            @click="passSelectedTrendingTopicToTopics(mention)"
-          >
-            {{ mention }}
-          </v-chip>
-        </v-chip-group> -->
-
-        <!-- 
-          1. pass the mention (inside trending topic component) to autocompleteModel (inside search filters component)
-          2. pass the query into rerenderDashboard method (inside dashboard page)
-        -->
       </v-list-item-subtitle>
     </v-list-item-content>
   </v-list-item>
@@ -85,7 +70,6 @@ export default {
       console.log("=== START passSelectedTrendingTopicToTopics ===")
       this.$emit('selectedTrendingTopicInTopics', topic)
       console.log("=== END passSelectedTrendingTopicToTopics ===")
-
     }
   }
 }
@@ -93,10 +77,10 @@ export default {
 
 
 <style scoped>
-  .chartBox {
-    width: 800px;
-    height: 300px;
-  }
+.chartBox {
+  width: 800px;
+  height: 300px;
+}
 .trending-category {
   cursor: pointer;
 }

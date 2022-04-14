@@ -1,38 +1,38 @@
 <template>
   <v-container 
-    style="max-height: 450px" 
+    style="max-height: 500px" 
     class="overflow-y-auto"
   >
   <template
-    v-for="(commentsObj, objIndex) in relatedComments"
+    v-for="(postsObj, objIndex) in relatedPosts"
   >
-    <RelatedComment
-      v-for="(comment, index) in commentsObj[viewSelected]"
+    <RelatedPost
+      v-for="(post, index) in postsObj[viewSelected]"
       :key="index"
       :media="objIndex"
-      :likes="comment.likes"
-      :date="comment.datetime"
-      :comment="comment.comment"
-      :topic="comment.topic"
-      :sentiment="comment.sentiment"
-      :emotion="comment.emotion"
-      :link="comment.link"
-      :img="comment.img"
-      :intent="comment.intent"
+      :likes="post.likes"
+      :date="post.datetime"
+      :post="post.comment"
+      :topic="post.topic"
+      :sentiment="post.sentiment"
+      :emotion="post.emotion"
+      :link="post.link"
+      :img="post.img"
+      :intent="post.intent"
     />
   </template>
   </v-container>
 </template>
 
 <script>
-import RelatedComment from './RelatedPost.vue'
+import RelatedPost from './RelatedPost.vue'
 
 export default {
   components: {
-    RelatedComment 
+    RelatedPost 
   },
   props: {
-    relatedComments: {
+    relatedPosts: {
       type: Object,
       required: true
     },

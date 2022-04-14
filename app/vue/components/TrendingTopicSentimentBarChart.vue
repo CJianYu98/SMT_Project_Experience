@@ -1,6 +1,17 @@
 <template>
-  <div :id="sentimentGraphId">
-  </div>
+  <v-tooltip bottom>
+    <template v-slot:activator="{ on, attrs }">
+      <div :id="sentimentGraphId" v-bind="attrs"
+        v-on="on">
+    </div>
+    </template>
+    <p 
+      v-for="description in tooltipText"
+      :key = description
+      class="mb-1">
+      {{description}}
+    </p>
+  </v-tooltip>
 </template>
 
 <script>
@@ -24,6 +35,32 @@ export default {
   },
   mounted() {
     this.generateSentimentGraph(this.trendingTopicSentiment)
+  },
+  computed: {
+    tooltipText() {
+      // console.log("=== start tooltipText() ===")
+
+      // not able to change the tooltip basec on particular emotion or sentiment, can only combine all sentiments and emotions
+
+      const objWithPercentage = this.getPercentageOfCount(this.trendingTopicSentiment)
+
+      // console.log("objWithPercentage", objWithPercentage)
+
+      const allDescriptions = []
+      let description = ""
+
+      for (const obj of objWithPercentage) {
+        if (Object.prototype.hasOwnProperty.call(obj, 'emotion')) {
+          description = `${obj.percentage}% of posts (${obj.count} posts) are associated with the emotion ${obj.emotion}`
+        } else {
+          description = `${obj.percentage}% of posts (${obj.count} posts) are associated with the sentiment ${obj.sentiment}`
+        }
+        // console.log("description", description)
+        allDescriptions.push(description)
+      }
+      // console.log("allDescriptions", allDescriptions)
+      return allDescriptions
+    }
   },
   methods: {
     generateSentimentGraph(data) {
@@ -51,7 +88,7 @@ export default {
       const width = 80
       const height = 6
       const x = d3.scaleLinear([0, 1], [margin.left, width - margin.right])
-      const formatPercent = x.tickFormat(null, "%")
+      // const formatPercent = x.tickFormat(null, "%")
 
       const stack = generateStack(data)
       // console.log("stack", stack)
@@ -105,7 +142,7 @@ export default {
                 // console.log("d", d)
 
                 if (d.type === "sentiment") {
-                  return d.label === "positive" ? "#78D549" : (d.label === "negative" ? "#EB8159" : "#EFB727")
+                  return d.label === "positive" ? "#EFB727" : (d.label === "negative" ? "#EB8159" : "#A0D6E8")
                   } else if (d.type === "emotion") {
                     return d.label === "anger" ? "#FB3412" : 
                       (d.label === "fear" ? "#8C56AF" :
@@ -126,14 +163,29 @@ export default {
         .attr("y", margin.top)
         .attr("width", d => x(d.endValue) - x(d.startValue))
         .attr("height", height - margin.top - margin.bottom)
-        .append("title")
-        .text(d => `${formatPercent(d.value)} of posts (${d.count} posts) are associated with the ${d.type} ${d.label}`);
+        .append("title");
+        // .text(d => `${formatPercent(d.value)} of posts (${d.count} posts) are associated with the ${d.type} ${d.label}`);
 
       // console.log("svg test 2", svg)
 
 
       // return svg.node();
       // console.log("=== END generateSentimentGraph() === ")
+    },
+    getPercentageOfCount(allCounts) {
+      // console.log("=== START getPercentageOfCount() ===")
+      // console.log("allCounts", allCounts)
+      
+      const total = d3.sum(allCounts, d => d.count)
+      // console.log("total", total)
+
+      for (const obj of allCounts) {
+        // console.log("obj", obj)
+        // console.log("obj.count / total", obj.count / total)
+        obj.percentage = ((obj.count / total) * 100).toFixed(1)
+      }
+
+      return allCounts
     }
   }
 }
