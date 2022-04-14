@@ -391,7 +391,6 @@
       emitFilterSelectionToDashboard() {
         console.log("=== START emitFilterSelectionToDashboard() ===")
 
-        const formattedPlatformsSelected = this.platformsSelected.map(v => v.toLowerCase())
         const formattedSentimentsSelected = this.sentimentsSelected.map(v => v.toLowerCase())
         const formattedEmotionsSelected = this.emotionsSelected.map(v => v.toLowerCase())
         let formattedDateSelected = ""
@@ -409,7 +408,22 @@
           trendHoverDate = this.dateSelected
         }
         console.log("trendHoverDate", trendHoverDate)
-        this.$emit('changeFilter', [this.autocompleteModel, formattedDateSelected, numDays, formattedPlatformsSelected, formattedSentimentsSelected, formattedEmotionsSelected, trendHoverDate])
+
+        if (this.$route.name === "dashboard") {
+
+          console.log("inside if loop, dashboard page")
+
+          const formattedPlatformsSelected = this.platformsSelected.map(v => v.toLowerCase())
+          
+          this.$emit('changeFilter', [this.autocompleteModel, formattedDateSelected, numDays, formattedPlatformsSelected, formattedSentimentsSelected, formattedEmotionsSelected, trendHoverDate])
+
+        } else if (this.$route.name === "social-media-feed") {
+
+          console.log("in else if loop, social media feed page")
+
+          this.$emit('changeFilter', [this.autocompleteModel, formattedDateSelected, numDays, formattedSentimentsSelected, formattedEmotionsSelected, trendHoverDate])
+
+        }
         
         console.log("=== END emitFilterSelectionToDashboard() ===")
       },

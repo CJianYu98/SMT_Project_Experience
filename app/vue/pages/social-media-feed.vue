@@ -1,6 +1,7 @@
 <template>
   <div class="mb-10">
-    <SearchFilters/>
+    <SearchFilters @changeFilter="rerenderSocialMeduaFeed"/>
+    <!-- <p> {{ testData }} </p> -->
     <SocialMediaFeedAllPlatformMetrics
       :aggregated-stats-all-platforms="aggregatedStatsAllPlatforms"
     />
@@ -656,7 +657,70 @@ export default {
         ]
       }
     },
+    testData: "",
+    fetchQuery: null,
+    fetchEndDate: "2021-04-06",
+    fetchNumDays: 14,
+    fetchSentiments: ["neutral", "negative", "positive"],
+    fetchEmotions: ["neutral", "anger", "fear", "sadness", "joy"],
   }),
+  methods: {
+    rerenderSocialMeduaFeed(updatedSentiments) {
+      console.log("=== START rerenderSocialMeduaFeed ===")
+      console.log("rerenderSocialMeduaFeed updatedSentiments", updatedSentiments)
+
+      this.fetchQuery = updatedSentiments[0]
+      this.fetchEndDate = updatedSentiments[1]
+      this.fetchNumDays = updatedSentiments[2]
+      this.fetchSentiments = updatedSentiments[3]
+      this.fetchEmotions = updatedSentiments[4]
+      this.dateFilter = updatedSentiments[5]
+
+      // console.log("this.fetchQuery", this.fetchQuery)
+      // console.log("this.fetchEndDate", this.fetchEndDate)
+      // console.log("this.fetchNumDays", this.fetchNumDays)
+      // console.log("this.fetchSentiments", this.fetchSentiments)
+      // console.log("this.fetchEmotions", this.fetchEmotions)
+
+      // this.$fetch()
+
+      console.log("=== END rerenderSocialMeduaFeed ===")
+    },
+  },
+  // async fetch() {
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(
+  //       { 
+  //         "endDate": this.fetchEndDate,
+  //         "numDays": this.fetchNumDays,
+  //         "sentiments": this.fetchSentiments,
+  //         "emotions": this.fetchEmotions,
+  //         "query": this.fetchQuery,
+  //       }
+  //     )
+  //   };
+
+  //   await fetch("http://127.0.0.1:8000/topic-analysis/get-top5-topic-analysis", requestOptions)
+  //     .then(response => response.json())
+  //     .then(data => 
+  //       {
+  //         // this.testData = data
+  //         console.log("top5-topic data", data)
+
+  //         if (data.detail === "No data found within date period given") {
+  //           console.log("inside if loop, No data found within date period given")
+  //           this.topFiveTopicsData = []
+  //         } else {
+  //           this.topFiveTopicsData = data
+  //         }
+  //       }
+  //     )
+  //     // .catch((error) => {
+  //     //   console.error(error)
+  //     // })
+  //  },
 }
 </script>
 

@@ -21,12 +21,6 @@
           type="emotion"
         />
       </v-col>
-      <!-- <v-col>
-        <GraphLegend
-          :graph-legend="trendingTopicsEmotionsLegend"
-          type="emotion"
-        />
-      </v-col> -->
       <v-spacer></v-spacer>
       <v-col cols="2">
         <SocialMediaFeedIndvPlatformMetrics

@@ -980,7 +980,7 @@ export default {
   computed: {
 
   },
- 
+
   methods: {
     getNumPostsTotal(baseCount, data) {
       // console.log("baseCount", baseCount)
