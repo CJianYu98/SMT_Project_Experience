@@ -88,7 +88,7 @@ export default {
       const width = 80
       const height = 6
       const x = d3.scaleLinear([0, 1], [margin.left, width - margin.right])
-      const formatPercent = x.tickFormat(null, "%")
+      // const formatPercent = x.tickFormat(null, "%")
 
       const stack = generateStack(data)
       // console.log("stack", stack)

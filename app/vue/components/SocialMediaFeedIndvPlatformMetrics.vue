@@ -15,7 +15,7 @@
       </v-col>
       <v-col cols="6" class="pl-0 py-0">
         <p class="mb-0 primary--text text-h5 text-center pt-6">
-          {{ platformAllData.statistics.toLocaleString() }}
+          {{ platformAllData.mentions.toLocaleString() }}
         </p>
         <p class="accent--text text-h7 text-center font-weight-medium">
           mentions

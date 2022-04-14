@@ -53,7 +53,7 @@ export default {
   data: () => ({
     aggregatedStatsAllPlatforms: {
       facebook: {
-        statistics: 2393832,
+        mentions: 2393832,
         sentiment: [
           {
             sentiment: "positive",
@@ -92,7 +92,7 @@ export default {
         ],
       },
       reddit: {
-        statistics: 2393832,
+        mentions: 2393832,
         sentiment: [
           {
             sentiment: "positive",
@@ -131,7 +131,7 @@ export default {
         ],
       },
       twitter: {
-        statistics: 2393832,
+        mentions: 2393832,
         sentiment: [
           {
             sentiment: "positive",
@@ -170,7 +170,7 @@ export default {
         ],
       },
       youtube: {
-        statistics: 2393832,
+        mentions: 2393832,
         sentiment: [
           {
             sentiment: "positive",
