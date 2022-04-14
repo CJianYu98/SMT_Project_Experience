@@ -4,7 +4,7 @@ from typing import List
 
 from fastapi import APIRouter
 
-from ..dao.dao import get_top5_noteworthy_posts, get_top5_noteworthy_topics
+from ..dao.dao import get_top_noteworthy_posts, get_top5_noteworthy_topics
 from ..schema.noteworthy_analysis import Top5NoteworthyPostsRes
 from ..schema.user_filter import Filter
 
@@ -35,23 +35,23 @@ def get_all_top5_noteworthy_posts(filter: Filter):
 
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
-        fb_comments_by_likes, fb_comments_by_date = get_top5_noteworthy_posts(filter, FB_POSTS)
+        fb_comments_by_likes, fb_comments_by_date = get_top_noteworthy_posts(filter, FB_POSTS)
     else:
         fb_comments_by_likes = fb_comments_by_date = []
     if "twitter" in filter.platforms:
-        twit_comments_by_likes, twit_comments_by_date = get_top5_noteworthy_posts(
+        twit_comments_by_likes, twit_comments_by_date = get_top_noteworthy_posts(
             filter, TWITTER_TWEETS
         )
     else:
         twit_comments_by_likes = twit_comments_by_date = []
     if "reddit" in filter.platforms:
-        reddit_comments_by_likes, reddit_comments_by_date = get_top5_noteworthy_posts(
+        reddit_comments_by_likes, reddit_comments_by_date = get_top_noteworthy_posts(
             filter, REDDIT_SUBMISSIONS
         )
     else:
         reddit_comments_by_likes = reddit_comments_by_date = []
     if "youtube" in filter.platforms:
-        youtube_comments_by_likes, youtube_comments_by_date = get_top5_noteworthy_posts(
+        youtube_comments_by_likes, youtube_comments_by_date = get_top_noteworthy_posts(
             filter, YOUTUBE_VIDEOS
         )
     else:
@@ -113,7 +113,7 @@ def get_all_top5_noteworthy_topics(filter: Filter):
 
     res = []
     for i in range(len(topics_count)):
-        if i >= 5:
+        if i >= filter.topN:
             break
 
         res.append(topics_count[i][0])

@@ -403,9 +403,9 @@ def get_top5_complaint_posts(filter: Filter, db_collection: str):
     return res_sort_by_likes, res_sort_by_date
 
 
-def get_top5_noteworthy_posts(filter: Filter, db_collection: str):
+def get_top_noteworthy_posts(filter: Filter, db_collection: str):
     """
-    Query the db based on user filter to get top 5 noteworthy related comments based on likes
+    Query the db based on user filter to get top noteworthy related comments based on likes
 
     Args:
         filter (Filter): JSON request body (user's filter options)
@@ -449,9 +449,9 @@ def get_top5_noteworthy_posts(filter: Filter, db_collection: str):
 
     db_query["isNoteworthy"] = 1
 
-    res_sort_by_likes = list(db[db_collection].find(db_query, project).sort(likes_key, -1).limit(5))
+    res_sort_by_likes = list(db[db_collection].find(db_query, project).sort(likes_key, -1).limit(filter.topN))
     res_sort_by_date = list(
-        db[db_collection].find(db_query, project).sort(datetime_key, -1).limit(5)
+        db[db_collection].find(db_query, project).sort(datetime_key, -1).limit(filter.topN)
     )
 
     try:
