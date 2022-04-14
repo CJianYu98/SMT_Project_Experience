@@ -7,6 +7,7 @@ from ..database.connect import db
 from ..schema.dao import (
     AggregatedStatsRes,
     ComplaintTopKeywordsAnalysisRes,
+    IndivSocialMediaFeedStatsRes,
     KeywordAnalysisRes,
     Top5ComplaintOrNoteworthyPostsRes,
     Top5NoteworthyTopicsRes,
@@ -240,7 +241,7 @@ def get_trend_plot_data(filter: Filter, db_collection: str):
     group_query["mentions"] = {"$sum": 1}
     group_query["likes"] = {"$sum": f"${likes_str}"}
 
-    # Create the db based on above created subquery statements
+    # Query the db based on above created subquery statements
     res = list(
         db[db_collection].aggregate(
             [{"$match": match_query}, {"$group": group_query}, {"$project": project}]
@@ -542,3 +543,62 @@ def get_mentions_count(filter: Filter, db_collection: str):
         db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
 
     return len(list(db[db_collection].find(db_query)))
+
+
+def get_social_media_feed_stats(filter: Filter, db_collection: str):
+    """
+    Query db based on user filter to get social media feed aggreated stats
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+        db_collection (str): To determine which collection to query from
+
+    Raises:
+        HTTPException: For data type error, using pydantic
+
+    Returns:
+        dict: aggregated stats data
+    """
+    
+    # Initialize group_query and project subquery statements for MongoDB query
+    group_query = {"_id": {}}
+    project = {"_id": False, "mentions": 1}
+
+    if "facebook" in db_collection:
+        match_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+    elif "twitter" in db_collection:
+        match_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+    elif "reddit" in db_collection:
+        match_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+    elif "youtube" in db_collection:
+        match_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+
+    # Add on standard query fields to group_qeury statement
+    for sentiment_val in ["positive", "negative", "neutral"]:
+        group_query[f"{sentiment_val}_sentiment"] = create_sentiment_emotion_aggregate_subquery(
+            "sentiment_label", sentiment_val
+        )
+        project[f"{sentiment_val}_sentiment"] = 1
+    for emotion_val in ["anger", "fear", "joy", "sadness", "neutral"]:
+        group_query[f"{emotion_val}_emotion"] = create_sentiment_emotion_aggregate_subquery(
+            "emotions_label", emotion_val
+        )
+        project[f"{emotion_val}_emotion"] = 1
+    group_query["mentions"] = {"$sum": 1}
+
+    # Query the db based on above created subquery statements
+    res = list(
+        db[db_collection].aggregate(
+            [{"$match": match_query}, {"$group": group_query}, {"$project": project}]
+        )
+    )
+    if not res:
+        return {}
+
+    try:
+        IndivSocialMediaFeedStatsRes(data=res)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+    
+
+    return res[0]

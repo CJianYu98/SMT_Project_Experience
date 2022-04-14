@@ -94,10 +94,32 @@ class Top5ComplaintOrNoteworthyPostsRes(BaseModel):
     data: List[ComplaintOrNotworthyPost]
 
 
-##### Top 5 Noteworthy Topics #####
+##### Top 5 Noteworthy Topics API #####
 class NoteworthyMentionTopic(BaseModel):
     topic: str
 
 
 class Top5NoteworthyTopicsRes(BaseModel):
     data: List[NoteworthyMentionTopic]
+
+
+# ##### Social Media Feed Stats API #####
+# class SentimentCount(BaseModel):
+#     sentiment: str
+#     count: int
+
+
+class IndivSocialMediaFeedStats(BaseModel):
+    positive_sentiment: int
+    negative_sentiment: int
+    neutral_sentiment: int
+    anger_emotion: int
+    fear_emotion: int
+    sadness_emotion: int
+    joy_emotion: int
+    neutral_emotion: int
+    mentions: int
+
+
+class IndivSocialMediaFeedStatsRes(BaseModel):
+    data: List[IndivSocialMediaFeedStats]
