@@ -57,16 +57,16 @@ export default {
   }),
   computed: {
     platform() {
-      console.log("this.platformAllData", this.platformAllData)
-      console.log("Object.keys(this.platformAllData)", Object.keys(this.platformAllData))
-      console.log("Object.keys(this.platformAllData)[0]", Object.keys(this.platformAllData)[0])
+      // console.log("this.platformAllData", this.platformAllData)
+      // console.log("Object.keys(this.platformAllData)", Object.keys(this.platformAllData))
+      // console.log("Object.keys(this.platformAllData)[0]", Object.keys(this.platformAllData)[0])
       return Object.keys(this.platformAllData)[0]
     },
   },
   methods: {
     passViewToPosts(changedView) {
-      console.log("=== start passViewToPosts() ===")
-      console.log("selectedView", changedView)
+      // console.log("=== start passViewToPosts() ===")
+      // console.log("selectedView", changedView)
       this.viewSelected = changedView
     }
   },
