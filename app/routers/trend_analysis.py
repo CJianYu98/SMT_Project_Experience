@@ -9,8 +9,8 @@ from ..dao.dao import get_aggregated_stats, get_trend_plot_data, get_trend_stats
 from ..schema.trend_analysis import (
     AggregatedStatsRes,
     IndivTrendStatsRes,
+    TrendPlotDataRes,
     TrendStatsRes,
-    TrendPlotDataRes
 )
 from ..schema.user_filter import Filter
 
@@ -27,7 +27,11 @@ YOUTUBE_VIDEOS = os.getenv("DB_YOUTUBE_VIDEOS_COLLECTION")
 YOUTUBE_COMMENTS = os.getenv("DB_YOUTUBE_COMMENTS_COLLECTION")
 
 
-@router.post("/get-all-aggregated-stats", response_model=AggregatedStatsRes)
+@router.post(
+    "/get-all-aggregated-stats",
+    response_model=AggregatedStatsRes,
+    response_model_exclude_none=True,
+)
 def get_all_aggregated_stats(filter: Filter):
     """
     To get aggregated statistics (total posts, total comments, total likes, percentage of posts per platform).
@@ -39,41 +43,48 @@ def get_all_aggregated_stats(filter: Filter):
         Pydantic Model: JSON response object
     """
 
+    all_posts = all_comments = []
+    platform_metrics = {}
+
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
         fb_posts_data = get_aggregated_stats(filter, FB_POSTS)
         fb_comments_data = get_aggregated_stats(filter, FB_COMMENTS)
+        all_posts.append(fb_posts_data)
+        all_comments.append(fb_comments_data)
+        platform_metrics["facebook"] = {"emotion": get_top_emotion(fb_posts_data, fb_comments_data)}
     else:
-        fb_posts_data = fb_comments_data = {}
+        platform_metrics["facebook"] = None
     if "twitter" in filter.platforms:
         twit_tweets_data = get_aggregated_stats(filter, TWITTER_TWEETS)
         twit_comments_data = get_aggregated_stats(filter, TWITTER_COMMENTS)
+        all_posts.append(twit_tweets_data)
+        all_comments.append(twit_comments_data)
+        platform_metrics["twitter"] = {
+            "emotion": get_top_emotion(twit_tweets_data, twit_comments_data)
+        }
     else:
-        twit_tweets_data = twit_comments_data = {}
+        platform_metrics["twitter"] = None
     if "reddit" in filter.platforms:
         reddit_submissions_data = get_aggregated_stats(filter, REDDIT_SUBMISSIONS)
         reddit_comments_data = get_aggregated_stats(filter, REDDIT_COMMENTS)
+        all_posts.append(reddit_submissions_data)
+        all_comments.append(reddit_comments_data)
+        platform_metrics["reddit"] = {
+            "emotion": get_top_emotion(reddit_submissions_data, reddit_comments_data)
+        }
     else:
-        reddit_submissions_data = reddit_comments_data = {}
+        platform_metrics["reddit"] = None
     if "youtube" in filter.platforms:
         youtube_videos_data = get_aggregated_stats(filter, YOUTUBE_VIDEOS)
         youtube_comments_data = get_aggregated_stats(filter, YOUTUBE_COMMENTS)
+        all_posts.append(youtube_videos_data)
+        all_comments.append(youtube_comments_data)
+        platform_metrics["youtube"] = {
+            "emotion": get_top_emotion(youtube_videos_data, youtube_comments_data)
+        }
     else:
-        youtube_videos_data = youtube_comments_data = {}
-
-    # Create list of records from all social media platforms for posts and comments,
-    all_posts = [
-        fb_posts_data,
-        twit_tweets_data,
-        reddit_submissions_data,
-        youtube_videos_data
-    ]
-    all_comments = [
-        fb_comments_data,
-        twit_comments_data,
-        reddit_comments_data,
-        youtube_comments_data,
-    ]
+        platform_metrics["youtube"] = None
 
     # Calc required statistics and metrics
     total_posts = sum(data.get("count", 0) for data in all_posts)
@@ -83,62 +94,36 @@ def get_all_aggregated_stats(filter: Filter):
     )
     total_records = total_posts + total_comments
 
-    if total_records == 0:
-        platform_metrics = {
-            "facebook": {
-                "mentions": 0
-            },
-            "twitter": {
-                "mentions": 0
-            },
-            "reddit": {
-                "mentions": 0
-            },
-            "youtube": {
-                "mentions": 0
-            }
-        }
-    else:
-        platform_metrics = {
-            "facebook": {
-                "mentions": round(
-                    (fb_posts_data.get("count", 0) + fb_comments_data.get("count", 0)) / total_records,
-                    2,
-                )
-            },
-            "twitter": {
-                "mentions": round(
-                    (twit_tweets_data.get("count", 0) + twit_tweets_data.get("count", 0))
-                    / total_records,
-                    2,
-                )
-            },
-            "reddit": {
-                "mentions": round(
-                    (reddit_submissions_data.get("count", 0) + reddit_comments_data.get("count", 0))
-                    / total_records,
-                    2,
-                )
-            },
-            "youtube": {
-                "mentions": round(
-                    (youtube_videos_data.get("count", 0) + youtube_comments_data.get("count", 0))
-                    / total_records,
-                    2,
-                )
-            },
-        }
-    
-    platform_metrics['facebook']['emotion'] = get_top_emotion(fb_posts_data, fb_comments_data)
-    platform_metrics['twitter']['emotion'] = get_top_emotion(twit_tweets_data, twit_comments_data)
-    platform_metrics['reddit']['emotion'] =  get_top_emotion(reddit_submissions_data, reddit_comments_data)
-    platform_metrics['youtube']['emotion'] = get_top_emotion(youtube_videos_data, youtube_comments_data)
+    if total_records != 0:
+        if "facebook" in filter.platforms:
+            platform_metrics["facebook"]["mentions"] = round(
+                (fb_posts_data.get("count", 0) + fb_comments_data.get("count", 0)) / total_records,
+                2,
+            )
+        if "twitter" in filter.platforms:
+            platform_metrics["twitter"]["mentions"] = round(
+                (twit_tweets_data.get("count", 0) + twit_comments_data.get("count", 0))
+                / total_records,
+                2,
+            )
+        if "reddit" in filter.platforms:
+            platform_metrics["reddit"]["mentions"] = round(
+                (reddit_submissions_data.get("count", 0) + reddit_comments_data.get("count", 0))
+                / total_records,
+                2,
+            )
+        if "youtube" in filter.platforms:
+            platform_metrics["youtube"]["mentions"] = round(
+                (youtube_videos_data.get("count", 0) + youtube_comments_data.get("count", 0))
+                / total_records,
+                2,
+            )
 
     return {
         "posts": total_posts,
         "comments": total_comments,
         "likes": total_likes,
-        "platformMetrics": platform_metrics
+        "platformMetrics": platform_metrics,
     }
 
 
@@ -251,7 +236,9 @@ def get_all_trend_stats(filter: Filter):
     return {"trend": round(selected_date_range_counts / prev_date_range_counts, 2)}
 
 
-@router.post("/get-indiv-trend-stats", response_model=IndivTrendStatsRes)
+@router.post(
+    "/get-indiv-trend-stats", response_model=IndivTrendStatsRes, response_model_exclude_none=True
+)
 def get_indiv_trend_stats(filter: Filter):
     """
     To get the trend percentage change between user's selected filter time period and the same period range before the selected time period for each individual platform.
@@ -268,70 +255,51 @@ def get_indiv_trend_stats(filter: Filter):
     prev_end_date = datetime.strptime(filter.endDate, "%Y-%m-%d") - timedelta(days=filter.numDays)
     prev_date_filter.endDate = prev_end_date.strftime("%Y-%m-%d")
 
+    # Create response body
+    res = {}
+
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
-        fb_posts_count = get_trend_stats(filter, FB_POSTS)
-        fb_comments_count = get_trend_stats(filter, FB_COMMENTS)
-        fb_posts_count_prev = get_trend_stats(prev_date_filter, FB_POSTS)
-        fb_comments_count_prev = get_trend_stats(prev_date_filter, FB_COMMENTS)
-    else:
-        fb_posts_count = fb_comments_count = fb_posts_count_prev = fb_comments_count_prev = 0
-    if "twitter" in filter.platforms:
-        twit_tweets_count = get_trend_stats(filter, TWITTER_TWEETS)
-        twit_comments_count = get_trend_stats(filter, TWITTER_COMMENTS)
-        twit_tweets_count_prev = get_trend_stats(prev_date_filter, TWITTER_TWEETS)
-        twit_comments_count_prev = get_trend_stats(prev_date_filter, TWITTER_COMMENTS)
-    else:
-        twit_tweets_count = twit_comments_count = 0
-        twit_tweets_count_prev = twit_comments_count_prev = 0
-    if "reddit" in filter.platforms:
-        reddit_submissions_count = get_trend_stats(filter, REDDIT_SUBMISSIONS)
-        reddit_comments_count = get_trend_stats(filter, REDDIT_COMMENTS)
-        reddit_submissions_count_prev = get_trend_stats(prev_date_filter, REDDIT_SUBMISSIONS)
-        reddit_comments_count_prev = get_trend_stats(prev_date_filter, REDDIT_COMMENTS)
-    else:
-        reddit_submissions_count = reddit_comments_count = 0
-        reddit_submissions_count_prev = reddit_comments_count_prev = 0
-    if "youtube" in filter.platforms:
-        youtube_videos_count = get_trend_stats(filter, YOUTUBE_VIDEOS)
-        youtube_comments_count = get_trend_stats(filter, YOUTUBE_COMMENTS)
-        youtube_videos_count_prev = get_trend_stats(prev_date_filter, YOUTUBE_VIDEOS)
-        youtube_comments_count_prev = get_trend_stats(prev_date_filter, YOUTUBE_COMMENTS)
-    else:
-        youtube_videos_count = youtube_comments_count = 0
-        youtube_videos_count_prev = youtube_comments_count_prev = 0
-
-    return {
-        "facebook": {
+        res["facebook"] = {
             "trend": get_trend_change(
-                fb_posts_count, fb_comments_count, fb_posts_count_prev, fb_comments_count_prev
-            )
-        },
-        "twitter": {
-            "trend": get_trend_change(
-                twit_tweets_count,
-                twit_comments_count,
-                twit_tweets_count_prev,
-                twit_comments_count_prev,
-            )
-        },
-        "reddit": {
-            "trend": get_trend_change(
-                reddit_submissions_count,
-                reddit_comments_count,
-                reddit_submissions_count_prev,
-                reddit_comments_count_prev,
-            )
-        },
-        "youtube": {
-            "trend": get_trend_change(
-                youtube_videos_count,
-                youtube_comments_count,
-                youtube_videos_count_prev,
-                youtube_comments_count_prev,
+                get_trend_stats(filter, FB_POSTS),
+                get_trend_stats(filter, FB_COMMENTS),
+                get_trend_stats(prev_date_filter, FB_POSTS),
+                get_trend_stats(prev_date_filter, FB_COMMENTS),
             )
         }
-    }
+
+    if "twitter" in filter.platforms:
+        res["twitter"] = {
+            "trend": get_trend_change(
+                get_trend_stats(filter, TWITTER_TWEETS),
+                get_trend_stats(filter, TWITTER_COMMENTS),
+                get_trend_stats(prev_date_filter, TWITTER_TWEETS),
+                get_trend_stats(prev_date_filter, TWITTER_COMMENTS),
+            )
+        }
+
+    if "reddit" in filter.platforms:
+        res["reddit"] = {
+            "trend": get_trend_change(
+                get_trend_stats(filter, REDDIT_SUBMISSIONS),
+                get_trend_stats(filter, REDDIT_COMMENTS),
+                get_trend_stats(prev_date_filter, REDDIT_SUBMISSIONS),
+                get_trend_stats(prev_date_filter, REDDIT_COMMENTS),
+            )
+        }
+
+    if "youtube" in filter.platforms:
+        res["youtube"] = {
+            "trend": get_trend_change(
+                get_trend_stats(filter, YOUTUBE_VIDEOS),
+                get_trend_stats(filter, YOUTUBE_COMMENTS),
+                get_trend_stats(prev_date_filter, YOUTUBE_VIDEOS),
+                get_trend_stats(prev_date_filter, YOUTUBE_COMMENTS),
+            )
+        }
+
+    return res
 
 
 def get_trend_change(posts_count, comments_count, posts_count_prev, comments_count_prev) -> float:

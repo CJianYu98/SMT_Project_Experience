@@ -388,11 +388,10 @@ def get_top5_complaint_posts(filter: Filter, db_collection: str):
 
     db_query["intent"] = {"$regex": "complaint"}
 
-    res_sort_by_likes = list(db[db_collection].find(db_query, project).sort(likes_key, -1).limit(5))
+    res_sort_by_likes = list(db[db_collection].find(db_query, project).sort(likes_key, -1).limit(filter.topN))
     res_sort_by_date = list(
-        db[db_collection].find(db_query, project).sort(datetime_key, -1).limit(5)
+        db[db_collection].find(db_query, project).sort(datetime_key, -1).limit(filter.topN)
     )
-    print(db_collection, res_sort_by_likes)
 
     try:
         Top5ComplaintOrNoteworthyPostsRes(data=res_sort_by_likes)

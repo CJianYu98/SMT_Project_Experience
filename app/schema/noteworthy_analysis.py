@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -12,7 +12,7 @@ class NoteworthyPostsSorted(BaseModel):
 
 
 class Top5NoteworthyPostsRes(BaseModel):
-    facebook: NoteworthyPostsSorted
-    reddit: NoteworthyPostsSorted
-    twitter: NoteworthyPostsSorted
-    youtube: NoteworthyPostsSorted
+    facebook: Optional[NoteworthyPostsSorted]
+    reddit: Optional[NoteworthyPostsSorted]
+    twitter: Optional[NoteworthyPostsSorted]
+    youtube: Optional[NoteworthyPostsSorted]

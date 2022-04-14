@@ -10,10 +10,10 @@ class IndivPlatformStat(BaseModel):
 
 
 class PlatformMetrics(BaseModel):
-    facebook: IndivPlatformStat
-    reddit: IndivPlatformStat
-    twitter: IndivPlatformStat
-    youtube: IndivPlatformStat
+    facebook: Optional[IndivPlatformStat]
+    reddit: Optional[IndivPlatformStat]
+    twitter: Optional[IndivPlatformStat]
+    youtube: Optional[IndivPlatformStat]
 
 
 class AggregatedStatsRes(BaseModel):
@@ -30,10 +30,10 @@ class TrendStatsRes(BaseModel):
 
 ##### Metrics Card Individual Platform Statistics (trend) API #####
 class IndivTrendStatsRes(BaseModel):
-    facebook: TrendStatsRes
-    reddit: TrendStatsRes
-    twitter: TrendStatsRes
-    youtube: TrendStatsRes
+    facebook: Optional[TrendStatsRes]
+    reddit: Optional[TrendStatsRes]
+    twitter: Optional[TrendStatsRes]
+    youtube: Optional[TrendStatsRes]
 
 
 ##### Trend Data Plot API #####

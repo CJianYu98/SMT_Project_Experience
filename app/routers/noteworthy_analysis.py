@@ -4,7 +4,7 @@ from typing import List
 
 from fastapi import APIRouter
 
-from ..dao.dao import get_top_noteworthy_posts, get_top5_noteworthy_topics
+from ..dao.dao import get_top5_noteworthy_topics, get_top_noteworthy_posts
 from ..schema.noteworthy_analysis import Top5NoteworthyPostsRes
 from ..schema.user_filter import Filter
 
@@ -21,7 +21,11 @@ YOUTUBE_VIDEOS = os.getenv("DB_YOUTUBE_VIDEOS_COLLECTION")
 YOUTUBE_COMMENTS = os.getenv("DB_YOUTUBE_COMMENTS_COLLECTION")
 
 
-@router.post("/get-all-top5-noteworthy-posts", response_model=Top5NoteworthyPostsRes)
+@router.post(
+    "/get-all-top5-noteworthy-posts",
+    response_model=Top5NoteworthyPostsRes,
+    response_model_exclude_none=True,
+)
 def get_all_top5_noteworthy_posts(filter: Filter):
     """
     To get top 5 likes comments for noteworthy related comments
@@ -33,36 +37,30 @@ def get_all_top5_noteworthy_posts(filter: Filter):
         Pydantic Model: JSON response object
     """
 
+    # Create response body
+    res = {}
+
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
         fb_comments_by_likes, fb_comments_by_date = get_top_noteworthy_posts(filter, FB_POSTS)
-    else:
-        fb_comments_by_likes = fb_comments_by_date = []
+        res["facebook"] = {"likes": fb_comments_by_likes, "date": fb_comments_by_date}
     if "twitter" in filter.platforms:
         twit_comments_by_likes, twit_comments_by_date = get_top_noteworthy_posts(
             filter, TWITTER_TWEETS
         )
-    else:
-        twit_comments_by_likes = twit_comments_by_date = []
+        res["twitter"] = {"likes": twit_comments_by_likes, "date": twit_comments_by_date}
     if "reddit" in filter.platforms:
         reddit_comments_by_likes, reddit_comments_by_date = get_top_noteworthy_posts(
             filter, REDDIT_SUBMISSIONS
         )
-    else:
-        reddit_comments_by_likes = reddit_comments_by_date = []
+        res["reddit"] = {"likes": reddit_comments_by_likes, "date": reddit_comments_by_date}
     if "youtube" in filter.platforms:
         youtube_comments_by_likes, youtube_comments_by_date = get_top_noteworthy_posts(
             filter, YOUTUBE_VIDEOS
         )
-    else:
-        youtube_comments_by_likes = youtube_comments_by_date = []
+        res["youtube"] = {"likes": youtube_comments_by_likes, "date": youtube_comments_by_date}
 
-    return {
-        "facebook": {"likes": fb_comments_by_likes, "date": fb_comments_by_date},
-        "twitter": {"likes": twit_comments_by_likes, "date": twit_comments_by_date},
-        "reddit": {"likes": reddit_comments_by_likes, "date": reddit_comments_by_date},
-        "youtube": {"likes": youtube_comments_by_likes, "date": youtube_comments_by_date}
-    }
+    return res
 
 
 @router.post("/get-all-top5-noteworthy-topics", response_model=List[str])
@@ -98,12 +96,7 @@ def get_all_top5_noteworthy_topics(filter: Filter):
 
     # Concat data from all social media platforms
     all_data = sum(
-        [
-            fb_posts_data,
-            twit_tweets_data,
-            reddit_submissions_data,
-            youtube_videos_data
-        ],
+        [fb_posts_data, twit_tweets_data, reddit_submissions_data, youtube_videos_data],
         [],
     )
 

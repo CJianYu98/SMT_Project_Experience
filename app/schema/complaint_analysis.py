@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -17,10 +17,10 @@ class ComplaintPostsSorted(BaseModel):
 
 
 class Top5ComplaintPostsRes(BaseModel):
-    facebook: ComplaintPostsSorted
-    reddit: ComplaintPostsSorted
-    twitter: ComplaintPostsSorted
-    youtube: ComplaintPostsSorted
+    facebook: Optional[ComplaintPostsSorted]
+    reddit: Optional[ComplaintPostsSorted]
+    twitter: Optional[ComplaintPostsSorted]
+    youtube: Optional[ComplaintPostsSorted]
 
 
 ##### Complaint Percentage API #####

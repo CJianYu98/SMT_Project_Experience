@@ -78,7 +78,7 @@ def get_all_top_complaint_keywords(filter: Filter):
             reddit_submissions_data,
             reddit_comments_data,
             youtube_vidoes_data,
-            youtube_comments_data
+            youtube_comments_data,
         ],
         [],
     )
@@ -109,7 +109,11 @@ def get_all_top_complaint_keywords(filter: Filter):
     return res
 
 
-@router.post("/get-all-top5-complaint-posts", response_model=Top5ComplaintPostsRes)
+@router.post(
+    "/get-all-top5-complaint-posts",
+    response_model=Top5ComplaintPostsRes,
+    response_model_exclude_none=True,
+)
 def get_all_top5_complaint_posts(filter: Filter):
     """
     To get top 5 likes comments for complaint related comments
@@ -121,36 +125,30 @@ def get_all_top5_complaint_posts(filter: Filter):
         Pydantic Model: JSON response object
     """
 
+    # Create response body
+    res = {}
+
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
         fb_comments_by_likes, fb_comments_by_date = get_top5_complaint_posts(filter, FB_POSTS)
-    else:
-        fb_comments_by_likes = fb_comments_by_date = []
+        res["facebook"] = {"likes": fb_comments_by_likes, "date": fb_comments_by_date}
     if "twitter" in filter.platforms:
         twit_comments_by_likes, twit_comments_by_date = get_top5_complaint_posts(
             filter, TWITTER_TWEETS
         )
-    else:
-        twit_comments_by_likes = twit_comments_by_date = []
+        res["twitter"] = {"likes": twit_comments_by_likes, "date": twit_comments_by_date}
     if "reddit" in filter.platforms:
         reddit_comments_by_likes, reddit_comments_by_date = get_top5_complaint_posts(
             filter, REDDIT_SUBMISSIONS
         )
-    else:
-        reddit_comments_by_likes = reddit_comments_by_date = []
+        res["reddit"] = {"likes": reddit_comments_by_likes, "date": reddit_comments_by_date}
     if "youtube" in filter.platforms:
         youtube_comments_by_likes, youtube_comments_by_date = get_top5_complaint_posts(
             filter, YOUTUBE_VIDEOS
         )
-    else:
-        youtube_comments_by_likes = youtube_comments_by_date = []
+        res["youtube"] = {"likes": youtube_comments_by_likes, "date": youtube_comments_by_date}
 
-    return {
-        "facebook": {"likes": fb_comments_by_likes, "date": fb_comments_by_date},
-        "twitter": {"likes": twit_comments_by_likes, "date": twit_comments_by_date},
-        "reddit": {"likes": reddit_comments_by_likes, "date": reddit_comments_by_date},
-        "youtube": {"likes": youtube_comments_by_likes, "date": youtube_comments_by_date}
-    }
+    return res
 
 
 @router.post("/get-platform-complaint-percentage", response_model=ComplaintPercentageRes)
