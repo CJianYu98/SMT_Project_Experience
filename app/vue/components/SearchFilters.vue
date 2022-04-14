@@ -260,13 +260,7 @@
       console.log("this.$route.name", this.$route.name)
     },
     data: () => ({
-      isLoading: false,
-      items: [],
-      autocompleteModel: null, // stores the symbol (value), not the name (text)
-      search: null,
-      tab: null,
-      menu1: false,
-      menu: false,
+      autocompleteModel: null, 
       date: null,
       dateRange: ['2021-02-01', '2022-01-31'],
       dateSelected: "Past 7 Days",
@@ -346,29 +340,9 @@
     },
 
     watch: {
-      model (val) {
-        if (val != null) this.tab = 0
-        else this.tab = null
-      },
-
-      // search: {
-      //   handler(val) {
-      //     if (this.items.length > 0) return
-      //       this.isLoading = true
-
-      //     // Lazily load input items
-      //     fetch('https://api.coingecko.com/api/v3/coins/list')
-      //       .then(res => res.clone().json())
-      //       .then(res => {
-      //         this.items = res
-      //         console.log("UNDER WATCH this.items", this.items)
-      //       })
-      //       .catch(err => {
-      //         console.log(err)
-      //       })
-      //       .finally(() => (this.isLoading = false))
-      //   },
-      //   immediate: true
+      // model (val) {
+      //   if (val != null) this.tab = 0
+      //   else this.tab = null
       // },
 
       selectedTrendingQuery (newVal, oldVal) { 
@@ -413,15 +387,6 @@
 
         return combinedDates
       },
-      // updateDatesToPassToDashboard() {
-      //   console.log("=== start updateDates() ===")
-
-      //   console.log("computedCustomDateFormatted", this.computedCustomDateFormatted)
-
-      //   this.emitFilterSelectionToDashboard(this.autocompleteModel, this.computedCustomDateFormatted, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected)
-
-      //   console.log("=== end updateDates() ===")
-      // },
 
       emitFilterSelectionToDashboard() {
         console.log("=== START emitFilterSelectionToDashboard() ===")
@@ -449,32 +414,10 @@
         console.log("=== END emitFilterSelectionToDashboard() ===")
       },
 
-      // updateAutoComplete(val) {
-      //   console.log("=== START updateAutoComplete() === ")
-      //   console.log("val", val)
-      //   // if val is found in items, update autocompletemodel variable
-      //   console.log("this.items", this.items)
-
-      //   const checkValInAutoComplete = this.items.find(x => x.name === val)
-        
-      //   if (checkValInAutoComplete) {
-      //     console.log("inside if loop")
-      //     this.autocompleteModel = checkValInAutoComplete
-      //     console.log("checkValInAutoComplete", checkValInAutoComplete)
-      //   }
-        
-      //   console.log("this.autocompleteModel 2", this.autocompleteModel)
-      //   console.log("=== END updateAutoComplete() === ")
-      // },
-
       openDialogueIfCustomSelected(dateSelected) {
         if (dateSelected === 'Custom') {
           this.dialog = true
-          // this.emitFilterSelectionToDashboard(this.autocompleteModel, this.computedCustomDateFormatted, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
         } 
-        // else {
-        //   this.emitFilterSelectionToDashboard(this.autocompleteModel, this.dateSelected, this.platformsSelected, this.sentimentsSelected, this.emotionsSelected);
-        // }
       }
     },
 
