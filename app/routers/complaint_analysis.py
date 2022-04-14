@@ -96,7 +96,7 @@ def get_all_top_complaint_keywords(filter: Filter):
 
     res = []
     for i in range(len(entities_count)):
-        if i >= 20:
+        if i >= filter.topN:
             break
 
         res.append(

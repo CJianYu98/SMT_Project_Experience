@@ -12,6 +12,7 @@ class Filter(BaseModel):
     emotions: List[str]
     query: Optional[str] = Field(...)
     interval: Optional[str]
+    topN: Optional[int]
 
     @validator("endDate")
     def check_datetime_str_format(cls, v):
