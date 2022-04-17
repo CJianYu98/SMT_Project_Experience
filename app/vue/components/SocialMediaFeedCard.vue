@@ -4,7 +4,6 @@
     class="mx-8 mt-8 rounded-lg"
     height="100%"
   >
-    <!-- :style="{'border': `2px ${$vuetify.theme.themes[light].facebook} solid;`}" -->
     <v-row>
       <v-col cols="8" class="py-0">
         <v-card-title class="pb-4 accent--text text-h6 mx-4">
@@ -22,8 +21,8 @@
       </v-col>
       <v-spacer></v-spacer>
       <v-col cols="3" class="py-0">
-          <!-- v-if="!('platform' in relatedPosts)&& !pendingState" -->
         <DropDownSelect
+          v-if="platformHasData && !pendingState"
           :view-filter="sortView" 
           :label="label"
           :view-selected="viewSelected"
@@ -31,23 +30,39 @@
         </DropDownSelect>
       </v-col>
     </v-row>
-    <RelatedPosts
+    <template v-if="pendingState">
+      <LoadingPlaceholder />
+    </template>
+    <template v-else-if="!platformHasData">
+      <PlaceholderNoDataToShow />
+    </template>
+    <template v-else>
+      <RelatedPosts
         :related-posts="platformAllData"
         :view-selected="viewSelected.toLowerCase()"
-    />
+      />
+    </template>
   </v-card>
 </template>
 
 <script>
+import LoadingPlaceholder from './LoadingPlaceholder.vue'
+import PlaceholderNoDataToShow from './PlaceholderNoDataToShow.vue'
 import RelatedPosts from './RelatedPosts.vue'
 export default {
   components: { 
     RelatedPosts,
+    LoadingPlaceholder,
+    PlaceholderNoDataToShow,
   },
   props: {
     platformAllData: {
       type: Object,
       required: true,
+    },
+    pendingState: {
+      type: Boolean,
+      required: true
     },
   },
   data: () => ({
@@ -62,6 +77,9 @@ export default {
       // console.log("Object.keys(this.platformAllData)[0]", Object.keys(this.platformAllData)[0])
       return Object.keys(this.platformAllData)[0]
     },
+    platformHasData() {
+      return Object.keys(this.platformAllData[this.platform]).length > 0
+    }
   },
   methods: {
     passViewToPosts(changedView) {

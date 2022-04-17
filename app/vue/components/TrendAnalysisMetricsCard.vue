@@ -52,8 +52,8 @@ export default {
   },
   methods: {
     getCombinedStringFromIndvPlatform(combinedString) {
-      console.log("=== start getCombinedStringFromIndvPlatform() ===")
-      console.log("combinedString", combinedString)
+      // console.log("=== start getCombinedStringFromIndvPlatform() ===")
+      // console.log("combinedString", combinedString)
       this.combinedString = combinedString
     }
   },

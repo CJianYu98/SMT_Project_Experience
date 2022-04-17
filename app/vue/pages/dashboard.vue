@@ -93,6 +93,54 @@ export default {
       )
     };
 
+    const requestOptionsForWordcloud = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        { 
+          "endDate": this.fetchEndDate,
+          "numDays": this.fetchNumDays,
+          "platforms": this.fetchPlatforms,
+          "sentiments": this.fetchSentiments,
+          "emotions": this.fetchEmotions,
+          "query": this.fetchQuery,
+          "topN": 30
+        }
+      )
+    };
+
+    const requestOptionsForRawPosts = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        { 
+          "endDate": this.fetchEndDate,
+          "numDays": this.fetchNumDays,
+          "platforms": this.fetchPlatforms,
+          "sentiments": this.fetchSentiments,
+          "emotions": this.fetchEmotions,
+          "query": this.fetchQuery,
+          "topN": 5
+        }
+      )
+    };
+
+    const requestOptionsForNoteworthyTopics = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        { 
+          "endDate": this.fetchEndDate,
+          "numDays": this.fetchNumDays,
+          "platforms": this.fetchPlatforms,
+          "sentiments": this.fetchSentiments,
+          "emotions": this.fetchEmotions,
+          "query": this.fetchQuery,
+          "topN": 5
+        }
+      )
+    };
+
     await fetch("http://127.0.0.1:8000/topic-analysis/get-top5-topic-analysis", requestOptions)
       .then(response => response.json())
       .then(data => 
@@ -195,7 +243,7 @@ export default {
       //   console.error(error);
       // })
     
-    await fetch("http://127.0.0.1:8000/keyword-analysis/get-all-top-keywords", requestOptions)
+    await fetch("http://127.0.0.1:8000/keyword-analysis/get-all-top-keywords", requestOptionsForWordcloud)
     .then(response => response.json())
       .then(data => 
         {
@@ -217,7 +265,7 @@ export default {
     //     console.error(error);
     //   })
     
-    await fetch("http://127.0.0.1:8000/complaint-analysis/get-all-top-complaint-keywords", requestOptions)
+    await fetch("http://127.0.0.1:8000/complaint-analysis/get-all-top-complaint-keywords", requestOptionsForWordcloud)
     .then(response => response.json())
       .then(data => 
         {
@@ -240,7 +288,7 @@ export default {
     //     console.error(error);
     //   })
     
-    await fetch("http://127.0.0.1:8000/complaint-analysis/get-all-top5-complaint-posts", requestOptions)
+    await fetch("http://127.0.0.1:8000/complaint-analysis/get-all-top5-complaint-posts", requestOptionsForRawPosts)
     .then(response => response.json())
       .then(data => 
         {
@@ -283,7 +331,7 @@ export default {
     // //     console.error(error);
     // //   })
     
-    await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-posts", requestOptions)
+    await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-posts", requestOptionsForRawPosts)
     .then(response => response.json())
       .then(data => 
         {
@@ -309,7 +357,7 @@ export default {
     //     console.error(error);
     //   })
     
-    await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-topics", requestOptions)
+    await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-topics", requestOptionsForNoteworthyTopics)
       .then(response => response.json())
         .then(data => 
           {

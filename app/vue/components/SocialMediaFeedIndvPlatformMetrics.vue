@@ -24,18 +24,22 @@
     </v-row>
     <v-row class="mb-2">
       <v-col cols="11" class="py-0">
-        <TrendingTopicSentimentBarChart
-          :trending-topic-sentiment="platformAllData.sentiment"
-          :sentiment-graph-id="'sentiment'+platformString" 
-        />
+        <template v-if="!platformAllData.sentiment.find(sentimentObj => sentimentObj.percentage === 'NaN')">
+          <TrendingTopicSentimentBarChart
+            :trending-topic-sentiment="platformAllData.sentiment"
+            :sentiment-graph-id="'sentiment'+platformString" 
+          />
+        </template>
       </v-col>
     </v-row>
     <v-row class="mb-1">
       <v-col cols="11" class="py-0">
-        <TrendingTopicSentimentBarChart 
+        <template v-if="!platformAllData.emotions.find(emotionObj => emotionObj.percentage === 'NaN')">
+          <TrendingTopicSentimentBarChart 
           :trending-topic-sentiment="platformAllData.emotions" 
           :sentiment-graph-id="'emotion'+platformString"
         />
+        </template>
       </v-col>
     </v-row>
   </v-container>
@@ -44,6 +48,8 @@
 
 <script>
 export default {
+  components: { 
+  },
   props: {
     platformAllData: {
       type: Object,

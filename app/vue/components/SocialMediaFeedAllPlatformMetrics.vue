@@ -22,33 +22,40 @@
         />
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="2">
-        <SocialMediaFeedIndvPlatformMetrics
-          :platform-all-data="aggregatedStatsAllPlatforms.facebook"
-          platform-string="facebook"
-        />
-      </v-col>
-      <v-spacer></v-spacer>
-      <v-col cols="2">
-        <SocialMediaFeedIndvPlatformMetrics
-          :platform-all-data="aggregatedStatsAllPlatforms.reddit"
-          platform-string="reddit"
-        />
-      </v-col>
-      <v-spacer></v-spacer>
-      <v-col cols="2">
-        <SocialMediaFeedIndvPlatformMetrics
-          :platform-all-data="aggregatedStatsAllPlatforms.twitter"
-          platform-string="twitter"
-        />
-      </v-col>
-      <v-spacer></v-spacer>
-      <v-col cols="2">
-        <SocialMediaFeedIndvPlatformMetrics
-          :platform-all-data="aggregatedStatsAllPlatforms.youtube"
-          platform-string="youtube"
-        />
-      </v-col>
+      <template v-if="pendingState">
+        <v-col cols="8">
+          <LoadingPlaceholder/>
+        </v-col>
+      </template>
+      <template v-else>
+        <v-col cols="2">
+          <SocialMediaFeedIndvPlatformMetrics
+            :platform-all-data="aggregatedStatsAllPlatforms.facebook"
+            platform-string="facebook"
+          />
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col cols="2">
+          <SocialMediaFeedIndvPlatformMetrics
+            :platform-all-data="aggregatedStatsAllPlatforms.reddit"
+            platform-string="reddit"
+          />
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col cols="2">
+          <SocialMediaFeedIndvPlatformMetrics
+            :platform-all-data="aggregatedStatsAllPlatforms.twitter"
+            platform-string="twitter"
+          />
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col cols="2">
+          <SocialMediaFeedIndvPlatformMetrics
+            :platform-all-data="aggregatedStatsAllPlatforms.youtube"
+            platform-string="youtube"
+          />
+        </v-col>
+      </template>
       <v-spacer></v-spacer>
     </v-row>
   </v-card>
@@ -56,16 +63,22 @@
 
 
 <script>
+import LoadingPlaceholder from './LoadingPlaceholder.vue'
 import SocialMediaFeedIndvPlatformMetrics from './SocialMediaFeedIndvPlatformMetrics.vue'
 export default {
   components: { 
-    SocialMediaFeedIndvPlatformMetrics 
+    SocialMediaFeedIndvPlatformMetrics,
+    LoadingPlaceholder,
   },
   props: {
     aggregatedStatsAllPlatforms: {
       type: Object,
       required: true
-    }
+    },
+    pendingState: {
+      type: Boolean,
+      required: true
+    },
   },
   data: () => ({
     aggregatedStatsHelpText: "These aggregated statistics are based on the filters that are selected.",
