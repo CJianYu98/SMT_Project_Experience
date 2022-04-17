@@ -1,7 +1,7 @@
 <template>
   <div class="mb-15">
     <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
-    <!-- <p>{{testData}}</p> -->
+    <p>{{testData}}</p>
     <v-row>
       <v-col cols="4">
         <TrendingTopics
@@ -19,9 +19,11 @@
           :platform-metrics="platformMetrics"
           :all-trend="allTrend"
           :platform-trend="platformTrend"
-          :medias="medias"
-          :mediasMetrics="mediasMetrics"
+          :mediaData="mediaData"
+          :media-chart-data="mediaChartData"
           :selected-date-filter="dateFilter"
+          :sentimentColors="keywordsWordCloudLegend"
+          :emotionColors="trendingTopicsEmotionsLegend"
         />
       </v-col>
     </v-row>
@@ -137,6 +139,22 @@ export default {
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
           "topN": 5
+        }
+      )
+    };
+
+    const requestOptionsForTrendPlots = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        { 
+          "endDate": this.fetchEndDate,
+          "numDays": this.fetchNumDays,
+          "platforms": this.fetchPlatforms,
+          "sentiments": this.fetchSentiments,
+          "emotions": this.fetchEmotions,
+          "query": this.fetchQuery,
+          "interval": this.determineChartInterval(this.numDays)
         }
       )
     };
@@ -373,6 +391,19 @@ export default {
         console.error(error);
       })
 
+    await fetch("http://127.0.0.1:8000/trend-analysis/get-all-trend-plot-data", requestOptionsForTrendPlots)
+      .then(response => response.json())
+        .then(data => 
+          {
+            console.log("get-all-trend-plot data", data)
+            this.mediaChartData = data
+            this.testData=data
+
+          }
+        )
+      .catch((error) => {
+        console.error(error);
+      })
   },
   // mounted() {
   // },
@@ -400,7 +431,17 @@ export default {
       sadness: "#477BD1",
     },
     selectedTrendingQuery: "",
-    medias: ['all','facebook','reddit','twitter','youtube'],
+    mediaData: {
+      medias: ['all','facebook','reddit','twitter','youtube'],
+      mediaView: {
+        all: ['Number of Mentions','Number of Likes'],
+        facebook: ['Number of Mentions', 'Number of Likes', 'Sentiments', 'Emotions'],
+        reddit: ['Number of Mentions', 'Number of Net Votes', 'Sentiments', 'Emotions', 'Number of Awards'],
+        twitter: ['Number of Mentions', 'Number of Likes', 'Sentiments', 'Emotions', 'Number of Retweets'],
+        youtube: ['Number of Mentions', 'Number of Likes', 'Sentiments', 'Emotions', 'Views']
+      },
+    },
+    mediaChartData: {},
     mediasMetrics: { 
       all: {
         view: ['Number of Mentions','Number of Likes'],
@@ -1079,6 +1120,10 @@ export default {
 
       console.log("=== END updateDashboardWithQuery() ===")
     },
+
+    determineChartInterval(numDays) {
+      return "daily";
+    }
   }
   
 }

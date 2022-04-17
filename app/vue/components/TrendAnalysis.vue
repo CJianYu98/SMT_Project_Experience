@@ -24,8 +24,10 @@
         </v-col>
         <v-col cols="" class="mr-7">
           <TrendAnalysisTabs
-            :medias="medias"
-            :mediasMetrics="mediasMetrics"
+            :mediaData="mediaData"
+            :media-chart-data="mediaChartData"
+            :sentimentColors="sentimentColors"
+            :emotionColors="emotionColors"
           />
         </v-col>
       </v-row>
@@ -71,11 +73,19 @@ export default {
       type: Object,
       required: true
     },
-    medias: {
-      type: Array,
+    mediaData: {
+      type: Object,
       required: true
     },
-    mediasMetrics: {
+    mediaChartData: {
+      type: Object,
+      required: true
+    },
+    sentimentColors: {
+      type: Object,
+      required: true
+    },
+    emotionColors: {
       type: Object,
       required: true
     }

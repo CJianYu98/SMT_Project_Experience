@@ -11,7 +11,7 @@
     },
     data: (instance) => {
       return {
-        chartData: instance.data.chartData,
+        chartData: instance.data,
         options: {
           scales: {
             yAxes: [{
