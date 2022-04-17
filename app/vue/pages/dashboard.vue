@@ -19,11 +19,11 @@
           :platform-metrics="platformMetrics"
           :all-trend="allTrend"
           :platform-trend="platformTrend"
-          :mediaData="mediaData"
+          :media-data="mediaData"
           :media-chart-data="mediaChartData"
           :selected-date-filter="dateFilter"
-          :sentimentColors="keywordsWordCloudLegend"
-          :emotionColors="trendingTopicsEmotionsLegend"
+          :sentiment-colors="keywordsWordCloudLegend"
+          :emotion-colors="trendingTopicsEmotionsLegend"
         />
       </v-col>
     </v-row>

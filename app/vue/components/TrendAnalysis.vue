@@ -24,10 +24,10 @@
         </v-col>
         <v-col cols="" class="mr-7">
           <TrendAnalysisTabs
-            :mediaData="mediaData"
+            :media-data="mediaData"
             :media-chart-data="mediaChartData"
-            :sentimentColors="sentimentColors"
-            :emotionColors="emotionColors"
+            :sentiment-colors="sentimentColors"
+            :emotion-colors="emotionColors"
           />
         </v-col>
       </v-row>

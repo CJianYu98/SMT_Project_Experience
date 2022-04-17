@@ -44,7 +44,9 @@
             <!-- </v-container> -->
           <!-- </v-card> -->
           <v-card class="">
-            <line-chart class="chartBox" :data="formattedChartData"></line-chart>  
+            <line-chart class="chartBox" 
+              v-if="Object.keys(defaultChartData).length > 0"
+              :data="defaultChartData"></line-chart>  
           </v-card>   
         </v-tab-item>
     </v-tabs>
@@ -72,7 +74,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       emotionColors: {
         type: Object,
         required: true
-      }
+      },
     },
     components: {
         LineChart,
@@ -82,13 +84,13 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       return {
         tabs: null,
         label: 'View',
-        selectedTab: instance.mediaData.medias[0],
-        selectedViewList: instance.mediaData.mediaView.all,
-        selectedViewOption: instance.mediaData.mediaView.all[0],
-        formattedChartData: {},
         // selectedTab: instance.mediaData.medias[0],
         // selectedViewList: instance.mediaData.mediaView.all,
         // selectedViewOption: instance.mediaData.mediaView.all[0],
+        // formattedChartData: {},
+        selectedTab: instance.mediaData.medias[0],
+        selectedViewList: instance.mediaData.mediaView.all,
+        selectedViewOption: instance.mediaData.mediaView.all[0],
         // formattedChartData: this.defaultChartData(),
         selectedChartData: [],
         selectedTabColor: '',
@@ -117,9 +119,54 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         },
       }
     },
+    computed: {
+      defaultChartData()
+      {
+        console.log("=== START defaultChartData() ===")
+        return {
+          labels: [],
+          datasets: [
+            {
+              label: this.$props.mediaData.medias[1],
+              data: this.$props.mediaChartData.facebook.mentions,
+              fill: false,
+              borderColor: this.colorCode.media.facebook,
+              backgroundColor: this.colorCode.media.facebook,
+              borderWidth: 1,
+            },
+            // {
+            //   label: this.$props.mediaData.medias[2],
+            //   data: this.$props.mediasMetrics.reddit.mentions,
+            //   fill: false,
+            //   borderColor: this.colorCode.media.reddit,
+            //   backgroundColor: this.colorCode.media.reddit,
+            //   borderWidth: 1,
+            // },
+            // {
+            //   label: this.$props.mediaData.medias[3],
+            //   data: this.$props.mediasMetrics.facebook.mentions,
+            //   fill: false,
+            //   borderColor: this.colorCode.media.facebook,
+            //   backgroundColor: this.colorCode.media.facebook,
+            //   borderWidth: 1,
+            // },
+            // {
+            //   label: this.$props.mediaData.medias[4],
+            //   data: this.$props.mediasMetrics.facebook.mentions,
+            //   fill: false,
+            //   borderColor: this.colorCode.media.facebook,
+            //   backgroundColor: this.colorCode.media.facebook,
+            //   borderWidth: 1,
+            // },
+          ]
+        };
+      }
+    },
     methods:{
       reset(media)
       {
+        console.log("=== START reset() ===")
+        console.log("media", media)
         this.selectedTab = media;
         
         // 'number of mentions' is the default selection for all tabs 
@@ -145,7 +192,9 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         else if (this.selectedTab === 'youtube'){
           this.selectedViewList = this.$props.mediaData.mediaView.youtube;
           this.selectedChartData = this.$props.mediaChartData.youtube.mentions;
-        }            
+        }
+        
+        console.log("=== END reset() ===")
       },
       changeViewOption(selectedViewOption)
       {
@@ -154,6 +203,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       },
       changeChart()
       {
+        console.log("=== START changeChart() ===")
         // All tab
         // if (this.selectedTab === 'all'){
         //   if (this.selectedViewOption === 'Number of Mentions'){
@@ -242,9 +292,13 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         }
         
         this.formatChartDataset();
+
+        console.log("=== END changeChart() ===")
       },
       formatChartDataset()
       {
+        console.log("=== START formatChartDataset() ===")
+
         if (this.selectedTab === 'all'){
           this.allChartData();
         }
@@ -344,9 +398,12 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             ]
           }
         }
+        console.log("=== END formatChartDataset() ===")
       },
       allChartData()
       {
+        console.log("=== START allChartData() ===")
+
         if (this.selectedViewOption === 'Number of Mentions') {
           this.formattedChartData = {
             labels: [],
@@ -425,47 +482,8 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             ]
           };
         }
+        console.log("=== END allChartData() ===")
       },
-      defaultChartData()
-      {
-        return {
-          labels: [],
-          datasets: [
-            {
-              label: this.$props.mediaData.medias[1],
-              data: this.$props.mediaChartData.facebook.mentions,
-              fill: false,
-              borderColor: this.colorCode.media.facebook,
-              backgroundColor: this.colorCode.media.facebook,
-              borderWidth: 1,
-            },
-            {
-              label: this.$props.mediaData.medias[2],
-              data: this.$props.mediasMetrics.reddit.mentions,
-              fill: false,
-              borderColor: this.colorCode.media.reddit,
-              backgroundColor: this.colorCode.media.reddit,
-              borderWidth: 1,
-            },
-            {
-              label: this.$props.mediaData.medias[3],
-              data: this.$props.mediasMetrics.facebook.mentions,
-              fill: false,
-              borderColor: this.colorCode.media.facebook,
-              backgroundColor: this.colorCode.media.facebook,
-              borderWidth: 1,
-            },
-            {
-              label: this.$props.mediaData.medias[4],
-              data: this.$props.mediasMetrics.facebook.mentions,
-              fill: false,
-              borderColor: this.colorCode.media.facebook,
-              backgroundColor: this.colorCode.media.facebook,
-              borderWidth: 1,
-            },
-          ]
-        };
-      }
     }, // end of methods
   }
 </script>
