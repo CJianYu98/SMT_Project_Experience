@@ -47,7 +47,7 @@ class EmotionTrendPlotData(BaseModel):
     anger: List[int]
     fear: List[int]
     joy: List[int]
-    anger: List[int]
+    sadness: List[int]
     neutral: List[int]
 
 
