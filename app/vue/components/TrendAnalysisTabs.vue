@@ -124,7 +124,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       {
         console.log("=== START defaultChartData() ===")
         return {
-          labels: [],
+          labels: this.selectedDateLabels,
           datasets: [
             {
               label: this.$props.mediaData.medias[1],

@@ -1122,7 +1122,29 @@ export default {
     },
 
     determineChartInterval(numDays) {
-      return "daily";
+      if (numDays <= 3) {
+        return "3hours";
+      }
+      else if (numDays <= 20) {
+        return "daily";
+      }
+      else if (numDays <= 168) {
+        return "weekly";
+      }
+      else if (numDays <= 672) {
+        return "monthly";
+      }
+      else {
+        return "yearly";
+      }
+    },
+
+    currentDate() {
+      const current = new Date();
+      // const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
+      console.log(date);
+      return date;
     }
   }
   
