@@ -154,7 +154,7 @@ export default {
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
-          "interval": this.determineChartInterval(this.numDays)
+          "interval": this.determineChartInterval(this.fetchNumDays)
         }
       )
     };
@@ -184,7 +184,8 @@ export default {
 
           // this.testData = data
           console.log("top5-topic data", data)
-
+          console.log(this.fetchEndDate)
+          console.log(this.fetchNumDays)
           if (data.detail === "No data found within date period given") {
             console.log("inside if loop, No data found within date period given")
             this.topFiveTopicsData = []
@@ -1059,7 +1060,7 @@ export default {
     numNoteworthyPostsTotal: 0,
     fetchQuery: null,
     fetchEndDate: "2021-04-06",
-    fetchNumDays: 14,
+    fetchNumDays: 8, // api will return minus1 data point, so need to + 1 to num days
     fetchPlatforms: ["facebook"],
     fetchSentiments: ["neutral", "negative", "positive"],
     fetchEmotions: ["neutral", "anger", "fear", "sadness", "joy"],
@@ -1144,10 +1145,13 @@ export default {
       // const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
       const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
       console.log(date);
-      return date;
+      this.fetchEndDate = date;
+      console.log(this.fetchEndDate);
     }
+  }, // end of menthods
+  mounted () {
+    this.currentDate();
   }
-  
 }
 </script>
 
