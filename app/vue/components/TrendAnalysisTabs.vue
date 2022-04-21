@@ -75,6 +75,10 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         type: Object,
         required: true
       },
+      dateLabels: {
+        type: Array,
+        required: true
+      }
     },
     components: {
         LineChart,
@@ -95,8 +99,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         selectedChartData: [],
         selectedTabColor: '',
         selectedDatePeriod: '',
-        selectedDateLabels: ["Jan 2021", "Feb 2021",  "Mar 2021",  "Apr 2021",  "May 2021",  "Jun 2021",  
-            "Jul 2021",  "Aug 2021", "Sep 2021", "Oct 2021", "Nov 2021", "Dec 2021", "Jan 2022"],
+        selectedDateLabels: instance.dateLabels,
         colorCode: {
           media: {
             facebook: '#3949AB',

@@ -2,6 +2,7 @@
   <div class="mb-15">
     <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
     <p>{{testData}}</p>
+    <p>{{dateLabels}}</p>
     <v-row>
       <v-col cols="4">
         <TrendingTopics
@@ -24,6 +25,7 @@
           :selected-date-filter="dateFilter"
           :sentiment-colors="keywordsWordCloudLegend"
           :emotion-colors="trendingTopicsEmotionsLegend"
+          :date-labels="dateLabels"
         />
       </v-col>
     </v-row>
@@ -186,6 +188,7 @@ export default {
           console.log("top5-topic data", data)
           console.log(this.fetchEndDate)
           console.log(this.fetchNumDays)
+          console.log(this.fetchPlatforms)
           if (data.detail === "No data found within date period given") {
             console.log("inside if loop, No data found within date period given")
             this.topFiveTopicsData = []
@@ -432,6 +435,8 @@ export default {
       sadness: "#477BD1",
     },
     selectedTrendingQuery: "",
+    dateLabels: [],
+    selectedMedia: [],
     mediaData: {
       medias: ['all','facebook','reddit','twitter','youtube'],
       mediaView: {
@@ -1060,8 +1065,8 @@ export default {
     numNoteworthyPostsTotal: 0,
     fetchQuery: null,
     fetchEndDate: "2021-04-06",
-    fetchNumDays: 8, // api will return minus1 data point, so need to + 1 to num days
-    fetchPlatforms: ["facebook"],
+    fetchNumDays: 8, // api will return less 1 data point, so need to + 1 to num days
+    fetchPlatforms: ["facebook", "reddit", "twitter", "youtube"],
     fetchSentiments: ["neutral", "negative", "positive"],
     fetchEmotions: ["neutral", "anger", "fear", "sadness", "joy"],
 
@@ -1104,6 +1109,8 @@ export default {
       // console.log("this.fetchSentiments", this.fetchSentiments)
       // console.log("this.fetchEmotions", this.fetchEmotions)
 
+      this.getDateLabels();
+
       this.$fetch()
 
       // console.log("=== END rerenderDashboard ===")
@@ -1123,16 +1130,16 @@ export default {
     },
 
     determineChartInterval(numDays) {
-      if (numDays <= 3) {
+      if (numDays <= 4) {
         return "3hours";
       }
-      else if (numDays <= 20) {
+      else if (numDays <= 21) {
         return "daily";
       }
-      else if (numDays <= 168) {
+      else if (numDays <= 169) {
         return "weekly";
       }
-      else if (numDays <= 672) {
+      else if (numDays <= 673) {
         return "monthly";
       }
       else {
@@ -1140,17 +1147,47 @@ export default {
       }
     },
 
-    currentDate() {
+    getCurrentDate() {
       const current = new Date();
       // const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
       const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
       console.log(date);
       this.fetchEndDate = date;
       console.log(this.fetchEndDate);
+    },
+
+    getDaysArray(start, end) {
+      const arr = [];
+      for(const dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
+          const date = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
+          arr.push(date);
+      }
+      return arr;
+    },
+
+    getDateLabels() {
+      const startDate = new Date(this.fetchEndDate);
+      startDate.setDate(startDate.getDate() - this.fetchNumDays + 1);
+      const formattedStartDate = `${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDate()}`;
+
+      const endDate = new Date(this.fetchEndDate);
+      endDate.setDate(endDate.getDate() - 1);
+      const formattedEndDate = `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDate()}`;
+
+      const dateList = this.getDaysArray(formattedStartDate, formattedEndDate);
+      this.dateLabels = dateList;
+      // console.log(startDate);
+      // console.log(formattedStartDate);
+      // console.log(endDate);
+      // console.log(formattedEndDate);
+      // console.log(dateList);
+      // console.log(this.dateLabels);
     }
+
   }, // end of menthods
   mounted () {
-    this.currentDate();
+    this.getCurrentDate();
+    this.getDateLabels();
   }
 }
 </script>

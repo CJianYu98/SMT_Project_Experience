@@ -28,6 +28,7 @@
             :media-chart-data="mediaChartData"
             :sentiment-colors="sentimentColors"
             :emotion-colors="emotionColors"
+            :date-labels="dateLabels"
           />
         </v-col>
       </v-row>
@@ -87,6 +88,10 @@ export default {
     },
     emotionColors: {
       type: Object,
+      required: true
+    },
+    dateLabels: {
+      type: Array,
       required: true
     }
   },
