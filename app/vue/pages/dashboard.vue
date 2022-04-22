@@ -1,9 +1,6 @@
 <template>
   <div class="mb-15">
     <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
-    <p>{{testData}}</p>
-    <p>{{dateLabels}}</p>
-    <p>{{selectedMedia}}</p>
     <v-row>
       <v-col cols="4">
         <TrendingTopics
@@ -403,8 +400,6 @@ export default {
           {
             console.log("get-all-trend-plot data", data)
             this.mediaChartData = data
-            this.testData=data
-
           }
         )
       .catch((error) => {
