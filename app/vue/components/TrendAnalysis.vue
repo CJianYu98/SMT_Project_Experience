@@ -29,6 +29,7 @@
             :sentiment-colors="sentimentColors"
             :emotion-colors="emotionColors"
             :date-labels="dateLabels"
+            :selected-media="selectedMedia"
           />
         </v-col>
       </v-row>
@@ -91,6 +92,10 @@ export default {
       required: true
     },
     dateLabels: {
+      type: Array,
+      required: true
+    },
+    selectedMedia: {
       type: Array,
       required: true
     }

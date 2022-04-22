@@ -5,7 +5,7 @@
         centered
     >
         <v-tab
-            v-for="media in mediaData.medias"
+            v-for="media in selectedMedia"
             :key="media"
             @change="reset(media)"
         >
@@ -20,7 +20,7 @@
             {{ media }}
         </v-tab>
         <v-tab-item
-          v-for="(platform, index) in mediaData.mediaView" 
+          v-for="(platform, index) in selectedMedia" 
           :key="index"
         >
           <!-- <v-card flat> -->
@@ -76,6 +76,10 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         required: true
       },
       dateLabels: {
+        type: Array,
+        required: true
+      },
+      selectedMedia: {
         type: Array,
         required: true
       }

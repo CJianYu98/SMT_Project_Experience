@@ -3,6 +3,7 @@
     <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
     <p>{{testData}}</p>
     <p>{{dateLabels}}</p>
+    <p>{{selectedMedia}}</p>
     <v-row>
       <v-col cols="4">
         <TrendingTopics
@@ -26,6 +27,7 @@
           :sentiment-colors="keywordsWordCloudLegend"
           :emotion-colors="trendingTopicsEmotionsLegend"
           :date-labels="dateLabels"
+          :selected-media="selectedMedia"
         />
       </v-col>
     </v-row>
@@ -1109,6 +1111,7 @@ export default {
       // console.log("this.fetchSentiments", this.fetchSentiments)
       // console.log("this.fetchEmotions", this.fetchEmotions)
 
+      this.getPlatforms();
       this.getDateLabels();
 
       this.$fetch()
@@ -1182,11 +1185,26 @@ export default {
       // console.log(formattedEndDate);
       // console.log(dateList);
       // console.log(this.dateLabels);
+    },
+
+    getPlatforms() {
+      const numPlatforms = (this.fetchPlatforms).length;
+      if (numPlatforms > 1) {
+        const platformArr = ["all"];
+        for (let platform = 0; platform < numPlatforms; platform++) {
+          platformArr.push(this.fetchPlatforms[platform]);
+        }
+        this.selectedMedia = platformArr;
+      }
+      else {
+        this.selectedMedia = this.fetchPlatforms;
+      }
     }
 
   }, // end of menthods
   mounted () {
     this.getCurrentDate();
+    this.getPlatforms();
     this.getDateLabels();
   }
 }
