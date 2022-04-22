@@ -446,7 +446,7 @@ export default {
         facebook: ['Number of Mentions', 'Number of Likes', 'Sentiments', 'Emotions'],
         reddit: ['Number of Mentions', 'Number of Net Votes', 'Sentiments', 'Emotions', 'Number of Awards'],
         twitter: ['Number of Mentions', 'Number of Likes', 'Sentiments', 'Emotions', 'Number of Retweets'],
-        youtube: ['Number of Mentions', 'Number of Likes', 'Sentiments', 'Emotions', 'Views']
+        youtube: ['Number of Mentions', 'Number of Likes', 'Sentiments', 'Emotions', 'Number of Views']
       },
     },
     mediaChartData: {},
@@ -1072,7 +1072,7 @@ export default {
     fetchSentiments: ["neutral", "negative", "positive"],
     fetchEmotions: ["neutral", "anger", "fear", "sadness", "joy"],
 
-  }),
+  }), // end of data
 
   computed: {
 
@@ -1201,7 +1201,7 @@ export default {
       }
     }
 
-  }, // end of menthods
+  }, // end of methods
   mounted () {
     this.getCurrentDate();
     this.getPlatforms();
