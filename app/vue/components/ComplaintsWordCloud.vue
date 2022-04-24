@@ -113,7 +113,7 @@ export default {
         //             .attr('id', d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''));
         const group = focus.append('g')
         // eslint-disable-next-line
-                    .attr('id', 'id' + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''));
+                    .attr('id', 'id' + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', '').replaceAll(/\W/g, ''));
         // console.log("group", group)
         // const base = d.y - d.size;
         // const base = d.y - d.screenY;
@@ -156,7 +156,7 @@ export default {
         // console.log("d3 select 4", 'id' + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''))
 
         // eslint-disable-next-line
-        d3.select("#id" + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', '')).remove();
+        d3.select("#id" + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', '').replaceAll(/\W/g, '')).remove();
 
         // console.log("=== END handleMouseOut() ===")
       }
