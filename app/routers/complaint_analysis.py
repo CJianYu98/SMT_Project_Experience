@@ -8,12 +8,10 @@ from fastapi import APIRouter, HTTPException
 from ..dao.dao import (
     get_complaint_mentions_count,
     get_mentions_count,
-    get_top5_complaint_posts,
     get_top_complaint_keywords,
 )
 from ..schema.complaint_analysis import (
     ComplaintPercentageRes,
-    Top5ComplaintPostsRes,
     Top20ComplaintKeywordAnalysisRes,
 )
 from ..schema.user_filter import Filter
@@ -105,48 +103,6 @@ def get_all_top_complaint_keywords(filter: Filter):
                 "count": entities_count[i][1],
             }
         )
-
-    return res
-
-
-@router.post(
-    "/get-all-top5-complaint-posts",
-    response_model=Top5ComplaintPostsRes,
-    response_model_exclude_none=True,
-)
-def get_all_top5_complaint_posts(filter: Filter):
-    """
-    To get top 5 likes comments for complaint related comments
-
-    Args:
-        filter (Filter): JSON request body (user's filter options)
-
-    Returns:
-        Pydantic Model: JSON response object
-    """
-
-    # Create response body
-    res = {}
-
-    # Query selected social media platform MongoDB collection based on user platform filter options
-    if "facebook" in filter.platforms:
-        fb_comments_by_likes, fb_comments_by_date = get_top5_complaint_posts(filter, FB_POSTS)
-        res["facebook"] = {"likes": fb_comments_by_likes, "date": fb_comments_by_date}
-    if "twitter" in filter.platforms:
-        twit_comments_by_likes, twit_comments_by_date = get_top5_complaint_posts(
-            filter, TWITTER_TWEETS
-        )
-        res["twitter"] = {"likes": twit_comments_by_likes, "date": twit_comments_by_date}
-    if "reddit" in filter.platforms:
-        reddit_comments_by_likes, reddit_comments_by_date = get_top5_complaint_posts(
-            filter, REDDIT_SUBMISSIONS
-        )
-        res["reddit"] = {"likes": reddit_comments_by_likes, "date": reddit_comments_by_date}
-    if "youtube" in filter.platforms:
-        youtube_comments_by_likes, youtube_comments_by_date = get_top5_complaint_posts(
-            filter, YOUTUBE_VIDEOS
-        )
-        res["youtube"] = {"likes": youtube_comments_by_likes, "date": youtube_comments_by_date}
 
     return res
 

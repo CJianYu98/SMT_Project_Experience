@@ -9,7 +9,7 @@ from ..schema.dao import (
     ComplaintTopKeywordsAnalysisRes,
     IndivSocialMediaFeedStatsRes,
     KeywordAnalysisRes,
-    Top5ComplaintOrNoteworthyPostsRes,
+    TopPostsRes,
     Top5NoteworthyTopicsRes,
     Top5TopicStatsRes,
     TrendPlotDataRes,
@@ -26,7 +26,6 @@ load_dotenv()
 FB_DATETIME_STR = "created_time"
 TWIT_DATETIME_STR = "created_at"
 REDDIT_DATETIME_STR = "created_datetime"
-# YT_DATETIME_STR = "datetime"
 
 
 def get_top5_topics_stats(filter: Filter, db_collection: str):
@@ -345,7 +344,7 @@ def get_top_complaint_keywords(filter: Filter, project: dict, db_collection: str
     return res
 
 
-def get_top5_complaint_posts(filter: Filter, db_collection: str):
+def get_top_posts(filter: Filter, db_collection: str):
     """
     Query the db based on user filter to get top 5 complaint related comments based on likes
 
@@ -394,72 +393,10 @@ def get_top5_complaint_posts(filter: Filter, db_collection: str):
     project["likes"] = f"${likes_key}"
     project["datetime"] = f"${datetime_key}"
 
-    db_query["intent"] = {"$regex": "complaint"}
-    if "youtube" in db_collection:
-        print(db_query)
-        print(project)
-
-    res_sort_by_likes = list(db[db_collection].find(db_query, project).sort(likes_key, -1).limit(filter.topN))
-    res_sort_by_date = list(
-        db[db_collection].find(db_query, project).sort(datetime_key, -1).limit(filter.topN)
-    )
-    print(db_collection, len(res_sort_by_date), len(res_sort_by_likes))
-
-    try:
-        Top5ComplaintOrNoteworthyPostsRes(data=res_sort_by_likes)
-        Top5ComplaintOrNoteworthyPostsRes(data=res_sort_by_date)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e)) from e
-
-    return res_sort_by_likes, res_sort_by_date
-
-
-def get_top_noteworthy_posts(filter: Filter, db_collection: str):
-    """
-    Query the db based on user filter to get top noteworthy related comments based on likes
-
-    Args:
-        filter (Filter): JSON request body (user's filter options)
-
-    Raises:
-        HTTPException: For data type error, using pydantic
-
-    Returns:
-        list: List of records(sorted by likes and dates)
-    """
-    project = {
-        "topic": 1,
-        "sentiment": "$sentiment_label",
-        "emotion": "$emotions_label",
-        "intent": 1,
-        "_id": False,
-    }
-
-    if "facebook" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
-        likes_key = "likes_cnt"
-        datetime_key = "created_time"
-        project["comment"] = "$message"
-    elif "twitter" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
-        likes_key = "likes_count"
-        datetime_key = "created_at"
-        project["comment"] = "$tweet"
-    elif "reddit" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
-        likes_key = "score"
-        datetime_key = REDDIT_DATETIME_STR
-        project["comment"] = "$title"
-    elif "youtube" in db_collection:
-        YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
-        likes_key = "likes"
-        datetime_key = YT_DATETIME_STR
-        project["comment"] = "$combined_text"
-    project["likes"] = f"${likes_key}"
-    project["datetime"] = f"${datetime_key}"
-
-    db_query["isNoteworthy"] = 1
+    if filter.postType == "complaint":
+        db_query["intent"] = {"$regex": f"{filter.postType}"}
+    if filter.postType == "noteworthy":
+        db_query["isNoteworthy"] = 1
 
     res_sort_by_likes = list(db[db_collection].find(db_query, project).sort(likes_key, -1).limit(filter.topN))
     res_sort_by_date = list(
@@ -467,8 +404,8 @@ def get_top_noteworthy_posts(filter: Filter, db_collection: str):
     )
 
     try:
-        Top5ComplaintOrNoteworthyPostsRes(data=res_sort_by_likes)
-        Top5ComplaintOrNoteworthyPostsRes(data=res_sort_by_date)
+        TopPostsRes(data=res_sort_by_likes)
+        TopPostsRes(data=res_sort_by_date)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
 

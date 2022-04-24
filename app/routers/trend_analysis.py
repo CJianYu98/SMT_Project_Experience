@@ -5,10 +5,16 @@ from datetime import datetime, timedelta
 
 from fastapi import APIRouter, HTTPException
 
-from ..dao.dao import get_aggregated_stats, get_trend_plot_data, get_trend_stats
+from ..dao.dao import (
+    get_aggregated_stats,
+    get_social_media_feed_stats,
+    get_trend_plot_data,
+    get_trend_stats,
+)
 from ..schema.trend_analysis import (
     AggregatedStatsRes,
     IndivTrendStatsRes,
+    SocialMediaFeedAggregatedStatsRes,
     TrendPlotDataRes,
     TrendStatsRes,
 )
@@ -449,5 +455,85 @@ def aggregate_platform_trend_data(platform: str, posts_data: dict, comments_data
                 res["retweets"].append(posts_data[i].get("retweets", 0))
             elif platform == "youtube":
                 res["views"].append(posts_data[i].get("views", 0))
+
+    return res
+
+
+def calc_aggregated_stats(posts_data, comments_data):
+    """
+    Util func to calculate aggregated stats for social media feed
+
+    Args:
+        posts_data (dict): Posts data (post refers to posts, tweets, submissions, videos)
+        comments_data (dict): Comments data
+
+    Returns:
+        dict: Dict with mentions count, sentiment counts list and emotion counts list
+    """
+
+    res = {
+        "mentions": posts_data.get("mentions", 0) + comments_data.get("mentions", 0),
+        "sentiment": [],
+        "emotions": [],
+    }
+
+    sentiments = ["positive", "neutral", "negative"]
+    emotions = ["anger", "fear", "joy", "sadness", "neutral"]
+
+    for sentiment in sentiments:
+        res["sentiment"].append(
+            {
+                "sentiment": sentiment,
+                "count": posts_data.get(f"{sentiment}_sentiment", 0)
+                + comments_data.get(f"{sentiment}_sentiment", 0),
+            }
+        )
+
+    for emotion in emotions:
+        res["emotions"].append(
+            {
+                "emotion": emotion,
+                "count": posts_data.get(f"{emotion}_emotion", 0)
+                + comments_data.get(f"{emotion}_emotion", 0),
+            }
+        )
+
+    return res
+
+
+@router.post(
+    "/get-social-media-aggregated-stats",
+    response_model=SocialMediaFeedAggregatedStatsRes,
+    response_model_exclude_none=True,
+)
+def get_social_media_aggregated_stats(filter: Filter):
+    """
+    To get aggregated social media feed mentions, sentiments and emotions stats for all platforms
+
+    Args:
+        filter (Filter): JSON request body (user's filter options)
+
+    Returns:
+        Pydantic Model: JSON response object
+    """
+
+    res = {}
+
+    if "facebook" in filter.platforms:
+        fb_posts_data = get_social_media_feed_stats(filter, FB_POSTS)
+        fb_comments_data = get_social_media_feed_stats(filter, FB_COMMENTS)
+        res["facebook"] = calc_aggregated_stats(fb_posts_data, fb_comments_data)
+    if "twitter" in filter.platforms:
+        twit_tweets_data = get_social_media_feed_stats(filter, TWITTER_TWEETS)
+        twit_comments_data = get_social_media_feed_stats(filter, TWITTER_COMMENTS)
+        res["twitter"] = calc_aggregated_stats(twit_tweets_data, twit_comments_data)
+    if "reddit" in filter.platforms:
+        reddit_submissions_data = get_social_media_feed_stats(filter, REDDIT_SUBMISSIONS)
+        reddit_comments_data = get_social_media_feed_stats(filter, REDDIT_COMMENTS)
+        res["reddit"] = calc_aggregated_stats(reddit_submissions_data, reddit_comments_data)
+    if "youtube" in filter.platforms:
+        youtube_videos_data = get_social_media_feed_stats(filter, YOUTUBE_VIDEOS)
+        youtube_comments_data = get_social_media_feed_stats(filter, YOUTUBE_COMMENTS)
+        res["youtube"] = calc_aggregated_stats(youtube_videos_data, youtube_comments_data)
 
     return res

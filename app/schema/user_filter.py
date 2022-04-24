@@ -13,6 +13,7 @@ class Filter(BaseModel):
     query: Optional[str] = Field(...)
     interval: Optional[str]
     topN: Optional[int]
+    postType: Optional[str]
 
     @validator("endDate")
     def check_datetime_str_format(cls, v):
@@ -53,4 +54,11 @@ class Filter(BaseModel):
         INTERVALS = ["3hours", "daily", "weekly", "monthly", "yearly"]
         if v not in INTERVALS:
             raise ValueError("Invalid interval string value")
+        return v
+    
+    @validator("postType")
+    def check_post_type(cls, v):
+        POST_TYPES = ["all", "complaint", "noteworthy"]
+        if v not in POST_TYPES:
+            raise ValueError("Invalid post type string value")
         return v

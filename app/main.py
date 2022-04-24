@@ -5,7 +5,7 @@ from .routers import (
     complaint_analysis,
     keyword_analysis,
     noteworthy_analysis,
-    social_media_feed,
+    top_posts,
     topic_analysis,
     trend_analysis,
 )
@@ -24,4 +24,4 @@ app.include_router(trend_analysis.router)
 app.include_router(keyword_analysis.router)
 app.include_router(complaint_analysis.router)
 app.include_router(noteworthy_analysis.router)
-app.include_router(social_media_feed.router)
+app.include_router(top_posts.router)

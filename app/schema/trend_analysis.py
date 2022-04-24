@@ -75,3 +75,26 @@ class TrendPlotDataRes(BaseModel):
     reddit: RedditTrendPlotData
     twitter: TwitterTrendPlotData
     youtube: YoutubeTrendPlotData
+
+
+# ##### Social Media Feed Stats API #####
+class SentimentCount(BaseModel):
+    sentiment: str
+    count: int
+
+
+class EmotionCount(BaseModel):
+    emotion: str
+    count: int
+
+class IndivSocialMediaFeedAggregatedStats(BaseModel):
+    mentions: int
+    sentiment: List[SentimentCount]
+    emotions: List[EmotionCount]
+
+
+class SocialMediaFeedAggregatedStatsRes(BaseModel):
+    facebook: Optional[IndivSocialMediaFeedAggregatedStats]
+    reddit: Optional[IndivSocialMediaFeedAggregatedStats]
+    twitter: Optional[IndivSocialMediaFeedAggregatedStats]
+    youtube: Optional[IndivSocialMediaFeedAggregatedStats]

@@ -76,7 +76,7 @@ class ComplaintTopKeywordsAnalysisRes(BaseModel):
 
 
 ##### Top 5 Complaint Comments API & Top 5 Noteworthy Comments API #####
-class ComplaintOrNotworthyPost(BaseModel):
+class TopPost(BaseModel):
     likes: int
     datetime: datetime
     comment: str
@@ -90,8 +90,8 @@ class ComplaintOrNotworthyPost(BaseModel):
     img: Optional[str]
 
 
-class Top5ComplaintOrNoteworthyPostsRes(BaseModel):
-    data: List[ComplaintOrNotworthyPost]
+class TopPostsRes(BaseModel):
+    data: List[TopPost]
 
 
 ##### Top 5 Noteworthy Topics API #####
@@ -104,11 +104,6 @@ class Top5NoteworthyTopicsRes(BaseModel):
 
 
 # ##### Social Media Feed Stats API #####
-# class SentimentCount(BaseModel):
-#     sentiment: str
-#     count: int
-
-
 class IndivSocialMediaFeedStats(BaseModel):
     positive_sentiment: int
     negative_sentiment: int
