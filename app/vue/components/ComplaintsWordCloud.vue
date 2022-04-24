@@ -161,6 +161,14 @@ export default {
         // console.log("=== END handleMouseOut() ===")
       }
 
+      function getMaxWordCount(wordCloudArr) {
+        console.log("=== START getMaxWordCount() ===")
+        console.log("wordCloudArr", wordCloudArr)
+        const maxFreq = wordCloudArr.reduce((prev, current) => (parseInt(prev.count) > parseInt(current.count)) ? prev : current, 10).count
+        console.log("maxFreq", maxFreq)
+        return maxFreq
+      }
+
         // Use the module pattern to encapsulate the visualisation code. We'll
         // expose only the parts that need to be public.
         return {
@@ -173,6 +181,9 @@ export default {
           update(val) {
             // console.log("=== start update() ===")
             // console.log("words")
+            
+            const methodMaxWordCount = getMaxWordCount(val)
+            console.log("methodMaxWordCount", methodMaxWordCount)
 
             if (d3.select("#complaintWordcloud")._groups[0][0].childNodes.length > 1) {
               d3.select("#complaintSvgId").remove();
@@ -180,7 +191,7 @@ export default {
 
             layout = cloud()
               .size([width, height])
-              .words(val.map(function(d) { return {text: d.word, size:d.count, sentiment:d.sentiment, frequency:d.count.toString()}; }))
+              .words(val.map(function(d) { return {text: d.word, size:(d.count/methodMaxWordCount)*150, sentiment:d.sentiment, frequency:d.count.toString()}; }))
               .padding(5)        // space between words
               .rotate(function() { return ~~(Math.random() * 2) * 90; })
               .fontSize(function(d) { return d.size; })      // font size of words
