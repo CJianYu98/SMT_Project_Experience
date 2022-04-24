@@ -9,9 +9,9 @@ from ..schema.dao import (
     ComplaintTopKeywordsAnalysisRes,
     IndivSocialMediaFeedStatsRes,
     KeywordAnalysisRes,
-    TopPostsRes,
     Top5NoteworthyTopicsRes,
     Top5TopicStatsRes,
+    TopPostsRes,
     TrendPlotDataRes,
     TrendStatsRes,
 )
@@ -387,7 +387,7 @@ def get_top_posts(filter: Filter, db_collection: str):
         likes_key = "likes"
         datetime_key = YT_DATETIME_STR
         project["comment"] = "$combined_text"
-        project['link'] = "$url"
+        project["link"] = "$url"
     if "facebook" not in db_collection:
         project["thumbnail"] = "$thumbnail"
     project["likes"] = f"${likes_key}"
@@ -395,10 +395,14 @@ def get_top_posts(filter: Filter, db_collection: str):
 
     if filter.postType == "complaint":
         db_query["intent"] = {"$regex": f"{filter.postType}"}
-    if filter.postType == "noteworthy":
-        db_query["isNoteworthy"] = 1
+    else:
+        project["intent"] = "$intent"
+        if filter.postType == "noteworthy":
+            db_query["isNoteworthy"] = 1
 
-    res_sort_by_likes = list(db[db_collection].find(db_query, project).sort(likes_key, -1).limit(filter.topN))
+    res_sort_by_likes = list(
+        db[db_collection].find(db_query, project).sort(likes_key, -1).limit(filter.topN)
+    )
     res_sort_by_date = list(
         db[db_collection].find(db_query, project).sort(datetime_key, -1).limit(filter.topN)
     )
@@ -511,7 +515,7 @@ def get_social_media_feed_stats(filter: Filter, db_collection: str):
     Returns:
         dict: aggregated stats data
     """
-    
+
     # Initialize group_query and project subquery statements for MongoDB query
     group_query = {"_id": {}}
     project = {"_id": False, "mentions": 1}
@@ -552,6 +556,5 @@ def get_social_media_feed_stats(filter: Filter, db_collection: str):
         IndivSocialMediaFeedStatsRes(data=res)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
-    
 
     return res[0]
