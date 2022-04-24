@@ -127,7 +127,7 @@ export default {
         // const base = d.y - d.screenY;
         
         // eslint-disable-next-line
-        console.log("id test", d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''))
+        console.log("id test", d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', '').replaceAll(/\W/g, ''))
 
         group.selectAll('text')
             .data(d.srcElement.__data__.frequency)
@@ -170,7 +170,7 @@ export default {
         // console.log("d3 select 4", 'id' + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''))
 
         // eslint-disable-next-line
-        d3.select("#id" + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', '')).remove();
+        d3.select("#id" + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', '').replaceAll(/\W/g, '')).remove();
 
         // console.log("=== END handleMouseOut() ===")
       }

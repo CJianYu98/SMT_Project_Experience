@@ -22,7 +22,7 @@
       <v-spacer></v-spacer>
       <v-col cols="3" class="py-0">
         <DropDownSelect
-          v-if="platformHasData && !pendingState"
+          v-if="!pendingState && platformHasData"
           :view-filter="sortView" 
           :label="label"
           :view-selected="viewSelected"
@@ -64,6 +64,10 @@ export default {
       type: Boolean,
       required: true
     },
+    platform: {
+      type: String,
+      required: true,
+    }
   },
   data: () => ({
     sortView: ['Likes', 'Date'],
@@ -71,12 +75,12 @@ export default {
     viewSelected: 'Likes'
   }),
   computed: {
-    platform() {
-      // console.log("this.platformAllData", this.platformAllData)
-      // console.log("Object.keys(this.platformAllData)", Object.keys(this.platformAllData))
-      // console.log("Object.keys(this.platformAllData)[0]", Object.keys(this.platformAllData)[0])
-      return Object.keys(this.platformAllData)[0]
-    },
+    // platform() {
+    //   // console.log("this.platformAllData", this.platformAllData)
+    //   // console.log("Object.keys(this.platformAllData)", Object.keys(this.platformAllData))
+    //   // console.log("Object.keys(this.platformAllData)[0]", Object.keys(this.platformAllData)[0])
+    //   return Object.keys(this.platformAllData)[0]
+    // },
     platformHasData() {
       return Object.keys(this.platformAllData[this.platform]).length > 0
     }
