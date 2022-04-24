@@ -39,7 +39,7 @@
       }
     },
     methods: {
-      onChange:function onChange(){
+      onChange(){
           console.log("=== start onChange() ===")
           // console.log(this.selectedView);
           this.$emit('changeView',this.selectedView);

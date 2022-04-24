@@ -36,7 +36,7 @@
                   <DropDownSelect 
                   :viewFilter="selectedViewList" 
                   :viewSelected="selectedViewOption"
-                  @changeView="changeViewOption($event)"
+                  @changeView="changeViewOption"
                   :label="label">
                   </DropDownSelect>
                 </v-col>
@@ -257,7 +257,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         } // end of all tab view
 
         // Facebook tab view
-        else if (this.selectedTab === "facebook"){
+        else if (this.selectedTab === "facebook"){         
           const viewOption = this.selectedViewOption;
           // Facebook sentiments view option
           if (viewOption === 'Sentiments'){ 
@@ -848,26 +848,26 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         // this.selectedViewOption = 'Number of Mentions';
 
         // change view options and chart data
-        // if (this.selectedTab === 'all'){
-        //   this.selectedViewList = this.$props.mediaData.mediaView.all;
-        //   // this.selectedChartData = this.$props.mediaChartData.all.mentions;
-        // }   
-        // if (this.selectedTab === 'facebook'){
-        //   this.selectedViewList = this.$props.mediaData.mediaView.facebook;
-        //   // this.selectedChartData = this.$props.mediaChartData.facebook.mentions;
-        // }
-        // else if (this.selectedTab === 'reddit'){
-        //   this.selectedViewList = this.$props.mediaData.mediaView.reddit;
-        //   // this.selectedChartData = this.$props.mediaChartData.reddit.mentions;
-        // }
-        // else if (this.selectedTab === 'twitter'){
-        //   this.selectedViewList = this.$props.mediaData.mediaView.twitter;
-        //   // this.selectedChartData = this.$props.mediaChartData.twitter.mentions;
-        // }
-        // else if (this.selectedTab === 'youtube'){
-        //   this.selectedViewList = this.$props.mediaData.mediaView.youtube;
-        //   // this.selectedChartData = this.$props.mediaChartData.youtube.mentions;
-        // }
+        if (this.selectedTab === 'all'){
+          this.selectedViewList = this.$props.mediaData.mediaView.all;
+          // this.selectedChartData = this.$props.mediaChartData.all.mentions;
+        }   
+        if (this.selectedTab === 'facebook'){
+          this.selectedViewList = this.$props.mediaData.mediaView.facebook;
+          // this.selectedChartData = this.$props.mediaChartData.facebook.mentions;
+        }
+        else if (this.selectedTab === 'reddit'){
+          this.selectedViewList = this.$props.mediaData.mediaView.reddit;
+          // this.selectedChartData = this.$props.mediaChartData.reddit.mentions;
+        }
+        else if (this.selectedTab === 'twitter'){
+          this.selectedViewList = this.$props.mediaData.mediaView.twitter;
+          // this.selectedChartData = this.$props.mediaChartData.twitter.mentions;
+        }
+        else if (this.selectedTab === 'youtube'){
+          this.selectedViewList = this.$props.mediaData.mediaView.youtube;
+          // this.selectedChartData = this.$props.mediaChartData.youtube.mentions;
+        }
         
         this.getChartData();
         console.log("=== END reset() ===")
