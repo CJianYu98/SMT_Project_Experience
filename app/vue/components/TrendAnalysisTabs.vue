@@ -82,6 +82,14 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       selectedMedia: {
         type: Array,
         required: true
+      },
+      selectedSentiment: {
+        type: Array,
+        required: true
+      },
+      selectedEmotion: {
+        type: Array,
+        required: true
       }
     },
     components: {

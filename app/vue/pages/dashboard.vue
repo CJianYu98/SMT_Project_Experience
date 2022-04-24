@@ -26,6 +26,8 @@
           :emotion-colors="trendingTopicsEmotionsLegend"
           :date-labels="dateLabels"
           :selected-media="selectedMedia"
+          :selected-sentiment="selectedSentiment"
+          :selected-emotion="selectedEmotion"
         />
       </v-col>
     </v-row>
@@ -437,6 +439,8 @@ export default {
     selectedTrendingQuery: "",
     dateLabels: [],
     selectedMedia: [],
+    selectedSentiment: [],
+    selectedEmotion: [],
     mediaData: {
       medias: ['all','facebook','reddit','twitter','youtube'],
       mediaView: {
@@ -1110,6 +1114,8 @@ export default {
       // console.log("this.fetchEmotions", this.fetchEmotions)
 
       this.getPlatforms();
+      this.getSentiments();
+      this.getEmotions();
       this.getDateLabels();
 
       this.$fetch()
@@ -1168,7 +1174,7 @@ export default {
 
     getDateLabels() {
       const startDate = new Date(this.fetchEndDate);
-      startDate.setDate(startDate.getDate() - this.fetchNumDays + 1);
+      startDate.setDate(startDate.getDate() - this.fetchNumDays);
       const formattedStartDate = `${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDate()}`;
 
       const endDate = new Date(this.fetchEndDate);
@@ -1197,6 +1203,14 @@ export default {
       else {
         this.selectedMedia = this.fetchPlatforms;
       }
+    },
+
+    getSentiments() {
+      this.selectedSentiment = this.fetchSentiments;
+    },
+
+    getEmotions() {
+      this.selectedEmotion = this.fetchEmotions;
     }
 
   }, // end of methods
