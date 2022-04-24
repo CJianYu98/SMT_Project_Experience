@@ -464,7 +464,7 @@
 ::v-deep .custom-dialog-datepicker {
   position: absolute;
   top: 10%;
-  left: 19%;
+  left: 40%;
 }
 ::v-deep .change-query-colour input {
   color: #604AF0 !important;

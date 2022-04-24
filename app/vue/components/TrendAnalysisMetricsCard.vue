@@ -30,7 +30,7 @@ export default {
     //   required: true
     // },
     selectedDateFilter: {
-      type: String,
+      // type: String,
       required: true
     },
     overallStats: {
