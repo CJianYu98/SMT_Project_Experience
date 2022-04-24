@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 ##### Metrics Card Aggregated Statistics (without trend) API #####
 class IndivPlatformStat(BaseModel):
-    mentions: float
+    mentions: Optional[float]
     emotion: Optional[str]
 
 

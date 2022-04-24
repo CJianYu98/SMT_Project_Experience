@@ -1,7 +1,7 @@
 <template>
   <div class="mb-15">
     <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
-    <p>{{testData}}</p>
+    <!-- <p>{{testData}}</p> -->
     <v-row>
       <v-col cols="4">
         <TrendingTopics
@@ -56,6 +56,7 @@
           :pending-state="$fetchState.pending"
           :complaints-word-cloud="complaintsKeywords"
           :related-posts="complaintsRelatedPosts"
+          :complaint-mentions-per-platform="complaintMentionsPerPlatform"
         />
       </v-col>      
     </v-row>
@@ -84,11 +85,15 @@ export default {
     PlaceholderCard,
   },
   async fetch() {
-    console.log(this.fetchEndDate);
+    // this.fetchEndDate = new Date().toISOString().split('T')[0]
+    // // this.fetchEndDate = "2022-04-23"
+
+    console.log("this.fetchEndDate", this.fetchEndDate)
+
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
+      body: JSON.stringify( 
         { 
           "endDate": this.fetchEndDate,
           "numDays": this.fetchNumDays + 1,
@@ -127,7 +132,7 @@ export default {
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
-          "topN": 5
+          "topN": 25
         }
       )
     };
@@ -341,20 +346,24 @@ export default {
     //     console.error(error);
     //   })
     
-    // //   await fetch("http://127.0.0.1:8000/complaint-analysis/get-platform-complaint-percentage", requestOptions)
-    // //   .then(response => response.json())
-    // //     .then(data => 
-    // //       {
-    // //         // { "facebook": 0.17, "reddit": 0, "twitter": 0, "youtube": 0 }
-    // //         // { "facebook": 0, "reddit": 0, "twitter": 0, "youtube": 0 } if no data
+      await fetch("http://127.0.0.1:8000/complaint-analysis/get-platform-complaint-percentage", requestOptions)
+      .then(response => response.json())
+        .then(data => 
+          {
+            // { "facebook": 0.17, "reddit": 0, "twitter": 0, "youtube": 0 }
+            // { "facebook": 0, "reddit": 0, "twitter": 0, "youtube": 0 } if no data
 
-    // //         // this.testData = data
+            // 
+
+            console.log("get-platform-complaint-percentage data", data)
+            // this.testData = data
+            this.complaintMentionsPerPlatform = data
   
-    // //       }
-    // //     )
-    // //   .catch((error) => {
-    // //     console.error(error);
-    // //   })
+          }
+        )
+      .catch((error) => {
+        console.error(error);
+      })
     
     await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-posts", requestOptionsForRawPosts)
     .then(response => response.json())
@@ -404,7 +413,7 @@ export default {
           {
             console.log("get-all-trend-plot data", data)
             this.mediaChartData = data
-            this.testData = data
+            // this.testData = data
           }
         )
       .catch((error) => {
@@ -422,6 +431,7 @@ export default {
     keywords: [],
     complaintsKeywords: [],
     complaintsRelatedPosts: {},
+    complaintMentionsPerPlatform: {},
     noteworthyPosts: {},
     noteworthyTopTopics: [],
     keywordsWordCloudLegend: {
@@ -1068,18 +1078,19 @@ export default {
     numComplaintPostsTotal: 0,
     numNoteworthyPostsTotal: 0,
     fetchQuery: null,
-    fetchEndDate: "2021-04-06",
+    fetchEndDate: "",
+    // fetchEndDate: '2022-01-15',
+    // fetchNumDays: 50,
     fetchNumDays: 7,
-    fetchPlatforms: ["facebook", "reddit", "twitter", "youtube"],
+    fetchPlatforms: ["facebook",'reddit','youtube'], // removed twitter for now
     fetchSentiments: ["neutral", "negative", "positive"],
     fetchEmotions: ["neutral", "anger", "fear", "sadness", "joy"],
 
   }), // end of data
 
   computed: {
-
+    
   },
-
   methods: {
     getNumPostsTotal(baseCount, data) {
       // console.log("baseCount", baseCount)
@@ -1095,8 +1106,8 @@ export default {
       return baseCount
     },
     rerenderDashboard(updatedSentiments) {
-      // console.log("=== START rerenderDashboard ===")
-      // console.log("rerenderDashboard updatedSentiments", updatedSentiments)
+      console.log("=== START rerenderDashboard ===")
+      console.log("rerenderDashboard updatedSentiments", updatedSentiments)
 
       this.fetchQuery = updatedSentiments[0]
       this.fetchEndDate = updatedSentiments[1]
@@ -1106,12 +1117,12 @@ export default {
       this.fetchEmotions = updatedSentiments[5]
       this.dateFilter = updatedSentiments[6]
 
-      // console.log("this.fetchQuery", this.fetchQuery)
-      // console.log("this.fetchEndDate", this.fetchEndDate)
-      // console.log("this.fetchNumDays", this.fetchNumDays)
-      // console.log("this.fetchPlatforms", this.fetchPlatforms)
-      // console.log("this.fetchSentiments", this.fetchSentiments)
-      // console.log("this.fetchEmotions", this.fetchEmotions)
+      console.log("this.fetchQuery", this.fetchQuery)
+      console.log("this.fetchEndDate", this.fetchEndDate)
+      console.log("this.fetchNumDays", this.fetchNumDays)
+      console.log("this.fetchPlatforms", this.fetchPlatforms)
+      console.log("this.fetchSentiments", this.fetchSentiments)
+      console.log("this.fetchEmotions", this.fetchEmotions)
 
       this.getPlatforms();
       this.getSentiments();
@@ -1120,7 +1131,7 @@ export default {
 
       this.$fetch()
 
-      // console.log("=== END rerenderDashboard ===")
+      console.log("=== END rerenderDashboard ===")
     },
 
     updateDashboardWithQuery(query) {
@@ -1130,6 +1141,7 @@ export default {
       this.fetchQuery = query
       this.selectedTrendingQuery = query
       console.log("this.fetchQuery", this.fetchQuery)
+      console.log("this.selectedTrendingQuery", this.selectedTrendingQuery)
 
       this.$fetch()
 
@@ -1152,15 +1164,6 @@ export default {
       else {
         return "yearly";
       }
-    },
-
-    getCurrentDate() {
-      const current = new Date();
-      // const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-      const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
-      console.log(date);
-      this.fetchEndDate = date;
-      console.log(this.fetchEndDate);
     },
 
     getDaysArray(start, end) {
@@ -1215,9 +1218,12 @@ export default {
 
   }, // end of methods
   mounted () {
-    this.getCurrentDate();
-    this.getPlatforms();
-    this.getDateLabels();
+    this.getPlatforms()
+    this.getDateLabels()
+    
+  },
+  created() {
+    this.fetchEndDate = new Date().toISOString().split('T')[0]
   }
 }
 </script>

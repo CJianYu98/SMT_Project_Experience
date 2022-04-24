@@ -36,8 +36,11 @@
               class="mx-auto"
             ></v-img>
           </td>
-          <td class="primary--text">
+          <td v-if="data.mentions" class="primary--text">
             {{ (data.mentions * 100).toFixed(0) }}%
+          </td>
+          <td v-else class="primary--text">
+            <span>━</span>
           </td>
           <td>
             <div
