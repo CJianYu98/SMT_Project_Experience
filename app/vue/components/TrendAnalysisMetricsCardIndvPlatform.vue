@@ -96,7 +96,7 @@ export default {
     //   required: true
     // },
     selectedDateFilter: {
-      type: String,
+      // type: String,
       required: true
     },
     platformTrend: {
@@ -131,6 +131,7 @@ export default {
       // console.log("=== start getNumDaysFromDateFilter() ===")
 
       if (!this.isCustomDate) {
+        // if is custom date, calculate number of days in between
         return this.numDaysBetweenCustomDate(this.selectedDateFilter)
       } else {
         return this.isCustomDate.numDays
@@ -140,16 +141,18 @@ export default {
       // console.log("=== start numDaysBetweenCustomDate() ===")
       // console.log("dateString", dateString)
 
-      const startDateStr = dateString.split("-")[0]
-      const endDateStr = dateString.split("-")[1]
+      // const startDateStr = dateString.split("-")[0]
+      // const endDateStr = dateString.split("-")[1]
+      const startDateStr = dateString[0]
+      const endDateStr = dateString[1]
       // console.log("startDateStr", startDateStr)
       // console.log("endDateStr", endDateStr)
 
-      const [startDay, startMonth, startYear] = startDateStr.split('/')
-      const [endDay, endMonth, endYear] = endDateStr.split('/')
+      const [startYear, startMonth, startDay] = startDateStr.split('-')
+      const [endYear, endMonth, endDay] = endDateStr.split('-')
 
-      // console.log("startDateStr.split('/')", startDateStr.split('/'))
-      // console.log("endDateStr.split('/')", endDateStr.split('/'))
+      // console.log("startDateStr.split('-')", startDateStr.split('-'))
+      // console.log("endDateStr.split('-')", endDateStr.split('-'))
 
       const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
       this.customStartDate = new Date(startYear, startMonth-1, startDay);
@@ -165,6 +168,7 @@ export default {
   },
   computed: {
     numDays() {
+      // console.log("=== start numDays() ===")
       return this.getNumDaysFromDateFilter()
     },
     getCombinedString() {
@@ -214,7 +218,7 @@ export default {
         // console.log("startDate", startDate)
       }
       
-      // console.log("endDate", endDate)
+      // // console.log("endDate", endDate)
       const endDateStr = endDate.toLocaleString('en-GB').split(',')[0]
       // console.log("endDateStr", endDateStr)
 
@@ -237,7 +241,7 @@ export default {
       let startDate = new Date();
 
       if (this.isCustomDate == null) {
-        // console.log("is a custom date, if loop")
+        // // console.log("is a custom date, if loop")
 
         endDate = new Date(this.customStartDate-1000*60*60*24*1)
         startDate = new Date(endDate-1000*60*60*24*this.numDays)
@@ -246,7 +250,7 @@ export default {
         // console.log("startDate after setting", startDate)
 
       } else {
-        // console.log("not a custom date, else loop")
+        // // console.log("not a custom date, else loop")
         endDate.setDate(endDate.getDate()-(triggerNumDays+1))
         startDate.setDate(startDate.getDate()-(triggerNumDays*2))
       }

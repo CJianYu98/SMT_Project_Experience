@@ -79,7 +79,6 @@ export default {
       required: true
     },
     selectedDateFilter: {
-      type: String,
       required: true
     },
     overallStats: {
