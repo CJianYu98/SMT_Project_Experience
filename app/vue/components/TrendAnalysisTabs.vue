@@ -783,6 +783,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         //     });
         // }
 
+        console.log("this.selectedDateLabels", this.selectedDateLabels)
         return {
           labels: this.selectedDateLabels,
           datasets: data,
@@ -866,11 +867,14 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       },
       changeViewOption(selectedViewOption)
       {
+        console.log("=== START changeViewOption() ===")
+        console.log(selectedViewOption)
         console.log(this.selectedViewOption);
         this.selectedViewOption = selectedViewOption;
         console.log(this.selectedViewOption);
         this.getChartData();
         // this.changeChart();
+        console.log("=== END changeViewOption() ===")
       },
       changeChart()
       {
@@ -886,6 +890,10 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         // }
         
         // Facebook tab
+        console.log("this.selectedTab", this.selectedTab)
+        console.log("this.selectedViewOption", this.selectedViewOption)
+        console.log("this.selectedChartData", this.selectedChartData)
+        console.log("this.$props.mediaChartData.facebook.mentions", this.$props.mediaChartData.facebook.mentions)
         if (this.selectedTab === 'facebook'){
           if (this.selectedViewOption === 'Number of Mentions'){
             this.selectedChartData = this.$props.mediaChartData.facebook.mentions;
@@ -968,8 +976,11 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       },
 
       getChartData() {
+        console.log("=== START getChartData() ===")
+        console.log("this.formattedChartData 1", this.formattedChartData)
+        console.log("this.defaultChartData", this.defaultChartData)
         this.formattedChartData = this.defaultChartData;
-        console.log("got the chart data");
+        console.log("this.formattedChartData 2", this.formattedChartData);
         // console.log(this.colorCode.medias.facebook);
       }
 
