@@ -265,7 +265,8 @@
       date: null,
       dateRange: ['2021-02-01', '2022-01-31'],
       dateSelected: "Past 7 Days",
-      dateFilter: [{date: 'All'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom'}],
+      dateFilter: [{date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom'}],
+      // dateFilter: [{date: 'All'}, {date: 'Past 7 Days'}, {date: 'Past 14 Days'}, {date: 'Past 30 Days'}, {date: 'Past 6 Months'}, {date: 'Past Year'}, {date: 'Custom'}],
       numDaysFromDateFilter: [
         {date: 'Yesterday', numDays: 1}, 
         {date: 'Past 7 Days', numDays: 7}, 
