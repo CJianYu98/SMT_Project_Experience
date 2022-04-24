@@ -89,7 +89,8 @@ export default {
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
-          "topN": 50
+          "topN": 50,
+          "postType": "all",
         }
       )
     };
@@ -105,7 +106,8 @@ export default {
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
-          "topN": 50
+          "topN": 50,
+          "postType": "all",
         }
       )
     };
@@ -121,7 +123,8 @@ export default {
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
-          "topN": 50
+          "topN": 50,
+          "postType": "all",
         }
       )
     };
@@ -137,12 +140,13 @@ export default {
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
-          "topN": 50
+          "topN": 50,
+          "postType": "all",
         }
       )
     };
 
-    await fetch("http://127.0.0.1:8000/social-media-feed/get-all-aggregated-stats", requestOptions)
+    await fetch("http://127.0.0.1:8000/trend-analysis/get-social-media-aggregated-stats", requestOptions)
       .then(response => response.json())
       .then(data => 
         {
@@ -160,7 +164,7 @@ export default {
           }
            */
 
-          console.log("social-media-feed get-all-aggregated-stats data", data)
+          console.log("social-media-feed trend-analysis/get-social-media-aggregated-stats data", data)
           // this.testData = data
 
           this.aggregatedStatsAllPlatforms = data
@@ -170,7 +174,7 @@ export default {
       //   console.error(error)
       // })
 
-    await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-posts", requestOptionsForFacebook)
+    await fetch("http://127.0.0.1:8000/top-posts/get-all-top-posts", requestOptionsForFacebook)
     .then(response => response.json())
       .then(data => 
         {
@@ -197,7 +201,7 @@ export default {
     //     console.error(error);
     //   })
 
-    await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-posts", requestOptionsForReddit)
+    await fetch("http://127.0.0.1:8000/top-posts/get-all-top-posts", requestOptionsForReddit)
     .then(response => response.json())
       .then(data => 
         {
@@ -224,7 +228,7 @@ export default {
     //     console.error(error);
     //   })
 
-    await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-posts", requestOptionsForYoutube)
+    await fetch("http://127.0.0.1:8000/top-posts/get-all-top-posts", requestOptionsForYoutube)
     .then(response => response.json())
       .then(data => 
         {
@@ -251,7 +255,7 @@ export default {
     //     console.error(error);
     //   })
 
-    await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-posts", requestOptionsForTwitter)
+    await fetch("http://127.0.0.1:8000/top-posts/get-all-top-posts", requestOptionsForTwitter)
     .then(response => response.json())
       .then(data => 
         {

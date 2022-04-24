@@ -121,7 +121,7 @@ export default {
       )
     };
 
-    const requestOptionsForRawPosts = {
+    const requestOptionsForRawComplaintPosts = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(
@@ -132,7 +132,25 @@ export default {
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
-          "topN": 25
+          "topN": 25,
+          "postType": this.fetchRawPosts[0]
+        }
+      )
+    };
+
+    const requestOptionsForRawNoteworthyPosts = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        { 
+          "endDate": this.fetchEndDate,
+          "numDays": this.fetchNumDays + 1,
+          "platforms": this.fetchPlatforms,
+          "sentiments": this.fetchSentiments,
+          "emotions": this.fetchEmotions,
+          "query": this.fetchQuery,
+          "topN": 25,
+          "postType": this.fetchRawPosts[1]
         }
       )
     };
@@ -318,14 +336,14 @@ export default {
     //     console.error(error);
     //   })
     
-    await fetch("http://127.0.0.1:8000/complaint-analysis/get-all-top5-complaint-posts", requestOptionsForRawPosts)
+    await fetch("http://127.0.0.1:8000/top-posts/get-all-top-posts", requestOptionsForRawComplaintPosts)
     .then(response => response.json())
       .then(data => 
         {
           // { "facebook": { "likes": [], "date": [] }, "reddit": { "likes": [], "date": [] }, "twitter": { "likes": [], "date": [] }, "youtube": { "likes": [], "date": [] } }
 
           // this.testData = data
-          console.log("get-all-top5-complaint-posts data", data)
+          console.log("top-posts/get-all-top-posts complaint posts data", data)
 
           // getting sum of posts in dictionary
           const numComplaintPosts = this.getNumPostsTotal(this.numComplaintPostsTotal, data)
@@ -365,7 +383,7 @@ export default {
         console.error(error);
       })
     
-    await fetch("http://127.0.0.1:8000/noteworthy-analysis/get-all-top5-noteworthy-posts", requestOptionsForRawPosts)
+    await fetch("http://127.0.0.1:8000/top-posts/get-all-top-posts", requestOptionsForRawNoteworthyPosts)
     .then(response => response.json())
       .then(data => 
         {
@@ -373,7 +391,7 @@ export default {
 
           // this.testData = data
 
-          console.log("get-all-top5-noteworthy-posts data", data)
+          console.log("top-posts/get-all-top-posts noteworthy posts data", data)
 
           // getting sum of posts in dictionary
           const numNoteworthyPosts = this.getNumPostsTotal(this.numNoteworthyPostsTotal, data)
@@ -1085,6 +1103,7 @@ export default {
     fetchPlatforms: ["facebook",'reddit','youtube'], // removed twitter for now
     fetchSentiments: ["neutral", "negative", "positive"],
     fetchEmotions: ["neutral", "anger", "fear", "sadness", "joy"],
+    fetchRawPosts: ["complaint", "noteworthy"]
 
   }), // end of data
 
