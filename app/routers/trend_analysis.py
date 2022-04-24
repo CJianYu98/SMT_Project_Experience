@@ -347,6 +347,7 @@ def get_all_trend_plot_data(filter: Filter):
 
     # Retrive and aggregate reddit trend plot data
     reddit_submission_data = get_trend_plot_data(filter, REDDIT_SUBMISSIONS)
+    print(reddit_submission_data)
     reddit_comments_data = get_trend_plot_data(filter, REDDIT_COMMENTS)
     reddit_res = aggregate_platform_trend_data(
         "reddit", reddit_submission_data, reddit_comments_data
@@ -389,6 +390,7 @@ def aggregate_platform_trend_data(platform: str, posts_data: dict, comments_data
 
     # Initialize res output variable
     res = {
+        "dates": [],
         "mentions": [],
         "likes": [],
         "sentiments": {"positive": [], "neutral": [], "negative": []},
@@ -427,6 +429,9 @@ def aggregate_platform_trend_data(platform: str, posts_data: dict, comments_data
                     )
             else:
                 res[field].append(posts_data[i].get(field, 0) + comments_data[i].get(field, 0))
+        
+        for i in range(len(posts_data)):
+            res["dates"].append(posts_data[i].get("date").strftime("%Y-%m-%d"))
 
             if platform == "reddit":
                 res["awards"].append(
@@ -448,6 +453,9 @@ def aggregate_platform_trend_data(platform: str, posts_data: dict, comments_data
                     res[field][emotion].append(posts_data[i].get(f"{emotion}_emotion", 0))
             else:
                 res[field].append(posts_data[i].get(field, 0))
+
+        for i in range(len(posts_data)):
+            res["dates"].append(posts_data[i].get("date").strftime("%Y-%m-%d"))
 
             if platform == "reddit":
                 res["awards"].append(posts_data[i].get("awards", 0))

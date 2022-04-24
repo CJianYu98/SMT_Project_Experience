@@ -52,6 +52,7 @@ class EmotionTrendPlotData(BaseModel):
 
 
 class StandardTrendPlotData(BaseModel):
+    dates: List[str]
     mentions: List[int]
     likes: List[int]
     sentiments: SentimentTrendPlotData
