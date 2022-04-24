@@ -151,7 +151,11 @@ def get_all_top5_complaint_posts(filter: Filter):
     return res
 
 
-@router.post("/get-platform-complaint-percentage", response_model=ComplaintPercentageRes)
+@router.post(
+    "/get-platform-complaint-percentage",
+    response_model=ComplaintPercentageRes,
+    response_model_exclude_none=True,
+)
 def get_platform_complaint_percentage(filter: Filter):
     """
     To get percentage of complaint mentions for each platform
@@ -163,23 +167,40 @@ def get_platform_complaint_percentage(filter: Filter):
         Pydantic Model: JSON response object
     """
 
+    # Create response body
+    res = {}
+
     # Query selected social media platform MongoDB collection based on user platform filter options
     if "facebook" in filter.platforms:
         fb_posts_complaint_count = get_complaint_mentions_count(filter, FB_POSTS)
         fb_comments_complaint_count = get_complaint_mentions_count(filter, FB_COMMENTS)
         fb_posts_mention_count = get_mentions_count(filter, FB_POSTS)
         fb_comments_mention_count = get_mentions_count(filter, FB_COMMENTS)
-    else:
-        fb_posts_complaint_count = fb_comments_complaint_count = 0
-        fb_posts_mention_count = fb_comments_mention_count = 0
+
+        if (fb_posts_mention_count + fb_comments_mention_count) == 0:
+            facebook_complaint_perc = 0
+        else:
+            facebook_complaint_perc = round(
+                (fb_posts_complaint_count + fb_comments_complaint_count)
+                / (fb_posts_mention_count + fb_comments_mention_count),
+                2,
+            )
+        res["facebook"] = facebook_complaint_perc
     if "twitter" in filter.platforms:
         twitter_tweets_complaint_count = get_complaint_mentions_count(filter, TWITTER_TWEETS)
         twitter_comments_complaint_count = get_complaint_mentions_count(filter, TWITTER_COMMENTS)
         twitter_tweets_mention_count = get_mentions_count(filter, TWITTER_TWEETS)
         twitter_comments_mention_count = get_mentions_count(filter, TWITTER_COMMENTS)
-    else:
-        twitter_tweets_complaint_count = twitter_comments_complaint_count = 0
-        twitter_tweets_mention_count = twitter_comments_mention_count = 0
+
+        if (twitter_tweets_mention_count + twitter_comments_mention_count) == 0:
+            twitter_complaint_perc = 0
+        else:
+            twitter_complaint_perc = round(
+                (twitter_tweets_complaint_count + twitter_comments_complaint_count)
+                / (twitter_tweets_mention_count + twitter_comments_mention_count),
+                2,
+            )
+        res["twitter"] = twitter_complaint_perc
     if "reddit" in filter.platforms:
         reddit_submissions_complaint_count = get_complaint_mentions_count(
             filter, REDDIT_SUBMISSIONS
@@ -187,54 +208,30 @@ def get_platform_complaint_percentage(filter: Filter):
         reddit_comments_complaint_count = get_complaint_mentions_count(filter, REDDIT_COMMENTS)
         reddit_submissions_mention_count = get_mentions_count(filter, REDDIT_SUBMISSIONS)
         reddit_comments_mention_count = get_mentions_count(filter, REDDIT_COMMENTS)
-    else:
-        reddit_submissions_complaint_count = reddit_comments_complaint_count = 0
-        reddit_submissions_mention_count = reddit_comments_mention_count = 0
+
+        if (reddit_submissions_mention_count + reddit_comments_mention_count) == 0:
+            reddit_complaint_perc = 0
+        else:
+            reddit_complaint_perc = round(
+                (reddit_submissions_complaint_count + reddit_comments_complaint_count)
+                / (reddit_submissions_mention_count + reddit_comments_mention_count),
+                2,
+            )
+        res["reddit"] = reddit_complaint_perc
     if "youtube" in filter.platforms:
         youtube_videos_complaint_count = get_complaint_mentions_count(filter, YOUTUBE_VIDEOS)
         youtube_comments_complaint_count = get_complaint_mentions_count(filter, YOUTUBE_COMMENTS)
         youtube_videos_mention_count = get_mentions_count(filter, YOUTUBE_VIDEOS)
         youtube_comments_mention_count = get_mentions_count(filter, YOUTUBE_COMMENTS)
-    else:
-        youtube_videos_complaint_count = youtube_comments_complaint_count = 0
-        youtube_videos_mention_count = youtube_comments_mention_count = 0
 
-    if (fb_posts_mention_count + fb_comments_mention_count) == 0:
-        facebook_complaint_perc = 0
-    else:
-        facebook_complaint_perc = round(
-            (fb_posts_complaint_count + fb_comments_complaint_count)
-            / (fb_posts_mention_count + fb_comments_mention_count),
-            2,
-        )
-    if (twitter_tweets_mention_count + twitter_comments_mention_count) == 0:
-        twitter_complaint_perc = 0
-    else:
-        twitter_complaint_perc = round(
-            (twitter_tweets_complaint_count + twitter_comments_complaint_count)
-            / (twitter_tweets_mention_count + twitter_comments_mention_count),
-            2,
-        )
-    if (reddit_submissions_mention_count + reddit_comments_mention_count) == 0:
-        reddit_complaint_perc = 0
-    else:
-        reddit_complaint_perc = round(
-            (reddit_submissions_complaint_count + reddit_comments_complaint_count)
-            / (reddit_submissions_mention_count + reddit_comments_mention_count),
-            2,
-        )
-    if (youtube_videos_mention_count + youtube_comments_mention_count) == 0:
-        youtube_complaint_perc = 0
-    else:
-        youtube_complaint_perc = round(
-            (youtube_videos_complaint_count + youtube_comments_complaint_count)
-            / (youtube_videos_mention_count + youtube_comments_mention_count),
-            2,
-        )
+        if (youtube_videos_mention_count + youtube_comments_mention_count) == 0:
+            youtube_complaint_perc = 0
+        else:
+            youtube_complaint_perc = round(
+                (youtube_videos_complaint_count + youtube_comments_complaint_count)
+                / (youtube_videos_mention_count + youtube_comments_mention_count),
+                2,
+            )
+        res["youtube"] = youtube_complaint_perc
 
-    return {
-        "facebook": facebook_complaint_perc,
-        "twitter": twitter_complaint_perc,
-        "reddit": reddit_complaint_perc,
-        "youtube": youtube_complaint_perc,
-    }
+    return res

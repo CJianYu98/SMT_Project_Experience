@@ -25,7 +25,7 @@ class Top5ComplaintPostsRes(BaseModel):
 
 ##### Complaint Percentage API #####
 class ComplaintPercentageRes(BaseModel):
-    facebook: float
-    reddit: float
-    twitter: float
-    youtube: float
+    facebook: Optional[float]
+    reddit: Optional[float]
+    twitter: Optional[float]
+    youtube: Optional[float]
