@@ -147,6 +147,4 @@ def get_top5_topic_analysis(filter: Filter):
             }
         )
 
-    assert len(res) == 5
-
     return res
