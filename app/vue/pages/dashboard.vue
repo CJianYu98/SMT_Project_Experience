@@ -1,6 +1,7 @@
 <template>
   <div class="mb-15">
     <SearchFilters @changeFilter="rerenderDashboard" :selected-trending-query="selectedTrendingQuery"/>
+    <p>{{testData}}</p>
     <v-row>
       <v-col cols="4">
         <TrendingTopics
@@ -81,13 +82,14 @@ export default {
     PlaceholderCard,
   },
   async fetch() {
+    console.log(this.fetchEndDate);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(
         { 
           "endDate": this.fetchEndDate,
-          "numDays": this.fetchNumDays,
+          "numDays": this.fetchNumDays + 1,
           "platforms": this.fetchPlatforms,
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
@@ -102,7 +104,7 @@ export default {
       body: JSON.stringify(
         { 
           "endDate": this.fetchEndDate,
-          "numDays": this.fetchNumDays,
+          "numDays": this.fetchNumDays + 1,
           "platforms": this.fetchPlatforms,
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
@@ -118,7 +120,7 @@ export default {
       body: JSON.stringify(
         { 
           "endDate": this.fetchEndDate,
-          "numDays": this.fetchNumDays,
+          "numDays": this.fetchNumDays + 1,
           "platforms": this.fetchPlatforms,
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
@@ -134,7 +136,7 @@ export default {
       body: JSON.stringify(
         { 
           "endDate": this.fetchEndDate,
-          "numDays": this.fetchNumDays,
+          "numDays": this.fetchNumDays + 1,
           "platforms": this.fetchPlatforms,
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
@@ -150,7 +152,7 @@ export default {
       body: JSON.stringify(
         { 
           "endDate": this.fetchEndDate,
-          "numDays": this.fetchNumDays,
+          "numDays": this.fetchNumDays  + 1,
           "platforms": this.fetchPlatforms,
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
@@ -400,6 +402,7 @@ export default {
           {
             console.log("get-all-trend-plot data", data)
             this.mediaChartData = data
+            this.testData = data
           }
         )
       .catch((error) => {
@@ -1062,7 +1065,7 @@ export default {
     numNoteworthyPostsTotal: 0,
     fetchQuery: null,
     fetchEndDate: "2021-04-06",
-    fetchNumDays: 8, // api will return less 1 data point, so need to + 1 to num days
+    fetchNumDays: 7,
     fetchPlatforms: ["facebook", "reddit", "twitter", "youtube"],
     fetchSentiments: ["neutral", "negative", "positive"],
     fetchEmotions: ["neutral", "anger", "fear", "sadness", "joy"],
@@ -1128,16 +1131,16 @@ export default {
     },
 
     determineChartInterval(numDays) {
-      if (numDays <= 4) {
+      if (numDays <= 3) {
         return "3hours";
       }
-      else if (numDays <= 21) {
+      else if (numDays <= 20) {
         return "daily";
       }
-      else if (numDays <= 169) {
+      else if (numDays <= 168) {
         return "weekly";
       }
-      else if (numDays <= 673) {
+      else if (numDays <= 672) {
         return "monthly";
       }
       else {
