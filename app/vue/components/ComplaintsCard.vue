@@ -15,6 +15,7 @@
       </template>
       <template v-else-if="complaintsWordCloud.length > 0">
         <ComplaintsWordCloud  :complaints-word-cloud="complaintsWordCloud"/>
+        <ComplaintsLegend :complaint-mentions-per-platform="complaintMentionsPerPlatform"/>
       </template>
       <template v-else>
         <PlaceholderNoDataToShow />
@@ -65,6 +66,7 @@ import DropDownSelect from './DropDownSelect.vue'
 import HelpTextTooltip from './HelpTextTooltip.vue'
 import PlaceholderNoDataToShow from './PlaceholderNoDataToShow.vue'
 import LoadingPlaceholder from './LoadingPlaceholder.vue'
+// import ComplaintsLegend from './ComplaintsLegend.vue'
 export default {
   components: { 
     ComplaintsWordCloud, 
@@ -73,6 +75,7 @@ export default {
     DropDownSelect,
     PlaceholderNoDataToShow,
     LoadingPlaceholder,
+    // ComplaintsLegend,
   },
 
   props: {
@@ -86,6 +89,10 @@ export default {
     },
     pendingState: {
       type: Boolean,
+      required: true
+    },
+    complaintMentionsPerPlatform: {
+      type: Object,
       required: true
     },
   },

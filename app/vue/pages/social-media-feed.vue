@@ -13,6 +13,7 @@
         <SocialMediaFeedCard
           :pending-state="$fetchState.pending"
           :platform-all-data="facebook"
+          platform="facebook"
         />
       </v-col>
       <v-spacer></v-spacer>
@@ -20,6 +21,7 @@
         <SocialMediaFeedCard
           :pending-state="$fetchState.pending"
           :platform-all-data="reddit"
+          platform="reddit"
         />
       </v-col>
       <v-spacer></v-spacer>
@@ -30,6 +32,7 @@
         <SocialMediaFeedCard
           :pending-state="$fetchState.pending"
           :platform-all-data="twitter"
+          platform="twitter"
         />
       </v-col>
       <v-spacer></v-spacer>
@@ -37,6 +40,7 @@
         <SocialMediaFeedCard
           :pending-state="$fetchState.pending"
           :platform-all-data="youtube"
+          platform="youtube"
         />
       </v-col>
       <v-spacer></v-spacer>
@@ -57,6 +61,8 @@ export default {
   computed: {
   },
   async fetch() {
+    console.log("this.fetchEndDate", this.fetchEndDate)
+
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -83,7 +89,7 @@ export default {
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
-          "topN": 20
+          "topN": 50
         }
       )
     };
@@ -99,7 +105,7 @@ export default {
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
-          "topN": 20
+          "topN": 50
         }
       )
     };
@@ -115,7 +121,7 @@ export default {
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
-          "topN": 20
+          "topN": 50
         }
       )
     };
@@ -131,7 +137,7 @@ export default {
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
           "query": this.fetchQuery,
-          "topN": 20
+          "topN": 50
         }
       )
     };
@@ -278,8 +284,8 @@ export default {
     aggregatedStatsAllPlatforms: {},
     testData: "",
     fetchQuery: null,
-    fetchEndDate: "2021-04-06",
-    fetchNumDays: 14,
+    fetchEndDate: "",
+    fetchNumDays: 7,
     fetchSentiments: ["neutral", "negative", "positive"],
     fetchEmotions: ["neutral", "anger", "fear", "sadness", "joy"],
     allPlatforms: ["facebook", "reddit", "twitter", "youtube"],
@@ -332,6 +338,9 @@ export default {
       // console.log("=== END rerenderSocialMediaFeed ===")
     },
   },
+  created() {
+    this.fetchEndDate = new Date().toISOString().split('T')[0]
+  }
 
 }
 </script>
