@@ -12,7 +12,7 @@
             outlined
             clearable
             dense
-            label="Enter a query!"
+            label="Enter a search term!"
             class="accent--text change-query-colour"
           >
             

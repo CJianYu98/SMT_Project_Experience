@@ -71,7 +71,7 @@ export default {
   },
   data: () => ({
     sortView: ['Likes', 'Date'],
-    label: 'Sort By',
+    label: 'Sort By (Descending)',
     viewSelected: 'Likes'
   }),
   computed: {

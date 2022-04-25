@@ -101,7 +101,7 @@ export default {
     complaintsWordCloudHelpText: "Observe the most common keywords related to complaints mentioned across the selected time period and platform(s).",
     complaintsPostsHelpText: "Study the most common complaints, or, if a complaint keyword has been selected, the posts related to that complaint. Words highlighted in red are indicative of the negative sentiment.",
     sortView: ['Likes', 'Date'],
-    label: 'Sort By',
+    label: 'Sort By (Descending)',
     viewSelected: 'Likes'
   }),
   methods: {

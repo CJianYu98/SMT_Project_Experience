@@ -70,7 +70,7 @@ export default {
   data: () => ({
     noteworthyPostHelpText: "Observe the insightful posts made by users across multiple platforms. These are determined based on three classified intents: seeking/giving advice, educational or insightful.",
     sortView: ['Likes', 'Date'],
-    label: 'Sort By',
+    label: 'Sort By (Descending)',
     viewSelected: 'Likes'
   }),
   methods: {
