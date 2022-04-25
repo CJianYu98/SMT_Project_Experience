@@ -96,7 +96,7 @@ export default {
       body: JSON.stringify( 
         { 
           "endDate": this.fetchEndDate,
-          "numDays": this.fetchNumDays + 1,
+          "numDays": this.fetchNumDays,
           "platforms": this.fetchPlatforms,
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
@@ -111,7 +111,7 @@ export default {
       body: JSON.stringify(
         { 
           "endDate": this.fetchEndDate,
-          "numDays": this.fetchNumDays + 1,
+          "numDays": this.fetchNumDays,
           "platforms": this.fetchPlatforms,
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
@@ -127,7 +127,7 @@ export default {
       body: JSON.stringify(
         { 
           "endDate": this.fetchEndDate,
-          "numDays": this.fetchNumDays + 1,
+          "numDays": this.fetchNumDays,
           "platforms": this.fetchPlatforms,
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
@@ -144,7 +144,7 @@ export default {
       body: JSON.stringify(
         { 
           "endDate": this.fetchEndDate,
-          "numDays": this.fetchNumDays + 1,
+          "numDays": this.fetchNumDays,
           "platforms": this.fetchPlatforms,
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
@@ -161,7 +161,7 @@ export default {
       body: JSON.stringify(
         { 
           "endDate": this.fetchEndDate,
-          "numDays": this.fetchNumDays + 1,
+          "numDays": this.fetchNumDays,
           "platforms": this.fetchPlatforms,
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
@@ -177,7 +177,7 @@ export default {
       body: JSON.stringify(
         { 
           "endDate": this.fetchEndDate,
-          "numDays": this.fetchNumDays  + 1,
+          "numDays": this.fetchNumDays,
           "platforms": this.fetchPlatforms,
           "sentiments": this.fetchSentiments,
           "emotions": this.fetchEmotions,
@@ -431,7 +431,7 @@ export default {
           {
             console.log("get-all-trend-plot data", data)
             this.mediaChartData = data
-            // this.testData = data
+            this.testData = data
           }
         )
       .catch((error) => {
