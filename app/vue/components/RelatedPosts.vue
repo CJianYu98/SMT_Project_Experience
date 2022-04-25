@@ -8,7 +8,7 @@
   >
     <RelatedPost
       v-for="(post, index) in postsObj[viewSelected]"
-      :key="index"
+      :key="post.datetime+post.link+index"
       :media="objIndex"
       :likes="post.likes"
       :date="post.datetime"

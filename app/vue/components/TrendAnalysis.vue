@@ -14,7 +14,7 @@
     </template>
     <template v-else>
       <v-row>
-        <v-col cols="3.5" >
+        <v-col cols="3.5" class="pr-1">
           <TrendAnalysisMetricsCard
             :selected-date-filter="selectedDateFilter" 
             :overall-stats="overallStats"
