@@ -4,7 +4,23 @@
       <thead class="deep-purple">
         <tr>
           <th class="white--text text-center px-0"></th>
-          <th class="white--text text-center px-0">Mentions</th>
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <th class="white--text text-center"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <span>Mentions &nbsp;
+                  <v-icon
+                    class="white--text"
+                  >
+                    mdi-help-circle-outline
+                  </v-icon>
+                </span>
+              </th>
+            </template>
+            <span>Mentions represent the sum of posts and comments</span>
+          </v-tooltip>
           <!-- <th class="white--text text-center">Trend</th> -->
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
@@ -12,7 +28,13 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                <span>Trend</span>
+                <span>Trend &nbsp;
+                  <v-icon
+                    class="white--text"
+                  >
+                    mdi-help-circle-outline
+                  </v-icon>
+                </span>
               </th>
             </template>
             <span>{{ getCombinedString }}</span>
@@ -71,7 +93,7 @@
                   v-on="on"
                 ></v-img>
               </template>
-              <span>{{data.emotion}}</span>
+              <span>emotion: {{data.emotion}}</span>
             </v-tooltip>
             </template>
           </td>
@@ -178,7 +200,7 @@ export default {
       // console.log("=== start getCombinedString() ===")
 
       if (this.selectedDateFilter !== 'All') {
-        const combinedStr = "Percentage change in number of mentions from " + this.getCurrDatePeriod + " against " + this.getPrevDatePeriod
+        const combinedStr = "Percentage change in number of mentions (posts + comments) from " + this.getCurrDatePeriod + " against " + this.getPrevDatePeriod
         // console.log("combinedStr", combinedStr)
         return combinedStr
       } else {

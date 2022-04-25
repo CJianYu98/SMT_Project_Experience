@@ -7,8 +7,8 @@
       </p>
     </v-row> 
     <v-row class="mx-2">
+        <!-- cols="3" -->
       <v-col
-        cols="3"
         v-for="(percentage, platform) in complaintMentionsPerPlatform"
         :key="platform"
         class="px-0 py-0">

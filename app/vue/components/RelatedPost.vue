@@ -43,7 +43,7 @@
               v-on="on"
             ></v-img>
           </template>
-          <span>{{sentiment}} sentiment</span>
+          <span>sentiment: {{sentiment}}</span>
         </v-tooltip>
 
         <v-tooltip bottom>
@@ -58,7 +58,7 @@
               v-on="on"
             ></v-img>
           </template>
-          <span>{{emotion}} </span>
+          <span>emotion: {{emotion}} </span>
         </v-tooltip>
         <template v-if="intent">
           <v-tooltip bottom>
@@ -68,19 +68,28 @@
                 outlined
                 v-bind="attrs"
                 v-on="on"
-                disabled
               >
+                <!-- disabled -->
                 {{intent}}
               </v-chip>
             </template>
-            <span> intent tag of post </span>
+            <span> intent: {{intent}} </span>
           </v-tooltip>
         </template>
-        <v-chip 
-          class="mb-2 primary mr-1 font-weight-bold"
-        >
-          {{topic}}
-        </v-chip>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-chip 
+              class="mb-2 primary mr-1 font-weight-bold"
+              v-bind="attrs"
+              v-on="on"
+            >
+              {{topic}}
+            </v-chip>
+          </template>
+          <span>category: {{topic}} </span>
+        </v-tooltip>
+        
       </v-chip-group>
     </v-list-item-subtitle>
   </v-card>

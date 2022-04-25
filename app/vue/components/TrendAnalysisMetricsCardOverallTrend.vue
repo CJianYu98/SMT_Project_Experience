@@ -22,7 +22,13 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                <span>Trend</span>
+                <span>Trend &nbsp;
+                  <v-icon
+                    class="white--text"
+                  >
+                    mdi-help-circle-outline
+                  </v-icon>
+                </span>
               </th>
             </template>
             <span>{{ getCombinedStringFromIndvPlatform }}</span>
