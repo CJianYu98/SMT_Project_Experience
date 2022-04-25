@@ -49,7 +49,8 @@ def get_all_aggregated_stats(filter: Filter):
         Pydantic Model: JSON response object
     """
 
-    all_posts = all_comments = []
+    all_posts = []
+    all_comments = []
     platform_metrics = {}
 
     # Query selected social media platform MongoDB collection based on user platform filter options

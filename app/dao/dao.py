@@ -66,7 +66,6 @@ def get_top5_topics_stats(filter: Filter, db_collection: str):
         project["text"] = "$combined_text" if "videos" in db_collection else "$comment"
 
     res = list(db[db_collection].find(db_query, project))
-    print(len(res))
 
     try:
         Top5TopicStatsRes(data=res)
