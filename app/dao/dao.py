@@ -52,20 +52,21 @@ def get_top5_topics_stats(filter: Filter, db_collection: str):
     }
 
     if "facebook" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, FB_DATETIME_STR, db_collection)
         project["text"] = "$message"
     elif "twitter" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, TWIT_DATETIME_STR, db_collection)
         project["text"] = "$tweet"
     elif "reddit" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, REDDIT_DATETIME_STR, db_collection)
         project["text"] = "$title" if "submissions" in db_collection else "$body"
     elif "youtube" in db_collection:
         YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, YT_DATETIME_STR, db_collection)
         project["text"] = "$combined_text" if "videos" in db_collection else "$comment"
 
     res = list(db[db_collection].find(db_query, project))
+    print(len(res))
 
     try:
         Top5TopicStatsRes(data=res)
@@ -91,17 +92,17 @@ def get_aggregated_stats(filter: Filter, db_collection: str):
     """
 
     if "facebook" in db_collection:
-        filter_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        filter_query = db_filter_query_from_user_filter(filter, FB_DATETIME_STR, db_collection)
         likes_str = "likes_cnt"
     elif "twitter" in db_collection:
-        filter_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        filter_query = db_filter_query_from_user_filter(filter, TWIT_DATETIME_STR, db_collection)
         likes_str = "likes_count"
     elif "reddit" in db_collection:
-        filter_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        filter_query = db_filter_query_from_user_filter(filter, REDDIT_DATETIME_STR, db_collection)
         likes_str = "score"
     elif "youtube" in db_collection:
         YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
-        filter_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+        filter_query = db_filter_query_from_user_filter(filter, YT_DATETIME_STR, db_collection)
         likes_str = "likes"
 
     db_query = [
@@ -148,14 +149,14 @@ def get_trend_stats(filter: Filter, db_collection: str):
         int: Number of documents/records
     """
     if "facebook" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, FB_DATETIME_STR, db_collection)
     elif "twitter" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, TWIT_DATETIME_STR, db_collection)
     elif "reddit" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, REDDIT_DATETIME_STR, db_collection)
     elif "youtube" in db_collection:
         YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, YT_DATETIME_STR, db_collection)
 
     res = db[db_collection].count_documents(db_query)
 
@@ -235,7 +236,7 @@ def get_trend_plot_data(filter: Filter, db_collection: str):
             project["views"] = 1
 
     # Create match query statement for MongoDB query
-    match_query = db_filter_query_from_user_filter(filter, datetime_str=datetime_str)
+    match_query = db_filter_query_from_user_filter(filter, datetime_str, db_collection)
 
     # Add on to group query statement
     group_query["_id"] = {
@@ -289,14 +290,14 @@ def get_top_keywords(filter: Filter, project: dict, db_collection: str):
         list: List of records
     """
     if "facebook" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, FB_DATETIME_STR, db_collection)
     elif "twitter" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, TWIT_DATETIME_STR, db_collection)
     elif "reddit" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, REDDIT_DATETIME_STR, db_collection)
     elif "youtube" in db_collection:
         YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, YT_DATETIME_STR, db_collection)
 
     res = list(db[db_collection].find(db_query, project))
 
@@ -324,14 +325,14 @@ def get_top_complaint_keywords(filter: Filter, project: dict, db_collection: str
         list: List of records
     """
     if "facebook" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, FB_DATETIME_STR, db_collection)
     elif "twitter" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, TWIT_DATETIME_STR, db_collection)
     elif "reddit" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, REDDIT_DATETIME_STR, db_collection)
     elif "youtube" in db_collection:
         YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, YT_DATETIME_STR, db_collection)
     db_query["intent"] = {"$regex": "complaint"}
 
     res = list(db[db_collection].find(db_query, project))
@@ -365,25 +366,25 @@ def get_top_posts(filter: Filter, db_collection: str):
     }
 
     if "facebook" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, FB_DATETIME_STR, db_collection)
         likes_key = "likes_cnt"
         datetime_key = FB_DATETIME_STR
         project["comment"] = "$message"
     elif "twitter" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, TWIT_DATETIME_STR, db_collection)
         likes_key = "likes_count"
         datetime_key = TWIT_DATETIME_STR
         project["comment"] = "$tweet"
         project["link"] = "$link"
     elif "reddit" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, REDDIT_DATETIME_STR, db_collection)
         likes_key = "score"
         datetime_key = REDDIT_DATETIME_STR
         project["comment"] = "$title"
         project["link"] = "$url"
     elif "youtube" in db_collection:
         YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, YT_DATETIME_STR, db_collection)
         likes_key = "likes"
         datetime_key = YT_DATETIME_STR
         project["comment"] = "$combined_text"
@@ -432,14 +433,14 @@ def get_top5_noteworthy_topics(filter: Filter, project: dict, db_collection: str
         list: List of records
     """
     if "facebook" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, FB_DATETIME_STR, db_collection)
     elif "twitter" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, TWIT_DATETIME_STR, db_collection)
     elif "reddit" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, REDDIT_DATETIME_STR, db_collection)
     elif "youtube" in db_collection:
         YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, YT_DATETIME_STR, db_collection)
     db_query["isNoteworthy"] = 1
 
     res = list(db[db_collection].find(db_query, project))
@@ -464,14 +465,14 @@ def get_complaint_mentions_count(filter: Filter, db_collection: str):
         int: Number of complaint mentions count
     """
     if "facebook" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, FB_DATETIME_STR, db_collection)
     elif "twitter" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, TWIT_DATETIME_STR, db_collection)
     elif "reddit" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, REDDIT_DATETIME_STR, db_collection)
     elif "youtube" in db_collection:
         YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, YT_DATETIME_STR, db_collection)
     db_query["intent"] = {"$regex": "complaint"}
 
     return len(list(db[db_collection].find(db_query)))
@@ -489,14 +490,14 @@ def get_mentions_count(filter: Filter, db_collection: str):
         int: Number of mentions count
     """
     if "facebook" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, FB_DATETIME_STR, db_collection)
     elif "twitter" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, TWIT_DATETIME_STR, db_collection)
     elif "reddit" in db_collection:
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, REDDIT_DATETIME_STR, db_collection)
     elif "youtube" in db_collection:
         YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
-        db_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+        db_query = db_filter_query_from_user_filter(filter, YT_DATETIME_STR, db_collection)
 
     return len(list(db[db_collection].find(db_query)))
 
@@ -521,14 +522,14 @@ def get_social_media_feed_stats(filter: Filter, db_collection: str):
     project = {"_id": False, "mentions": 1}
 
     if "facebook" in db_collection:
-        match_query = db_filter_query_from_user_filter(filter, datetime_str=FB_DATETIME_STR)
+        match_query = db_filter_query_from_user_filter(filter, FB_DATETIME_STR, db_collection)
     elif "twitter" in db_collection:
-        match_query = db_filter_query_from_user_filter(filter, datetime_str=TWIT_DATETIME_STR)
+        match_query = db_filter_query_from_user_filter(filter, TWIT_DATETIME_STR, db_collection)
     elif "reddit" in db_collection:
-        match_query = db_filter_query_from_user_filter(filter, datetime_str=REDDIT_DATETIME_STR)
+        match_query = db_filter_query_from_user_filter(filter, REDDIT_DATETIME_STR, db_collection)
     elif "youtube" in db_collection:
         YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
-        match_query = db_filter_query_from_user_filter(filter, datetime_str=YT_DATETIME_STR)
+        match_query = db_filter_query_from_user_filter(filter, YT_DATETIME_STR, db_collection)
 
     # Add on standard query fields to group_qeury statement
     for sentiment_val in ["positive", "negative", "neutral"]:
