@@ -219,19 +219,19 @@ def get_trend_plot_data(filter: Filter, db_collection: str):
     elif "twitter" in db_collection:
         datetime_str = TWIT_DATETIME_STR
         likes_str = "likes_count"
-        group_query["retweets"] = {"$sum": "retweets_count"}
+        group_query["retweets"] = {"$sum": "$retweets_count"}
         project["retweets"] = 1
     elif "reddit" in db_collection:
         datetime_str = REDDIT_DATETIME_STR
         likes_str = "score"
-        group_query["awards"] = {"$sum": "total_awards_received"}
+        group_query["awards"] = {"$sum": "$total_awards_received"}
         project["awards"] = 1
     elif "youtube" in db_collection:
         YT_DATETIME_STR = "date_uploaded" if "videos" in db_collection else "datetime"
         datetime_str = YT_DATETIME_STR
         likes_str = "likes"
         if "videos" in db_collection:
-            group_query["views"] = {"$sum": "views"}
+            group_query["views"] = {"$sum": "$views"}
             project["views"] = 1
 
     # Create match query statement for MongoDB query

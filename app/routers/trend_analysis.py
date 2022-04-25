@@ -195,7 +195,6 @@ def get_all_trend_stats(filter: Filter):
         reddit_comments_count = get_trend_stats(filter, REDDIT_COMMENTS)
         reddit_submissions_count_prev = get_trend_stats(prev_date_filter, REDDIT_SUBMISSIONS)
         reddit_comments_count_prev = get_trend_stats(prev_date_filter, REDDIT_COMMENTS)
-        print(reddit_submissions_count)
     else:
         reddit_submissions_count = reddit_comments_count = 0
         reddit_submissions_count_prev = reddit_comments_count_prev = 0
@@ -348,7 +347,6 @@ def get_all_trend_plot_data(filter: Filter):
 
     # Retrive and aggregate reddit trend plot data
     reddit_submission_data = get_trend_plot_data(filter, REDDIT_SUBMISSIONS)
-    print(reddit_submission_data)
     reddit_comments_data = get_trend_plot_data(filter, REDDIT_COMMENTS)
     reddit_res = aggregate_platform_trend_data(
         "reddit", reddit_submission_data, reddit_comments_data
@@ -362,10 +360,10 @@ def get_all_trend_plot_data(filter: Filter):
     )
 
     # Retrive and aggregate youtube trend plot data
-    youtube_vidoes_data = get_trend_plot_data(filter, YOUTUBE_VIDEOS)
+    youtube_videos_data = get_trend_plot_data(filter, YOUTUBE_VIDEOS)
     youtube_comments_data = get_trend_plot_data(filter, YOUTUBE_COMMENTS)
     youtube_res = aggregate_platform_trend_data(
-        "youtube", youtube_vidoes_data, youtube_comments_data
+        "youtube", youtube_videos_data, youtube_comments_data
     )
 
     return {
