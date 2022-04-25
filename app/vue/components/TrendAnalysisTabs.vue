@@ -133,7 +133,76 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           }
         },
         sentiment: ['negative', 'neutral', 'positive'],
-        emotion: ['anger', 'fear', 'joy', 'neutral', 'sadness']
+        emotion: ['anger', 'fear', 'joy', 'neutral', 'sadness'],
+        allMentionsChart: {},
+        allLikesChart: {},
+        facebookData: {
+          mentions: instance.mediaChartData.facebook.mentions,
+          likes: instance.mediaChartData.facebook.likes,
+          sentiments: {
+            positive: instance.mediaChartData.facebook.sentiments.positive,
+            neutral: instance.mediaChartData.facebook.sentiments.neutral,
+            negative: instance.mediaChartData.facebook.sentiments.negative,
+          },
+          emotions: {
+            anger: instance.mediaChartData.facebook.emotions.anger,
+            fear: instance.mediaChartData.facebook.emotions.fear,
+            joy: instance.mediaChartData.facebook.emotions.joy,
+            sadness: instance.mediaChartData.facebook.emotions.sadness,
+            neutral: instance.mediaChartData.facebook.emotions.neutral,
+          }
+        },
+        redditData: {
+          mentions: instance.mediaChartData.reddit.mentions,
+          likes: instance.mediaChartData.reddit.likes,
+          sentiments: {
+            positive: instance.mediaChartData.reddit.sentiments.positive,
+            neutral: instance.mediaChartData.reddit.sentiments.neutral,
+            negative: instance.mediaChartData.reddit.sentiments.negative,
+          },
+          emotions: {
+            anger: instance.mediaChartData.reddit.emotions.anger,
+            fear: instance.mediaChartData.reddit.emotions.fear,
+            joy: instance.mediaChartData.reddit.emotions.joy,
+            sadness: instance.mediaChartData.reddit.emotions.sadness,
+            neutral: instance.mediaChartData.reddit.emotions.neutral,
+          },
+          awards: instance.mediaChartData.reddit.awards,
+        },
+        twitterData: {
+          mentions: instance.mediaChartData.twitter.mentions,
+          likes: instance.mediaChartData.twitter.likes,
+          sentiments: {
+            positive: instance.mediaChartData.twitter.sentiments.positive,
+            neutral: instance.mediaChartData.twitter.sentiments.neutral,
+            negative: instance.mediaChartData.twitter.sentiments.negative,
+          },
+          emotions: {
+            anger: instance.mediaChartData.twitter.emotions.anger,
+            fear: instance.mediaChartData.twitter.emotions.fear,
+            joy: instance.mediaChartData.twitter.emotions.joy,
+            sadness: instance.mediaChartData.twitter.emotions.sadness,
+            neutral: instance.mediaChartData.twitter.emotions.neutral,
+          },
+          retweets: instance.mediaChartData.twitter.retweets,
+        },
+        youtubeData: {
+          mentions: instance.mediaChartData.youtube.mentions,
+          likes: instance.mediaChartData.youtube.likes,
+          sentiments: {
+            positive: instance.mediaChartData.youtube.sentiments.positive,
+            neutral: instance.mediaChartData.youtube.sentiments.neutral,
+            negative: instance.mediaChartData.youtube.sentiments.negative,
+          },
+          emotions: {
+            anger: instance.mediaChartData.youtube.emotions.anger,
+            fear: instance.mediaChartData.youtube.emotions.fear,
+            joy: instance.mediaChartData.youtube.emotions.joy,
+            sadness: instance.mediaChartData.youtube.emotions.sadness,
+            neutral: instance.mediaChartData.youtube.emotions.neutral,
+          },
+          views: instance.mediaChartData.youtube.views,
+        },
       }
     },
     computed: {
@@ -147,7 +216,8 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         let reddit = false;
         let twitter = false;
         let youtube = false;
-
+        console.log("=== option selected ===");
+        console.log(this.selectedViewOption);
         // All tab view
         if (this.selectedTab === 'all'){
           if (Object.keys(trendPlotData).includes('facebook')){
@@ -167,7 +237,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             if (this.selectedViewOption === 'Number of Mentions') {
               data.push({
                 label: this.$props.mediaData.medias[1],
-                data: this.$props.mediaChartData.facebook.mentions,
+                data: this.facebookData.mentions,
                 fill: false,
                 borderColor: this.colorCode.media.facebook,
                 backgroundColor: this.colorCode.media.facebook,
@@ -177,7 +247,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             else {
               data.push({
                 label: this.$props.mediaData.medias[1],
-                data: this.$props.mediaChartData.facebook.likes,
+                data: this.facebookData.likes,
                 fill: false,
                 borderColor: this.colorCode.media.facebook,
                 backgroundColor: this.colorCode.media.facebook,
@@ -190,7 +260,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             if (this.selectedViewOption === 'Number of Mentions') {
               data.push({
                 label: this.$props.mediaData.medias[2],
-                data: this.$props.mediaChartData.reddit.mentions,
+                data: this.redditData.mentions,
                 fill: false,
                 borderColor: this.colorCode.media.reddit,
                 backgroundColor: this.colorCode.media.reddit,
@@ -200,7 +270,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             else {
               data.push({
                 label: this.$props.mediaData.medias[2],
-                data: this.$props.mediaChartData.reddit.likes,
+                data: this.redditData.likes,
                 fill: false,
                 borderColor: this.colorCode.media.reddit,
                 backgroundColor: this.colorCode.media.reddit,
@@ -213,7 +283,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             if (this.selectedViewOption === 'Number of Mentions') {
               data.push({
                 label: this.$props.mediaData.medias[3],
-                data: this.$props.mediaChartData.twitter.mentions,
+                data: this.twitterData.mentions,
                 fill: false,
                 borderColor: this.colorCode.media.twitter,
                 backgroundColor: this.colorCode.media.twitter,
@@ -223,7 +293,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             else {
               data.push({
                 label: this.$props.mediaData.medias[3],
-                data: this.$props.mediaChartData.twitter.likes,
+                data: this.twitterData.likes,
                 fill: false,
                 borderColor: this.colorCode.media.twitter,
                 backgroundColor: this.colorCode.media.twitter,
@@ -236,7 +306,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             if (this.selectedViewOption === 'Number of Mentions') {
               data.push({
                 label: this.$props.mediaData.medias[4],
-                data: this.$props.mediaChartData.youtube.mentions,
+                data: this.youtubeData.mentions,
                 fill: false,
                 borderColor: this.colorCode.media.youtube,
                 backgroundColor: this.colorCode.media.youtube,
@@ -246,7 +316,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             else {
               data.push({
                 label: this.$props.mediaData.medias[4],
-                data: this.$props.mediaChartData.youtube.likes,
+                data: this.youtubeData.likes,
                 fill: false,
                 borderColor: this.colorCode.media.youtube,
                 backgroundColor: this.colorCode.media.youtube,
@@ -264,7 +334,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[0],
-                data: this.$props.mediaChartData.facebook.sentiments.positive,
+                data: this.facebookData.sentiments.positive,
                 fill: false,
                 borderColor: this.colorCode.sentiment.negative,
                 backgroundColor: this.colorCode.sentiment.negative,
@@ -274,7 +344,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[1],
-                data: this.$props.mediaChartData.facebook.sentiments.neutral,
+                data: this.facebookData.sentiments.neutral,
                 fill: false,
                 borderColor: this.colorCode.sentiment.neutral,
                 backgroundColor: this.colorCode.sentiment.neutral,
@@ -284,7 +354,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[2],
-                data: this.$props.mediaChartData.facebook.sentiments.negative,
+                data: this.facebookData.sentiments.negative,
                 fill: false,
                 borderColor: this.colorCode.sentiment.positive,
                 backgroundColor: this.colorCode.sentiment.positive,
@@ -297,7 +367,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[0],
-                data: this.$props.mediaChartData.facebook.emotions.anger,
+                data: this.facebookData.emotions.anger,
                 fill: false,
                 borderColor: this.colorCode.emotion.anger,
                 backgroundColor: this.colorCode.emotion.anger,
@@ -307,7 +377,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[1],
-                data: this.$props.mediaChartData.facebook.emotions.fear,
+                data: this.facebookData.emotions.fear,
                 fill: false,
                 borderColor: this.colorsCode.emotion.fear,
                 backgroundColor: this.colorCode.emotion.fear,
@@ -317,7 +387,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[2],
-                data: this.$props.mediaChartData.facebook.emotions.joy,
+                data: this.facebookData.emotions.joy,
                 fill: false,
                 borderColor: this.colorsCode.emotion.joy,
                 backgroundColor: this.colorCode.emotion.joy,
@@ -327,7 +397,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[3],
-                data: this.$props.mediaChartData.facebook.emotions.neutral,
+                data: this.facebookData.emotions.neutral,
                 fill: false,
                 borderColor: this.colorsCode.emotion.neutral,
                 backgroundColor: this.colorCode.emotion.neutral,
@@ -337,7 +407,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[4],
-                data: this.$props.mediaChartData.facebook.emotions.sadness,
+                data: this.facebookData.emotions.sadness,
                 fill: false,
                 borderColor: this.colorsCode.emotion.sadness,
                 backgroundColor: this.colorCode.emotion.sadness,
@@ -349,10 +419,11 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           else {
             let viewData;
             if (viewOption === 'Number of Mentions'){
-              viewData = this.$props.mediaChartData.facebook.mentions;
+              viewData = this.facebookData.mentions;
             }
             else if (viewOption === 'Number of Likes'){
-              viewData = this.$props.mediaChartData.facebook.likes;
+              viewData = this.facebookData.likes;
+              console.log("facebook likes selected");
             }
             data.push(
               {
@@ -375,7 +446,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[0],
-                data: this.$props.mediaChartData.reddit.sentiments.positive,
+                data: this.redditData.sentiments.positive,
                 fill: false,
                 borderColor: this.colorCode.sentiment.negative,
                 backgroundColor: this.colorCode.sentiment.negative,
@@ -385,7 +456,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[1],
-                data: this.$props.mediaChartData.reddit.sentiments.neutral,
+                data: this.redditData.sentiments.neutral,
                 fill: false,
                 borderColor: this.colorCode.sentiment.neutral,
                 backgroundColor: this.colorCode.sentiment.neutral,
@@ -395,7 +466,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[2],
-                data: this.$props.mediaChartData.reddit.sentiments.negative,
+                data: this.redditData.sentiments.negative,
                 fill: false,
                 borderColor: this.colorCode.sentiment.positive,
                 backgroundColor: this.colorCode.sentiment.positive,
@@ -408,7 +479,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[0],
-                data: this.$props.mediaChartData.reddit.emotions.anger,
+                data: this.redditData.emotions.anger,
                 fill: false,
                 borderColor: this.colorCode.emotion.anger,
                 backgroundColor: this.colorCode.emotion.anger,
@@ -418,7 +489,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[1],
-                data: this.$props.mediaChartData.reddit.emotions.fear,
+                data: this.redditData.emotions.fear,
                 fill: false,
                 borderColor: this.colorsCode.emotion.fear,
                 backgroundColor: this.colorCode.emotion.fear,
@@ -428,7 +499,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[2],
-                data: this.$props.mediaChartData.reddit.emotions.joy,
+                data: this.redditData.emotions.joy,
                 fill: false,
                 borderColor: this.colorsCode.emotion.joy,
                 backgroundColor: this.colorCode.emotion.joy,
@@ -438,7 +509,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[3],
-                data: this.$props.mediaChartData.reddit.emotions.neutral,
+                data: this.redditData.emotions.neutral,
                 fill: false,
                 borderColor: this.colorsCode.emotion.neutral,
                 backgroundColor: this.colorCode.emotion.neutral,
@@ -448,7 +519,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[4],
-                data: this.$props.mediaChartData.reddit.emotions.sadness,
+                data: this.redditData.emotions.sadness,
                 fill: false,
                 borderColor: this.colorsCode.emotion.sadness,
                 backgroundColor: this.colorCode.emotion.sadness,
@@ -460,13 +531,13 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           else {
             let viewData;
             if (viewOption === 'Number of Mentions'){
-              viewData = this.$props.mediaChartData.reddit.mentions;
+              viewData = this.redditData.mentions;
             }
             else if (viewOption === 'Number of Net Votes'){
-              viewData = this.$props.mediaChartData.reddit.likes;
+              viewData = this.redditData.likes;
             }
             else if (viewOption === 'Number of Awards'){
-              viewData = this.$props.mediaChartData.reddit.awards;
+              viewData = this.redditData.awards;
             }
             data.push(
               {
@@ -489,7 +560,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[0],
-                data: this.$props.mediaChartData.twitter.sentiments.positive,
+                data: this.twitterData.sentiments.positive,
                 fill: false,
                 borderColor: this.colorCode.sentiment.negative,
                 backgroundColor: this.colorCode.sentiment.negative,
@@ -499,7 +570,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[1],
-                data: this.$props.mediaChartData.twitter.sentiments.neutral,
+                data: this.twitterData.sentiments.neutral,
                 fill: false,
                 borderColor: this.colorCode.sentiment.neutral,
                 backgroundColor: this.colorCode.sentiment.neutral,
@@ -509,7 +580,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[2],
-                data: this.$props.mediaChartData.twitter.sentiments.negative,
+                data: this.twitterData.sentiments.negative,
                 fill: false,
                 borderColor: this.colorCode.sentiment.positive,
                 backgroundColor: this.colorCode.sentiment.positive,
@@ -522,7 +593,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[0],
-                data: this.$props.mediaChartData.twitter.emotions.anger,
+                data: this.twitterData.emotions.anger,
                 fill: false,
                 borderColor: this.colorCode.emotion.anger,
                 backgroundColor: this.colorCode.emotion.anger,
@@ -532,7 +603,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[1],
-                data: this.$props.mediaChartData.twitter.emotions.fear,
+                data: this.twitterData.emotions.fear,
                 fill: false,
                 borderColor: this.colorsCode.emotion.fear,
                 backgroundColor: this.colorCode.emotion.fear,
@@ -542,7 +613,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[2],
-                data: this.$props.mediaChartData.twitter.emotions.joy,
+                data: this.twitterData.emotions.joy,
                 fill: false,
                 borderColor: this.colorsCode.emotion.joy,
                 backgroundColor: this.colorCode.emotion.joy,
@@ -552,7 +623,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[3],
-                data: this.$props.mediaChartData.twitter.emotions.neutral,
+                data: this.twitterData.emotions.neutral,
                 fill: false,
                 borderColor: this.colorsCode.emotion.neutral,
                 backgroundColor: this.colorCode.emotion.neutral,
@@ -562,7 +633,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[4],
-                data: this.$props.mediaChartData.twitter.emotions.sadness,
+                data: this.twitterData.emotions.sadness,
                 fill: false,
                 borderColor: this.colorsCode.emotion.sadness,
                 backgroundColor: this.colorCode.emotion.sadness,
@@ -574,13 +645,13 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           else {
             let viewData;
             if (viewOption === 'Number of Mentions'){
-              viewData = this.$props.mediaChartData.twitter.mentions;
+              viewData = this.twitterData.mentions;
             }
             else if (viewOption === 'Number of Likes'){
-              viewData = this.$props.mediaChartData.twitter.likes;
+              viewData = this.twitterData.likes;
             }
             else if (viewOption === 'Number of Retweets'){
-              viewData = this.$props.mediaChartData.twitter.retweets;
+              viewData = this.twitterData.retweets;
             }
             data.push(
               {
@@ -603,7 +674,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[0],
-                data: this.$props.mediaChartData.youtube.sentiments.positive,
+                data: this.youtubeData.sentiments.positive,
                 fill: false,
                 borderColor: this.colorCode.sentiment.negative,
                 backgroundColor: this.colorCode.sentiment.negative,
@@ -613,7 +684,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[1],
-                data: this.$props.mediaChartData.youtube.sentiments.neutral,
+                data: this.youtubeData.sentiments.neutral,
                 fill: false,
                 borderColor: this.colorCode.sentiment.neutral,
                 backgroundColor: this.colorCode.sentiment.neutral,
@@ -623,7 +694,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.sentiment[2],
-                data: this.$props.mediaChartData.youtube.sentiments.negative,
+                data: this.youtubeData.sentiments.negative,
                 fill: false,
                 borderColor: this.colorCode.sentiment.positive,
                 backgroundColor: this.colorCode.sentiment.positive,
@@ -636,7 +707,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[0],
-                data: this.$props.mediaChartData.youtube.emotions.anger,
+                data: this.youtubeData.emotions.anger,
                 fill: false,
                 borderColor: this.colorCode.emotion.anger,
                 backgroundColor: this.colorCode.emotion.anger,
@@ -646,7 +717,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[1],
-                data: this.$props.mediaChartData.youtube.emotions.fear,
+                data: this.youtubeData.emotions.fear,
                 fill: false,
                 borderColor: this.colorsCode.emotion.fear,
                 backgroundColor: this.colorCode.emotion.fear,
@@ -656,7 +727,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[2],
-                data: this.$props.mediaChartData.youtube.emotions.joy,
+                data: this.youtubeData.emotions.joy,
                 fill: false,
                 borderColor: this.colorsCode.emotion.joy,
                 backgroundColor: this.colorCode.emotion.joy,
@@ -666,7 +737,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[3],
-                data: this.$props.mediaChartData.youtube.emotions.neutral,
+                data: this.youtubeData.emotions.neutral,
                 fill: false,
                 borderColor: this.colorsCode.emotion.neutral,
                 backgroundColor: this.colorCode.emotion.neutral,
@@ -676,7 +747,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
             data.push(
               {
                 label: this.emotion[4],
-                data: this.$props.mediaChartData.youtube.emotions.sadness,
+                data: this.youtubeData.emotions.sadness,
                 fill: false,
                 borderColor: this.colorsCode.emotion.sadness,
                 backgroundColor: this.colorCode.emotion.sadness,
@@ -688,13 +759,13 @@ import LineChart from '@/components/TrendAnalysisLineChart'
           else {
             let viewData;
             if (viewOption === 'Number of Mentions'){
-              viewData = this.$props.mediaChartData.youtube.mentions;
+              viewData = this.youtubeData.mentions;
             }
             else if (viewOption === 'Number of Likes'){
-              viewData = this.$props.mediaChartData.youtube.likes;
+              viewData = this.youtubeData.likes;
             }
             else if (viewOption === 'Number of Views'){
-              viewData = this.$props.mediaChartData.youtube.views;
+              viewData = this.youtubeData.views;
             }
             data.push(
               {
@@ -790,7 +861,10 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         //       borderWidth: 1,
         //     });
         // }
-
+        console.log({
+          labels: this.selectedDateLabels,
+          datasets: data,
+        });
         return {
           labels: this.selectedDateLabels,
           datasets: data,
@@ -845,7 +919,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
         this.selectedTab = media;
         
         // 'number of mentions' is the default selection for all tabs 
-        // this.selectedViewOption = 'Number of Mentions';
+        this.selectedViewOption = 'Number of Mentions';
 
         // change view options and chart data
         if (this.selectedTab === 'all'){
@@ -876,6 +950,7 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       {
         console.log(this.selectedViewOption);
         this.selectedViewOption = selectedViewOption;
+        console.log("=== view option changed ===");
         console.log(this.selectedViewOption);
         this.getChartData();
         // this.changeChart();
@@ -976,7 +1051,586 @@ import LineChart from '@/components/TrendAnalysisLineChart'
       },
 
       getChartData() {
-        this.formattedChartData = this.defaultChartData;
+        console.log("=== START getChartData() ===")
+
+        const trendPlotData = this.$props.mediaChartData;
+        const data = [];
+        let facebook = false;
+        let reddit = false;
+        let twitter = false;
+        let youtube = false;
+        console.log("=== option selected ===");
+        console.log(this.selectedViewOption);
+        // All tab view
+        if (this.selectedTab === 'all'){
+          if (Object.keys(trendPlotData).includes('facebook')){
+            facebook = true;
+          }
+          if (Object.keys(trendPlotData).includes('reddit')){
+            reddit = true;
+          }
+          if (Object.keys(trendPlotData).includes('twitter')){
+            twitter = true;
+          }
+          if (Object.keys(trendPlotData).includes('youtube')){
+            youtube = true;
+          }
+
+          if (facebook === true) {
+            if (this.selectedViewOption === 'Number of Mentions') {
+              data.push({
+                label: this.$props.mediaData.medias[1],
+                data: this.facebookData.mentions,
+                fill: false,
+                borderColor: this.colorCode.media.facebook,
+                backgroundColor: this.colorCode.media.facebook,
+                borderWidth: 1,
+              });
+            }
+            else {
+              data.push({
+                label: this.$props.mediaData.medias[1],
+                data: this.facebookData.likes,
+                fill: false,
+                borderColor: this.colorCode.media.facebook,
+                backgroundColor: this.colorCode.media.facebook,
+                borderWidth: 1,
+              });
+            }
+          } // end of facebook for all tab
+
+          if (reddit === true) {
+            if (this.selectedViewOption === 'Number of Mentions') {
+              data.push({
+                label: this.$props.mediaData.medias[2],
+                data: this.redditData.mentions,
+                fill: false,
+                borderColor: this.colorCode.media.reddit,
+                backgroundColor: this.colorCode.media.reddit,
+                borderWidth: 1,
+              });
+            }
+            else if (this.selectedViewOption === 'Number of Likes'){
+              console.log("reddit all likes doneee");
+              data.push({
+                label: this.$props.mediaData.medias[2],
+                data: this.redditData.likes,
+                fill: false,
+                borderColor: this.colorCode.media.reddit,
+                backgroundColor: this.colorCode.media.reddit,
+                borderWidth: 1,
+              });
+            }
+          } // end of reddit for all tab
+          
+          if (twitter === true) {
+            if (this.selectedViewOption === 'Number of Mentions') {
+              data.push({
+                label: this.$props.mediaData.medias[3],
+                data: this.twitterData.mentions,
+                fill: false,
+                borderColor: this.colorCode.media.twitter,
+                backgroundColor: this.colorCode.media.twitter,
+                borderWidth: 1,
+              });
+            }
+            else {
+              data.push({
+                label: this.$props.mediaData.medias[3],
+                data: this.twitterData.likes,
+                fill: false,
+                borderColor: this.colorCode.media.twitter,
+                backgroundColor: this.colorCode.media.twitter,
+                borderWidth: 1,
+              });
+            }
+          } // end of twitter for all tab
+          
+          if (youtube === true) {
+            if (this.selectedViewOption === 'Number of Mentions') {
+              data.push({
+                label: this.$props.mediaData.medias[4],
+                data: this.youtubeData.mentions,
+                fill: false,
+                borderColor: this.colorCode.media.youtube,
+                backgroundColor: this.colorCode.media.youtube,
+                borderWidth: 1,
+              });
+            }
+            else {
+              data.push({
+                label: this.$props.mediaData.medias[4],
+                data: this.youtubeData.likes,
+                fill: false,
+                borderColor: this.colorCode.media.youtube,
+                backgroundColor: this.colorCode.media.youtube,
+                borderWidth: 1,
+              });
+            }
+          } // end of twitter for all tab
+        } // end of all tab view
+
+        // Facebook tab view
+        else if (this.selectedTab === "facebook"){         
+          const viewOption = this.selectedViewOption;
+          // Facebook sentiments view option
+          if (viewOption === 'Sentiments'){ 
+            data.push(
+              {
+                label: this.sentiment[0],
+                data: this.facebookData.sentiments.positive,
+                fill: false,
+                borderColor: this.colorCode.sentiment.negative,
+                backgroundColor: this.colorCode.sentiment.negative,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.sentiment[1],
+                data: this.facebookData.sentiments.neutral,
+                fill: false,
+                borderColor: this.colorCode.sentiment.neutral,
+                backgroundColor: this.colorCode.sentiment.neutral,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.sentiment[2],
+                data: this.facebookData.sentiments.negative,
+                fill: false,
+                borderColor: this.colorCode.sentiment.positive,
+                backgroundColor: this.colorCode.sentiment.positive,
+                borderWidth: 1,
+              }
+            );
+          }
+          // Facebook emotions view option
+          else if (viewOption === 'Emotions'){ 
+            data.push(
+              {
+                label: this.emotion[0],
+                data: this.facebookData.emotions.anger,
+                fill: false,
+                borderColor: this.colorCode.emotion.anger,
+                backgroundColor: this.colorCode.emotion.anger,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[1],
+                data: this.facebookData.emotions.fear,
+                fill: false,
+                borderColor: this.colorCode.emotion.fear,
+                backgroundColor: this.colorCode.emotion.fear,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[2],
+                data: this.facebookData.emotions.joy,
+                fill: false,
+                borderColor: this.colorCode.emotion.joy,
+                backgroundColor: this.colorCode.emotion.joy,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[3],
+                data: this.facebookData.emotions.neutral,
+                fill: false,
+                borderColor: this.colorCode.emotion.neutral,
+                backgroundColor: this.colorCode.emotion.neutral,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[4],
+                data: this.facebookData.emotions.sadness,
+                fill: false,
+                borderColor: this.colorCode.emotion.sadness,
+                backgroundColor: this.colorCode.emotion.sadness,
+                borderWidth: 1,
+              }
+            );
+          }
+          // Facebook other views
+          else {
+            let viewData;
+            if (viewOption === 'Number of Mentions'){
+              viewData = this.facebookData.mentions;
+            }
+            else if (viewOption === 'Number of Likes'){
+              viewData = this.facebookData.likes;
+              console.log("facebook likes selected");
+            }
+            data.push(
+              {
+                label: this.$props.mediaData.medias[1],
+                data: viewData,
+                fill: false,
+                borderColor: this.colorCode.media.facebook,
+                backgroundColor: this.colorCode.media.facebook,
+                borderWidth: 1,
+              }
+            );
+          }
+        } // end of Facebook tab view
+
+        // Reddit tab view
+        else if (this.selectedTab === "reddit"){
+          const viewOption = this.selectedViewOption;
+          // Reddit sentiments view option
+          if (viewOption === 'Sentiments'){ 
+            data.push(
+              {
+                label: this.sentiment[0],
+                data: this.redditData.sentiments.positive,
+                fill: false,
+                borderColor: this.colorCode.sentiment.negative,
+                backgroundColor: this.colorCode.sentiment.negative,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.sentiment[1],
+                data: this.redditData.sentiments.neutral,
+                fill: false,
+                borderColor: this.colorCode.sentiment.neutral,
+                backgroundColor: this.colorCode.sentiment.neutral,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.sentiment[2],
+                data: this.redditData.sentiments.negative,
+                fill: false,
+                borderColor: this.colorCode.sentiment.positive,
+                backgroundColor: this.colorCode.sentiment.positive,
+                borderWidth: 1,
+              }
+            );
+          }
+          // Reddit emotions view option
+          else if (viewOption === 'Emotions'){ 
+            data.push(
+              {
+                label: this.emotion[0],
+                data: this.redditData.emotions.anger,
+                fill: false,
+                borderColor: this.colorCode.emotion.anger,
+                backgroundColor: this.colorCode.emotion.anger,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[1],
+                data: this.redditData.emotions.fear,
+                fill: false,
+                borderColor: this.colorCode.emotion.fear,
+                backgroundColor: this.colorCode.emotion.fear,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[2],
+                data: this.redditData.emotions.joy,
+                fill: false,
+                borderColor: this.colorCode.emotion.joy,
+                backgroundColor: this.colorCode.emotion.joy,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[3],
+                data: this.redditData.emotions.neutral,
+                fill: false,
+                borderColor: this.colorCode.emotion.neutral,
+                backgroundColor: this.colorCode.emotion.neutral,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[4],
+                data: this.redditData.emotions.sadness,
+                fill: false,
+                borderColor: this.colorCode.emotion.sadness,
+                backgroundColor: this.colorCode.emotion.sadness,
+                borderWidth: 1,
+              }
+            );
+          }
+          // Reddit other views
+          else {
+            let viewData;
+            if (viewOption === 'Number of Mentions'){
+              viewData = this.redditData.mentions;
+            }
+            else if (viewOption === 'Number of Net Votes'){
+              viewData = this.redditData.likes;
+            }
+            else if (viewOption === 'Number of Awards'){
+              viewData = this.redditData.awards;
+            }
+            data.push(
+              {
+                label: this.$props.mediaData.medias[2],
+                data: viewData,
+                fill: false,
+                borderColor: this.colorCode.media.reddit,
+                backgroundColor: this.colorCode.media.reddit,
+                borderWidth: 1,
+              }
+            );
+          }
+        } // end of reddit tab view
+
+        // Twitter tab view
+        else if (this.selectedTab === "twitter"){
+          const viewOption = this.selectedViewOption;
+          // Twitter sentiments view option
+          if (viewOption === 'Sentiments'){ 
+            data.push(
+              {
+                label: this.sentiment[0],
+                data: this.twitterData.sentiments.positive,
+                fill: false,
+                borderColor: this.colorCode.sentiment.negative,
+                backgroundColor: this.colorCode.sentiment.negative,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.sentiment[1],
+                data: this.twitterData.sentiments.neutral,
+                fill: false,
+                borderColor: this.colorCode.sentiment.neutral,
+                backgroundColor: this.colorCode.sentiment.neutral,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.sentiment[2],
+                data: this.twitterData.sentiments.negative,
+                fill: false,
+                borderColor: this.colorCode.sentiment.positive,
+                backgroundColor: this.colorCode.sentiment.positive,
+                borderWidth: 1,
+              }
+            );
+          }
+          // Twitter emotions view option
+          else if (viewOption === 'Emotions'){ 
+            data.push(
+              {
+                label: this.emotion[0],
+                data: this.twitterData.emotions.anger,
+                fill: false,
+                borderColor: this.colorCode.emotion.anger,
+                backgroundColor: this.colorCode.emotion.anger,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[1],
+                data: this.twitterData.emotions.fear,
+                fill: false,
+                borderColor: this.colorCode.emotion.fear,
+                backgroundColor: this.colorCode.emotion.fear,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[2],
+                data: this.twitterData.emotions.joy,
+                fill: false,
+                borderColor: this.colorCode.emotion.joy,
+                backgroundColor: this.colorCode.emotion.joy,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[3],
+                data: this.twitterData.emotions.neutral,
+                fill: false,
+                borderColor: this.colorCode.emotion.neutral,
+                backgroundColor: this.colorCode.emotion.neutral,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[4],
+                data: this.twitterData.emotions.sadness,
+                fill: false,
+                borderColor: this.colorCode.emotion.sadness,
+                backgroundColor: this.colorCode.emotion.sadness,
+                borderWidth: 1,
+              }
+            );
+          }
+          // Twitter other views
+          else {
+            let viewData;
+            if (viewOption === 'Number of Mentions'){
+              viewData = this.twitterData.mentions;
+            }
+            else if (viewOption === 'Number of Likes'){
+              viewData = this.twitterData.likes;
+            }
+            else if (viewOption === 'Number of Retweets'){
+              viewData = this.twitterData.retweets;
+            }
+            data.push(
+              {
+                label: this.$props.mediaData.medias[3],
+                data: viewData,
+                fill: false,
+                borderColor: this.colorCode.media.twitter,
+                backgroundColor: this.colorCode.media.twitter,
+                borderWidth: 1,
+              }
+            );
+          }
+        } // end of twitter tab view
+
+        // Youtube tab view
+        else if (this.selectedTab === "youtube"){
+          const viewOption = this.selectedViewOption;
+          // Youtube sentiments view option
+          if (viewOption === 'Sentiments'){ 
+            data.push(
+              {
+                label: this.sentiment[0],
+                data: this.youtubeData.sentiments.positive,
+                fill: false,
+                borderColor: this.colorCode.sentiment.negative,
+                backgroundColor: this.colorCode.sentiment.negative,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.sentiment[1],
+                data: this.youtubeData.sentiments.neutral,
+                fill: false,
+                borderColor: this.colorCode.sentiment.neutral,
+                backgroundColor: this.colorCode.sentiment.neutral,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.sentiment[2],
+                data: this.youtubeData.sentiments.negative,
+                fill: false,
+                borderColor: this.colorCode.sentiment.positive,
+                backgroundColor: this.colorCode.sentiment.positive,
+                borderWidth: 1,
+              }
+            );
+          }
+          // Youtube emotions view option
+          else if (viewOption === 'Emotions'){ 
+            data.push(
+              {
+                label: this.emotion[0],
+                data: this.youtubeData.emotions.anger,
+                fill: false,
+                borderColor: this.colorCode.emotion.anger,
+                backgroundColor: this.colorCode.emotion.anger,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[1],
+                data: this.youtubeData.emotions.fear,
+                fill: false,
+                borderColor: this.colorCode.emotion.fear,
+                backgroundColor: this.colorCode.emotion.fear,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[2],
+                data: this.youtubeData.emotions.joy,
+                fill: false,
+                borderColor: this.colorCode.emotion.joy,
+                backgroundColor: this.colorCode.emotion.joy,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[3],
+                data: this.youtubeData.emotions.neutral,
+                fill: false,
+                borderColor: this.colorCode.emotion.neutral,
+                backgroundColor: this.colorCode.emotion.neutral,
+                borderWidth: 1,
+              }
+            );
+            data.push(
+              {
+                label: this.emotion[4],
+                data: this.youtubeData.emotions.sadness,
+                fill: false,
+                borderColor: this.colorCode.emotion.sadness,
+                backgroundColor: this.colorCode.emotion.sadness,
+                borderWidth: 1,
+              }
+            );
+          }
+          // Youtube other views
+          else {
+            let viewData;
+            if (viewOption === 'Number of Mentions'){
+              viewData = this.youtubeData.mentions;
+            }
+            else if (viewOption === 'Number of Likes'){
+              viewData = this.youtubeData.likes;
+            }
+            else if (viewOption === 'Number of Views'){
+              viewData = this.youtubeData.views;
+            }
+            data.push(
+              {
+                label: this.$props.mediaData.medias[4],
+                data: viewData,
+                fill: false,
+                borderColor: this.colorCode.media.youtube,
+                backgroundColor: this.colorCode.media.youtube,
+                borderWidth: 1,
+              }
+            );
+          } // end of youtube tab view
+        }
+        
+        this.formattedChartData = {
+          labels: this.selectedDateLabels,
+          datasets: data,
+        };
+        
+        
+        // this.formattedChartData = this.defaultChartData;
         console.log("got the chart data");
         // console.log(this.colorCode.medias.facebook);
       }

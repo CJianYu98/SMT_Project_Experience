@@ -44,8 +44,8 @@
       this.renderChart(this.chartData, this.options);
     },
     watch: {
-      data () {
-        this.renderChart(this.data.chartData, this.options);
+      data (to,from) {
+        this.renderChart(this.chartData, this.options);
       }
     },
   }
