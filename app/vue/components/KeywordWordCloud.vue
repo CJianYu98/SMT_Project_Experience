@@ -121,7 +121,7 @@ export default {
         //             .attr('id', d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''));
         const group = focus.append('g')
         // eslint-disable-next-line
-                    .attr('id', 'id' + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll(' ', ''));
+                    .attr('id', 'id' + d.srcElement.__data__.text.replace(/\'/g, "").replaceAll('#', '').replaceAll(' ', ''));
         // console.log("group", group)
         // const base = d.y - d.size;
         // const base = d.y - d.screenY;

@@ -26,6 +26,6 @@ export default {
 
 <style scoped>
 .trending-category {
-  cursor: pointer;
+  cursor: default;
 }
 </style>

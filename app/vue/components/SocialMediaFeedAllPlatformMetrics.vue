@@ -28,28 +28,28 @@
         </v-col>
       </template>
       <template v-else>
-        <v-col cols="2">
+        <v-col cols="2" class="px-1">
           <SocialMediaFeedIndvPlatformMetrics
             :platform-all-data="aggregatedStatsAllPlatforms.facebook"
             platform-string="facebook"
           />
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="2">
+        <v-col cols="2" class="px-1">
           <SocialMediaFeedIndvPlatformMetrics
             :platform-all-data="aggregatedStatsAllPlatforms.reddit"
             platform-string="reddit"
           />
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="2">
+        <v-col cols="2" class="px-1">
           <SocialMediaFeedIndvPlatformMetrics
             :platform-all-data="aggregatedStatsAllPlatforms.twitter"
             platform-string="twitter"
           />
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="2">
+        <v-col cols="2" class="px-1">
           <SocialMediaFeedIndvPlatformMetrics
             :platform-all-data="aggregatedStatsAllPlatforms.youtube"
             platform-string="youtube"

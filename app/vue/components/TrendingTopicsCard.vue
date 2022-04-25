@@ -17,15 +17,16 @@
     <template v-else>
       <v-row class="mx-1">
       <!-- <v-spacer></v-spacer> -->
-        <v-col cols="6" class="pt-0">
+        <v-col cols="6" class="pt-0 mr-n3">
           <GraphLegend 
             :graph-legend="keywordsWordCloudLegend"
             type="sentiment"
           />
         </v-col>
         <!-- <v-spacer></v-spacer> -->
+        <v-divider vertical inset></v-divider>
 
-        <v-col cols="6" class="pt-0">
+        <v-col cols="6" class="pt-0 ml-2">
           <GraphLegend
             :graph-legend="trendingTopicsEmotionsLegend"
             type="emotion"
