@@ -24,7 +24,8 @@
               >
                 <span>Trend &nbsp;
                   <v-icon
-                    class="white--text"
+                    small
+                    class="white--text ml-n1"
                   >
                     mdi-help-circle-outline
                   </v-icon>

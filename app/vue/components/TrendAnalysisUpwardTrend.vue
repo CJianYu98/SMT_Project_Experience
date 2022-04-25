@@ -6,7 +6,7 @@
     >
       mdi-trending-up
     </v-icon>
-    <span class="light-green--text"> {{ (percentageIncrease * 100).toFixed(1) }}% </span>
+    <span class="light-green--text"> {{ (percentageIncrease * 100).toFixed(0) }}% </span>
   </div>
 </template>
 

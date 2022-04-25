@@ -87,7 +87,7 @@
               {{topic}}
             </v-chip>
           </template>
-          <span>category: {{topic}} </span>
+          <span>topic: {{topic}} </span>
         </v-tooltip>
         
       </v-chip-group>

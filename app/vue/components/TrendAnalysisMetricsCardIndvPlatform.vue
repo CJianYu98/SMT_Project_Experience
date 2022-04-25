@@ -6,13 +6,14 @@
           <th class="white--text text-center px-0"></th>
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
-              <th class="white--text text-center"
+              <th class="white--text text-center px-0"
                 v-bind="attrs"
                 v-on="on"
               >
                 <span>Mentions &nbsp;
                   <v-icon
-                    class="white--text"
+                    small
+                    class="white--text ml-n1"
                   >
                     mdi-help-circle-outline
                   </v-icon>
@@ -24,13 +25,14 @@
           <!-- <th class="white--text text-center">Trend</th> -->
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
-              <th class="white--text text-center"
+              <th class="white--text text-center px-0"
                 v-bind="attrs"
                 v-on="on"
               >
                 <span>Trend &nbsp;
                   <v-icon
-                    class="white--text"
+                    small
+                    class="white--text ml-n1"
                   >
                     mdi-help-circle-outline
                   </v-icon>
@@ -51,8 +53,8 @@
         >
           <td>
             <v-img
-              max-height="30"
-              max-width="30"
+              max-height="25"
+              max-width="25"
               :src="`/${platform}_icon.png`"
               :alt="`${platform} icon`"
               class="mx-auto"
@@ -84,8 +86,8 @@
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-img
-                  max-height="30"
-                  max-width="30"
+                  max-height="25"
+                  max-width="25"
                   :src="`/${data.emotion}.png`"
                   :alt="`${data.emotion} icon`"
                   class="mx-auto"
