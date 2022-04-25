@@ -1100,7 +1100,7 @@ export default {
     // fetchEndDate: '2022-01-15',
     // fetchNumDays: 50,
     fetchNumDays: 7,
-    fetchPlatforms: ["facebook",'reddit','twitter', 'youtube'], // removed twitter for now
+    fetchPlatforms: ["facebook",'reddit', 'youtube'], // removed twitter for now
     fetchSentiments: ["neutral", "negative", "positive"],
     fetchEmotions: ["neutral", "anger", "fear", "sadness", "joy"],
     fetchRawPosts: ["complaint", "noteworthy"]

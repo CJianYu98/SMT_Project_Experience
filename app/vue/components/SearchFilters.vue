@@ -280,8 +280,8 @@
       dialog: false,
       sentimentsFilter: ['Negative', 'Neutral', 'Positive'],
       sentimentsSelected: ['Negative', 'Neutral', 'Positive'],
-      platformsFilter: ['Facebook', 'Reddit', 'Twitter', 'YouTube'],
-      platformsSelected: ['Facebook', 'Reddit', 'Twitter', 'YouTube'],
+      platformsFilter: ['Facebook', 'Reddit', 'YouTube'],
+      platformsSelected: ['Facebook', 'Reddit', 'YouTube'],
     }),
 
     computed: {
