@@ -20,7 +20,7 @@
         <v-img
           max-height="500"
           :aspect-ratio="16/9"
-          :src="`/landing_page_components.png`"
+          :src="`/landingPage.png`"
         ></v-img>
       </v-col>
     </v-row>
@@ -94,30 +94,30 @@ export default {
     header: "SOCIAL LISTENING PLATFORM FOR SINGAPOREANS",
     headerDesc: "Gather insights on what Singaporeans have been talking about lately",
     filterComponent: {
-      componentImage: 'filters',
+      componentImage: 'filters3',
       componentHeader: 'FILTERING DATA TO MEET YOUR NEEDS',
       componentDesc: 'Filters include date period, sentiment of posts, data platforms, and emotion of post',
     },
     keywordComponent: {
-      componentImage: 'keyword',
+      componentImage: 'keyword2',
       componentHeader: 'ANALYSE BUZZING KEYWORDS',
       componentDesc: 'Analyse buzzing keywords and associated public sentiment',
     },
     // to be updated:
     sentimentComponent: {
-      componentImage: 'sentiment',
+      componentImage: 'sentiment2',
       componentHeader: 'VIEW ONLINE MOODS AND RELATED TOPICS',
       componentDesc: 'Analyse buzzing keywords and associated public sentiment',
     },
     complaintComponent: {
-      componentImage: 'complaints',
+      componentImage: 'complaints3',
       componentHeader: 'LEARN SINGAPOREANS’ COMPLAINTS',
       componentDesc: 'View most common complaints, their related comments and topics associated to the comments',
     },
     trendingComponent: {
-      componentImageOne: 'trending',
-      componentImageTwo: 'trendingMetrics',
-      componentImageThree: 'trendingGraph',
+      componentImageOne: 'trending3',
+      componentImageTwo: 'trendingMetrics3',
+      componentImageThree: 'trendingGraph3',
       componentHeader: 'ANALYSE PATTERNS OVER TIME',
       componentDescOne: 'View top topics mentioned, associated top keywords, and sentiment breakdown of topic',
       componentDescTwo: 'Visualise aggregated metrics, and trend in number of posts across time',
