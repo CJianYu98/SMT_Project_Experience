@@ -1,4 +1,5 @@
 .DS_Store
+.env
 __pycache__
 app/ml/models/model_data/cardiffnlp/twitter-roberta-base-sentiment/config.json
 app/ml/models/model_data/cardiffnlp/twitter-roberta-base-sentiment/merges.txt
