@@ -36,7 +36,7 @@ Following sections provide instructions on how to setup and run our application 
 ## Technologies Required <a name="technologies_required"></a>
 This project is created with the following technologies and versions. 
 - [Python] : >= 3.8
-- [Node] : >= 
+- [Node] : >= 16.13.2
 - [MongoDB] : >= 5.0.6
 
 If these technologies are installed in the server, follow the steps in the [Version Check](#version_check) segment to check the version installed in the server. If you have yet to install any, please refer to the [Installation](#installation) segment.
