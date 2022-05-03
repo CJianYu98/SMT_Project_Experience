@@ -18,7 +18,8 @@
         3. [Database Setup](#database_setup) 
         4. [Chrome Browser and Chromedrive](#chrome_drive)
         5. [Reddit Account](#reddit_account)
-        4. [Environment File](#environment_file)
+        6. [Cronjob](#cronjob)
+        7. [Environment File](#environment_file)
 4. [Running the Application](#run_app)
 
 ---
@@ -202,6 +203,30 @@ We will need Chrome Browser and Chromdrive installed to run the daily collection
 Reddit account is required to perform data collection from Reddit. 
 **To be completed**
 <br>
+
+### - Cronjob <a name="cronjob"></a>
+ETL cronjobs were deployed on a dedicated Linux GPU server for our project. However, you may deployed all the following cronjobs on your Linux server. *Note that the time taken to run the machine learning models during ETL process may be long.
+
+Run the following command to edit the crontab file:
+```
+crontab -e
+```
+<br>
+
+Creating cronjobs for daily collection and ETL process:
+```
+# Reddit
+0 0 */1 * * python3 /home/jianyu/SMT_Project_Experience/app/scraper/reddit/daily.py
+0 */1 * * * cd /home/jianyu/SMT_Project_Experience && python3 -B -m app.database.reddit_daily_etl
+
+# Twitter
+0 0 */1 * * python3 /home/jianyu/SMT_Project_Experience/app/scraper/twitter/daily.py
+0 */1 * * * cd /home/jianyu/SMT_Project_Experience && python3 -B -m app.database.twitter_daily_etl
+
+# Youtube
+0 0 */1 * * python3 /home/jianyu/SMT_Project_Experience/app/scraper/youtube/dailyYoutube.py
+0 */1 * * * cd /home/jianyu/SMT_Project_Experience && python3 -B -m app.database.youtube_daily_etl
+```
 
 ### - Environment File <a name="environment_file"></a>
 In our project, we save our raw data files and log files in a Network-attached Storage (NAS). You may decide on the location/folder to store these files and edit the environment variables in the `.env` code example given below.
