@@ -196,11 +196,12 @@ mongo -u user1 -p yourSecretPassword <your_server_public_ip>/smt483
 
 ### - Chrome Browser and Chromedrive <a name="chrome_driver"></a>
 We will need Chrome Browser and Chromdrive installed to run the daily collection of data from different social media platforms. To install them, you may refer to the instructions in this [link](https://skolo.online/documents/webscrapping/#pre-requisites).
-
+<br>
 
 ### - Reddit Account <a name="reddit_account"></a>
 Reddit account is required to perform data collection from Reddit. 
 **To be completed**
+<br>
 
 ### - Environment File <a name="environment_file"></a>
 In our project, we save our raw data files and log files in a Network-attached Storage (NAS). You may decide on the location/folder to store these files and edit the environment variables in the `.env` code example given below.
