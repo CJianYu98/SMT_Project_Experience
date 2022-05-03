@@ -23,7 +23,7 @@
 
 ---
 ## Introduction <a name="introduction"></a>
-This is a project repository for SMU SMT Project Experience module. In this project, we are building a social listening tool system which consists of daily collection of social media data and building a web dashboard which displays various insightful charts and statistics, using the data collected. More information about our project can be found in the project report pdf file [link]().
+This is a project repository for SMU SMT Project Experience module. In this project, we are building a social listening tool system which consists of daily collection of social media data and building a web dashboard which displays various insightful charts and statistics, using the data collected. More information about our project can be found in the project report pdf file [link](https://github.com/CJianYu98/SMT_Project_Experience/blob/main/Final%20Report%20-%20The%20Listening%20Squad.pdf).
 
 This repository contains instructions of setting up and running the application. The application was built on a **Linux Ubuntu** OS and the example codes below will be based on this OS. Since this application serves as a prototype, we deploy the application on localhost. 
 
