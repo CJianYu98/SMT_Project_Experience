@@ -145,7 +145,10 @@ We will have to install the necessary dependencies for the project. You may run 
 pip3 install -r requirements.txt
 ```
 
-**ML part to be completed**
+Next, we will download the Machine Learning models from HuggingFace that are required for the application. You may do so by running the following command:
+```
+python3 -m app.ml.models.download_ML_models
+```
 
 ### - Database Setup <a name="database_setup"></a>
 Run the following command to enter mongo shell:
@@ -199,11 +202,6 @@ mongo -u user1 -p yourSecretPassword <your_server_public_ip>/smt483
 We will need Chrome Browser and Chromdrive installed to run the daily collection of data from different social media platforms. To install them, you may refer to the instructions in this [link](https://skolo.online/documents/webscrapping/#pre-requisites).
 <br>
 
-### - Reddit Account <a name="reddit_account"></a>
-Reddit account is required to perform data collection from Reddit. 
-**To be completed**
-<br>
-
 ### - Cronjob <a name="cronjob"></a>
 ETL cronjobs were deployed on a dedicated Linux GPU server for our project. However, you may deployed all the following cronjobs on your Linux server. *Note that the time taken to run the machine learning models during ETL process may be long.
 
@@ -227,6 +225,10 @@ Creating cronjobs for daily collection and ETL process:
 0 0 */1 * * python3 /home/jianyu/SMT_Project_Experience/app/scraper/youtube/dailyYoutube.py
 0 */1 * * * cd /home/jianyu/SMT_Project_Experience && python3 -B -m app.database.youtube_daily_etl
 ```
+
+### - Reddit Account <a name="reddit_account"></a>
+A Reddit account is required to perform data collection from Reddit. You may follow the instructions detailed in under the "First Steps" section of this [link](https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example#first-steps) to obtain the REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET, which you may enter into the Reddit section of the environment file as explained below. As for REDDIT_USER_AGENT, it should be a unique string that allows the, e.g. "TheListeningSquad Scraper".
+<br>
 
 ### - Environment File <a name="environment_file"></a>
 In our project, we save our raw data files and log files in a Network-attached Storage (NAS). You may decide on the location/folder to store these files and edit the environment variables in the `.env` code example given below.
