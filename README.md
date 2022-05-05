@@ -227,7 +227,7 @@ Creating cronjobs for daily collection and ETL process:
 ```
 
 ### - Reddit Account <a name="reddit_account"></a>
-A Reddit account is required to perform data collection from Reddit. You may follow the instructions detailed in under the "First Steps" section of this [link](https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example#first-steps) to obtain the REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET, which you may enter into the Reddit section of the environment file as explained below. As for REDDIT_USER_AGENT, it should be a unique string that allows the, e.g. "TheListeningSquad Scraper".
+A Reddit account is required to perform data collection from Reddit. You may follow the instructions detailed in under the "First Steps" section of this [link](https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example#first-steps) to obtain the REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET. Enter them into the Reddit section of the environment file as explained below along with your username and password. As for REDDIT_USER_AGENT, it should be a unique string that allows the Reddit server to identify you, e.g. "TheListeningSquad Scraper".
 <br>
 
 ### - Environment File <a name="environment_file"></a>
